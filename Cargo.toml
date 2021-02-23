@@ -6,12 +6,16 @@ edition = "2018"
 
 [features]
 web = ["wasm-bindgen", "wasm-bindgen-futures", "wasm-logger", "gloo", "js-sys", "wasm-bindgen-test"]
-cairo = ["cairo-rs", "png"]
+cairo = ["cairo-rs", "png", "gio", "gtk"]
 default = ["cairo"]
 
 [dependencies]
 log = "0.4"
+ux-primitives = { git = "https://github.com/angular-rust/ux-primitives.git", rev = "5463bb9" }
+
 png = { version = "0.16", optional = true }
+gio = { version = "0.9", features = ["v2_58"], optional = true }
+gtk = { version = "0.9", features = ["v3_22"], optional = true }
 cairo-rs = { version = "0.9", features = ["png"], optional = true }
 
 wasm-bindgen = { version = "0.2", optional = true }
@@ -20,6 +24,8 @@ wasm-logger = { version = "0.2", optional = true }
 gloo = { version = "0.2", optional = true }
 js-sys = { version = "0.3", optional = true }
 wasm-bindgen-test = { version = "0.3", optional = true }
+serde = "1.0.123"
+serde_json = "1.0.62"
 
 [dependencies.web-sys]
 version = "0.3"
@@ -43,6 +49,6 @@ features = [
 # # crate-type = ["staticlib"]
 # required-features = ["web"]
 
-# [[example]]
-# name = "cairo-example"
-# required-features = ["cairo"]
+[[example]]
+name = "cairo-example"
+required-features = ["cairo"]
