@@ -435,8 +435,10 @@ impl CanvasContext for WebCanvas {
         let _ = self.ctx.set_transform(a, b, c, d, e, f);
     }
 
-    // [Path2D? path]
-    // fn stroke(path: Path2D); // TODO:
+    fn stroke(&self) {
+        unimplemented!()
+    }
+    
     fn stroke_rect(&self, x: f64, y: f64, width: f64, height: f64) {
         self.ctx.stroke_rect(x, y, width, height);
     }
