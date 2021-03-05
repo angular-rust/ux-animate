@@ -45,5 +45,5 @@ If you find an issue, let me know [here](https://github.com/angular-rust/ux-anim
 ## Contributing
 I openly welcome community contributions, including bug fixes and new features. Please feel free to [fork the project](https://github.com/angular-rust/ux-animate/fork) and submit a pull request.
 
-* [Contributing Code Guidelines](https://github.com/angular-rust/ux-animate/blob/master/CONTRIBUTING.md)
+* [Contributing Code Guidelines](https://github.com/angular-rust/ux-animate/blob/main/CONTRIBUTING.md)
 * [Angular Rust Contributors](https://github.com/angular-rust/ux-animate/graphs/contributors)

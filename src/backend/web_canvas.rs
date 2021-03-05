@@ -41,7 +41,7 @@ impl CanvasContext for WebCanvas {
     // fn get_transform(&self) -> Matrix {
     //    self.ctx.get_transform() -> Result<DomMatrix, JsValue>
     // };
-    fn set_current_transform(&mut self, value: Matrix) {
+    fn set_current_transform(&mut self, value: Matrix<f64>) {
         // self.ctx.set_transform(value.a, value.b, value.c, value.d, value.e, value.f);
         unimplemented!() // FIXME: adjust ux-primitives
     }
