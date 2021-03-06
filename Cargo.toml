@@ -18,11 +18,10 @@ maintenance = { status = "actively-developed" }
 [features]
 web = ["wasm-bindgen", "wasm-bindgen-futures", "wasm-logger", "gloo", "js-sys", "wasm-bindgen-test", "web-sys"]
 cairo = ["cairo-rs", "png", "gio", "gtk"]
-# default = []
 
 [dependencies]
 log = "0.4"
-ux-primitives = { version = "0.1" }
+ux-primitives = "0.1"
 
 png = { version = "0.16", optional = true }
 gio = { version = "0.9", features = ["v2_58"], optional = true }
@@ -58,10 +57,10 @@ features = [
 
 
 # [[example]]
-# name = "web-example"
+# name = "web-animate"
 # # crate-type = ["staticlib"]
 # required-features = ["web"]
 
 [[example]]
-name = "cairo-example"
+name = "cairo-animate"
 required-features = ["cairo"]
