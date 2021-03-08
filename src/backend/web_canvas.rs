@@ -5,10 +5,9 @@
 #![cfg(feature = "web")]
 
 use ux_primitives::{
-    canvas::{
-        CanvasContext, CanvasGradientInterface, CanvasPatternInterface, CanvasStyle, Direction,
-    },
-    math::Matrix, text::TextAlign, color::Color,
+    canvas::{CanvasContext, Direction},
+    geom::{Point, Size, Rect},
+    color::Color
 };
 
 use web_sys;
@@ -41,10 +40,9 @@ impl CanvasContext for WebCanvas {
     // fn get_transform(&self) -> Matrix {
     //    self.ctx.get_transform() -> Result<DomMatrix, JsValue>
     // };
-    fn set_current_transform(&mut self, value: Matrix<f64>) {
-        // self.ctx.set_transform(value.a, value.b, value.c, value.d, value.e, value.f);
-        unimplemented!() // FIXME: adjust ux-primitives
-    }
+    // fn set_current_transform(&mut self, value: Matrix<f64>) {
+    //     let _ = self.ctx.set_transform(value.a, value.b, value.c, value.d, value.e, value.f);
+    // }
     fn get_direction(&self) -> Direction {
         unimplemented!() // FIXME: not implemented in web_sys
     }
@@ -218,7 +216,6 @@ impl CanvasContext for WebCanvas {
     }
 
     // Methods
-    // options is opt
     // fn add_hit_region(options: Map); // TODO:
 
     // anticlockwise: bool = false

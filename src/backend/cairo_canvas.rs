@@ -9,10 +9,9 @@ use gio::prelude::*;
 use gtk::prelude::*;
 
 use ux_primitives::{
-    canvas::{
-        CanvasContext, CanvasGradientInterface, CanvasPatternInterface, CanvasStyle, Direction,
-    },
-    math::Matrix, text::TextAlign, color::Color,
+    canvas::{CanvasContext, Direction},
+    geom::{Point, Size, Rect},
+    color::Color
 };
 
 pub struct CairoCanvas {
@@ -39,10 +38,10 @@ impl CanvasContext for CairoCanvas {
     // fn get_canvas(&self) -> CanvasElement;
 
     // fn get_current_transform(&self) -> Matrix;
-    fn set_current_transform(&mut self, value: Matrix<f64>) {
-        // self.ctx.get_matrix()
-        unimplemented!()
-    }
+    // fn set_current_transform(&mut self, value: Matrix<f64>) {
+    //     // self.ctx.get_matrix()
+    //     unimplemented!()
+    // }
     fn get_direction(&self) -> Direction {
         unimplemented!()
     }
@@ -222,7 +221,6 @@ impl CanvasContext for CairoCanvas {
     }
 
     // Methods
-    // options is opt
     // fn add_hit_region(options: Map); // TODO:
 
     // anticlockwise: bool = false
@@ -419,7 +417,7 @@ impl CanvasContext for CairoCanvas {
     fn stroke(&self) {
         unimplemented!()
     }
-
+    
     fn stroke_rect(&self, x: f64, y: f64, width: f64, height: f64) {
         // TODO: complete it
         self.ctx.rectangle(x, y, width, height);

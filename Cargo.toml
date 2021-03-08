@@ -21,7 +21,6 @@ cairo = ["cairo-rs", "png", "gio", "gtk"]
 
 [dependencies]
 log = "0.4"
-ux-primitives = "0.1"
 
 png = { version = "0.16", optional = true }
 gio = { version = "0.9", features = ["v2_58"], optional = true }
@@ -36,6 +35,10 @@ js-sys = { version = "0.3", optional = true }
 wasm-bindgen-test = { version = "0.3", optional = true }
 serde = "1.0.123"
 serde_json = "1.0.62"
+
+[dependencies.ux-primitives]
+version = "0.1"
+features = [ "canvas" ]
 
 [dependencies.web-sys]
 version = "0.3"
