@@ -1,20 +1,18 @@
 mod backend;
 pub use backend::*;
 
-mod motion;
-pub use motion::*;
+pub mod easing;
 
-mod physics;
-pub use physics::*;
+pub mod tween;
 
-mod runtime;
-pub use runtime::*;
+pub mod motion;
 
-mod svg;
-pub use svg::*;
+pub mod physics;
 
-mod tween;
-pub use tween::*;
+pub mod runtime;
+
+pub mod svg;
+
 
 #[cfg(test)]
 mod tests {

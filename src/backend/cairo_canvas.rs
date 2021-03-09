@@ -1,7 +1,6 @@
 #![allow(unused_imports)]
 #![allow(unused_variables)]
 #![allow(dead_code)]
-
 #![cfg(feature = "cairo")]
 
 use cairo;
@@ -10,21 +9,21 @@ use gtk::prelude::*;
 
 use ux_primitives::{
     canvas::{CanvasContext, Direction},
-    geom::{Point, Size, Rect},
-    color::Color
+    color::Color,
+    geom::{Point, Rect, Size},
 };
 
-pub struct CairoCanvas {
-    ctx: cairo::Context,
+pub struct CairoCanvas<'a> {
+    ctx: &'a cairo::Context,
 }
 
-impl CairoCanvas {
-    pub fn new(ctx: cairo::Context) -> Self {
+impl<'a> CairoCanvas<'a> {
+    pub fn new(ctx: &'a cairo::Context) -> Self {
         Self { ctx }
     }
 }
 
-impl CanvasContext for CairoCanvas {
+impl<'a> CanvasContext for CairoCanvas<'a> {
     // Properties
 
     // Deprecated always returns 1.0
@@ -417,7 +416,7 @@ impl CanvasContext for CairoCanvas {
     fn stroke(&self) {
         unimplemented!()
     }
-    
+
     fn stroke_rect(&self, x: f64, y: f64, width: f64, height: f64) {
         // TODO: complete it
         self.ctx.rectangle(x, y, width, height);
