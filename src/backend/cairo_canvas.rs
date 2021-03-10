@@ -9,7 +9,7 @@ use gtk::prelude::*;
 
 use ux_primitives::{
     canvas::{CanvasContext, Direction},
-    color::Color,
+    color::{Color, rgb},
     geom::{Point, Rect, Size},
 };
 
@@ -27,17 +27,17 @@ impl<'a> CanvasContext for CairoCanvas<'a> {
     // Properties
 
     // Deprecated always returns 1.0
-    fn get_backing_store_pixel_ratio(&mut self) -> f64 {
+    fn get_backing_store_pixel_ratio(&self) -> f64 {
         unimplemented!()
     }
-    fn set_backing_store_pixel_ratio(&mut self, value: f64) {
+    fn set_backing_store_pixel_ratio(&self, value: f64) {
         unimplemented!()
     }
 
     // fn get_canvas(&self) -> CanvasElement;
 
     // fn get_current_transform(&self) -> Matrix;
-    // fn set_current_transform(&mut self, value: Matrix<f64>) {
+    // fn set_current_transform(&self, value: Matrix<f64>) {
     //     // self.ctx.get_matrix()
     //     unimplemented!()
     // }
@@ -51,23 +51,24 @@ impl<'a> CanvasContext for CairoCanvas<'a> {
     // @Creates('String|CanvasGradient|CanvasPattern'), @Returns('String|CanvasGradient|CanvasPattern')
     // fillStyle: Object;
     // fn get_fill_style(&self) -> Box<CanvasStyle<dyn CanvasGradientInterface, dyn CanvasPatternInterface>>;
-    // fn set_fill_style(&mut self, value: CanvasStyle<impl CanvasGradientInterface, impl CanvasPatternInterface>) {
+    // fn set_fill_style(&self, value: CanvasStyle<impl CanvasGradientInterface, impl CanvasPatternInterface>) {
     //     unimplemented!()
     // }
-    fn set_fill_style_color(&mut self, value: Color) {
-        unimplemented!()
+    fn set_fill_style_color(&self, value: Color) {
+        let color: rgb::Color = value.into();
+        self.ctx.set_source_rgb(color.red as f64 / 255., color.green as f64 / 255., color.blue as f64 / 255.);
     }
-    // fn set_fill_style_gradient(&mut self, value: impl CanvasGradientInterface) {
+    // fn set_fill_style_gradient(&self, value: impl CanvasGradientInterface) {
     //     unimplemented!()
     // }
-    // fn set_fill_style_pattern(&mut self, value: impl CanvasPatternInterface) {
+    // fn set_fill_style_pattern(&self, value: impl CanvasPatternInterface) {
     //     unimplemented!()
     // }
 
     fn get_filter(&self) -> String {
         unimplemented!()
     }
-    fn set_filter(&mut self, value: &str) {
+    fn set_filter(&self, value: &str) {
         unimplemented!()
     }
 
@@ -75,7 +76,7 @@ impl<'a> CanvasContext for CairoCanvas<'a> {
         // self.ctx.get_font_face(font_face)
         unimplemented!()
     }
-    fn set_font(&mut self, value: &str) {
+    fn set_font(&self, value: &str) {
         // self.ctx.set_font_face(font_face)
         unimplemented!()
     }
@@ -83,14 +84,14 @@ impl<'a> CanvasContext for CairoCanvas<'a> {
     fn get_global_alpha(&self) -> f64 {
         unimplemented!()
     }
-    fn set_global_alpha(&mut self, value: f64) {
+    fn set_global_alpha(&self, value: f64) {
         unimplemented!()
     }
 
     fn get_global_composite_operation(&self) -> String {
         unimplemented!()
     }
-    fn set_global_composite_operation(&mut self, value: &str) {
+    fn set_global_composite_operation(&self, value: &str) {
         unimplemented!()
     }
 
@@ -98,7 +99,7 @@ impl<'a> CanvasContext for CairoCanvas<'a> {
     // fn get_hash_code(&self) -> u64 {
     //     unimplemented!()
     // }
-    // fn set_hash_code(&mut self, value: u64) {
+    // fn set_hash_code(&self, value: u64) {
     //     unimplemented!()
     // }
 
@@ -107,14 +108,14 @@ impl<'a> CanvasContext for CairoCanvas<'a> {
     fn is_image_smoothing_enabled(&self) -> bool {
         unimplemented!()
     }
-    fn set_image_smoothing(&mut self, value: bool) {
+    fn set_image_smoothing(&self, value: bool) {
         unimplemented!()
     }
 
     // fn get_image_smoothing_quality(&self) -> String {
     //     unimplemented!()
     // }
-    // fn set_image_smoothing_quality(&mut self, value: &str) {
+    // fn set_image_smoothing_quality(&self, value: &str) {
     //     unimplemented!()
     // }
 
@@ -122,7 +123,7 @@ impl<'a> CanvasContext for CairoCanvas<'a> {
         // self.ctx.get_line_cap()
         unimplemented!()
     }
-    fn set_line_cap(&mut self, value: &str) {
+    fn set_line_cap(&self, value: &str) {
         // self.ctx.set_line_cap()
         unimplemented!()
     }
@@ -132,7 +133,7 @@ impl<'a> CanvasContext for CairoCanvas<'a> {
         // self.ctx.get_dash_offset()
         unimplemented!()
     }
-    fn set_line_dash_offset(&mut self, value: f64) {
+    fn set_line_dash_offset(&self, value: f64) {
         // self.ctx.set_dash_offset()
         unimplemented!()
     }
@@ -141,7 +142,7 @@ impl<'a> CanvasContext for CairoCanvas<'a> {
         // self.ctx.get_line_join(arg)
         unimplemented!()
     }
-    fn set_line_join(&mut self, value: &str) {
+    fn set_line_join(&self, value: &str) {
         // self.ctx.set_line_join(arg)
         unimplemented!()
     }
@@ -149,73 +150,71 @@ impl<'a> CanvasContext for CairoCanvas<'a> {
     fn get_line_width(&self) -> f64 {
         self.ctx.get_line_width()
     }
-    fn set_line_width(&mut self, value: f64) {
+    fn set_line_width(&self, value: f64) {
         self.ctx.set_line_width(value);
     }
 
     fn get_miter_limit(&self) -> f64 {
         self.ctx.get_miter_limit()
     }
-    fn set_miter_limit(&mut self, value: f64) {
+    fn set_miter_limit(&self, value: f64) {
         self.ctx.set_miter_limit(value);
     }
-
-    // // A representation of the runtime type of the object.
-    // runtimeType: Type; // TODO
 
     fn get_shadow_blur(&self) -> f64 {
         unimplemented!()
     }
-    fn set_shadow_blur(&mut self, value: f64) {
+    fn set_shadow_blur(&self, value: f64) {
         unimplemented!()
     }
 
     fn get_shadow_color(&self) -> String {
         unimplemented!()
     }
-    fn set_shadow_color(&mut self, value: &str) {
+    fn set_shadow_color(&self, value: &str) {
         unimplemented!()
     }
 
     fn get_shadow_offset_x(&self) -> f64 {
         unimplemented!()
     }
-    fn set_shadow_offset_x(&mut self, value: f64) {
+    fn set_shadow_offset_x(&self, value: f64) {
         unimplemented!()
     }
 
     fn get_shadow_offset_y(&self) -> f64 {
         unimplemented!()
     }
-    fn set_shadow_offset_y(&mut self, value: f64) {
+    fn set_shadow_offset_y(&self, value: f64) {
         unimplemented!()
     }
 
     // @Creates('String|CanvasGradient|CanvasPattern'), @Returns('String|CanvasGradient|CanvasPattern')
-    // fn set_stroke_style(&mut self, value: CanvasStyle<impl CanvasGradientInterface, impl CanvasPatternInterface>) {
+    // fn set_stroke_style(&self, value: CanvasStyle<impl CanvasGradientInterface, impl CanvasPatternInterface>) {
     //     unimplemented!()
     // }
-    fn set_stroke_style_color(&mut self, value: Color) {
+    fn set_stroke_style_color(&self, value: Color) {
         unimplemented!()
     }
-    // fn set_stroke_style_gradient(&mut self, value: impl CanvasGradientInterface) {
+    // fn set_stroke_style_gradient(&self, value: impl CanvasGradientInterface) {
     //     unimplemented!()
     // }
-    // fn set_stroke_style_pattern(&mut self, value: impl CanvasPatternInterface) {
+    // fn set_stroke_style_pattern(&self, value: impl CanvasPatternInterface) {
     //     unimplemented!()
     // }
 
-    fn get_text_align(&mut self) -> String {
+    fn get_text_align(&self) -> String {
         unimplemented!()
     }
-    fn set_text_align(&mut self, value: &str) {
+
+    fn set_text_align(&self, value: &str) {
         unimplemented!()
     }
 
     fn get_text_baseline(&self) -> String {
         unimplemented!()
     }
-    fn set_text_baseline(&mut self, value: &str) {
+    fn set_text_baseline(&self, value: &str) {
         unimplemented!()
     }
 
@@ -235,21 +234,31 @@ impl<'a> CanvasContext for CairoCanvas<'a> {
         self.ctx.arc(x, y, radius, start_angle, end_angle);
         // self.ctx.arc_negative(x, y, radius, start_angle, end_angle);
     }
+
     fn arc_to(&self, x1: f64, y1: f64, x2: f64, y2: f64, radius: f64) {
         unimplemented!()
     }
+
     fn begin_path(&self) {
         self.ctx.new_path();
     }
+
     fn bezier_curve_to(&self, cp1x: f64, cp1y: f64, cp2x: f64, cp2y: f64, x: f64, y: f64) {
         self.ctx.curve_to(cp1x, cp1y, cp2x, cp2y, x, y);
-        unimplemented!()
     }
+
     fn clear_hit_regions(&self) {
         unimplemented!()
     }
+
+    // FIXME: seems code correct but it should clear with transpatency but it black (((
     fn clear_rect(&self, x: f64, y: f64, width: f64, height: f64) {
-        unimplemented!()
+        self.ctx.save();
+        self.ctx.set_source_rgba(0., 0., 0., 0.);
+        self.ctx.set_operator(cairo::Operator::Clear);
+        self.ctx.rectangle(x, y, width, height);
+        self.ctx.fill();
+        self.ctx.restore();
     }
 
     // [path_OR_winding: dynamic, winding: String]
@@ -298,16 +307,24 @@ impl<'a> CanvasContext for CairoCanvas<'a> {
         end_angle: f64,
         anticlockwise: bool,
     ) {
-        // self.ctx.arc(x, y, radius, angle1, angle2)
-        unimplemented!()
+        self.ctx.save();
+        
+        self.ctx.translate(x, y);
+        self.ctx.scale(1., radius_y / radius_x);
+        self.ctx.rotate(rotation);
+        self.ctx.translate(-x, -y);
+        
+        self.ctx.arc(x, y, radius_x, start_angle, end_angle);
+
+        self.ctx.restore();
+        // stroke later to prevent stroke ugly transformation 
     }
 
     // [dynamic path_OR_winding, String? winding]
     // fn fill(path_OR_winding: dynamic, winding: String); // TODO:
     fn fill_rect(&self, x: f64, y: f64, width: f64, height: f64) {
-        // TODO: complete it
-        // self.ctx.rectangle(x, y, width, height);
-        unimplemented!()
+        self.ctx.rectangle(x, y, width, height);
+        self.ctx.fill();
     }
 
     // Draws text to the canvas.

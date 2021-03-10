@@ -28,10 +28,10 @@ impl CanvasContext for WebCanvas {
     // Properties
 
     // Deprecated always returns 1.0
-    fn get_backing_store_pixel_ratio(&mut self) -> f64 {
+    fn get_backing_store_pixel_ratio(&self) -> f64 {
         unimplemented!() // FIXME: not implemented in web_sys
     }
-    fn set_backing_store_pixel_ratio(&mut self, value: f64) {
+    fn set_backing_store_pixel_ratio(&self, value: f64) {
         unimplemented!() // FIXME: not implemented in web_sys
     }
 
@@ -40,7 +40,7 @@ impl CanvasContext for WebCanvas {
     // fn get_transform(&self) -> Matrix {
     //    self.ctx.get_transform() -> Result<DomMatrix, JsValue>
     // };
-    // fn set_current_transform(&mut self, value: Matrix<f64>) {
+    // fn set_current_transform(&self, value: Matrix<f64>) {
     //     let _ = self.ctx.set_transform(value.a, value.b, value.c, value.d, value.e, value.f);
     // }
     fn get_direction(&self) -> Direction {
@@ -53,37 +53,37 @@ impl CanvasContext for WebCanvas {
     // @Creates('String|CanvasGradient|CanvasPattern'), @Returns('String|CanvasGradient|CanvasPattern')
     // fillStyle: Object;
     // fn get_fill_style(&self) -> Box<CanvasStyle<dyn CanvasGradientInterface, dyn CanvasPatternInterface>>;
-    // fn set_fill_style(&mut self, value: CanvasStyle<impl CanvasGradientInterface, impl CanvasPatternInterface>) {
+    // fn set_fill_style(&self, value: CanvasStyle<impl CanvasGradientInterface, impl CanvasPatternInterface>) {
     //     unimplemented!()
     // }
-    fn set_fill_style_color(&mut self, value: Color) {
+    fn set_fill_style_color(&self, value: Color) {
         unimplemented!()
     }
-    // fn set_fill_style_gradient(&mut self, value: impl CanvasGradientInterface) {
+    // fn set_fill_style_gradient(&self, value: impl CanvasGradientInterface) {
     //     unimplemented!()
     // }
-    // fn set_fill_style_pattern(&mut self, value: impl CanvasPatternInterface) {
+    // fn set_fill_style_pattern(&self, value: impl CanvasPatternInterface) {
     //     unimplemented!()
     // }
 
     fn get_filter(&self) -> String {
         self.ctx.filter()
     }
-    fn set_filter(&mut self, value: &str) {
+    fn set_filter(&self, value: &str) {
         self.ctx.set_filter(value);
     }
 
     fn get_font(&self) -> String {
         self.ctx.font()
     }
-    fn set_font(&mut self, value: &str) {
+    fn set_font(&self, value: &str) {
         self.ctx.set_font(value)
     }
 
     fn get_global_alpha(&self) -> f64 {
         self.ctx.global_alpha()
     }
-    fn set_global_alpha(&mut self, value: f64) {
+    fn set_global_alpha(&self, value: f64) {
         self.ctx.set_global_alpha(value);
     }
 
@@ -91,7 +91,7 @@ impl CanvasContext for WebCanvas {
         // TODO: handle err
         self.ctx.global_composite_operation().unwrap()
     }
-    fn set_global_composite_operation(&mut self, value: &str) {
+    fn set_global_composite_operation(&self, value: &str) {
         // TODO: handle err
         let _ = self.ctx.set_global_composite_operation(value);
     }
@@ -100,7 +100,7 @@ impl CanvasContext for WebCanvas {
     // fn get_hash_code(&self) -> u64 {
     //     unimplemented!()
     // }
-    // fn set_hash_code(&mut self, value: u64) {
+    // fn set_hash_code(&self, value: u64) {
     //     unimplemented!()
     // }
 
@@ -109,21 +109,21 @@ impl CanvasContext for WebCanvas {
     fn is_image_smoothing_enabled(&self) -> bool {
         self.ctx.image_smoothing_enabled()
     }
-    fn set_image_smoothing(&mut self, value: bool) {
+    fn set_image_smoothing(&self, value: bool) {
         self.ctx.set_image_smoothing_enabled(value);
     }
 
     // fn get_image_smoothing_quality(&self) -> String {
     //     unimplemented!()
     // }
-    // fn set_image_smoothing_quality(&mut self, value: String) {
+    // fn set_image_smoothing_quality(&self, value: String) {
     //     unimplemented!()
     // }
 
     fn get_line_cap(&self) -> String {
         self.ctx.line_cap()
     }
-    fn set_line_cap(&mut self, value: &str) {
+    fn set_line_cap(&self, value: &str) {
         self.ctx.set_line_cap(value);
     }
 
@@ -131,28 +131,28 @@ impl CanvasContext for WebCanvas {
     fn get_line_dash_offset(&self) -> f64 {
         self.ctx.line_dash_offset()
     }
-    fn set_line_dash_offset(&mut self, value: f64) {
+    fn set_line_dash_offset(&self, value: f64) {
         self.ctx.set_line_dash_offset(value);
     }
 
     fn get_line_join(&self) -> String {
         self.ctx.line_join()
     }
-    fn set_line_join(&mut self, value: &str) {
+    fn set_line_join(&self, value: &str) {
         self.ctx.set_line_join(value)
     }
 
     fn get_line_width(&self) -> f64 {
         self.ctx.line_width()
     }
-    fn set_line_width(&mut self, value: f64) {
+    fn set_line_width(&self, value: f64) {
         self.ctx.set_line_width(value);
     }
 
     fn get_miter_limit(&self) -> f64 {
         self.ctx.miter_limit()
     }
-    fn set_miter_limit(&mut self, value: f64) {
+    fn set_miter_limit(&self, value: f64) {
         self.ctx.set_miter_limit(value);
     }
 
@@ -162,56 +162,56 @@ impl CanvasContext for WebCanvas {
     fn get_shadow_blur(&self) -> f64 {
         self.ctx.shadow_blur()
     }
-    fn set_shadow_blur(&mut self, value: f64) {
+    fn set_shadow_blur(&self, value: f64) {
         self.ctx.set_shadow_blur(value);
     }
 
     fn get_shadow_color(&self) -> String {
         self.ctx.shadow_color()
     }
-    fn set_shadow_color(&mut self, value: &str) {
+    fn set_shadow_color(&self, value: &str) {
         self.ctx.set_shadow_color(value);
     }
 
     fn get_shadow_offset_x(&self) -> f64 {
         self.ctx.shadow_offset_x()
     }
-    fn set_shadow_offset_x(&mut self, value: f64) {
+    fn set_shadow_offset_x(&self, value: f64) {
         self.ctx.set_shadow_offset_x(value);
     }
 
     fn get_shadow_offset_y(&self) -> f64 {
         self.ctx.shadow_offset_y()
     }
-    fn set_shadow_offset_y(&mut self, value: f64) {
+    fn set_shadow_offset_y(&self, value: f64) {
         self.ctx.set_shadow_offset_y(value);
     }
 
     // @Creates('String|CanvasGradient|CanvasPattern'), @Returns('String|CanvasGradient|CanvasPattern')
-    // fn set_stroke_style(&mut self, value: CanvasStyle<impl CanvasGradientInterface, impl CanvasPatternInterface>) {
+    // fn set_stroke_style(&self, value: CanvasStyle<impl CanvasGradientInterface, impl CanvasPatternInterface>) {
     //     unimplemented!()
     // }
-    fn set_stroke_style_color(&mut self, value: Color) {
+    fn set_stroke_style_color(&self, value: Color) {
         unimplemented!() // TODO: complete it
     }
-    // fn set_stroke_style_gradient(&mut self, value: impl CanvasGradientInterface) {
+    // fn set_stroke_style_gradient(&self, value: impl CanvasGradientInterface) {
     //     unimplemented!()
     // }
-    // fn set_stroke_style_pattern(&mut self, value: impl CanvasPatternInterface) {
+    // fn set_stroke_style_pattern(&self, value: impl CanvasPatternInterface) {
     //     unimplemented!()
     // }
 
-    fn get_text_align(&mut self) -> String {
+    fn get_text_align(&self) -> String {
         self.ctx.text_align()
     }
-    fn set_text_align(&mut self, value: &str) {
+    fn set_text_align(&self, value: &str) {
         self.ctx.set_text_align(value);
     }
 
     fn get_text_baseline(&self) -> String {
         self.ctx.text_baseline()
     }
-    fn set_text_baseline(&mut self, value: &str) {
+    fn set_text_baseline(&self, value: &str) {
         self.ctx.set_text_baseline(value);
     }
 
