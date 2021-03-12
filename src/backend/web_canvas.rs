@@ -7,7 +7,7 @@ use ux_primitives::{
     canvas::{CanvasContext, Direction, LineCap, LineJoin, TextMetrics},
     color::{rgb, Color},
     geom::{Point, Rect, Size},
-    text::{BaseLine, TextAlign},
+    text::{BaseLine, TextAlign, TextStyle, TextWeight},
 };
 
 use web_sys;
@@ -71,8 +71,9 @@ impl CanvasContext for WebCanvas {
         self.ctx.font()
     }
 
-    fn set_font(&self, value: &str) {
-        self.ctx.set_font(value)
+    fn set_font(&self, family: &str, style: TextStyle, weight: TextWeight, size: f64) {
+        // self.ctx.set_font(value)
+        unimplemented!()
     }
 
     fn get_global_alpha(&self) -> f64 {

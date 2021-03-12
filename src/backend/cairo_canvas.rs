@@ -3,7 +3,7 @@
 #![allow(dead_code)]
 #![cfg(feature = "cairo")]
 
-use cairo;
+use cairo::{self, FontFace, FontSlant, FontWeight};
 use gio::prelude::*;
 use gtk::prelude::*;
 
@@ -11,7 +11,7 @@ use ux_primitives::{
     canvas::{CanvasContext, Direction, LineCap, LineJoin, TextMetrics},
     color::{rgb, Color},
     geom::{Point, Rect, Size},
-    text::{BaseLine, TextAlign},
+    text::{BaseLine, TextAlign, TextStyle, TextWeight},
 };
 
 pub struct CairoCanvas<'a> {
@@ -77,9 +77,20 @@ impl<'a> CanvasContext for CairoCanvas<'a> {
         unimplemented!()
     }
 
-    fn set_font(&self, value: &str) {
-        // self.ctx.set_font_face(font_face)
-        unimplemented!()
+    fn set_font(&self, family: &str, style: TextStyle, weight: TextWeight, size: f64) {
+        let slant = match style {
+            TextStyle::Italic => FontSlant::Italic,
+            TextStyle::Normal => FontSlant::Normal,
+            TextStyle::Oblique => FontSlant::Oblique,
+        };
+
+        let weight = match weight {
+            TextWeight::Bold => FontWeight::Bold,
+            _ => FontWeight::Normal,
+        };
+
+        self.ctx.select_font_face(family, slant, weight);
+        self.ctx.set_font_size(size);
     }
 
     fn get_global_alpha(&self) -> f64 {
@@ -221,7 +232,7 @@ impl<'a> CanvasContext for CairoCanvas<'a> {
     }
 
     fn set_text_align(&self, value: TextAlign) {
-        unimplemented!()
+        //TODO: complete it
     }
 
     fn get_text_baseline(&self) -> BaseLine {
@@ -229,7 +240,7 @@ impl<'a> CanvasContext for CairoCanvas<'a> {
     }
 
     fn set_text_baseline(&self, value: BaseLine) {
-        unimplemented!()
+        //TODO: complete it
     }
 
     // anticlockwise: bool = false
