@@ -3,11 +3,9 @@
 #![allow(dead_code)]
 #![cfg(feature = "web")]
 
-use ux_primitives::{
-    canvas::{CanvasContext, Direction, LineCap, LineJoin, TextMetrics},
-    color::{rgb, Color},
-    geom::{Point, Rect, Size},
-    text::{BaseLine, TextAlign, TextStyle, TextWeight},
+use primitives::{
+    BaseLine, CanvasContext, Color, Direction, LineCap, LineJoin, Point, Rect, RgbColor, Size,
+    TextAlign, TextMetrics, TextStyle, TextWeight,
 };
 
 use web_sys;

@@ -7,11 +7,9 @@ use cairo::{self, FontFace, FontSlant, FontWeight};
 use gio::prelude::*;
 use gtk::prelude::*;
 
-use ux_primitives::{
-    canvas::{CanvasContext, Direction, LineCap, LineJoin, TextMetrics},
-    color::{rgb, Color},
-    geom::{Point, Rect, Size},
-    text::{BaseLine, TextAlign, TextStyle, TextWeight},
+use primitives::{
+    BaseLine, CanvasContext, Color, Direction, LineCap, LineJoin, Point, Rect, RgbColor, Size,
+    TextAlign, TextMetrics, TextStyle, TextWeight,
 };
 
 pub struct CairoCanvas<'a> {
@@ -48,7 +46,7 @@ impl<'a> CanvasContext for CairoCanvas<'a> {
     // }
 
     fn set_fill_style_color(&self, value: Color) {
-        let color: rgb::Color = value.into();
+        let color: RgbColor = value.into();
         self.ctx.set_source_rgb(
             color.red as f64 / 255.,
             color.green as f64 / 255.,
@@ -212,7 +210,7 @@ impl<'a> CanvasContext for CairoCanvas<'a> {
     // }
 
     fn set_stroke_style_color(&self, value: Color) {
-        let color: rgb::Color = value.into();
+        let color: RgbColor = value.into();
         self.ctx.set_source_rgb(
             color.red as f64 / 255.,
             color.green as f64 / 255.,
