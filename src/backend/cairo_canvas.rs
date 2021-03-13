@@ -4,8 +4,6 @@
 #![cfg(feature = "cairo")]
 
 use cairo::{self, FontFace, FontSlant, FontWeight};
-use gio::prelude::*;
-use gtk::prelude::*;
 
 use primitives::{
     BaseLine, CanvasContext, Color, Direction, LineCap, LineJoin, Point, Rect, RgbColor, Size,
@@ -45,7 +43,7 @@ impl<'a> CanvasContext for CairoCanvas<'a> {
     //     unimplemented!()
     // }
 
-    fn set_fill_style_color(&self, value: Color) {
+    fn set_fill_color(&self, value: Color) {
         let color: RgbColor = value.into();
         self.ctx.set_source_rgb(
             color.red as f64 / 255.,
@@ -54,11 +52,11 @@ impl<'a> CanvasContext for CairoCanvas<'a> {
         );
     }
 
-    // fn set_fill_style_gradient(&self, value: impl CanvasGradientInterface) {
+    // fn set_fill_gradient(&self, value: impl CanvasGradientInterface) {
     //     unimplemented!()
     // }
 
-    // fn set_fill_style_pattern(&self, value: impl CanvasPatternInterface) {
+    // fn set_fill_pattern(&self, value: impl CanvasPatternInterface) {
     //     unimplemented!()
     // }
 
@@ -209,7 +207,7 @@ impl<'a> CanvasContext for CairoCanvas<'a> {
     //     unimplemented!()
     // }
 
-    fn set_stroke_style_color(&self, value: Color) {
+    fn set_stroke_color(&self, value: Color) {
         let color: RgbColor = value.into();
         self.ctx.set_source_rgb(
             color.red as f64 / 255.,
@@ -218,10 +216,10 @@ impl<'a> CanvasContext for CairoCanvas<'a> {
         );
     }
 
-    // fn set_stroke_style_gradient(&self, value: impl CanvasGradientInterface) {
+    // fn set_stroke_gradient(&self, value: impl CanvasGradientInterface) {
     //     unimplemented!()
     // }
-    // fn set_stroke_style_pattern(&self, value: impl CanvasPatternInterface) {
+    // fn set_stroke_pattern(&self, value: impl CanvasPatternInterface) {
     //     unimplemented!()
     // }
 
@@ -423,32 +421,10 @@ impl<'a> CanvasContext for CairoCanvas<'a> {
     // [Path2D? path]
     // fn scrollPathIntoView(path: Path2D); // TODO:
 
-    /// Sets the color used inside shapes. h is in degrees, 0-360. s, l are in percent, 0-100. a is 0-1.
-    fn set_fill_color_hsl(&self, h: i64, s: f64, l: f64, a: f64) {
-        unimplemented!()
-    }
-
-    /// Sets the color used inside shapes. r, g, b are 0-255, a is 0-1.
-    fn set_fill_color_rgb(&self, r: i64, g: i64, b: i64, a: f64) {
-        self.ctx
-            .set_source_rgba(r as f64 / 255., g as f64 / 255., b as f64 / 255., a);
-    }
-
     // @SupportedBrowser(SupportedBrowser.CHROME), @SupportedBrowser(SupportedBrowser.IE, '11'), @SupportedBrowser(SupportedBrowser.SAFARI), @Unstable()
     fn set_line_dash(&self, dash: Vec<f64>) {
         // self.ctx.set_dash(dashes, offset)
         unimplemented!()
-    }
-
-    /// Sets the color used for stroking shapes. h is in degrees, 0-360. s, l are in percent, 0-100. a is 0-1.
-    fn set_stroke_color_hsl(&self, h: i64, s: f64, l: f64, a: f64) {
-        unimplemented!()
-    }
-
-    /// Sets the color used for stroking shapes. r, g, b are 0-255, a is 0-1.
-    fn set_stroke_color_rgb(&self, r: i64, g: i64, b: i64, a: f64) {
-        self.ctx
-            .set_source_rgba(r as f64 / 255., g as f64 / 255., b as f64 / 255., a);
     }
 
     fn set_transform(&self, a: f64, b: f64, c: f64, d: f64, e: f64, f: f64) {

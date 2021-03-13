@@ -45,15 +45,15 @@ impl CanvasContext for WebCanvas {
     //     unimplemented!()
     // }
 
-    fn set_fill_style_color(&self, value: Color) {
+    fn set_fill_color(&self, value: Color) {
         unimplemented!()
     }
 
-    // fn set_fill_style_gradient(&self, value: impl CanvasGradientInterface) {
+    // fn set_fill_gradient(&self, value: impl CanvasGradientInterface) {
     //     unimplemented!()
     // }
 
-    // fn set_fill_style_pattern(&self, value: impl CanvasPatternInterface) {
+    // fn set_fill_pattern(&self, value: impl CanvasPatternInterface) {
     //     unimplemented!()
     // }
 
@@ -193,15 +193,15 @@ impl CanvasContext for WebCanvas {
     //     unimplemented!()
     // }
 
-    fn set_stroke_style_color(&self, value: Color) {
+    fn set_stroke_color(&self, value: Color) {
         unimplemented!() // TODO: complete it
     }
 
-    // fn set_stroke_style_gradient(&self, value: impl CanvasGradientInterface) {
+    // fn set_stroke_gradient(&self, value: impl CanvasGradientInterface) {
     //     unimplemented!()
     // }
 
-    // fn set_stroke_style_pattern(&self, value: impl CanvasPatternInterface) {
+    // fn set_stroke_pattern(&self, value: impl CanvasPatternInterface) {
     //     unimplemented!()
     // }
 
@@ -406,33 +406,9 @@ impl CanvasContext for WebCanvas {
     // [Path2D? path]
     // fn scrollPathIntoView(path: Path2D); // TODO:
 
-    // Sets the color used inside shapes. h is in degrees, 0-360. s, l are in percent, 0-100. a is 0-1.
-
-    fn set_fill_color_hsl(&self, h: i64, s: f64, l: f64, a: f64) {
-        unimplemented!() // TODO: web-sys has no impl
-    }
-
-    // Sets the color used inside shapes. r, g, b are 0-255, a is 0-1.
-
-    fn set_fill_color_rgb(&self, r: i64, g: i64, b: i64, a: f64) {
-        unimplemented!() // TODO: web-sys has no impl
-    }
-
     // @SupportedBrowser(SupportedBrowser.CHROME), @SupportedBrowser(SupportedBrowser.IE, '11'), @SupportedBrowser(SupportedBrowser.SAFARI), @Unstable()
     fn set_line_dash(&self, dash: Vec<f64>) {
         unimplemented!() // TODO: should complete from JsValue for web-sys
-    }
-
-    // Sets the color used for stroking shapes. h is in degrees, 0-360. s, l are in percent, 0-100. a is 0-1.
-
-    fn set_stroke_color_hsl(&self, h: i64, s: f64, l: f64, a: f64) {
-        unimplemented!() // TODO: web-sys has no impl
-    }
-
-    // Sets the color used for stroking shapes. r, g, b are 0-255, a is 0-1.
-
-    fn set_stroke_color_rgb(&self, r: i64, g: i64, b: i64, a: f64) {
-        unimplemented!() // TODO: web-sys has no impl
     }
 
     fn set_transform(&self, a: f64, b: f64, c: f64, d: f64, e: f64, f: f64) {
