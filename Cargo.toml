@@ -24,7 +24,7 @@ cairo = ["cairo-rs"]
 
 [dependencies]
 log = "0.4"
-
+lazy_static = "1.4"
 cairo-rs = { version = "0.9", optional = true }
 
 wasm-bindgen = { version = "0.2", optional = true }
@@ -33,6 +33,7 @@ wasm-logger = { version = "0.2", optional = true }
 gloo = { version = "0.2", optional = true }
 js-sys = { version = "0.3", optional = true }
 wasm-bindgen-test = { version = "0.3", optional = true }
+
 serde = "1.0.123"
 serde_json = "1.0.62"
 
@@ -53,7 +54,19 @@ features = [
   "Window",
   "Document",
   "CanvasRenderingContext2d",
-  "HtmlCanvasElement"
+  "TextMetrics",
+  "HtmlCanvasElement",
+  "HtmlImageElement",
+  "SvgImageElement",
+  "HtmlVideoElement",
+  "ImageBitmap",
+  "CanvasWindingRule",
+  "Path2d",
+  "CanvasPattern",
+  "CanvasGradient",
+  "HitRegionOptions",
+  "ImageData",
+  "DomMatrix"
 ]
 
 [dev-dependencies]

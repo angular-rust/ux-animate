@@ -33,6 +33,7 @@ impl<'a> CanvasContext for CairoCanvas<'a> {
     }
 
     fn set_direction(&self, value: Direction) -> String {
+        info!("NOT IMPLEMENTED");
         unimplemented!()
     }
 
@@ -153,7 +154,7 @@ impl<'a> CanvasContext for CairoCanvas<'a> {
 
     fn set_line_join(&self, value: LineJoin) {
         // self.ctx.set_line_join(arg)
-        unimplemented!()
+        // FIXME:
     }
 
     fn get_line_width(&self) -> f64 {

@@ -8,6 +8,8 @@ use primitives::{
     TextAlign, TextMetrics, TextStyle, TextWeight,
 };
 
+use wasm_bindgen::JsValue;
+use wasm_bindgen_test::console_log;
 use web_sys;
 
 pub struct WebCanvas {
@@ -46,7 +48,8 @@ impl CanvasContext for WebCanvas {
     // }
 
     fn set_fill_color(&self, value: Color) {
-        unimplemented!()
+        let color = JsValue::from(value.to_hex_string());
+        self.ctx.set_fill_style(&color);
     }
 
     // fn set_fill_gradient(&self, value: impl CanvasGradientInterface) {
@@ -70,8 +73,8 @@ impl CanvasContext for WebCanvas {
     }
 
     fn set_font(&self, family: &str, style: TextStyle, weight: TextWeight, size: f64) {
-        // self.ctx.set_font(value)
-        unimplemented!()
+        // TODO: handle style and weight
+        self.ctx.set_font(format!("{}px {}", size, family).as_str());
     }
 
     fn get_global_alpha(&self) -> f64 {
@@ -194,7 +197,8 @@ impl CanvasContext for WebCanvas {
     // }
 
     fn set_stroke_color(&self, value: Color) {
-        unimplemented!() // TODO: complete it
+        let color = JsValue::from(value.to_hex_string());
+        self.ctx.set_stroke_style(&color);
     }
 
     // fn set_stroke_gradient(&self, value: impl CanvasGradientInterface) {
@@ -206,11 +210,13 @@ impl CanvasContext for WebCanvas {
     // }
 
     fn get_text_align(&self) -> TextAlign {
-        self.ctx.text_align()
+        // self.ctx.text_align()
+        unimplemented!()
     }
 
     fn set_text_align(&self, value: TextAlign) {
-        self.ctx.set_text_align(value);
+        // TODO: complete it
+        // self.ctx.set_text_align(value);
     }
 
     fn get_text_baseline(&self) -> BaseLine {
@@ -219,8 +225,8 @@ impl CanvasContext for WebCanvas {
     }
 
     fn set_text_baseline(&self, value: BaseLine) {
+        // TODO: complete it
         // self.ctx.set_text_baseline(value);
-        unimplemented!()
     }
 
     // anticlockwise: bool = false
@@ -364,7 +370,21 @@ impl CanvasContext for WebCanvas {
     }
 
     fn measure_text(&self, text: &str) -> TextMetrics {
-        self.ctx.measure_text(text)
+        match self.ctx.measure_text(text) {
+            Ok(metric) => {
+                TextMetrics{
+                    width: metric.width(),
+                    height: -1.,
+                }
+            }
+            Err(err) => {
+                info!("{:?}", err);
+                TextMetrics{
+                    width: -1.,
+                    height: -1.,
+                }
+            }
+        }
     }
 
     fn move_to(&self, x: f64, y: f64) {
@@ -382,7 +402,6 @@ impl CanvasContext for WebCanvas {
     }
 
     fn reset_transform(&self) {
-        // TODO: complete it
         let _ = self.ctx.reset_transform();
     }
 
@@ -391,7 +410,6 @@ impl CanvasContext for WebCanvas {
     }
 
     fn rotate(&self, angle: f64) {
-        // TODO: complete it
         let _ = self.ctx.rotate(angle);
     }
 
@@ -400,7 +418,7 @@ impl CanvasContext for WebCanvas {
     }
 
     fn scale(&self, x: f64, y: f64) {
-        unimplemented!()
+        let _ = self.ctx.scale(x, y);
     }
 
     // [Path2D? path]
@@ -408,16 +426,15 @@ impl CanvasContext for WebCanvas {
 
     // @SupportedBrowser(SupportedBrowser.CHROME), @SupportedBrowser(SupportedBrowser.IE, '11'), @SupportedBrowser(SupportedBrowser.SAFARI), @Unstable()
     fn set_line_dash(&self, dash: Vec<f64>) {
-        unimplemented!() // TODO: should complete from JsValue for web-sys
+        // TODO: should complete from JsValue for web-sys
     }
 
     fn set_transform(&self, a: f64, b: f64, c: f64, d: f64, e: f64, f: f64) {
-        // TODO: complete it
         let _ = self.ctx.set_transform(a, b, c, d, e, f);
     }
 
     fn stroke(&self) {
-        unimplemented!()
+        self.ctx.stroke();
     }
 
     fn stroke_rect(&self, x: f64, y: f64, width: f64, height: f64) {
@@ -425,12 +442,10 @@ impl CanvasContext for WebCanvas {
     }
 
     fn stroke_text(&self, text: &str, x: f64, y: f64) {
-        // TODO: complete it
         let _ = self.ctx.stroke_text(text, x, y);
     }
 
     fn transform(&self, a: f64, b: f64, c: f64, d: f64, e: f64, f: f64) {
-        // TODO: complete it
         let _ = self.ctx.transform(a, b, c, d, e, f);
     }
 
