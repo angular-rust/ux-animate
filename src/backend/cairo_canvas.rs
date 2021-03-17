@@ -6,7 +6,7 @@
 use cairo::{self, FontFace, FontSlant, FontWeight};
 
 use primitives::{
-    BaseLine, CanvasContext, Color, Direction, LineCap, LineJoin, Point, Rect, RgbColor, Size,
+    BaseLine, CanvasContext, Color, Direction, LineCap, LineJoin, Point, Rect, RgbaColor, Size,
     TextAlign, TextMetrics, TextStyle, TextWeight,
 };
 
@@ -45,11 +45,12 @@ impl<'a> CanvasContext for CairoCanvas<'a> {
     // }
 
     fn set_fill_color(&self, value: Color) {
-        let color: RgbColor = value.into();
-        self.ctx.set_source_rgb(
-            color.red as f64 / 255.,
-            color.green as f64 / 255.,
-            color.blue as f64 / 255.,
+        let color: RgbaColor = value.into();
+        self.ctx.set_source_rgba(
+            color.r as f64 / 255.,
+            color.g as f64 / 255.,
+            color.b as f64 / 255.,
+            color.a as f64 / 255.,
         );
     }
 
@@ -209,11 +210,12 @@ impl<'a> CanvasContext for CairoCanvas<'a> {
     // }
 
     fn set_stroke_color(&self, value: Color) {
-        let color: RgbColor = value.into();
-        self.ctx.set_source_rgb(
-            color.red as f64 / 255.,
-            color.green as f64 / 255.,
-            color.blue as f64 / 255.,
+        let color: RgbaColor = value.into();
+        self.ctx.set_source_rgba(
+            color.r as f64 / 255.,
+            color.g as f64 / 255.,
+            color.b as f64 / 255.,
+            color.a as f64 / 255.,
         );
     }
 
@@ -250,8 +252,11 @@ impl<'a> CanvasContext for CairoCanvas<'a> {
         end_angle: f64,
         anticlockwise: bool,
     ) {
-        self.ctx.arc(x, y, radius, start_angle, end_angle);
-        // self.ctx.arc_negative(x, y, radius, start_angle, end_angle);
+        if anticlockwise {
+            self.ctx.arc_negative(x, y, radius, start_angle, end_angle);
+        } else {
+            self.ctx.arc(x, y, radius, start_angle, end_angle);
+        }
     }
 
     fn arc_to(&self, x1: f64, y1: f64, x2: f64, y2: f64, radius: f64) {
@@ -374,7 +379,6 @@ impl<'a> CanvasContext for CairoCanvas<'a> {
     // fn isPointInStroke(path_OR_x: dynamic, x_OR_y: f64, y: f64) -> bool; // TODO:
     fn line_to(&self, x: f64, y: f64) {
         self.ctx.line_to(x, y);
-        self.ctx.stroke();
     }
 
     fn measure_text(&self, text: &str) -> TextMetrics {
@@ -392,7 +396,23 @@ impl<'a> CanvasContext for CairoCanvas<'a> {
     // [int? dirtyX, int? dirtyY, int? dirtyWidth, int? dirtyHeight]
     // fn putImageData(imagedata: ImageData, dx: i64, dy: i64, dirtyX: i64, dirtyY: i64, dirtyWidth: i64, dirtyHeight: i64); // TODO:
     fn quadratic_curve_to(&self, cpx: f64, cpy: f64, x: f64, y: f64) {
-        unimplemented!()
+        // A quadratic Bezier can be always represented by a cubic one by
+        // applying the degree elevation algorithm. The resulted cubic representation
+        // will share its anchor points with the original quadratic,
+        // while the control points will be at 2/3 of the quadratic handle segments:
+
+        // C1 = (2·C + P1)/3
+        // C2 = (2·C + P2)/3
+
+        let (x0, y0) = self.ctx.get_current_point();
+        self.ctx.curve_to(
+            2.0 / 3.0 * cpx + 1.0 / 3.0 * x0,
+            2.0 / 3.0 * cpy + 1.0 / 3.0 * y0,
+            2.0 / 3.0 * cpx + 1.0 / 3.0 * x,
+            2.0 / 3.0 * cpy + 1.0 / 3.0 * y,
+            x,
+            y,
+        );
     }
 
     fn rect(&self, x: f64, y: f64, width: f64, height: f64) {

@@ -5,7 +5,7 @@
 
 use primitives::{
     BaseLine, CanvasContext, Color, Direction, LineCap, LineJoin, Point, Rect, RgbColor, Size,
-    TextAlign, TextMetrics, TextStyle, TextWeight,
+    TextAlign, TextMetrics, TextStyle, TextWeight, ToHexString
 };
 
 use wasm_bindgen::JsValue;
