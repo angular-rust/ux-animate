@@ -16,6 +16,8 @@ pub mod runtime;
 
 pub mod svg;
 
+pub mod interpolate;
+
 
 #[cfg(test)]
 mod tests {

@@ -137,8 +137,8 @@ impl CanvasContext for WebCanvas {
     }
 
     fn set_line_join(&self, value: LineJoin) {
+        // TODO: complete it
         // self.ctx.set_line_join(value)
-        unimplemented!()
     }
 
     fn get_line_width(&self) -> f64 {
@@ -239,8 +239,13 @@ impl CanvasContext for WebCanvas {
         end_angle: f64,
         anticlockwise: bool,
     ) {
-        // TODO: compele clockwise
-        let _ = self.ctx.arc(x, y, radius, start_angle, end_angle);
+        if anticlockwise {
+            // let _ = self.ctx.arc(x, y, radius, start_angle, end_angle);
+            let _ = self.ctx.arc_with_anticlockwise(x, y, radius, start_angle, end_angle, anticlockwise);
+        } else {
+            let _ = self.ctx.arc(x, y, radius, start_angle, end_angle);
+            // let _ = self.ctx.arc_with_anticlockwise(x, y, radius, start_angle, end_angle, anticlockwise);
+        }
 
         // pub fn arc_with_anticlockwise(
         //     &self,
