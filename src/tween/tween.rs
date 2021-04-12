@@ -1,6 +1,4 @@
-pub struct Tween {
-
-}
+pub struct Tween {}
 
 impl Tween {
     pub fn get_id() -> usize {

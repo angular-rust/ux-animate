@@ -1,3 +1,5 @@
+#![allow(clippy::module_inception)]
+
 pub const VERSION: &str = "18.6.4";
 
 // pub const MAIN_GROUP: Group = Group::new();

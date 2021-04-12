@@ -1,6 +1,6 @@
+#![allow(clippy::many_single_char_names)]
 #![allow(unused_imports)]
 #![allow(unused_variables)]
-
 #![cfg(not(target_arch = "wasm32"))]
 
 use cairo::{self, FontFace, FontSlant, FontWeight};
@@ -47,10 +47,10 @@ impl<'a> CanvasContext for Canvas<'a> {
     fn set_fill_color(&self, value: Color) {
         let color: RgbaColor = value.into();
         self.ctx.set_source_rgba(
-            color.r as f64 / 255.,
-            color.g as f64 / 255.,
-            color.b as f64 / 255.,
-            color.a as f64 / 255.,
+            color.red as f64 / 255.,
+            color.green as f64 / 255.,
+            color.blue as f64 / 255.,
+            color.alpha as f64 / 255.,
         );
     }
 
@@ -212,10 +212,10 @@ impl<'a> CanvasContext for Canvas<'a> {
     fn set_stroke_color(&self, value: Color) {
         let color: RgbaColor = value.into();
         self.ctx.set_source_rgba(
-            color.r as f64 / 255.,
-            color.g as f64 / 255.,
-            color.b as f64 / 255.,
-            color.a as f64 / 255.,
+            color.red as f64 / 255.,
+            color.green as f64 / 255.,
+            color.blue as f64 / 255.,
+            color.alpha as f64 / 255.,
         );
     }
 

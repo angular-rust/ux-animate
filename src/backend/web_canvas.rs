@@ -1,11 +1,10 @@
 #![allow(unused_imports)]
 #![allow(unused_variables)]
-
 #![cfg(target_arch = "wasm32")]
 
 use primitives::{
     BaseLine, CanvasContext, Color, Direction, LineCap, LineJoin, Point, Rect, RgbColor, Size,
-    TextAlign, TextMetrics, TextStyle, TextWeight, ToHexString
+    TextAlign, TextMetrics, TextStyle, TextWeight, ToHexString,
 };
 
 use wasm_bindgen::JsValue;
@@ -241,7 +240,14 @@ impl CanvasContext for Canvas {
     ) {
         if anticlockwise {
             // let _ = self.ctx.arc(x, y, radius, start_angle, end_angle);
-            let _ = self.ctx.arc_with_anticlockwise(x, y, radius, start_angle, end_angle, anticlockwise);
+            let _ = self.ctx.arc_with_anticlockwise(
+                x,
+                y,
+                radius,
+                start_angle,
+                end_angle,
+                anticlockwise,
+            );
         } else {
             let _ = self.ctx.arc(x, y, radius, start_angle, end_angle);
             // let _ = self.ctx.arc_with_anticlockwise(x, y, radius, start_angle, end_angle, anticlockwise);
@@ -376,15 +382,13 @@ impl CanvasContext for Canvas {
 
     fn measure_text(&self, text: &str) -> TextMetrics {
         match self.ctx.measure_text(text) {
-            Ok(metric) => {
-                TextMetrics{
-                    width: metric.width(),
-                    height: -1.,
-                }
-            }
+            Ok(metric) => TextMetrics {
+                width: metric.width(),
+                height: -1.,
+            },
             Err(err) => {
                 info!("{:?}", err);
-                TextMetrics{
+                TextMetrics {
                     width: -1.,
                     height: -1.,
                 }

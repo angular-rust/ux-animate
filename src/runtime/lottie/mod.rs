@@ -1,6 +1,7 @@
 #![allow(unused_imports)]
 #![allow(unused_variables)]
 #![allow(dead_code)]
+#![allow(clippy::new_without_default)]
 
 mod animatables;
 use animatables::*;
@@ -35,7 +36,6 @@ use utils::*;
 mod values;
 use values::*;
 
-
 // stubs
 pub struct CompositionLayer;
 pub struct AnimationController;
@@ -46,13 +46,13 @@ pub struct Size;
 // stubs
 
 pub struct Lottie {
-    pub composition: LottieComposition
+    pub composition: LottieComposition,
 }
 
 impl Lottie {
     fn new() -> Self {
         Self {
-            composition: Default::default()
+            composition: Default::default(),
         }
     }
 
@@ -64,7 +64,7 @@ impl Lottie {
 pub struct LottieState {
     composition: LottieComposition,
     composition_layer: Option<CompositionLayer>,
-    animation: Option<AnimationController>
+    animation: Option<AnimationController>,
 }
 
 impl LottieState {
@@ -72,7 +72,7 @@ impl LottieState {
         Self {
             composition,
             composition_layer: None,
-            animation: None
+            animation: None,
         }
     }
 
@@ -96,7 +96,7 @@ impl LottieState {
 pub struct LottiePainter {
     composition_layer: CompositionLayer,
     scale: f64,
-    alpha: i64
+    alpha: i64,
 }
 
 impl LottiePainter {
