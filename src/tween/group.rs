@@ -1,7 +1,3 @@
-#![allow(unused_imports)]
-#![allow(unused_variables)]
-#![allow(dead_code)]
-
 use super::Tween;
 
 pub struct Group {

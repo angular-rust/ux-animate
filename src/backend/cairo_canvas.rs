@@ -1,7 +1,7 @@
 #![allow(unused_imports)]
 #![allow(unused_variables)]
-#![allow(dead_code)]
-#![cfg(feature = "cairo")]
+
+#![cfg(not(target_arch = "wasm32"))]
 
 use cairo::{self, FontFace, FontSlant, FontWeight};
 
@@ -10,17 +10,17 @@ use primitives::{
     TextAlign, TextMetrics, TextStyle, TextWeight,
 };
 
-pub struct CairoCanvas<'a> {
+pub struct Canvas<'a> {
     ctx: &'a cairo::Context,
 }
 
-impl<'a> CairoCanvas<'a> {
+impl<'a> Canvas<'a> {
     pub fn new(ctx: &'a cairo::Context) -> Self {
         Self { ctx }
     }
 }
 
-impl<'a> CanvasContext for CairoCanvas<'a> {
+impl<'a> CanvasContext for Canvas<'a> {
     // fn get_current_transform(&self) -> Matrix;
 
     // fn set_current_transform(&self, value: Matrix<f64>) {

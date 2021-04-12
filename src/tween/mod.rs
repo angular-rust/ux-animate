@@ -1,7 +1,3 @@
-#![allow(unused_imports)]
-#![allow(unused_variables)]
-#![allow(dead_code)]
-
 pub const VERSION: &str = "18.6.4";
 
 // pub const MAIN_GROUP: Group = Group::new();

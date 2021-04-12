@@ -1,7 +1,7 @@
 #![allow(unused_imports)]
 #![allow(unused_variables)]
-#![allow(dead_code)]
-#![cfg(feature = "web")]
+
+#![cfg(target_arch = "wasm32")]
 
 use primitives::{
     BaseLine, CanvasContext, Color, Direction, LineCap, LineJoin, Point, Rect, RgbColor, Size,
@@ -12,17 +12,17 @@ use wasm_bindgen::JsValue;
 use wasm_bindgen_test::console_log;
 use web_sys;
 
-pub struct WebCanvas {
+pub struct Canvas {
     ctx: web_sys::CanvasRenderingContext2d,
 }
 
-impl WebCanvas {
+impl Canvas {
     pub fn new(ctx: web_sys::CanvasRenderingContext2d) -> Self {
         Self { ctx }
     }
 }
 
-impl CanvasContext for WebCanvas {
+impl CanvasContext for Canvas {
     // fn get_transform(&self) -> Matrix {
     //    self.ctx.get_transform() -> Result<DomMatrix, JsValue>
     // }

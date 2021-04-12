@@ -1,7 +1,3 @@
-// #![allow(unused_imports)]
-// #![allow(unused_variables)]
-// #![allow(dead_code)]
-
 pub mod linear {
     pub fn none_easing(amount: f64) -> f64 {
         amount
