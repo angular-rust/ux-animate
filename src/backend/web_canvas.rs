@@ -3,13 +3,29 @@
 #![cfg(target_arch = "wasm32")]
 
 use primitives::{
-    BaseLine, CanvasContext, Color, Direction, LineCap, LineJoin, Point, Rect, RgbColor, Size,
-    TextAlign, TextMetrics, TextStyle, TextWeight, ToHexString,
+    BaseLine, CanvasContext, Color, Direction, Gradient, LineCap, LineJoin, Point,
+    Rect, RgbColor, Size, TextAlign, TextMetrics, TextStyle, TextWeight, ToHexString,
 };
 
 use wasm_bindgen::JsValue;
 use wasm_bindgen_test::console_log;
 use web_sys;
+
+#[derive(Debug, Clone, Copy)]
+pub struct Pattern {
+
+}
+
+impl Pattern {
+    // Create pattern
+    // fn createPattern(image: Object, repetitionType: String) -> CanvasPattern;
+    // /// Create pattern from image
+    // fn createPatternFromImage(image: ImageElement, repetitionType: String) -> CanvasPattern;
+    pub fn new() -> Self {
+        unimplemented!()
+    }
+}
+
 
 pub struct Canvas {
     ctx: web_sys::CanvasRenderingContext2d,
@@ -38,26 +54,18 @@ impl CanvasContext for Canvas {
         unimplemented!() // FIXME: not implemented in web_sys
     }
 
-    // @Creates('String|CanvasGradient|CanvasPattern'), @Returns('String|CanvasGradient|CanvasPattern')
-    // fillStyle: Object;
-    // fn get_fill_style(&self) -> Box<CanvasStyle<dyn CanvasGradientInterface, dyn CanvasPatternInterface>>;
-
-    // fn set_fill_style(&self, value: CanvasStyle<impl CanvasGradientInterface, impl CanvasPatternInterface>) {
-    //     unimplemented!()
-    // }
-
     fn set_fill_color(&self, value: Color) {
         let color = JsValue::from(value.to_hex_string());
         self.ctx.set_fill_style(&color);
     }
 
-    // fn set_fill_gradient(&self, value: impl CanvasGradientInterface) {
-    //     unimplemented!()
-    // }
+    fn set_fill_gradient(&self, value: &Gradient) {
+        unimplemented!()
+    }
 
-    // fn set_fill_pattern(&self, value: impl CanvasPatternInterface) {
-    //     unimplemented!()
-    // }
+    fn set_fill_pattern(&self, value: &dyn CanvasPattern) {
+        println!("SET FILL PATTERN");
+    }
 
     fn get_filter(&self) -> String {
         self.ctx.filter()
@@ -190,23 +198,18 @@ impl CanvasContext for Canvas {
         self.ctx.set_shadow_offset_y(value);
     }
 
-    // @Creates('String|CanvasGradient|CanvasPattern'), @Returns('String|CanvasGradient|CanvasPattern')
-    // fn set_stroke_style(&self, value: CanvasStyle<impl CanvasGradientInterface, impl CanvasPatternInterface>) {
-    //     unimplemented!()
-    // }
-
     fn set_stroke_color(&self, value: Color) {
         let color = JsValue::from(value.to_hex_string());
         self.ctx.set_stroke_style(&color);
     }
 
-    // fn set_stroke_gradient(&self, value: impl CanvasGradientInterface) {
-    //     unimplemented!()
-    // }
+    fn set_stroke_gradient(&self, value: &Gradient) {
+        unimplemented!()
+    }
 
-    // fn set_stroke_pattern(&self, value: impl CanvasPatternInterface) {
-    //     unimplemented!()
-    // }
+    fn set_stroke_pattern(&self, value: &dyn CanvasPattern) {
+        println!("SET STROKE PATTERN");
+    }
 
     fn get_text_align(&self) -> TextAlign {
         // self.ctx.text_align()
@@ -291,10 +294,6 @@ impl CanvasContext for Canvas {
     // fn createImageData(data_OR_imagedata_OR_sw: dynamic, sh_OR_sw: int, imageDataColorSettings_OR_sh: dynamic, imageDataColorSettings: Map) -> ImageData; // TODO:
 
     // fn createImageDataFromImageData(imagedata: ImageData) -> ImageData; // TODO:
-    // fn createLinearGradient(x0: f64, y0: f64, x1: f64, y1: f64) -> CanvasGradient; // TODO:
-    // fn createPattern(image: Object, repetitionType: String) -> CanvasPattern; // TODO:
-    // fn createPatternFromImage(image: ImageElement, repetitionType: String) -> CanvasPattern; // TODO:
-    // fn createRadialGradient(x0: f64, y0: f64, r0: f64, x1: f64, y1: f64, r1: f64) -> CanvasGradient; // TODO:
 
     // [Element? element]
     // fn drawFocusIfNeeded(element_OR_path: dynamic, element: Element); // TODO:
