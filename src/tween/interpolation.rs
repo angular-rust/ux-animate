@@ -1,7 +1,3 @@
-#![allow(unused_imports)]
-#![allow(unused_variables)]
-#![allow(dead_code)]
-
 pub fn linear(v: Vec<f64>, k: f64) -> f64 {
     unimplemented!();
 }

@@ -1,6 +1,6 @@
 [package]
 name = "ux-animate"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Victor Dudochkin <dudochkin.victor@gmail.com>"]
 readme = "README.md"
 homepage = "https://angular-rust.github.io/ux-animate"
@@ -18,22 +18,15 @@ maintenance = { status = "actively-developed" }
 [lib]
 name = "animate"
 
+[package.metadata.docs.rs]
+features = ["dox"]
+
 [features]
-web = ["wasm-bindgen", "wasm-bindgen-futures", "wasm-logger", "gloo", "js-sys", "wasm-bindgen-test", "web-sys"]
-cairo = ["cairo-rs"]
+dox = ["ffi/dox", "glib/dox", "glib-sys/dox", "gobject-sys/dox", "ux-dx/dox"]
 
 [dependencies]
 log = "0.4"
 lazy_static = "1.4"
-cairo-rs = { version = "0.9", optional = true }
-
-wasm-bindgen = { version = "0.2", optional = true }
-wasm-bindgen-futures = { version = "0.4", optional = true }
-wasm-logger = { version = "0.2", optional = true }
-gloo = { version = "0.2", optional = true }
-js-sys = { version = "0.3", optional = true }
-wasm-bindgen-test = { version = "0.3", optional = true }
-
 serde = "1.0.123"
 serde_json = "1.0.62"
 
@@ -41,9 +34,34 @@ serde_json = "1.0.62"
 version = "0.1"
 features = [ "canvas" ]
 
-[dependencies.web-sys]
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+libc = "0.2"
+bitflags = "1.0"
+
+glib-sys = "0.10"
+gio-sys = "0.10"
+gobject-sys = "0.10"
+cairo-sys-rs = "0.10"
+
+png = "0.16"
+cairo-rs = { version = "0.9", features = ["png"] }
+gio = { version = "0.9", features = ["v2_58"] }
+glib = { version="0.10", features = ["v2_58"] }
+pango = { version = "0.9", features = ["v1_42"] }
+
+ux-dx = "0.1"
+ffi = { package = "clutter-sys-rs", version="0.1" }
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+wasm-bindgen = "0.2"
+js-sys = "0.3"
+wasm-bindgen-futures = "0.4"
+wasm-logger = "0.2"
+gloo = "0.2"
+wasm-bindgen-test = "0.3"
+
+[target.'cfg(target_arch = "wasm32")'.dependencies.web-sys]
 version = "0.3"
-optional = true
 features = [
   'KeyboardEvent',
   "ValidityState",

@@ -1,28 +1,43 @@
 #![allow(unused_imports)]
 #![allow(unused_variables)]
-#![allow(dead_code)]
-#![cfg(feature = "web")]
+#![cfg(target_arch = "wasm32")]
 
 use primitives::{
-    BaseLine, CanvasContext, Color, Direction, LineCap, LineJoin, Point, Rect, RgbColor, Size,
-    TextAlign, TextMetrics, TextStyle, TextWeight, ToHexString
+    BaseLine, CanvasContext, Color, Direction, Gradient, LineCap, LineJoin, Point,
+    Rect, RgbColor, Size, TextAlign, TextMetrics, TextStyle, TextWeight, ToHexString,
 };
 
 use wasm_bindgen::JsValue;
 use wasm_bindgen_test::console_log;
 use web_sys;
 
-pub struct WebCanvas {
+#[derive(Debug, Clone, Copy)]
+pub struct Pattern {
+
+}
+
+impl Pattern {
+    // Create pattern
+    // fn createPattern(image: Object, repetitionType: String) -> CanvasPattern;
+    // /// Create pattern from image
+    // fn createPatternFromImage(image: ImageElement, repetitionType: String) -> CanvasPattern;
+    pub fn new() -> Self {
+        unimplemented!()
+    }
+}
+
+
+pub struct Canvas {
     ctx: web_sys::CanvasRenderingContext2d,
 }
 
-impl WebCanvas {
+impl Canvas {
     pub fn new(ctx: web_sys::CanvasRenderingContext2d) -> Self {
         Self { ctx }
     }
 }
 
-impl CanvasContext for WebCanvas {
+impl CanvasContext for Canvas {
     // fn get_transform(&self) -> Matrix {
     //    self.ctx.get_transform() -> Result<DomMatrix, JsValue>
     // }
@@ -39,26 +54,18 @@ impl CanvasContext for WebCanvas {
         unimplemented!() // FIXME: not implemented in web_sys
     }
 
-    // @Creates('String|CanvasGradient|CanvasPattern'), @Returns('String|CanvasGradient|CanvasPattern')
-    // fillStyle: Object;
-    // fn get_fill_style(&self) -> Box<CanvasStyle<dyn CanvasGradientInterface, dyn CanvasPatternInterface>>;
-
-    // fn set_fill_style(&self, value: CanvasStyle<impl CanvasGradientInterface, impl CanvasPatternInterface>) {
-    //     unimplemented!()
-    // }
-
     fn set_fill_color(&self, value: Color) {
         let color = JsValue::from(value.to_hex_string());
         self.ctx.set_fill_style(&color);
     }
 
-    // fn set_fill_gradient(&self, value: impl CanvasGradientInterface) {
-    //     unimplemented!()
-    // }
+    fn set_fill_gradient(&self, value: &Gradient) {
+        unimplemented!()
+    }
 
-    // fn set_fill_pattern(&self, value: impl CanvasPatternInterface) {
-    //     unimplemented!()
-    // }
+    fn set_fill_pattern(&self, value: &dyn CanvasPattern) {
+        println!("SET FILL PATTERN");
+    }
 
     fn get_filter(&self) -> String {
         self.ctx.filter()
@@ -191,23 +198,18 @@ impl CanvasContext for WebCanvas {
         self.ctx.set_shadow_offset_y(value);
     }
 
-    // @Creates('String|CanvasGradient|CanvasPattern'), @Returns('String|CanvasGradient|CanvasPattern')
-    // fn set_stroke_style(&self, value: CanvasStyle<impl CanvasGradientInterface, impl CanvasPatternInterface>) {
-    //     unimplemented!()
-    // }
-
     fn set_stroke_color(&self, value: Color) {
         let color = JsValue::from(value.to_hex_string());
         self.ctx.set_stroke_style(&color);
     }
 
-    // fn set_stroke_gradient(&self, value: impl CanvasGradientInterface) {
-    //     unimplemented!()
-    // }
+    fn set_stroke_gradient(&self, value: &Gradient) {
+        unimplemented!()
+    }
 
-    // fn set_stroke_pattern(&self, value: impl CanvasPatternInterface) {
-    //     unimplemented!()
-    // }
+    fn set_stroke_pattern(&self, value: &dyn CanvasPattern) {
+        println!("SET STROKE PATTERN");
+    }
 
     fn get_text_align(&self) -> TextAlign {
         // self.ctx.text_align()
@@ -241,7 +243,14 @@ impl CanvasContext for WebCanvas {
     ) {
         if anticlockwise {
             // let _ = self.ctx.arc(x, y, radius, start_angle, end_angle);
-            let _ = self.ctx.arc_with_anticlockwise(x, y, radius, start_angle, end_angle, anticlockwise);
+            let _ = self.ctx.arc_with_anticlockwise(
+                x,
+                y,
+                radius,
+                start_angle,
+                end_angle,
+                anticlockwise,
+            );
         } else {
             let _ = self.ctx.arc(x, y, radius, start_angle, end_angle);
             // let _ = self.ctx.arc_with_anticlockwise(x, y, radius, start_angle, end_angle, anticlockwise);
@@ -285,10 +294,6 @@ impl CanvasContext for WebCanvas {
     // fn createImageData(data_OR_imagedata_OR_sw: dynamic, sh_OR_sw: int, imageDataColorSettings_OR_sh: dynamic, imageDataColorSettings: Map) -> ImageData; // TODO:
 
     // fn createImageDataFromImageData(imagedata: ImageData) -> ImageData; // TODO:
-    // fn createLinearGradient(x0: f64, y0: f64, x1: f64, y1: f64) -> CanvasGradient; // TODO:
-    // fn createPattern(image: Object, repetitionType: String) -> CanvasPattern; // TODO:
-    // fn createPatternFromImage(image: ImageElement, repetitionType: String) -> CanvasPattern; // TODO:
-    // fn createRadialGradient(x0: f64, y0: f64, r0: f64, x1: f64, y1: f64, r1: f64) -> CanvasGradient; // TODO:
 
     // [Element? element]
     // fn drawFocusIfNeeded(element_OR_path: dynamic, element: Element); // TODO:
@@ -376,15 +381,13 @@ impl CanvasContext for WebCanvas {
 
     fn measure_text(&self, text: &str) -> TextMetrics {
         match self.ctx.measure_text(text) {
-            Ok(metric) => {
-                TextMetrics{
-                    width: metric.width(),
-                    height: -1.,
-                }
-            }
+            Ok(metric) => TextMetrics {
+                width: metric.width(),
+                height: -1.,
+            },
             Err(err) => {
                 info!("{:?}", err);
-                TextMetrics{
+                TextMetrics {
                     width: -1.,
                     height: -1.,
                 }

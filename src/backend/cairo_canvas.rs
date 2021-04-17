@@ -1,26 +1,41 @@
+#![allow(clippy::many_single_char_names)]
 #![allow(unused_imports)]
 #![allow(unused_variables)]
-#![allow(dead_code)]
-#![cfg(feature = "cairo")]
+#![cfg(not(target_arch = "wasm32"))]
 
-use cairo::{self, FontFace, FontSlant, FontWeight};
-
-use primitives::{
-    BaseLine, CanvasContext, Color, Direction, LineCap, LineJoin, Point, Rect, RgbaColor, Size,
+use crate::{
+    BaseLine, CanvasContext, Color, Direction, Gradient, GradientType, LineCap,
+    LineJoin, LinearGradient, PatternExtend, Point, RadialGradient, Rect, RgbaColor, Size,
     TextAlign, TextMetrics, TextStyle, TextWeight,
 };
+use cairo::{self, FontFace, FontSlant, FontWeight};
+use std::any::Any;
 
-pub struct CairoCanvas<'a> {
+#[derive(Debug, Clone)]
+pub struct Pattern {
+    pub extend: PatternExtend,
+    pub inner: cairo::SurfacePattern,
+}
+
+impl Pattern {
+    // Create pattern
+    pub fn new(extend: PatternExtend, inner: cairo::SurfacePattern) -> Self {
+        Self { extend, inner }
+    }
+}
+
+pub struct Canvas<'a> {
     ctx: &'a cairo::Context,
 }
 
-impl<'a> CairoCanvas<'a> {
+impl<'a> Canvas<'a> {
+    #[allow(dead_code)]
     pub fn new(ctx: &'a cairo::Context) -> Self {
         Self { ctx }
     }
 }
 
-impl<'a> CanvasContext for CairoCanvas<'a> {
+impl<'a> CanvasContext<Pattern> for Canvas<'a> {
     // fn get_current_transform(&self) -> Matrix;
 
     // fn set_current_transform(&self, value: Matrix<f64>) {
@@ -37,30 +52,89 @@ impl<'a> CanvasContext for CairoCanvas<'a> {
         unimplemented!()
     }
 
-    // @Creates('String|CanvasGradient|CanvasPattern'), @Returns('String|CanvasGradient|CanvasPattern')
-    // fillStyle: Object;
-    // fn get_fill_style(&self) -> Box<CanvasStyle<dyn CanvasGradientInterface, dyn CanvasPatternInterface>>;
-    // fn set_fill_style(&self, value: CanvasStyle<impl CanvasGradientInterface, impl CanvasPatternInterface>) {
-    //     unimplemented!()
-    // }
-
     fn set_fill_color(&self, value: Color) {
-        let color: RgbaColor = value.into();
+        let RgbaColor {
+            red,
+            green,
+            blue,
+            alpha,
+        } = value.into();
         self.ctx.set_source_rgba(
-            color.r as f64 / 255.,
-            color.g as f64 / 255.,
-            color.b as f64 / 255.,
-            color.a as f64 / 255.,
+            red as f64 / 255.,
+            green as f64 / 255.,
+            blue as f64 / 255.,
+            alpha as f64 / 255.,
         );
     }
 
-    // fn set_fill_gradient(&self, value: impl CanvasGradientInterface) {
-    //     unimplemented!()
-    // }
+    fn set_fill_gradient(&self, value: &Gradient) {
+        match value.kind {
+            GradientType::Linear(params) => {
+                let LinearGradient { x0, y0, x1, y1 } = params;
+                let gradient = cairo::LinearGradient::new(x0, y0, x1, y1);
+                let stops = value.stops.borrow();
+                for stop in stops.iter() {
+                    let RgbaColor {
+                        red,
+                        green,
+                        blue,
+                        alpha,
+                    } = stop.color.into();
 
-    // fn set_fill_pattern(&self, value: impl CanvasPatternInterface) {
-    //     unimplemented!()
-    // }
+                    gradient.add_color_stop_rgba(
+                        stop.offset,
+                        red as f64 / 255.,
+                        green as f64 / 255.,
+                        blue as f64 / 255.,
+                        alpha as f64 / 255.,
+                    );
+                }
+                self.ctx.set_source(&gradient);
+            }
+            GradientType::Radial(params) => {
+                let RadialGradient {
+                    x0,
+                    y0,
+                    r0,
+                    x1,
+                    y1,
+                    r1,
+                } = params;
+                let gradient = cairo::RadialGradient::new(x0, y0, r0, x1, y1, r1);
+                let stops = value.stops.borrow();
+                for stop in stops.iter() {
+                    let RgbaColor {
+                        red,
+                        green,
+                        blue,
+                        alpha,
+                    } = stop.color.into();
+
+                    gradient.add_color_stop_rgba(
+                        stop.offset,
+                        red as f64 / 255.,
+                        green as f64 / 255.,
+                        blue as f64 / 255.,
+                        alpha as f64 / 255.,
+                    );
+                }
+                self.ctx.set_source(&gradient);
+            }
+        }
+    }
+
+    fn set_fill_pattern(&self, pattern: &Pattern) {
+        println!("SET FILL PATTERN");
+        let extend = match pattern.extend {
+            PatternExtend::None => cairo::Extend::None,
+            PatternExtend::Repeat => cairo::Extend::Repeat,
+            PatternExtend::Reflect => cairo::Extend::Reflect,
+            PatternExtend::Pad => cairo::Extend::Pad,
+        };
+
+        pattern.inner.set_extend(extend);
+        self.ctx.set_source(&pattern.inner);
+    }
 
     fn get_filter(&self) -> String {
         unimplemented!()
@@ -204,27 +278,85 @@ impl<'a> CanvasContext for CairoCanvas<'a> {
         unimplemented!()
     }
 
-    // @Creates('String|CanvasGradient|CanvasPattern'), @Returns('String|CanvasGradient|CanvasPattern')
-    // fn set_stroke_style(&self, value: CanvasStyle<impl CanvasGradientInterface, impl CanvasPatternInterface>) {
-    //     unimplemented!()
-    // }
-
     fn set_stroke_color(&self, value: Color) {
         let color: RgbaColor = value.into();
         self.ctx.set_source_rgba(
-            color.r as f64 / 255.,
-            color.g as f64 / 255.,
-            color.b as f64 / 255.,
-            color.a as f64 / 255.,
+            color.red as f64 / 255.,
+            color.green as f64 / 255.,
+            color.blue as f64 / 255.,
+            color.alpha as f64 / 255.,
         );
     }
 
-    // fn set_stroke_gradient(&self, value: impl CanvasGradientInterface) {
-    //     unimplemented!()
-    // }
-    // fn set_stroke_pattern(&self, value: impl CanvasPatternInterface) {
-    //     unimplemented!()
-    // }
+    fn set_stroke_gradient(&self, value: &Gradient) {
+        match value.kind {
+            GradientType::Linear(params) => {
+                let LinearGradient { x0, y0, x1, y1 } = params;
+                let gradient = cairo::LinearGradient::new(x0, y0, x1, y1);
+                let stops = value.stops.borrow();
+                for stop in stops.iter() {
+                    let RgbaColor {
+                        red,
+                        green,
+                        blue,
+                        alpha,
+                    } = stop.color.into();
+
+                    gradient.add_color_stop_rgba(
+                        stop.offset,
+                        red as f64 / 255.,
+                        green as f64 / 255.,
+                        blue as f64 / 255.,
+                        alpha as f64 / 255.,
+                    );
+                }
+                self.ctx.set_source(&gradient);
+            }
+            GradientType::Radial(params) => {
+                let RadialGradient {
+                    x0,
+                    y0,
+                    r0,
+                    x1,
+                    y1,
+                    r1,
+                } = params;
+                let gradient = cairo::RadialGradient::new(x0, y0, r0, x1, y1, r1);
+                let stops = value.stops.borrow();
+                for stop in stops.iter() {
+                    let RgbaColor {
+                        red,
+                        green,
+                        blue,
+                        alpha,
+                    } = stop.color.into();
+
+                    gradient.add_color_stop_rgba(
+                        stop.offset,
+                        red as f64 / 255.,
+                        green as f64 / 255.,
+                        blue as f64 / 255.,
+                        alpha as f64 / 255.,
+                    );
+                }
+                self.ctx.set_source(&gradient);
+            }
+        }
+    }
+
+    fn set_stroke_pattern(&self, pattern: &Pattern) {
+        println!("SET STROKE PATTERN");
+
+        let extend = match pattern.extend {
+            PatternExtend::None => cairo::Extend::None,
+            PatternExtend::Repeat => cairo::Extend::Repeat,
+            PatternExtend::Reflect => cairo::Extend::Reflect,
+            PatternExtend::Pad => cairo::Extend::Pad,
+        };
+
+        pattern.inner.set_extend(extend);
+        self.ctx.set_source(&pattern.inner);
+    }
 
     fn get_text_align(&self) -> TextAlign {
         unimplemented!()
@@ -292,10 +424,6 @@ impl<'a> CanvasContext for CairoCanvas<'a> {
     // fn createImageData(data_OR_imagedata_OR_sw: dynamic, sh_OR_sw: int, imageDataColorSettings_OR_sh: dynamic, imageDataColorSettings: Map) -> ImageData; // TODO:
 
     // fn createImageDataFromImageData(imagedata: ImageData) -> ImageData; // TODO:
-    // fn createLinearGradient(x0: f64, y0: f64, x1: f64, y1: f64) -> CanvasGradient; // TODO:
-    // fn createPattern(image: Object, repetitionType: String) -> CanvasPattern; // TODO:
-    // fn createPatternFromImage(image: ImageElement, repetitionType: String) -> CanvasPattern; // TODO:
-    // fn createRadialGradient(x0: f64, y0: f64, r0: f64, x1: f64, y1: f64, r1: f64) -> CanvasGradient; // TODO:
 
     // [Element? element]
     // fn drawFocusIfNeeded(element_OR_path: dynamic, element: Element); // TODO:

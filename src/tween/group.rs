@@ -1,12 +1,6 @@
-#![allow(unused_imports)]
-#![allow(unused_variables)]
-#![allow(dead_code)]
-
 use super::Tween;
 
-pub struct Group {
-
-}
+pub struct Group {}
 
 impl Group {
     pub fn get_all() -> Vec<Tween> {
