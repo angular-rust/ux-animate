@@ -124,7 +124,6 @@ impl<'a> CanvasContext<Pattern> for Canvas<'a> {
     }
 
     fn set_fill_pattern(&self, pattern: &Pattern) {
-        println!("SET FILL PATTERN");
         let extend = match pattern.extend {
             PatternExtend::None => cairo::Extend::None,
             PatternExtend::Repeat => cairo::Extend::Repeat,

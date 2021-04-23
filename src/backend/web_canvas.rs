@@ -27,17 +27,17 @@ impl Pattern {
 }
 
 
-pub struct Canvas {
-    ctx: web_sys::CanvasRenderingContext2d,
+pub struct Canvas<'a> {
+    ctx: &'a web_sys::CanvasRenderingContext2d,
 }
 
-impl Canvas {
-    pub fn new(ctx: web_sys::CanvasRenderingContext2d) -> Self {
+impl<'a> Canvas<'a> {
+    pub fn new(ctx: &'a web_sys::CanvasRenderingContext2d) -> Self {
         Self { ctx }
     }
 }
 
-impl CanvasContext for Canvas {
+impl<'a> CanvasContext<Pattern> for Canvas<'a> {
     // fn get_transform(&self) -> Matrix {
     //    self.ctx.get_transform() -> Result<DomMatrix, JsValue>
     // }
@@ -63,7 +63,7 @@ impl CanvasContext for Canvas {
         unimplemented!()
     }
 
-    fn set_fill_pattern(&self, value: &dyn CanvasPattern) {
+    fn set_fill_pattern(&self, pattern: &Pattern) {
         println!("SET FILL PATTERN");
     }
 
@@ -207,7 +207,7 @@ impl CanvasContext for Canvas {
         unimplemented!()
     }
 
-    fn set_stroke_pattern(&self, value: &dyn CanvasPattern) {
+    fn set_stroke_pattern(&self, pattern: &Pattern) {
         println!("SET STROKE PATTERN");
     }
 

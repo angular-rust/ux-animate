@@ -26,7 +26,8 @@ pub mod motion;
 
 pub mod physics;
 
-pub mod runtime;
+mod runtime;
+pub use runtime::*;
 
 pub mod svg;
 

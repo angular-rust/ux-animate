@@ -11,6 +11,10 @@ pub use pango::prelude::*;
 pub trait Object: std::fmt::Debug + Clone + 'static {}
 pub trait Is<T: Object>: AsRef<T> + 'static {}
 
+pub use ruex::prelude::*;
+
+pub use crate::lottie::LottieBuilderExt;
+
 #[cfg(not(target_arch = "wasm32"))]
 pub use crate::legacy::traits::*;
 
