@@ -92,15 +92,6 @@ pub struct Lottie {
     provider: Rc<Option<Box<dyn LottieProvider>>>,
 }
 
-trait Person {
-    fn name(&self) -> String;
-}
-
-#[derive(Default, Clone)]
-struct Chack {
-    inner: Rc<Option<Box<dyn Person>>>,
-}
-
 pub trait LottieBuilderExt {
     /// Creates a widget that displays an `LottieComposition`
     /// obtained from an `AssetBundle`.
