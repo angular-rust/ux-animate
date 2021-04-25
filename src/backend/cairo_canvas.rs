@@ -4,11 +4,11 @@
 #![cfg(not(target_arch = "wasm32"))]
 
 use crate::{
-    BaseLine, CanvasContext, Color, Direction, Gradient, GradientType, LineCap,
-    LineJoin, LinearGradient, PatternExtend, Point, RadialGradient, Rect, RgbaColor, Size,
-    TextAlign, TextMetrics, TextStyle, TextWeight,
+    BaseLine, CanvasContext, Color, Direction, Gradient, GradientType, LineCap, LineJoin,
+    LinearGradient, PatternExtend, Point, RadialGradient, Rect, RgbaColor, Size, TextAlign,
+    TextMetrics, TextStyle, TextWeight,
 };
-use cairo::{self, FontFace, FontSlant, FontWeight};
+use cairo::{self, FontFace, FontSlant, FontWeight, ImageSurface, Surface, SurfacePattern};
 use std::any::Any;
 
 #[derive(Debug, Clone)]
@@ -19,8 +19,11 @@ pub struct Pattern {
 
 impl Pattern {
     // Create pattern
-    pub fn new(extend: PatternExtend, inner: cairo::SurfacePattern) -> Self {
-        Self { extend, inner }
+    pub fn new(extend: PatternExtend, surface: &cairo::Surface) -> Self {
+        Self {
+            extend,
+            inner: SurfacePattern::create(surface),
+        }
     }
 }
 
@@ -199,36 +202,47 @@ impl<'a> CanvasContext<Pattern> for Canvas<'a> {
     // }
 
     fn get_line_cap(&self) -> LineCap {
-        let result = self.ctx.get_line_cap();
-        // format!("{}", result)
-        unimplemented!()
+        match self.ctx.get_line_cap() {
+            cairo::LineCap::Round => LineCap::Round,
+            cairo::LineCap::Square => LineCap::Square,
+            _ => LineCap::Butt, // Return default value
+        }
     }
 
     fn set_line_cap(&self, value: LineCap) {
-        // self.ctx.set_line_cap()
-        // unimplemented!()
+        let value = match value {
+            LineCap::Round => cairo::LineCap::Round,
+            LineCap::Square => cairo::LineCap::Square,
+            LineCap::Butt => cairo::LineCap::Butt,
+        };
+        self.ctx.set_line_cap(value)
     }
 
-    // @SupportedBrowser(SupportedBrowser.CHROME), @SupportedBrowser(SupportedBrowser.IE, '11'), @SupportedBrowser(SupportedBrowser.SAFARI), @Unstable()
     fn get_line_dash_offset(&self) -> f64 {
         let (_, result) = self.ctx.get_dash();
         result
     }
 
     fn set_line_dash_offset(&self, value: f64) {
-        // self.ctx.set_dash();
-        unimplemented!()
+        let (dash, _) = self.ctx.get_dash();
+        self.ctx.set_dash(&dash, value);
     }
 
     fn get_line_join(&self) -> LineJoin {
-        let result = self.ctx.get_line_join();
-        // format!("{}", result)
-        unimplemented!()
+        match self.ctx.get_line_join() {
+            cairo::LineJoin::Bevel => LineJoin::Bevel,
+            cairo::LineJoin::Round => LineJoin::Round,
+            _ => LineJoin::Miter,
+        }
     }
 
     fn set_line_join(&self, value: LineJoin) {
-        // self.ctx.set_line_join(arg)
-        // FIXME:
+        let value = match value {
+            LineJoin::Bevel => cairo::LineJoin::Bevel,
+            LineJoin::Round => cairo::LineJoin::Round,
+            LineJoin::Miter => cairo::LineJoin::Miter,
+        };
+        self.ctx.set_line_join(value)
     }
 
     fn get_line_width(&self) -> f64 {
@@ -344,8 +358,6 @@ impl<'a> CanvasContext<Pattern> for Canvas<'a> {
     }
 
     fn set_stroke_pattern(&self, pattern: &Pattern) {
-        println!("SET STROKE PATTERN");
-
         let extend = match pattern.extend {
             PatternExtend::None => cairo::Extend::None,
             PatternExtend::Repeat => cairo::Extend::Repeat,
@@ -404,6 +416,7 @@ impl<'a> CanvasContext<Pattern> for Canvas<'a> {
 
     // FIXME: seems code correct but it should clear with transpatency but it black (((
     fn clear_rect(&self, x: f64, y: f64, width: f64, height: f64) {
+        self.ctx.new_path();
         self.ctx.save();
         self.ctx.set_source_rgba(0., 0., 0., 0.);
         self.ctx.set_operator(cairo::Operator::Clear);
@@ -471,16 +484,19 @@ impl<'a> CanvasContext<Pattern> for Canvas<'a> {
     // fn fill(path_OR_winding: dynamic, winding: String); // TODO:
 
     fn fill(&self) {
-        self.ctx.fill();
+        self.ctx.fill_preserve(); // FIXME: should deal with preserve
+                                  // self.ctx.fill();
     }
 
     fn fill_rect(&self, x: f64, y: f64, width: f64, height: f64) {
+        self.ctx.new_path();
         self.ctx.rectangle(x, y, width, height);
         self.ctx.fill();
     }
 
     // Draws text to the canvas.
     fn fill_text(&self, text: &str, x: f64, y: f64) {
+        self.ctx.new_path();
         self.ctx.save();
         self.ctx.move_to(x, y);
         self.ctx.text_path(text);
@@ -493,7 +509,6 @@ impl<'a> CanvasContext<Pattern> for Canvas<'a> {
     // @Creates('ImageData|=Object')
     // fn getImageData(sx: i64, sy: i64, sw: i64, sh: i64) -> ImageData; // TODO:
 
-    // @SupportedBrowser(SupportedBrowser.CHROME), @SupportedBrowser(SupportedBrowser.IE, '11'), @SupportedBrowser(SupportedBrowser.SAFARI), @Unstable()
     fn get_line_dash(&self) -> Vec<f64> {
         let (result, _) = self.ctx.get_dash();
         result
@@ -569,10 +584,9 @@ impl<'a> CanvasContext<Pattern> for Canvas<'a> {
     // [Path2D? path]
     // fn scrollPathIntoView(path: Path2D); // TODO:
 
-    // @SupportedBrowser(SupportedBrowser.CHROME), @SupportedBrowser(SupportedBrowser.IE, '11'), @SupportedBrowser(SupportedBrowser.SAFARI), @Unstable()
     fn set_line_dash(&self, dash: Vec<f64>) {
-        // self.ctx.set_dash(dashes, offset)
-        unimplemented!()
+        let (_, offset) = self.ctx.get_dash();
+        self.ctx.set_dash(&dash, offset);
     }
 
     fn set_transform(&self, a: f64, b: f64, c: f64, d: f64, e: f64, f: f64) {
@@ -581,10 +595,11 @@ impl<'a> CanvasContext<Pattern> for Canvas<'a> {
     }
 
     fn stroke(&self) {
-        self.ctx.stroke();
+        self.ctx.stroke_preserve(); // FIXME: maybe should deal with preserve
     }
 
     fn stroke_rect(&self, x: f64, y: f64, width: f64, height: f64) {
+        self.ctx.new_path();
         self.ctx.save();
         self.ctx.rectangle(x, y, width, height);
         self.ctx.fill();
@@ -592,6 +607,7 @@ impl<'a> CanvasContext<Pattern> for Canvas<'a> {
     }
 
     fn stroke_text(&self, text: &str, x: f64, y: f64) {
+        self.ctx.new_path();
         self.ctx.save();
         self.ctx.move_to(x, y);
         self.ctx.text_path(text);

@@ -18,6 +18,8 @@ pub use crate::lottie::LottieBuilderExt;
 #[cfg(not(target_arch = "wasm32"))]
 pub use crate::legacy::traits::*;
 
+pub use primitives::CanvasContext;
+
 // pub use app_info::AppInfoExtManual;
 
 // pub use application::*;

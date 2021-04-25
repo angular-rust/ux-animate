@@ -432,6 +432,8 @@ pub mod traits {
     pub use super::ZoomActionExt;
 }
 
+pub use glib::timeout_add_local as interval;
+
 impl prelude::Object for Actor {}
 impl prelude::Is<Actor> for Actor {}
 
