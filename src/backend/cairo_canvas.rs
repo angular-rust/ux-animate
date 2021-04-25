@@ -600,10 +600,8 @@ impl<'a> CanvasContext<Pattern> for Canvas<'a> {
 
     fn stroke_rect(&self, x: f64, y: f64, width: f64, height: f64) {
         self.ctx.new_path();
-        self.ctx.save();
         self.ctx.rectangle(x, y, width, height);
-        self.ctx.fill();
-        self.ctx.restore();
+        self.ctx.stroke();
     }
 
     fn stroke_text(&self, text: &str, x: f64, y: f64) {
