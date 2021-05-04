@@ -15,11 +15,7 @@ impl fmt::Display for LottieImageAsset {
         write!(
             f,
             "LottieImageAsset(width: {}, height: {}, id: {}, fileName: {}, dirName: {})",
-            self.width,
-            self.height,
-            self.id,
-            self.file_name,
-            self.dir_name
+            self.width, self.height, self.id, self.file_name, self.dir_name
         )
     }
 }

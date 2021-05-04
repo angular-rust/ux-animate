@@ -11,7 +11,7 @@ impl Font {
             family,
             name,
             style,
-            ascent
+            ascent,
         }
     }
 }

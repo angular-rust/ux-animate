@@ -2,7 +2,7 @@ use super::{FrameRate, LottieComposition, LottieDelegates, LottieOptions, Render
 
 /// A widget that displays a `LottieDrawable` directly.
 ///
-/// This widget is rarely used directly. Instead, consider 
+/// This widget is rarely used directly. Instead, consider
 /// using `Lottie` or `LottieAnimation`.
 pub struct RawLottie {
     key: String,

@@ -4,8 +4,8 @@
 #![allow(clippy::new_without_default)]
 
 use crate::prelude::*;
-use ruex::prelude::*;
 use bytes::Bytes;
+use ruex::prelude::*;
 use std::{cell::RefCell, fs::File, rc::Rc};
 
 pub(crate) mod animation;

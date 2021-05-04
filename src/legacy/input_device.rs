@@ -1,6 +1,6 @@
 use crate::{
     Actor, Backend, DeviceManager, Event, EventSequence, InputAxis, InputDeviceType, InputMode,
-    ModifierType, InternalPoint, Stage,
+    InternalPoint, ModifierType, Stage,
 };
 use glib::{
     object::{IsA, ObjectType as ObjectType_},
@@ -310,7 +310,7 @@ impl InputDevice {
     /// the usual event delivery mechanism, until the grab is released by
     /// calling `InputDevice::ungrab`.
     ///
-    /// The grab is client-side: even if the windowing system used by the 
+    /// The grab is client-side: even if the windowing system used by the
     /// backend has the concept of "device grabs", it will not use them.
     ///
     /// Only `InputDevice` of types `InputDeviceType::PointerDevice` and
@@ -371,7 +371,7 @@ impl InputDevice {
     /// until the grab is released by calling
     /// `InputDevice::sequence_ungrab`.
     ///
-    /// The grab is client-side: even if the windowing system used by the 
+    /// The grab is client-side: even if the windowing system used by the
     /// backend has the concept of "device grabs", it will not use them.
     /// ## `sequence`
     /// a `EventSequence`

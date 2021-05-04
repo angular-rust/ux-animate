@@ -1,5 +1,5 @@
 // Scriptable
-use crate::{Actor, Animatable, InternalColor, Container};
+use crate::{Actor, Animatable, Container, InternalColor};
 use glib::{
     object as gobject,
     object::{Cast, IsA},

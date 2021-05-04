@@ -1,6 +1,7 @@
 #![allow(clippy::many_single_char_names)]
 #![allow(unused_imports)]
 #![allow(unused_variables)]
+#![allow(dead_code)]
 #![cfg(not(target_arch = "wasm32"))]
 
 use crate::{
@@ -9,7 +10,7 @@ use crate::{
     TextMetrics, TextStyle, TextWeight,
 };
 use cairo::{self, FontFace, FontSlant, FontWeight, ImageSurface, Surface, SurfacePattern};
-use std::any::Any;
+use std::{any::Any, cell::RefCell};
 
 #[derive(Debug, Clone)]
 pub struct Pattern {
@@ -27,18 +28,131 @@ impl Pattern {
     }
 }
 
+#[derive(Clone)]
+enum Paint {
+    None,
+    Solid(Color),
+    Gradient(Gradient),
+    Pattern(Pattern),
+}
+
+impl Default for Paint {
+    fn default() -> Self {
+        Paint::None
+    }
+}
+
+#[derive(Default, Clone)]
+struct CanvasState {
+    stroke: Paint,
+    fill: Paint,
+}
+
 pub struct Canvas<'a> {
     ctx: &'a cairo::Context,
+    state: RefCell<CanvasState>,
 }
 
 impl<'a> Canvas<'a> {
     #[allow(dead_code)]
     pub fn new(ctx: &'a cairo::Context) -> Self {
-        Self { ctx }
+        Self {
+            ctx,
+            state: Default::default(),
+        }
+    }
+
+    fn handle_paint(&self, paint: &Paint) -> bool {
+        match paint {
+            Paint::Solid(value) => {
+                let value = *value;
+                let color: RgbaColor = value.into();
+                self.ctx.set_source_rgba(
+                    color.red as f64 / 255.,
+                    color.green as f64 / 255.,
+                    color.blue as f64 / 255.,
+                    color.alpha as f64 / 255.,
+                );
+
+                true
+            }
+            Paint::Gradient(value) => {
+                match value.kind {
+                    GradientType::Linear(params) => {
+                        let LinearGradient { x0, y0, x1, y1 } = params;
+                        let gradient = cairo::LinearGradient::new(x0, y0, x1, y1);
+                        let stops = value.stops.borrow();
+                        for stop in stops.iter() {
+                            let RgbaColor {
+                                red,
+                                green,
+                                blue,
+                                alpha,
+                            } = stop.color.into();
+
+                            gradient.add_color_stop_rgba(
+                                stop.offset,
+                                red as f64 / 255.,
+                                green as f64 / 255.,
+                                blue as f64 / 255.,
+                                alpha as f64 / 255.,
+                            );
+                        }
+                        self.ctx.set_source(&gradient);
+                    }
+                    GradientType::Radial(params) => {
+                        let RadialGradient {
+                            x0,
+                            y0,
+                            r0,
+                            x1,
+                            y1,
+                            r1,
+                        } = params;
+                        let gradient = cairo::RadialGradient::new(x0, y0, r0, x1, y1, r1);
+                        let stops = value.stops.borrow();
+                        for stop in stops.iter() {
+                            let RgbaColor {
+                                red,
+                                green,
+                                blue,
+                                alpha,
+                            } = stop.color.into();
+
+                            gradient.add_color_stop_rgba(
+                                stop.offset,
+                                red as f64 / 255.,
+                                green as f64 / 255.,
+                                blue as f64 / 255.,
+                                alpha as f64 / 255.,
+                            );
+                        }
+                        self.ctx.set_source(&gradient);
+                    }
+                }
+
+                true
+            }
+            Paint::Pattern(value) => {
+                let extend = match value.extend {
+                    PatternExtend::None => cairo::Extend::None,
+                    PatternExtend::Repeat => cairo::Extend::Repeat,
+                    PatternExtend::Reflect => cairo::Extend::Reflect,
+                    PatternExtend::Pad => cairo::Extend::Pad,
+                };
+
+                value.inner.set_extend(extend);
+                self.ctx.set_source(&value.inner);
+
+                true
+            }
+            Paint::None => false,
+        }
     }
 }
 
-impl<'a> CanvasContext<Pattern> for Canvas<'a> {
+impl<'a> CanvasContext for Canvas<'a> {
+    type Pattern = Pattern;
     // fn get_current_transform(&self) -> Matrix;
 
     // fn set_current_transform(&self, value: Matrix<f64>) {
@@ -56,6 +170,9 @@ impl<'a> CanvasContext<Pattern> for Canvas<'a> {
     }
 
     fn set_fill_color(&self, value: Color) {
+        let mut state = self.state.borrow_mut();
+        state.fill = Paint::Solid(value);
+
         let RgbaColor {
             red,
             green,
@@ -71,6 +188,9 @@ impl<'a> CanvasContext<Pattern> for Canvas<'a> {
     }
 
     fn set_fill_gradient(&self, value: &Gradient) {
+        let mut state = self.state.borrow_mut();
+        state.fill = Paint::Gradient(value.clone());
+
         match value.kind {
             GradientType::Linear(params) => {
                 let LinearGradient { x0, y0, x1, y1 } = params;
@@ -126,16 +246,19 @@ impl<'a> CanvasContext<Pattern> for Canvas<'a> {
         }
     }
 
-    fn set_fill_pattern(&self, pattern: &Pattern) {
-        let extend = match pattern.extend {
+    fn set_fill_pattern(&self, value: &Self::Pattern) {
+        let mut state = self.state.borrow_mut();
+        state.fill = Paint::Pattern(value.clone());
+
+        let extend = match value.extend {
             PatternExtend::None => cairo::Extend::None,
             PatternExtend::Repeat => cairo::Extend::Repeat,
             PatternExtend::Reflect => cairo::Extend::Reflect,
             PatternExtend::Pad => cairo::Extend::Pad,
         };
 
-        pattern.inner.set_extend(extend);
-        self.ctx.set_source(&pattern.inner);
+        value.inner.set_extend(extend);
+        self.ctx.set_source(&value.inner);
     }
 
     fn get_filter(&self) -> String {
@@ -292,81 +415,18 @@ impl<'a> CanvasContext<Pattern> for Canvas<'a> {
     }
 
     fn set_stroke_color(&self, value: Color) {
-        let color: RgbaColor = value.into();
-        self.ctx.set_source_rgba(
-            color.red as f64 / 255.,
-            color.green as f64 / 255.,
-            color.blue as f64 / 255.,
-            color.alpha as f64 / 255.,
-        );
+        let mut state = self.state.borrow_mut();
+        state.stroke = Paint::Solid(value);
     }
 
     fn set_stroke_gradient(&self, value: &Gradient) {
-        match value.kind {
-            GradientType::Linear(params) => {
-                let LinearGradient { x0, y0, x1, y1 } = params;
-                let gradient = cairo::LinearGradient::new(x0, y0, x1, y1);
-                let stops = value.stops.borrow();
-                for stop in stops.iter() {
-                    let RgbaColor {
-                        red,
-                        green,
-                        blue,
-                        alpha,
-                    } = stop.color.into();
-
-                    gradient.add_color_stop_rgba(
-                        stop.offset,
-                        red as f64 / 255.,
-                        green as f64 / 255.,
-                        blue as f64 / 255.,
-                        alpha as f64 / 255.,
-                    );
-                }
-                self.ctx.set_source(&gradient);
-            }
-            GradientType::Radial(params) => {
-                let RadialGradient {
-                    x0,
-                    y0,
-                    r0,
-                    x1,
-                    y1,
-                    r1,
-                } = params;
-                let gradient = cairo::RadialGradient::new(x0, y0, r0, x1, y1, r1);
-                let stops = value.stops.borrow();
-                for stop in stops.iter() {
-                    let RgbaColor {
-                        red,
-                        green,
-                        blue,
-                        alpha,
-                    } = stop.color.into();
-
-                    gradient.add_color_stop_rgba(
-                        stop.offset,
-                        red as f64 / 255.,
-                        green as f64 / 255.,
-                        blue as f64 / 255.,
-                        alpha as f64 / 255.,
-                    );
-                }
-                self.ctx.set_source(&gradient);
-            }
-        }
+        let mut state = self.state.borrow_mut();
+        state.stroke = Paint::Gradient(value.clone());
     }
 
-    fn set_stroke_pattern(&self, pattern: &Pattern) {
-        let extend = match pattern.extend {
-            PatternExtend::None => cairo::Extend::None,
-            PatternExtend::Repeat => cairo::Extend::Repeat,
-            PatternExtend::Reflect => cairo::Extend::Reflect,
-            PatternExtend::Pad => cairo::Extend::Pad,
-        };
-
-        pattern.inner.set_extend(extend);
-        self.ctx.set_source(&pattern.inner);
+    fn set_stroke_pattern(&self, value: &Self::Pattern) {
+        let mut state = self.state.borrow_mut();
+        state.stroke = Paint::Pattern(value.clone());
     }
 
     fn get_text_align(&self) -> TextAlign {
@@ -484,24 +544,32 @@ impl<'a> CanvasContext<Pattern> for Canvas<'a> {
     // fn fill(path_OR_winding: dynamic, winding: String); // TODO:
 
     fn fill(&self) {
-        self.ctx.fill_preserve(); // FIXME: should deal with preserve
-                                  // self.ctx.fill();
+        let state = self.state.borrow();
+        if self.handle_paint(&state.fill) {
+            self.ctx.fill_preserve();
+        }
     }
 
     fn fill_rect(&self, x: f64, y: f64, width: f64, height: f64) {
-        self.ctx.new_path();
-        self.ctx.rectangle(x, y, width, height);
-        self.ctx.fill();
+        let state = self.state.borrow();
+        if self.handle_paint(&state.fill) {
+            self.ctx.new_path();
+            self.ctx.rectangle(x, y, width, height);
+            self.ctx.fill();
+        }
     }
 
     // Draws text to the canvas.
     fn fill_text(&self, text: &str, x: f64, y: f64) {
-        self.ctx.new_path();
-        self.ctx.save();
-        self.ctx.move_to(x, y);
-        self.ctx.text_path(text);
-        self.ctx.fill();
-        self.ctx.restore();
+        let state = self.state.borrow();
+        if self.handle_paint(&state.fill) {
+            self.ctx.new_path();
+            self.ctx.save();
+            self.ctx.move_to(x, y);
+            self.ctx.text_path(text);
+            self.ctx.fill();
+            self.ctx.restore();
+        }
     }
 
     // fn getContextAttributes() -> Map; // TODO:
@@ -584,9 +652,9 @@ impl<'a> CanvasContext<Pattern> for Canvas<'a> {
     // [Path2D? path]
     // fn scrollPathIntoView(path: Path2D); // TODO:
 
-    fn set_line_dash(&self, dash: Vec<f64>) {
+    fn set_line_dash(&self, dash: &Vec<f64>) {
         let (_, offset) = self.ctx.get_dash();
-        self.ctx.set_dash(&dash, offset);
+        self.ctx.set_dash(dash, offset);
     }
 
     fn set_transform(&self, a: f64, b: f64, c: f64, d: f64, e: f64, f: f64) {
@@ -595,22 +663,31 @@ impl<'a> CanvasContext<Pattern> for Canvas<'a> {
     }
 
     fn stroke(&self) {
-        self.ctx.stroke_preserve(); // FIXME: maybe should deal with preserve
+        let state = self.state.borrow();
+        if self.handle_paint(&state.stroke) {
+            self.ctx.stroke_preserve();
+        }
     }
 
     fn stroke_rect(&self, x: f64, y: f64, width: f64, height: f64) {
-        self.ctx.new_path();
-        self.ctx.rectangle(x, y, width, height);
-        self.ctx.stroke();
+        let state = self.state.borrow();
+        if self.handle_paint(&state.stroke) {
+            self.ctx.new_path();
+            self.ctx.rectangle(x, y, width, height);
+            self.ctx.stroke();
+        }
     }
 
     fn stroke_text(&self, text: &str, x: f64, y: f64) {
-        self.ctx.new_path();
-        self.ctx.save();
-        self.ctx.move_to(x, y);
-        self.ctx.text_path(text);
-        self.ctx.stroke();
-        self.ctx.restore();
+        let state = self.state.borrow();
+        if self.handle_paint(&state.stroke) {
+            self.ctx.new_path();
+            self.ctx.save();
+            self.ctx.move_to(x, y);
+            self.ctx.text_path(text);
+            self.ctx.stroke();
+            self.ctx.restore();
+        }
     }
 
     fn transform(&self, a: f64, b: f64, c: f64, d: f64, e: f64, f: f64) {

@@ -4426,7 +4426,12 @@ impl<O: IsA<Actor>> ActorExt for O {
     fn set_background_color(&self, color: Option<Color>) {
         let color = match color {
             Some(value) => {
-                let RgbaColor{red, green, blue, alpha} = value.into();
+                let RgbaColor {
+                    red,
+                    green,
+                    blue,
+                    alpha,
+                } = value.into();
                 Some(InternalColor::new(red, green, blue, alpha))
             }
             None => None,

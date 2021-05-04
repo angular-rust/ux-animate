@@ -22,5 +22,4 @@ pub use path_factory::*;
 mod path_interpolator;
 pub use path_interpolator::*;
 
-mod utils;
-pub use utils::*;
+pub struct Utils;

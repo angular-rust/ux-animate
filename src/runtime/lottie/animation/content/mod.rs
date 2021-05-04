@@ -7,9 +7,6 @@ pub use compound_trim_path_content::*;
 mod content_group;
 pub use content_group::*;
 
-mod content;
-pub use content::*;
-
 mod drawing_content;
 pub use drawing_content::*;
 
@@ -57,3 +54,5 @@ pub use stroke_content::*;
 
 mod trim_path_content;
 pub use trim_path_content::*;
+
+pub struct Content;

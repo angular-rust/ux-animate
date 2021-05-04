@@ -5,6 +5,4 @@ pub struct LottieValueCallback<T> {
     value: T,
 }
 
-impl<T> LottieValueCallback<T> {
-
-}
+impl<T> LottieValueCallback<T> {}

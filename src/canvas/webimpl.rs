@@ -3,8 +3,8 @@
 #![cfg(target_arch = "wasm32")]
 
 use primitives::{
-    BaseLine, CanvasContext, Color, Direction, Gradient, LineCap, LineJoin, Point,
-    Rect, RgbColor, Size, TextAlign, TextMetrics, TextStyle, TextWeight, ToHexString,
+    BaseLine, CanvasContext, Color, Direction, Gradient, LineCap, LineJoin, Point, Rect, RgbColor,
+    Size, TextAlign, TextMetrics, TextStyle, TextWeight, ToHexString,
 };
 
 use wasm_bindgen::JsValue;
@@ -12,9 +12,7 @@ use wasm_bindgen_test::console_log;
 use web_sys;
 
 #[derive(Debug, Clone, Copy)]
-pub struct Pattern {
-
-}
+pub struct Pattern {}
 
 impl Pattern {
     // Create pattern
@@ -25,7 +23,6 @@ impl Pattern {
         unimplemented!()
     }
 }
-
 
 pub struct Canvas<'a> {
     ctx: &'a web_sys::CanvasRenderingContext2d,
@@ -433,7 +430,7 @@ impl<'a> CanvasContext<Pattern> for Canvas<'a> {
     // fn scrollPathIntoView(path: Path2D); // TODO:
 
     // @SupportedBrowser(SupportedBrowser.CHROME), @SupportedBrowser(SupportedBrowser.IE, '11'), @SupportedBrowser(SupportedBrowser.SAFARI), @Unstable()
-    fn set_line_dash(&self, dash: Vec<f64>) {
+    fn set_line_dash(&self, dash: &Vec<f64>) {
         // TODO: should complete from JsValue for web-sys
     }
 

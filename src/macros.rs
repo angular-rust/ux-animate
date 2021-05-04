@@ -76,8 +76,6 @@ macro_rules! event_wrapper {
     };
 }
 
-
-
 macro_rules! event_subtype {
     ($name:ident, $($ty:path)|+) => {
         impl crate::FromEvent for $name {

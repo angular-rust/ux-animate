@@ -45,7 +45,7 @@ pub trait ClickActionExt: 'static {
     /// - 1 - left mouse button in a right-handed configuration, or the right mouse button in a left-handed configuration
     /// - 2 - scroll wheel button
     /// - 3 - right mouse button in a right-handed configuration, or the left mouse button in a left-handed configuration
-    /// 
+    ///
     /// # Returns
     ///
     /// the button value

@@ -123,6 +123,6 @@ impl LottieComposition {
 
 impl fmt::Display for LottieComposition {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", "LottieComposition")
+        write!(f, "LottieComposition")
     }
 }

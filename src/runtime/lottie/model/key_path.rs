@@ -116,6 +116,6 @@ impl KeyPath {
 impl fmt::Display for KeyPath {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         //keys={}, self.keys , resolved={{{}}}, self.resolved_element
-        write!(f, "KeyPath[]") 
+        write!(f, "KeyPath[]")
     }
 }

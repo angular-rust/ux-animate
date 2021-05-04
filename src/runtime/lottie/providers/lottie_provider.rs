@@ -13,10 +13,7 @@ pub struct LottieCache {
 
 impl LottieCache {
     pub fn new(maximum_size: Option<usize>) -> Self {
-        let maximum_size = match maximum_size {
-            Some(val) => val,
-            None => 1000,
-        };
+        let maximum_size = maximum_size.unwrap_or(1000);
 
         Self {
             maximum_size,

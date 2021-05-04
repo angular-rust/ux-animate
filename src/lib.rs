@@ -11,12 +11,11 @@
     clippy::wrong_self_convention
 )]
 
-
 #[macro_use]
 extern crate log;
 
-mod backend;
-pub use backend::*;
+mod canvas;
+pub use canvas::*;
 
 pub mod easing;
 
@@ -30,6 +29,8 @@ mod runtime;
 pub use runtime::*;
 
 pub mod svg;
+
+pub mod path;
 
 pub mod interpolate;
 
@@ -63,6 +64,7 @@ pub use legacy::*;
 #[cfg(not(target_arch = "wasm32"))]
 pub use self::rt::{init, quit, run, set_initialized};
 
+pub use primitives::colorspace::{Color, RgbColor, RgbaColor};
 pub use primitives::*;
 
 #[cfg(test)]

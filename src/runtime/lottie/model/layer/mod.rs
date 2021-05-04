@@ -7,9 +7,6 @@ pub use composition_layer::*;
 mod image_layer;
 pub use image_layer::*;
 
-mod layer;
-pub use layer::*;
-
 mod null_layer;
 pub use null_layer::*;
 
@@ -21,3 +18,5 @@ pub use solid_layer::*;
 
 mod text_layer;
 pub use text_layer::*;
+
+pub struct Layer;

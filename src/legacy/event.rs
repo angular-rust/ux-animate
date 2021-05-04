@@ -367,7 +367,6 @@ pub trait FromEvent: Sized {
     fn from(ev: Event) -> Result<Self, Event>;
 }
 
-
 impl FromEvent for Event {
     #[inline]
     fn is(_ev: &Event) -> bool {

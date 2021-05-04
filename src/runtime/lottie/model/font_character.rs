@@ -28,7 +28,7 @@ impl FontCharacter {
         }
     }
 
-    pub fn hash_for(character: &String, font_family: &String, style: &String) -> u64 {
+    pub fn hash_for(character: &str, font_family: &str, style: &str) -> u64 {
         unimplemented!()
     }
 
