@@ -20,12 +20,10 @@ pub struct RoughGenerator {
 
 impl RoughGenerator {
     pub fn new(config: RoughConfig) -> Self {
-        let ret = Self {
+        Self {
             config,
             default_options: Default::default(),
-        };
-
-        ret
+        }
     }
 
     pub fn new_seed(&self) -> u64 {
@@ -137,7 +135,7 @@ impl RoughGenerator {
 
     pub fn linear_path<'a>(
         &self,
-        points: &Vec<Point<f64>>,
+        points: &[Point<f64>],
         options: &'a RoughOptions,
     ) -> Drawable<'a> {
         let sets = vec![Renderer::linear_path(points, false, options)];
@@ -188,7 +186,7 @@ impl RoughGenerator {
         }
     }
 
-    pub fn curve<'a>(&self, points: &Vec<Point<f64>>, options: &'a RoughOptions) -> Drawable<'a> {
+    pub fn curve<'a>(&self, points: &[Point<f64>], options: &'a RoughOptions) -> Drawable<'a> {
         let mut sets: Vec<OpSet> = Vec::new();
         let outline = Renderer::curve(points, options);
         if (!options.fill.is_empty()) && options.fill != NOS && points.len() >= 3 {
@@ -213,7 +211,7 @@ impl RoughGenerator {
         }
     }
 
-    pub fn polygon<'a>(&self, points: &Vec<Point<f64>>, options: &'a RoughOptions) -> Drawable<'a> {
+    pub fn polygon<'a>(&self, points: &[Point<f64>], options: &'a RoughOptions) -> Drawable<'a> {
         let mut sets: Vec<OpSet> = Vec::new();
         let outline = Renderer::linear_path(points, true, options);
 

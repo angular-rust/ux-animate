@@ -1,3 +1,4 @@
+#![allow(clippy::too_many_arguments)]
 mod angle;
 mod error;
 mod length;
@@ -152,15 +153,13 @@ impl Path {
                     prev_x = seg.x().unwrap();
                     prev_y = seg.y().unwrap();
                 }
+            } else if seg.cmd() == PathCommand::HorizontalLineTo {
+                prev_x += seg.x().unwrap();
+            } else if seg.cmd() == PathCommand::VerticalLineTo {
+                prev_y += seg.y().unwrap();
             } else {
-                if seg.cmd() == PathCommand::HorizontalLineTo {
-                    prev_x += seg.x().unwrap();
-                } else if seg.cmd() == PathCommand::VerticalLineTo {
-                    prev_y += seg.y().unwrap();
-                } else {
-                    prev_x += seg.x().unwrap();
-                    prev_y += seg.y().unwrap();
-                }
+                prev_x += seg.x().unwrap();
+                prev_y += seg.y().unwrap();
             }
 
             if seg.cmd() == PathCommand::MoveTo {

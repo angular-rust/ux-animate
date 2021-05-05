@@ -1,7 +1,6 @@
 #![allow(unused_imports)]
 #![allow(unused_variables)]
 #![allow(dead_code)]
-#![allow(clippy::new_without_default)]
 
 use crate::prelude::*;
 use bytes::Bytes;

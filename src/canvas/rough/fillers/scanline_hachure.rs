@@ -18,7 +18,7 @@ pub struct ActiveEdgeEntry {
   edge: EdgeEntry,
 }
 
-pub fn polygon_hachure_lines(points: &Vec<Point<f64>>, options: &RoughOptions) -> Vec<Line<f64>> {
+pub fn polygon_hachure_lines(points: &[Point<f64>], options: &RoughOptions) -> Vec<Line<f64>> {
     let rotation_center = Point::new(0.0, 0.0);
     let angle = (options.hachure_angle + 90.0).round();
     if angle != 0.0 {
@@ -33,7 +33,7 @@ pub fn polygon_hachure_lines(points: &Vec<Point<f64>>, options: &RoughOptions) -
     lines
 }
 
-fn straight_hachure_lines(points: &Vec<Point<f64>>, options: &RoughOptions) -> Vec<Line<f64>> {
+fn straight_hachure_lines(points: &[Point<f64>], options: &RoughOptions) -> Vec<Line<f64>> {
     // let vertices = [...points];
     // if (vertices[0].join(',') !== vertices[vertices.length - 1].join(',')) {
     //   vertices.push([vertices[0][0], vertices[0][1]]);

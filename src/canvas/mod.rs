@@ -1,3 +1,4 @@
+#![allow(clippy::too_many_arguments)]
 use primitives::CanvasContext;
 use std::f64::consts::PI;
 

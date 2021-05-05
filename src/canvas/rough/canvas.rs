@@ -136,17 +136,17 @@ where
         self.draw(drawings)
     }
 
-    pub fn linear_path(&self, points: &Vec<Point<f64>>, options: &'a RoughOptions) -> Drawable<'a> {
+    pub fn linear_path(&self, points: &[Point<f64>], options: &'a RoughOptions) -> Drawable<'a> {
         let drawings = self.gen.linear_path(points, options);
         self.draw(drawings)
     }
 
-    pub fn polygon(&self, points: &Vec<Point<f64>>, options: &'a RoughOptions) -> Drawable<'a> {
+    pub fn polygon(&self, points: &[Point<f64>], options: &'a RoughOptions) -> Drawable<'a> {
         let drawings = self.gen.polygon(points, options);
         self.draw(drawings)
     }
 
-    pub fn curve(&self, points: &Vec<Point<f64>>, options: &'a RoughOptions) -> Drawable<'a> {
+    pub fn curve(&self, points: &[Point<f64>], options: &'a RoughOptions) -> Drawable<'a> {
         let drawing = self.gen.curve(points, options);
         self.draw(drawing)
     }
@@ -542,12 +542,12 @@ where
     // [Path2D? path]
     // fn scrollPathIntoView(path: Path2D);
 
-    fn set_line_dash(&self, dash: &Vec<f64>) {
+    fn set_line_dash(&self, dash: &[f64]) {
         self.ctx.set_line_dash(dash)
     }
 
-    fn set_transform(&self, a: f64, b: f64, c: f64, d: f64, e: f64, f: f64) {
-        self.ctx.set_transform(a, b, c, d, e, f)
+    fn set_transform(&self, ma: f64, mb: f64, mc: f64, md: f64, me: f64, mf: f64) {
+        self.ctx.set_transform(ma, mb, mc, md, me, mf)
     }
 
     fn stroke(&self) {
@@ -564,8 +564,8 @@ where
         self.ctx.stroke_text(text, x, y)
     }
 
-    fn transform(&self, a: f64, b: f64, c: f64, d: f64, e: f64, f: f64) {
-        self.ctx.transform(a, b, c, d, e, f)
+    fn transform(&self, ma: f64, mb: f64, mc: f64, md: f64, me: f64, mf: f64) {
+        self.ctx.transform(ma, mb, mc, md, me, mf)
     }
 
     fn translate(&self, x: f64, y: f64) {

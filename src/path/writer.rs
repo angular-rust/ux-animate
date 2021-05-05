@@ -38,10 +38,11 @@ fn write_cmd(
         // check that previous command is the same as current
         if let Some(ref pcmd) = *prev_cmd {
             // MoveTo commands can't be skipped
-            if pcmd.cmd != PathCommand::MoveTo {
-                if seg.cmd() == pcmd.cmd && seg.is_absolute() == pcmd.absolute {
-                    print_cmd = false;
-                }
+            if pcmd.cmd != PathCommand::MoveTo
+                && seg.cmd() == pcmd.cmd
+                && seg.is_absolute() == pcmd.absolute
+            {
+                print_cmd = false;
             }
         }
     }
@@ -238,10 +239,8 @@ fn write_coords(
                 !(i == 0 && is_explicit_cmd)
             } else if i == 0 && is_explicit_cmd {
                 false
-            } else if (c as char).is_digit(10) {
-                true
             } else {
-                false
+                (c as char).is_digit(10)
             };
 
             if write_space {

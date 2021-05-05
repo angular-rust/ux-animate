@@ -1,3 +1,4 @@
+#![allow(clippy::if_same_then_else)]
 use super::polygon_hachure_lines;
 use crate::{
     canvas::rough::{
@@ -47,7 +48,7 @@ impl<H: RenderHelper> HachureFiller<H> {
         }
     }
 
-    fn render_lines(&self, lines: &Vec<Line<f64>>, options: &RoughOptions) -> Vec<Op> {
+    fn render_lines(&self, lines: &[Line<f64>], options: &RoughOptions) -> Vec<Op> {
         let mut ops: Vec<Op> = Vec::new();
         for line in lines.iter() {
             let mut append =
@@ -60,8 +61,8 @@ impl<H: RenderHelper> HachureFiller<H> {
 
     fn connecting_lines(
         &self,
-        polygon: &Vec<Point<f64>>,
-        lines: &Vec<Line<f64>>,
+        polygon: &[Point<f64>],
+        lines: &[Line<f64>],
     ) -> Vec<Line<f64>> {
         let result: Vec<Line<f64>> = Vec::new();
         if lines.len() > 1 {
@@ -81,7 +82,7 @@ impl<H: RenderHelper> HachureFiller<H> {
         result
     }
 
-    fn mid_point_in_polygon(polygon: Vec<Point<f64>>, segment: Line<f64>) -> bool {
+    fn mid_point_in_polygon(polygon: &[Point<f64>], segment: Line<f64>) -> bool {
         is_point_in_polygon(
             polygon,
             (segment.start.x + segment.end.x) / 2.0,
@@ -89,7 +90,7 @@ impl<H: RenderHelper> HachureFiller<H> {
         )
     }
 
-    fn split_on_intersections(polygon: Vec<Point<f64>>, segment: &Line<f64>) -> Vec<Line<f64>> {
+    fn split_on_intersections(polygon: &[Point<f64>], segment: &Line<f64>) -> Vec<Line<f64>> {
         let error = 5_f64.max(line_length(segment) * 0.1);
         let intersections: Vec<IntersectionInfo> = Vec::new();
         for i in 0..polygon.len() {

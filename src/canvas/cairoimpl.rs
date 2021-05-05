@@ -652,7 +652,7 @@ impl<'a> CanvasContext for Canvas<'a> {
     // [Path2D? path]
     // fn scrollPathIntoView(path: Path2D); // TODO:
 
-    fn set_line_dash(&self, dash: &Vec<f64>) {
+    fn set_line_dash(&self, dash: &[f64]) {
         let (_, offset) = self.ctx.get_dash();
         self.ctx.set_dash(dash, offset);
     }

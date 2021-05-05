@@ -1,3 +1,4 @@
+#![allow(clippy::clippy::too_many_arguments)]
 use crate::Color;
 
 #[derive(PartialEq)]

@@ -1,6 +1,6 @@
 use super::{get_filler, Op, OpSet, OpSetType, Random, RoughOptions};
 use crate::{OpType, Point};
-use std::f64::consts::PI;
+use std::{cmp::Ordering, f64::consts::PI};
 // import { RenderHelper } from './fillers/filler-interface.js';
 // import { parsePath, normalize, absolutize } from 'path-data-parser';
 
@@ -33,47 +33,49 @@ impl Renderer {
         }
     }
 
-    pub fn linear_path(points: &Vec<Point<f64>>, close: bool, options: &RoughOptions) -> OpSet {
+    pub fn linear_path(points: &[Point<f64>], close: bool, options: &RoughOptions) -> OpSet {
         let len = points.len();
-        if len > 2 {
-            let mut ops: Vec<Op> = Vec::new();
-            for idx in 0..len - 1 {
-                let first = points.get(idx).unwrap();
-                let next = points.get(idx + 1).unwrap();
-                let mut op2 =
-                    Renderer::_double_line(first.x, first.y, next.x, next.y, options, false);
-                ops.append(op2.as_mut());
-            }
+        match len.cmp(&2) {
+            Ordering::Greater => {
+                let mut ops: Vec<Op> = Vec::new();
+                for idx in 0..len - 1 {
+                    let first = points.get(idx).unwrap();
+                    let next = points.get(idx + 1).unwrap();
+                    let mut op2 =
+                        Renderer::_double_line(first.x, first.y, next.x, next.y, options, false);
+                    ops.append(op2.as_mut());
+                }
 
-            if close {
+                if close {
+                    let first = points.first().unwrap();
+                    let last = points.last().unwrap();
+                    let mut op2 =
+                        Renderer::_double_line(last.x, last.y, first.x, first.y, options, false);
+                    ops.append(op2.as_mut());
+                }
+
+                OpSet {
+                    kind: OpSetType::Path,
+                    ops,
+                    size: None,
+                    path: None,
+                }
+            }
+            Ordering::Equal => {
                 let first = points.first().unwrap();
                 let last = points.last().unwrap();
-                let mut op2 =
-                    Renderer::_double_line(last.x, last.y, first.x, first.y, options, false);
-                ops.append(op2.as_mut());
+                Renderer::line(first.x, first.y, last.x, last.y, options)
             }
-
-            return OpSet {
+            _ => OpSet {
                 kind: OpSetType::Path,
-                ops,
+                ops: Vec::new(),
                 size: None,
                 path: None,
-            };
-        } else if len == 2 {
-            let first = points.first().unwrap();
-            let last = points.last().unwrap();
-            return Renderer::line(first.x, first.y, last.x, last.y, options);
-        }
-
-        OpSet {
-            kind: OpSetType::Path,
-            ops: Vec::new(),
-            size: None,
-            path: None,
+            },
         }
     }
 
-    pub fn polygon(points: &Vec<Point<f64>>, options: &RoughOptions) -> OpSet {
+    pub fn polygon(points: &[Point<f64>], options: &RoughOptions) -> OpSet {
         Renderer::linear_path(points, true, options)
     }
 
@@ -88,7 +90,7 @@ impl Renderer {
         Renderer::polygon(&points, options)
     }
 
-    pub fn curve(points: &Vec<Point<f64>>, options: &RoughOptions) -> OpSet {
+    pub fn curve(points: &[Point<f64>], options: &RoughOptions) -> OpSet {
         let mut o1 =
             Renderer::_curve_with_offset(points, 1.0 * (1.0 + options.roughness * 0.2), options);
         if !options.disable_multi_stroke {
@@ -113,17 +115,24 @@ impl Renderer {
         Renderer::ellipse_with_params(x, y, options, &params).opset
     }
 
-    pub fn generate_ellipse_params(width: f64, height: f64, options: &RoughOptions) -> EllipseParams {
+    pub fn generate_ellipse_params(
+        width: f64,
+        height: f64,
+        options: &RoughOptions,
+    ) -> EllipseParams {
         let psq =
             (PI * 2.0 * (((width / 2.0).powi(2) + (height / 2.0).powi(2)) / 2.0).sqrt()).sqrt();
-        let step_count = options.curve_step_count.max(options.curve_step_count / 200_f64.sqrt()) * psq;
+        let step_count = options
+            .curve_step_count
+            .max(options.curve_step_count / 200_f64.sqrt())
+            * psq;
         let increment = (PI * 2.0) / step_count;
         let mut rx = (width / 2.0).abs();
         let mut ry = (height / 2.0).abs();
         let curve_fit_randomness = 1.0 - options.curve_fitting;
         rx += Renderer::_offset_opt(rx * curve_fit_randomness, options, 1.0);
         ry += Renderer::_offset_opt(ry * curve_fit_randomness, options, 1.0);
-        EllipseParams { increment, rx, ry }
+        EllipseParams { rx, ry, increment }
     }
 
     pub fn ellipse_with_params(
@@ -291,7 +300,7 @@ impl Renderer {
     // }
 
     // Fills
-    pub fn solid_fill_polygon(points: &Vec<Point<f64>>, options: &RoughOptions) -> OpSet {
+    pub fn solid_fill_polygon(points: &[Point<f64>], options: &RoughOptions) -> OpSet {
         let mut ops: Vec<Op> = Vec::new();
         let len = points.len();
         if len > 0 {
@@ -326,7 +335,7 @@ impl Renderer {
         }
     }
 
-    pub fn pattern_fill_polygon(points: &Vec<Point<f64>>, options: &RoughOptions) -> OpSet {
+    pub fn pattern_fill_polygon(points: &[Point<f64>], options: &RoughOptions) -> OpSet {
         // get_filler(o, helper).fill_polygon(points, o)
         unimplemented!()
     }
@@ -364,7 +373,7 @@ impl Renderer {
         let mut angle = strt;
         while angle <= stp {
             points.push(Point::new(cx + rx * angle.cos(), cy + ry * angle.sin()));
-            angle = angle + increment
+            angle += increment
         }
 
         points.push(Point::new(cx + rx * stp.cos(), cy + ry * stp.sin()));
@@ -532,11 +541,7 @@ impl Renderer {
         ops
     }
 
-    fn _curve_with_offset(
-        points: &Vec<Point<f64>>,
-        offset: f64,
-        options: &RoughOptions,
-    ) -> Vec<Op> {
+    fn _curve_with_offset(points: &[Point<f64>], offset: f64, options: &RoughOptions) -> Vec<Op> {
         let mut ps: Vec<Point<f64>> = Vec::new();
         let mut iter = points.iter();
 
@@ -670,7 +675,7 @@ impl Renderer {
             core_points.push(p);
             all_points.push(p);
 
-            angle = angle + increment;
+            angle += increment;
         }
 
         all_points.push(Point::new(
@@ -713,11 +718,10 @@ impl Renderer {
         // println!("RENDERER _ARC");
 
         let rad_offset = strt + Renderer::_offset_opt(0.1, o, 1.0);
-        let mut points: Vec<Point<f64>> = Vec::new();
-        points.push(Point::new(
+        let mut points: Vec<Point<f64>> = vec![Point::new(
             Renderer::_offset_opt(offset, o, 1.0) + cx + 0.9 * rx * (rad_offset - increment).cos(),
             Renderer::_offset_opt(offset, o, 1.0) + cy + 0.9 * ry * (rad_offset - increment).sin(),
-        ));
+        )];
 
         let mut angle = rad_offset;
         while angle <= stp {
@@ -725,7 +729,7 @@ impl Renderer {
                 Renderer::_offset_opt(offset, o, 1.0) + cx + rx * angle.cos(),
                 Renderer::_offset_opt(offset, o, 1.0) + cy + ry * angle.sin(),
             ));
-            angle = angle + increment;
+            angle += increment;
         }
 
         points.push(Point::new(cx + rx * stp.cos(), cy + ry * stp.sin()));

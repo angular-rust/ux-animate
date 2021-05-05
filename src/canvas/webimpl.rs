@@ -430,7 +430,7 @@ impl<'a> CanvasContext<Pattern> for Canvas<'a> {
     // fn scrollPathIntoView(path: Path2D); // TODO:
 
     // @SupportedBrowser(SupportedBrowser.CHROME), @SupportedBrowser(SupportedBrowser.IE, '11'), @SupportedBrowser(SupportedBrowser.SAFARI), @Unstable()
-    fn set_line_dash(&self, dash: &Vec<f64>) {
+    fn set_line_dash(&self, dash: &[f64]) {
         // TODO: should complete from JsValue for web-sys
     }
 

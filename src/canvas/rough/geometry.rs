@@ -2,8 +2,8 @@ use super::Line;
 use crate::{Point, Rectangle};
 use std::f64::consts::PI;
 
-pub fn rotate_points(points: &Vec<Point<f64>>, center: Point<f64>, degrees: f64) {
-    if points.len() > 0 {
+pub fn rotate_points(points: &[Point<f64>], center: Point<f64>, degrees: f64) {
+    if !points.is_empty() {
         let angle = (PI / 180.0) * degrees;
         let cos = angle.cos();
         let sin = angle.sin();
@@ -15,7 +15,7 @@ pub fn rotate_points(points: &Vec<Point<f64>>, center: Point<f64>, degrees: f64)
     }
 }
 
-pub fn rotate_lines(lines: &Vec<Line<f64>>, center: Point<f64>, degrees: f64) {
+pub fn rotate_lines(lines: &[Line<f64>], center: Point<f64>, degrees: f64) {
     let points: Vec<Point<f64>> = Vec::new();
     // lines.forEach((line) => points.push(...line));
     // rotate_points(points, center, degrees);
@@ -50,7 +50,7 @@ pub fn line_intersection(
     None
 }
 
-pub fn is_point_in_polygon(points: Vec<Point<f64>>, x: f64, y: f64) -> bool {
+pub fn is_point_in_polygon(points: &[Point<f64>], x: f64, y: f64) -> bool {
     let vertices = points.len();
 
     // There must be at least 3 vertices in polygon
@@ -129,5 +129,5 @@ pub fn do_intersect(p1: Point<f64>, q1: Point<f64>, p2: Point<f64>, q2: Point<f6
         return true;
     }
 
-    return false;
+    false
 }

@@ -2,14 +2,6 @@
 #![allow(deprecated)]
 #![cfg_attr(feature = "cargo-clippy", allow(clippy::cast_ptr_alignment))]
 #![cfg_attr(feature = "cargo-clippy", allow(clippy::trivially_copy_pass_by_ref))]
-#![allow(
-    clippy::too_many_arguments,
-    clippy::let_and_return,
-    clippy::from_over_into,
-    clippy::upper_case_acronyms,
-    clippy::new_ret_no_self,
-    clippy::wrong_self_convention
-)]
 
 #[macro_use]
 extern crate log;
