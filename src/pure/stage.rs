@@ -1,15 +1,80 @@
+use super::{Actor, Animatable, Container, Event, Fog, Group, Perspective, PickMode};
 use crate::prelude::*;
-use super::{Actor, Animatable, Container, Event, Group, Perspective, PickMode};
-use glib::{
-    signal::{connect_raw, SignalHandlerId},
-};
+use glib::signal::{connect_raw, SignalHandlerId};
 use std::boxed::Box as Box_;
 use std::{fmt, mem, mem::transmute};
 
+// * SECTION:clutter-stage
+// * @short_description: Top level visual element to which actors are placed.
+// *
+// * #ClutterStage is a top level 'window' on which child actors are placed
+// * and manipulated.
+// *
+// * Backends might provide support for multiple stages. The support for this
+// * feature can be checked at run-time using the clutter_feature_available()
+// * function and the %CLUTTER_FEATURE_STAGE_MULTIPLE flag. If the backend used
+// * supports multiple stages, new #ClutterStage instances can be created
+// * using clutter_stage_new(). These stages must be managed by the developer
+// * using clutter_actor_destroy(), which will take care of destroying all the
+// * actors contained inside them.
+// *
+// * #ClutterStage is a proxy actor, wrapping the backend-specific
+// * implementation of the windowing system. It is possible to subclass
+// * #ClutterStage, as long as every overridden virtual function chains up to
+// * the parent class corresponding function.
 // TODO: implements atk::ImplementorIface, Scriptable, Animatable, Container
 // @extends Group, Actor
 #[derive(Debug, Clone)]
 pub struct Stage {
+    /* the stage implementation */
+    // implementation: Option<StageWindow>,
+    perspective: Perspective,
+    projection: dx::Matrix,
+    inverse_projection: dx::Matrix,
+    view: dx::Matrix,
+    viewport: [f32; 4],
+
+    fog: Fog,
+
+    title: Option<String>,
+    key_focused_actor: Option<Actor>,
+
+    // event_queue: Option<GQueue>,
+
+    // stage_hints: StageHint,
+    paint_volume_stack: Option<Vec<String>>,
+
+    // current_clip_planes: [Plane; 4],
+    pending_queue_redraws: Option<Vec<String>>,
+
+    active_framebuffer: Option<dx::Framebuffer>,
+
+    sync_delay: i32,
+
+    // fps_timer: Option<Timer>,
+    timer_n_frames: i32,
+
+    // pick_id_pool: Option<IDPool>,
+
+    // current_state: StageState,
+
+    // paint_data: ptr,
+    // paint_notify: GDestroyNotify,
+
+    relayout_pending: bool,
+    redraw_pending: bool,
+    is_fullscreen: bool,
+    is_cursor_visible: bool,
+    is_user_resizable: bool,
+    use_fog: bool,
+    throttle_motion_events: bool,
+    use_alpha: bool,
+    min_size_changed: bool,
+    dirty_viewport: bool,
+    dirty_projection: bool,
+    accept_focus: bool,
+    motion_events_enabled: bool,
+    has_custom_perspective: bool,
 }
 
 impl Stage {

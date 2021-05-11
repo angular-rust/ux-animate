@@ -36,23 +36,23 @@ impl Units {
         unimplemented!()
     }
 
-    /// Converts `self` into a string
-    ///
-    /// See `Units::from_string` for the units syntax and for
-    /// examples of output
-    ///
-    /// Fractional values are truncated to the second decimal
-    /// position for em, mm and cm, and to the first decimal position for
-    /// typographic points. Pixels are integers.
-    ///
-    /// # Returns
-    ///
-    /// a newly allocated string containing the encoded
-    ///  `Units` value. Use `g_free` to free the string
-    fn to_string(&self) -> String {
-        // unsafe { from_glib_full(ffi::clutter_units_to_string(self.to_glib_none().0)) }
-        unimplemented!()
-    }
+    // /// Converts `self` into a string
+    // ///
+    // /// See `Units::from_string` for the units syntax and for
+    // /// examples of output
+    // ///
+    // /// Fractional values are truncated to the second decimal
+    // /// position for em, mm and cm, and to the first decimal position for
+    // /// typographic points. Pixels are integers.
+    // ///
+    // /// # Returns
+    // ///
+    // /// a newly allocated string containing the encoded
+    // ///  `Units` value. Use `g_free` to free the string
+    // fn to_string(&self) -> String {
+    //     // unsafe { from_glib_full(ffi::clutter_units_to_string(self.to_glib_none().0)) }
+    //     unimplemented!()
+    // }
 
     /// Stores a value in centimeters inside `units`
     /// ## `units`
@@ -210,6 +210,6 @@ impl Units {
 impl fmt::Display for Units {
     #[inline]
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}", self.to_string())
+        write!(f, "Units")
     }
 }

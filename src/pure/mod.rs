@@ -324,7 +324,7 @@ mod path_node;
 pub use self::path_node::PathNode;
 
 mod perspective;
-pub use self::perspective::Perspective;
+pub use self::perspective::{Perspective, Fog};
 
 mod point;
 pub(crate) use self::point::InternalPoint;

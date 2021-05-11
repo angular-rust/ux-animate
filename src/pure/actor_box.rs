@@ -76,8 +76,10 @@ impl ActorBox {
     ///
     /// `true` if the passed `ActorBox` are equal
     fn equal(&self, other: &ActorBox) -> bool {
-        self.x1 == other.x1 && self.y1 == other.y1 &&
-         self.x2 == other.x2 && self.y2 == other.y2
+        use std::f32::EPSILON;
+        let error_margin = EPSILON;
+        (self.x1 - other.x1).abs() < error_margin && (self.y1 - other.y1).abs() < error_margin &&
+        (self.x2 - other.x2).abs() < error_margin && (self.y2 - other.y2).abs() < error_margin
     }
 
     pub fn from_vertices(&mut self, verts: &[Vertex; 4]) {     
