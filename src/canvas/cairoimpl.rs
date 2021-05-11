@@ -172,93 +172,16 @@ impl<'a> CanvasContext for Canvas<'a> {
     fn set_fill_color(&self, value: Color) {
         let mut state = self.state.borrow_mut();
         state.fill = Paint::Solid(value);
-
-        let RgbaColor {
-            red,
-            green,
-            blue,
-            alpha,
-        } = value.into();
-        self.ctx.set_source_rgba(
-            red as f64 / 255.,
-            green as f64 / 255.,
-            blue as f64 / 255.,
-            alpha as f64 / 255.,
-        );
     }
 
     fn set_fill_gradient(&self, value: &Gradient) {
         let mut state = self.state.borrow_mut();
         state.fill = Paint::Gradient(value.clone());
-
-        match value.kind {
-            GradientType::Linear(params) => {
-                let LinearGradient { x0, y0, x1, y1 } = params;
-                let gradient = cairo::LinearGradient::new(x0, y0, x1, y1);
-                let stops = value.stops.borrow();
-                for stop in stops.iter() {
-                    let RgbaColor {
-                        red,
-                        green,
-                        blue,
-                        alpha,
-                    } = stop.color.into();
-
-                    gradient.add_color_stop_rgba(
-                        stop.offset,
-                        red as f64 / 255.,
-                        green as f64 / 255.,
-                        blue as f64 / 255.,
-                        alpha as f64 / 255.,
-                    );
-                }
-                self.ctx.set_source(&gradient);
-            }
-            GradientType::Radial(params) => {
-                let RadialGradient {
-                    x0,
-                    y0,
-                    r0,
-                    x1,
-                    y1,
-                    r1,
-                } = params;
-                let gradient = cairo::RadialGradient::new(x0, y0, r0, x1, y1, r1);
-                let stops = value.stops.borrow();
-                for stop in stops.iter() {
-                    let RgbaColor {
-                        red,
-                        green,
-                        blue,
-                        alpha,
-                    } = stop.color.into();
-
-                    gradient.add_color_stop_rgba(
-                        stop.offset,
-                        red as f64 / 255.,
-                        green as f64 / 255.,
-                        blue as f64 / 255.,
-                        alpha as f64 / 255.,
-                    );
-                }
-                self.ctx.set_source(&gradient);
-            }
-        }
     }
 
     fn set_fill_pattern(&self, value: &Self::Pattern) {
         let mut state = self.state.borrow_mut();
         state.fill = Paint::Pattern(value.clone());
-
-        let extend = match value.extend {
-            PatternExtend::None => cairo::Extend::None,
-            PatternExtend::Repeat => cairo::Extend::Repeat,
-            PatternExtend::Reflect => cairo::Extend::Reflect,
-            PatternExtend::Pad => cairo::Extend::Pad,
-        };
-
-        value.inner.set_extend(extend);
-        self.ctx.set_source(&value.inner);
     }
 
     fn get_filter(&self) -> String {

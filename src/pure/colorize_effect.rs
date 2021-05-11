@@ -1,0 +1,86 @@
+use crate::prelude::*;
+use super::{ActorMeta, Effect, OffscreenEffect};
+use crate::{Color, RgbaColor};
+use glib::{
+    // object as gobject,
+    // object::{Cast, ObjectType as ObjectType_},
+    signal::{connect_raw, SignalHandlerId},
+    // translate::*,
+};
+use std::boxed::Box as Box_;
+use std::{fmt, mem::transmute};
+
+// * SECTION:clutter-colorize-effect
+// * @short_description: A colorization effect
+// * @see_also: #ClutterEffect, #ClutterOffscreenEffect
+// *
+// * #ClutterColorizeEffect is a sub-class of #ClutterEffect that
+// * colorizes an actor with the given tint.
+
+// @extends OffscreenEffect, Effect, ActorMeta
+pub struct ColorizeEffect {
+    // ClutterOffscreenEffect parent_instance;
+
+    /* the tint of the colorization */
+    tint: Color,
+  
+    tint_uniform: i32,
+  
+    tex_width: i32,
+    tex_height: i32,
+  
+    pipeline: Option<dx::Pipeline>
+}
+
+impl ColorizeEffect {
+    /// Creates a new `ColorizeEffect` to be used with
+    /// `ActorExt::add_effect`
+    /// ## `tint`
+    /// the color to be used
+    ///
+    /// # Returns
+    ///
+    /// the newly created `ColorizeEffect` or `None`
+    pub fn new(tint: Color) -> ColorizeEffect {
+        let RgbaColor {
+            red,
+            green,
+            blue,
+            alpha,
+        } = tint.into();
+        unimplemented!()
+    }
+
+    /// Retrieves the tint used by `self`
+    /// ## `tint`
+    /// return location for the color used
+    pub fn get_tint(&self) -> Color {
+        self.tint
+    }
+
+    /// Sets the tint to be used when colorizing
+    /// ## `tint`
+    /// the color to be used
+    pub fn set_tint(&self, tint: Color) {
+        let RgbaColor {
+            red,
+            green,
+            blue,
+            alpha,
+        } = tint.into();
+        unimplemented!()
+    }
+
+    pub fn connect_property_tint_notify<F: Fn(&ColorizeEffect) + 'static>(
+        &self,
+        f: F,
+    ) -> SignalHandlerId {
+        unimplemented!()
+    }
+}
+
+impl fmt::Display for ColorizeEffect {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "ColorizeEffect")
+    }
+}

@@ -48,6 +48,11 @@ mod macros;
 mod legacy;
 
 #[cfg(not(target_arch = "wasm32"))]
+#[cfg_attr(feature = "cargo-clippy", allow(clippy::type_complexity))]
+#[cfg_attr(feature = "cargo-clippy", allow(clippy::unreadable_literal))]
+mod pure;
+
+#[cfg(not(target_arch = "wasm32"))]
 pub mod prelude;
 
 #[cfg(not(target_arch = "wasm32"))]

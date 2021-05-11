@@ -1,40 +1,45 @@
-#![allow(unused_macros)]
-
-use glib::translate::*;
-use libc::c_void;
+use crate::prelude::*;
+use super::{
+    AnyEvent, ButtonEvent, CrossingEvent, EventSequence, EventType, InputDevice, KeyEvent,
+    ModifierType, MotionEvent, ScrollEvent, StageStateEvent, TouchEvent, TouchpadPinchEvent,
+    TouchpadSwipeEvent,
+};
 use std::{fmt, mem, ptr};
 
-// use AxisUse;
-use crate::{EventSequence, EventType, InputDevice, ModifierType};
-
-glib_wrapper! {
-    /// A generic UX Animate event.
-    #[derive(PartialEq, Eq, PartialOrd, Ord, Hash)]
-    pub struct Event(Boxed<ffi::ClutterEvent>);
-
-    match fn {
-        copy => |ptr| ffi::clutter_event_copy(ptr),
-        free => |ptr| ffi::clutter_event_free(ptr),
-        get_type => || ffi::clutter_event_get_type(),
-    }
+/// A generic UX Animate event wrapper.
+#[derive(Clone)]
+pub enum Event {
+    AnyEvent,           // any;
+    ButtonEvent,        // button;
+    KeyEvent,           // key;
+    MotionEvent,        // motion;
+    ScrollEvent,        // scroll;
+    StageStateEvent,    // stage_state;
+    CrossingEvent,      // crossing;
+    TouchEvent,         // touch;
+    TouchpadPinchEvent, // touchpad_pinch;
+    TouchpadSwipeEvent, // touchpad_swipe;
 }
 
-event_wrapper!(Event, ClutterAnyEvent);
+// event_wrapper!(Event, ClutterAnyEvent);
 
 impl Event {
     /// Creates a new event.
     pub fn new(type_: EventType) -> Event {
-        assert_initialized_main_thread!();
-        unsafe { from_glib_none(ffi::clutter_event_new(type_.to_glib())) }
+        // assert_initialized_main_thread!();
+        // unsafe { from_glib_none(ffi::clutter_event_new(type_.to_glib())) }
+        unimplemented!()
     }
 
     pub fn get() -> Option<Event> {
-        assert_initialized_main_thread!();
-        unsafe { from_glib_none(ffi::clutter_event_get()) }
+        // assert_initialized_main_thread!();
+        // unsafe { from_glib_none(ffi::clutter_event_get()) }
+        unimplemented!()
     }
 
     pub fn put(&self) {
-        unsafe { ffi::clutter_event_put(self.to_glib_none().0) }
+        // unsafe { ffi::clutter_event_put(self.to_glib_none().0) }
+        unimplemented!()
     }
 
     // /// Set the event handler.
@@ -234,7 +239,8 @@ impl Event {
     // }
 
     pub fn get_time(&self) -> u32 {
-        unsafe { ffi::clutter_event_get_time(self.to_glib_none().0) }
+        // unsafe { ffi::clutter_event_get_time(self.to_glib_none().0) }
+        unimplemented!()
     }
 
     /// Returns the associated `Window` if applicable.
@@ -243,7 +249,8 @@ impl Event {
     // }
 
     pub fn get_event_sequence(&self) -> Option<EventSequence> {
-        unsafe { from_glib_none(ffi::clutter_event_get_event_sequence(self.to_glib_none().0)) }
+        // unsafe { from_glib_none(ffi::clutter_event_get_event_sequence(self.to_glib_none().0)) }
+        unimplemented!()
     }
 
     // pub fn triggers_context_menu(&self) -> bool {
@@ -281,21 +288,25 @@ impl Event {
     // }
 
     pub fn set_device(&mut self, device: Option<&InputDevice>) {
-        unsafe { ffi::clutter_event_set_device(self.to_glib_none_mut().0, device.to_glib_none().0) }
+        // unsafe { ffi::clutter_event_set_device(self.to_glib_none_mut().0, device.to_glib_none().0) }
+        unimplemented!()
     }
 
     pub fn get_device(&self) -> Option<InputDevice> {
-        unsafe { from_glib_none(ffi::clutter_event_get_device(self.to_glib_none().0)) }
+        // unsafe { from_glib_none(ffi::clutter_event_get_device(self.to_glib_none().0)) }
+        unimplemented!()
     }
 
     pub fn set_source_device(&mut self, device: Option<&InputDevice>) {
-        unsafe {
-            ffi::clutter_event_set_source_device(self.to_glib_none_mut().0, device.to_glib_none().0)
-        }
+        // unsafe {
+        //     ffi::clutter_event_set_source_device(self.to_glib_none_mut().0, device.to_glib_none().0)
+        // }
+        unimplemented!()
     }
 
     pub fn get_source_device(&self) -> Option<InputDevice> {
-        unsafe { from_glib_none(ffi::clutter_event_get_source_device(self.to_glib_none().0)) }
+        // unsafe { from_glib_none(ffi::clutter_event_get_source_device(self.to_glib_none().0)) }
+        unimplemented!()
     }
 
     // pub fn set_device_tool(&mut self, device: Option<&DeviceTool>) {
@@ -354,10 +365,11 @@ impl Event {
 
 impl fmt::Debug for Event {
     fn fmt(&self, fmt: &mut fmt::Formatter) -> Result<(), fmt::Error> {
-        fmt.debug_struct("Event")
-            .field("inner", &self.0)
-            // .field("type", &self.get_event_type())
-            .finish()
+        // fmt.debug_struct("Event")
+        //     .field("inner", &self.0)
+        //     // .field("type", &self.get_event_type())
+        //     .finish()
+        unimplemented!()
     }
 }
 

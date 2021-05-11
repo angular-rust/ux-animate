@@ -1,5 +1,5 @@
 // Scriptable
-use crate::{Actor, Animatable, Container, InternalColor};
+use crate::{Actor, Animatable, Container, InternalColor, Color, RgbaColor};
 use glib::{
     object as gobject,
     object::{Cast, IsA},
@@ -29,7 +29,7 @@ pub trait RectangleExt: 'static {
     fn get_property_border_color(&self) -> Option<InternalColor>;
 
     /// The color of the border of the rectangle.
-    fn set_property_border_color(&self, border_color: Option<&InternalColor>);
+    fn set_property_border_color(&self, border_color: Option<Color>);
 
     /// The width of the border of the rectangle, in pixels.
     fn get_property_border_width(&self) -> u32;
@@ -41,7 +41,7 @@ pub trait RectangleExt: 'static {
     fn get_property_color(&self) -> Option<InternalColor>;
 
     /// The color of the rectangle.
-    fn set_property_color(&self, color: Option<&InternalColor>);
+    fn set_property_color(&self, color: Option<Color>);
 
     /// Whether the `Rectangle` should be displayed with a border.
     fn get_property_has_border(&self) -> bool;
@@ -73,14 +73,26 @@ impl<O: IsA<Rectangle>> RectangleExt for O {
                 .get()
                 .expect("Return Value for property `border-color` getter")
         }
-    }
+    } 
 
-    fn set_property_border_color(&self, border_color: Option<&InternalColor>) {
+    fn set_property_border_color(&self, color: Option<Color>) {
+        let color = match color {
+            Some(value) => {
+                let RgbaColor {
+                    red,
+                    green,
+                    blue,
+                    alpha,
+                } = value.into();
+                Some(InternalColor::new(red, green, blue, alpha))
+            }
+            None => None,
+        };
         unsafe {
             gobject_sys::g_object_set_property(
                 self.to_glib_none().0 as *mut gobject_sys::GObject,
                 b"border-color\0".as_ptr() as *const _,
-                Value::from(border_color).to_glib_none().0,
+                Value::from(color.as_ref()).to_glib_none().0,
             );
         }
     }
@@ -124,12 +136,24 @@ impl<O: IsA<Rectangle>> RectangleExt for O {
         }
     }
 
-    fn set_property_color(&self, color: Option<&InternalColor>) {
+    fn set_property_color(&self, color: Option<Color>) {
+        let color = match color {
+            Some(value) => {
+                let RgbaColor {
+                    red,
+                    green,
+                    blue,
+                    alpha,
+                } = value.into();
+                Some(InternalColor::new(red, green, blue, alpha))
+            }
+            None => None,
+        };
         unsafe {
             gobject_sys::g_object_set_property(
                 self.to_glib_none().0 as *mut gobject_sys::GObject,
                 b"color\0".as_ptr() as *const _,
-                Value::from(color).to_glib_none().0,
+                Value::from(color.as_ref()).to_glib_none().0,
             );
         }
     }

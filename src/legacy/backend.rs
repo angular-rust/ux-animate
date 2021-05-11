@@ -15,6 +15,14 @@ glib_wrapper! {
 }
 
 impl Backend {
+    pub fn get_context(&self) -> Option<dx::Context> {
+        unsafe {
+            from_glib_none(ffi::clutter_backend_get_cogl_context(
+                self.to_glib_none().0,
+            ))
+        }
+    }
+
     /// Retrieves the font options for `self`.
     ///
     /// # Returns
@@ -129,6 +137,12 @@ impl Backend {
                 Box_::into_raw(f),
             )
         }
+    }
+}
+
+impl Default for Backend {
+    fn default() -> Self {
+        unsafe { from_glib_none(ffi::clutter_get_default_backend()) }
     }
 }
 

@@ -1,3 +1,5 @@
+#![allow(unused_variables)]
+#![allow(dead_code)]
 #![allow(
     clippy::too_many_arguments,
     clippy::let_and_return,
@@ -34,7 +36,7 @@ mod behaviour;
 pub use self::behaviour::Behaviour;
 
 mod behaviour_ellipse;
-pub use self::behaviour_ellipse::{BehaviourEllipse, BehaviourEllipseClass, BehaviourEllipseExt};
+pub use self::behaviour_ellipse::{BehaviourEllipse, BehaviourEllipseExt};
 
 mod behaviour_rotate;
 pub use self::behaviour_rotate::{BehaviourRotate, BehaviourRotateExt};
@@ -70,7 +72,7 @@ mod click_action;
 pub use self::click_action::{ClickAction, ClickActionExt};
 
 mod clip_node;
-pub use self::clip_node::{ClipNode, ClipNodeClass};
+pub use self::clip_node::{ClipNode};
 
 mod clone;
 pub use self::clone::{Clone, CloneExt};
@@ -108,6 +110,9 @@ pub use self::drop_action::{DropAction, DropActionExt};
 mod effect;
 pub use self::effect::{Effect, EffectExt};
 
+mod event_any;
+pub use event_any::AnyEvent;
+
 mod event_button;
 pub use event_button::ButtonEvent;
 
@@ -123,8 +128,17 @@ pub use event_motion::MotionEvent;
 mod event_scroll;
 pub use event_scroll::ScrollEvent;
 
+mod event_stage_state;
+pub use event_stage_state::StageStateEvent;
+
 mod event_touch;
 pub use event_touch::TouchEvent;
+
+mod event_touchpad_pinch;
+pub use event_touchpad_pinch::TouchpadPinchEvent;
+
+mod event_touchpad_swipe;
+pub use event_touchpad_swipe::TouchpadSwipeEvent;
 
 mod event;
 pub use event::{Event, FromEvent};
@@ -276,8 +290,8 @@ pub use self::zoom_action::{ZoomAction, ZoomActionExt};
 mod actor_box;
 pub use self::actor_box::ActorBox;
 
-mod color;
-pub(crate) use self::color::InternalColor;
+// mod color;
+// pub(crate) use self::color::InternalColor;
 
 mod event_sequence;
 pub use self::event_sequence::EventSequence;
@@ -443,45 +457,5 @@ pub mod traits {
 
 pub use glib::timeout_add_local as interval;
 
-impl prelude::Object for ActorCanvas {}
-impl prelude::Is<ActorCanvas> for ActorCanvas {}
-
-impl prelude::Object for Action {}
-impl prelude::Is<Action> for Action {}
-
-impl prelude::Object for ActorMeta {}
-impl prelude::Is<ActorMeta> for ActorMeta {}
-
-impl prelude::Object for Actor {}
-impl prelude::Is<Actor> for Actor {}
-
-impl prelude::Object for BoxLayout {}
-impl prelude::Is<BoxLayout> for BoxLayout {}
-
-impl prelude::Object for Constraint {}
-impl prelude::Is<Constraint> for Constraint {}
-
-impl prelude::Object for Content {}
-impl prelude::Is<Content> for Content {}
-
-impl prelude::Object for Effect {}
-impl prelude::Is<Effect> for Effect {}
-
-impl prelude::Object for Image {}
-impl prelude::Is<Image> for Image {}
-
-impl prelude::Object for LayoutManager {}
-impl prelude::Is<LayoutManager> for LayoutManager {}
-
-impl prelude::Object for Model {}
-impl prelude::Is<Model> for Model {}
-
-impl prelude::Object for OffscreenEffect {}
-impl prelude::Is<OffscreenEffect> for OffscreenEffect {}
-
-impl prelude::Object for Text {}
-impl prelude::Is<Text> for Text {}
-impl prelude::Is<Actor> for Text {}
-
-impl prelude::Object for Transition {}
-impl prelude::Is<Transition> for Transition {}
+impl prelude::Object for dx::Texture {}
+impl prelude::Is<dx::Texture> for dx::Texture {}
