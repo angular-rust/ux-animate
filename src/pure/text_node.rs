@@ -1,7 +1,4 @@
-use crate::prelude::*;
-use crate::{Color, RgbaColor};
-use super::{PaintNode};
-use glib::{object::Cast, translate::*};
+use crate::{Color};
 use std::fmt;
 
 // @extends PaintNode

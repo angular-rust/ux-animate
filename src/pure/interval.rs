@@ -1,14 +1,10 @@
 use crate::prelude::*;
-use glib::{
-    signal::{connect_raw, SignalHandlerId},
-};
-use std::boxed::Box as Box_;
-use std::{fmt, mem::transmute};
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 // TODO: , @implements Scriptable
 #[derive(Debug, Clone)]
-pub struct Interval {
-}
+pub struct Interval {}
 
 impl Interval {
     //pub fn new(gtype: glib::types::Type, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> Interval {

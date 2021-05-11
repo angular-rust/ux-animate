@@ -1,6 +1,6 @@
 use super::{
-    Actor, EventFlags, EventSequence, EventType, InputDevice, ModifierType, ScrollDirection,
-    ScrollFinishFlags, ScrollSource, Stage,
+    Actor, EventFlags, EventType, InputDevice, ModifierType, ScrollDirection, ScrollFinishFlags,
+    ScrollSource, Stage,
 };
 
 // * ClutterScrollEvent:

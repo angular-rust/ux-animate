@@ -1,11 +1,10 @@
-use crate::prelude::*;
 use super::Content;
-use std::{fmt, ptr};
+use crate::prelude::*;
+use std::fmt;
 
 // @implements Content
 #[derive(Debug, Clone)]
-pub struct Image {
-}
+pub struct Image {}
 
 impl Image {
     /// Creates a new `Image` instance.

@@ -1,7 +1,4 @@
-use super::{
-    Actor, EventFlags, EventSequence, EventType, InputDevice,
-    ModifierType, Stage, 
-};
+use super::{Actor, EventFlags, EventType, InputDevice, ModifierType, Stage};
 
 // Window, NotifyType, CrossingMode
 

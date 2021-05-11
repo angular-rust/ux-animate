@@ -1,11 +1,8 @@
-use crate::prelude::*;
 use super::Content;
-use glib::{
-    signal::{connect_raw, SignalHandlerId},
-};
-use std::boxed::Box as Box_;
-use std::{fmt, mem::transmute};
-use cairo::Context;
+use crate::prelude::*;
+use glib::signal::SignalHandlerId;
+use std::fmt;
+// use cairo::Context;
 
 // * ClutterCanvas:
 // *
@@ -33,12 +30,12 @@ pub struct ActorCanvas {
 
     width: u32,
     height: u32,
-  
+
     texture: dx::Texture,
     dirty: bool,
-  
+
     buffer: dx::Bitmap,
-  
+
     scale_factor: u32,
     scale_factor_set: bool,
 }
@@ -232,7 +229,7 @@ impl<O: Is<ActorCanvas>> ActorCanvasExt for O {
         // }
 
         // if width_changed || height_changed {
-        //     // invalidate // TODO: 
+        //     // invalidate // TODO:
         //     return true;
         // }
 

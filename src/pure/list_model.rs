@@ -1,10 +1,8 @@
-use super::Model;
 use std::fmt;
 
 // @extends Model
 #[derive(Debug, Clone)]
-pub struct ListModel {
-}
+pub struct ListModel {}
 
 impl ListModel {}
 

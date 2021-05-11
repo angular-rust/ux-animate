@@ -1,11 +1,7 @@
-use crate::prelude::*;
 use super::{Actor, ChildMeta};
-use glib::{
-    signal::{connect_raw, SignalHandlerId},
-    // translate::*,
-};
-use std::boxed::Box as Box_;
-use std::{fmt, mem, mem::transmute};
+use crate::prelude::*;
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 // * SECTION:clutter-container
 // * @short_description: An interface for container actors
@@ -61,8 +57,7 @@ use std::{fmt, mem, mem::transmute};
 // * virtual functions are optional.
 
 #[derive(Debug, Clone)]
-pub struct Container {
-}
+pub struct Container {}
 
 impl Container {
     // /// Looks up the `gobject::ParamSpec` for a child property of `klass`.
@@ -235,12 +230,7 @@ impl<O: Is<Container>> ContainerExt for O {
     //    unimplemented!()
     //}
 
-    fn child_get_property<P: Is<Actor>>(
-        &self,
-        child: &P,
-        property: &str,
-        value: &mut glib::Value,
-    ) {
+    fn child_get_property<P: Is<Actor>>(&self, child: &P, property: &str, value: &mut glib::Value) {
         unimplemented!()
     }
 

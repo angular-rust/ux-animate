@@ -1,17 +1,37 @@
-use crate::prelude::*;
-use glib::{
-    signal::{connect_raw, SignalHandlerId},
-};
-use std::boxed::Box as Box_;
-use std::{fmt, mem::transmute};
+use glib::signal::SignalHandlerId;
+use once_cell::sync::OnceCell;
+use std::fmt;
 
-pub struct Settings {
-}
+#[derive(Debug, Clone)]
+pub struct Settings {}
 
 impl Settings {
+    fn new() -> Self {
+        println!("CREATE THEME INSTANCE");
+
+        // let mut definitions = IntMap::new();
+        // definitions.insert(StyleClass::MdcButton.into(), style::mdc_button());
+
+        Self {
+            // styles: Mutex::new(definitions),
+        }
+    }
+
+    /// Retrieves the singleton instance of `Settings`
+    ///
+    /// # Returns
+    ///
+    /// the instance of `Settings`. The
+    ///  returned object is owned by internals and it should not be unreferenced
+    ///  directly
+    pub fn global() -> &'static Self {
+        static SETTINGS_INSTANCE: OnceCell<Settings> = OnceCell::new();
+        SETTINGS_INSTANCE.get_or_init(Self::new)
+    }
+
     /// The default distance that the cursor of a pointer device
     /// should travel before a drag operation should start.
-    pub fn get_property_dnd_drag_threshold(&self) -> i32 {
+    pub fn get_dnd_drag_threshold(&self) -> i32 {
         // unsafe {
         //     let mut value = Value::from_type(<i32 as StaticType>::static_type());
         //     gobject_sys::g_object_get_property(
@@ -29,7 +49,7 @@ impl Settings {
 
     /// The default distance that the cursor of a pointer device
     /// should travel before a drag operation should start.
-    pub fn set_property_dnd_drag_threshold(&self, dnd_drag_threshold: i32) {
+    pub fn set_dnd_drag_threshold(&self, dnd_drag_threshold: i32) {
         // unsafe {
         //     gobject_sys::g_object_set_property(
         //         self.as_ptr() as *mut gobject_sys::GObject,
@@ -42,7 +62,7 @@ impl Settings {
 
     /// The maximum distance, in pixels, between button-press events that
     /// determines whether or not to increase the click count by 1.
-    pub fn get_property_double_click_distance(&self) -> i32 {
+    pub fn get_double_click_distance(&self) -> i32 {
         // unsafe {
         //     let mut value = Value::from_type(<i32 as StaticType>::static_type());
         //     gobject_sys::g_object_get_property(
@@ -60,7 +80,7 @@ impl Settings {
 
     /// The maximum distance, in pixels, between button-press events that
     /// determines whether or not to increase the click count by 1.
-    pub fn set_property_double_click_distance(&self, double_click_distance: i32) {
+    pub fn set_double_click_distance(&self, double_click_distance: i32) {
         // unsafe {
         //     gobject_sys::g_object_set_property(
         //         self.as_ptr() as *mut gobject_sys::GObject,
@@ -73,7 +93,7 @@ impl Settings {
 
     /// The time, in milliseconds, that should elapse between button-press
     /// events in order to increase the click count by 1.
-    pub fn get_property_double_click_time(&self) -> i32 {
+    pub fn get_double_click_time(&self) -> i32 {
         // unsafe {
         //     let mut value = Value::from_type(<i32 as StaticType>::static_type());
         //     gobject_sys::g_object_get_property(
@@ -91,7 +111,7 @@ impl Settings {
 
     /// The time, in milliseconds, that should elapse between button-press
     /// events in order to increase the click count by 1.
-    pub fn set_property_double_click_time(&self, double_click_time: i32) {
+    pub fn set_double_click_time(&self, double_click_time: i32) {
         // unsafe {
         //     gobject_sys::g_object_set_property(
         //         self.as_ptr() as *mut gobject_sys::GObject,
@@ -105,7 +125,7 @@ impl Settings {
     /// Whether or not to use antialiasing when rendering text; a value
     /// of 1 enables it unconditionally; a value of 0 disables it
     /// unconditionally; and -1 will use the system's default.
-    pub fn get_property_font_antialias(&self) -> i32 {
+    pub fn get_font_antialias(&self) -> i32 {
         // unsafe {
         //     let mut value = Value::from_type(<i32 as StaticType>::static_type());
         //     gobject_sys::g_object_get_property(
@@ -124,7 +144,7 @@ impl Settings {
     /// Whether or not to use antialiasing when rendering text; a value
     /// of 1 enables it unconditionally; a value of 0 disables it
     /// unconditionally; and -1 will use the system's default.
-    pub fn set_property_font_antialias(&self, font_antialias: i32) {
+    pub fn set_font_antialias(&self, font_antialias: i32) {
         // unsafe {
         //     gobject_sys::g_object_set_property(
         //         self.as_ptr() as *mut gobject_sys::GObject,
@@ -138,7 +158,7 @@ impl Settings {
     /// The DPI used when rendering text, as a value of 1024 * dots/inch.
     ///
     /// If set to -1, the system's default will be used instead
-    pub fn get_property_font_dpi(&self) -> i32 {
+    pub fn get_font_dpi(&self) -> f64 {
         // unsafe {
         //     let mut value = Value::from_type(<i32 as StaticType>::static_type());
         //     gobject_sys::g_object_get_property(
@@ -157,7 +177,7 @@ impl Settings {
     /// The DPI used when rendering text, as a value of 1024 * dots/inch.
     ///
     /// If set to -1, the system's default will be used instead
-    pub fn set_property_font_dpi(&self, font_dpi: i32) {
+    pub fn set_font_dpi(&self, font_dpi: f64) {
         // unsafe {
         //     gobject_sys::g_object_set_property(
         //         self.as_ptr() as *mut gobject_sys::GObject,
@@ -175,7 +195,7 @@ impl Settings {
     ///  - hintslight
     ///  - hintmedium
     ///  - hintfull
-    pub fn get_property_font_hint_style(&self) -> Option<String> {
+    pub fn get_font_hint_style(&self) -> Option<String> {
         // unsafe {
         //     let mut value = Value::from_type(<GString as StaticType>::static_type());
         //     gobject_sys::g_object_get_property(
@@ -197,7 +217,7 @@ impl Settings {
     ///  - hintslight
     ///  - hintmedium
     ///  - hintfull
-    pub fn set_property_font_hint_style(&self, font_hint_style: Option<&str>) {
+    pub fn set_font_hint_style(&self, font_hint_style: Option<&str>) {
         // unsafe {
         //     gobject_sys::g_object_set_property(
         //         self.as_ptr() as *mut gobject_sys::GObject,
@@ -211,7 +231,7 @@ impl Settings {
     /// Whether or not to use hinting when rendering text; a value of 1
     /// unconditionally enables it; a value of 0 unconditionally disables
     /// it; and a value of -1 will use the system's default.
-    pub fn get_property_font_hinting(&self) -> i32 {
+    pub fn get_font_hinting(&self) -> i32 {
         // unsafe {
         //     let mut value = Value::from_type(<i32 as StaticType>::static_type());
         //     gobject_sys::g_object_get_property(
@@ -230,7 +250,7 @@ impl Settings {
     /// Whether or not to use hinting when rendering text; a value of 1
     /// unconditionally enables it; a value of 0 unconditionally disables
     /// it; and a value of -1 will use the system's default.
-    pub fn set_property_font_hinting(&self, font_hinting: i32) {
+    pub fn set_font_hinting(&self, font_hinting: i32) {
         // unsafe {
         //     gobject_sys::g_object_set_property(
         //         self.as_ptr() as *mut gobject_sys::GObject,
@@ -243,7 +263,7 @@ impl Settings {
 
     /// The default font name that should be used by text actors, as
     /// a string that can be passed to `pango::FontDescription::from_string`.
-    pub fn get_property_font_name(&self) -> Option<String> {
+    pub fn get_font_name(&self) -> Option<String> {
         // unsafe {
         //     let mut value = Value::from_type(<GString as StaticType>::static_type());
         //     gobject_sys::g_object_get_property(
@@ -260,7 +280,7 @@ impl Settings {
 
     /// The default font name that should be used by text actors, as
     /// a string that can be passed to `pango::FontDescription::from_string`.
-    pub fn set_property_font_name(&self, font_name: Option<&str>) {
+    pub fn set_font_name(&self, font_name: Option<&str>) {
         // unsafe {
         //     gobject_sys::g_object_set_property(
         //         self.as_ptr() as *mut gobject_sys::GObject,
@@ -279,7 +299,7 @@ impl Settings {
     ///  - bgr
     ///  - vrgb
     ///  - vbgr
-    pub fn get_property_font_subpixel_order(&self) -> Option<String> {
+    pub fn get_font_subpixel_order(&self) -> Option<String> {
         // unsafe {
         //     let mut value = Value::from_type(<GString as StaticType>::static_type());
         //     gobject_sys::g_object_get_property(
@@ -302,7 +322,7 @@ impl Settings {
     ///  - bgr
     ///  - vrgb
     ///  - vbgr
-    pub fn set_property_font_subpixel_order(&self, font_subpixel_order: Option<&str>) {
+    pub fn set_font_subpixel_order(&self, font_subpixel_order: Option<&str>) {
         // unsafe {
         //     gobject_sys::g_object_set_property(
         //         self.as_ptr() as *mut gobject_sys::GObject,
@@ -313,7 +333,7 @@ impl Settings {
         unimplemented!()
     }
 
-    pub fn set_property_fontconfig_timestamp(&self, fontconfig_timestamp: u32) {
+    pub fn set_fontconfig_timestamp(&self, fontconfig_timestamp: u32) {
         // unsafe {
         //     gobject_sys::g_object_set_property(
         //         self.as_ptr() as *mut gobject_sys::GObject,
@@ -328,7 +348,7 @@ impl Settings {
     /// gesture. The duration is expressed in milliseconds.
     ///
     /// See also `ClickAction:long-press-duration`.
-    pub fn get_property_long_press_duration(&self) -> i32 {
+    pub fn get_long_press_duration(&self) -> i32 {
         // unsafe {
         //     let mut value = Value::from_type(<i32 as StaticType>::static_type());
         //     gobject_sys::g_object_get_property(
@@ -348,7 +368,7 @@ impl Settings {
     /// gesture. The duration is expressed in milliseconds.
     ///
     /// See also `ClickAction:long-press-duration`.
-    pub fn set_property_long_press_duration(&self, long_press_duration: i32) {
+    pub fn set_long_press_duration(&self, long_press_duration: i32) {
         // unsafe {
         //     gobject_sys::g_object_set_property(
         //         self.as_ptr() as *mut gobject_sys::GObject,
@@ -359,7 +379,7 @@ impl Settings {
         unimplemented!()
     }
 
-    pub fn get_property_password_hint_time(&self) -> u32 {
+    pub fn get_password_hint_time(&self) -> u32 {
         // unsafe {
         //     let mut value = Value::from_type(<u32 as StaticType>::static_type());
         //     gobject_sys::g_object_get_property(
@@ -375,7 +395,7 @@ impl Settings {
         unimplemented!()
     }
 
-    pub fn set_property_password_hint_time(&self, password_hint_time: u32) {
+    pub fn set_password_hint_time(&self, password_hint_time: u32) {
         // unsafe {
         //     gobject_sys::g_object_set_property(
         //         self.as_ptr() as *mut gobject_sys::GObject,
@@ -386,7 +406,7 @@ impl Settings {
         unimplemented!()
     }
 
-    pub fn set_property_unscaled_font_dpi(&self, unscaled_font_dpi: i32) {
+    pub fn set_unscaled_font_dpi(&self, unscaled_font_dpi: i32) {
         // unsafe {
         //     gobject_sys::g_object_set_property(
         //         self.as_ptr() as *mut gobject_sys::GObject,
@@ -397,7 +417,7 @@ impl Settings {
         unimplemented!()
     }
 
-    pub fn get_property_window_scaling_factor(&self) -> i32 {
+    pub fn get_window_scaling_factor(&self) -> i32 {
         // unsafe {
         //     let mut value = Value::from_type(<i32 as StaticType>::static_type());
         //     gobject_sys::g_object_get_property(
@@ -413,7 +433,7 @@ impl Settings {
         unimplemented!()
     }
 
-    pub fn set_property_window_scaling_factor(&self, window_scaling_factor: i32) {
+    pub fn set_window_scaling_factor(&self, window_scaling_factor: i32) {
         // unsafe {
         //     gobject_sys::g_object_set_property(
         //         self.as_ptr() as *mut gobject_sys::GObject,
@@ -424,110 +444,89 @@ impl Settings {
         unimplemented!()
     }
 
-    /// Retrieves the singleton instance of `Settings`
-    ///
-    /// # Returns
-    ///
-    /// the instance of `Settings`. The
-    ///  returned object is owned by internals and it should not be unreferenced
-    ///  directly
-    pub fn get_default() -> Option<Settings> {
-        // unsafe { from_glib_none(ffi::clutter_settings_get_default()) }
-        unimplemented!()
-    }
-
-    pub fn connect_property_dnd_drag_threshold_notify<F: Fn(&Settings) + 'static>(
+    pub fn connect_dnd_drag_threshold_notify<F: Fn(&Settings) + 'static>(
         &self,
         f: F,
     ) -> SignalHandlerId {
         unimplemented!()
     }
 
-    pub fn connect_property_double_click_distance_notify<F: Fn(&Settings) + 'static>(
+    pub fn connect_double_click_distance_notify<F: Fn(&Settings) + 'static>(
         &self,
         f: F,
     ) -> SignalHandlerId {
         unimplemented!()
     }
 
-    pub fn connect_property_double_click_time_notify<F: Fn(&Settings) + 'static>(
+    pub fn connect_double_click_time_notify<F: Fn(&Settings) + 'static>(
         &self,
         f: F,
     ) -> SignalHandlerId {
         unimplemented!()
     }
 
-    pub fn connect_property_font_antialias_notify<F: Fn(&Settings) + 'static>(
+    pub fn connect_font_antialias_notify<F: Fn(&Settings) + 'static>(
         &self,
         f: F,
     ) -> SignalHandlerId {
         unimplemented!()
     }
 
-    pub fn connect_property_font_dpi_notify<F: Fn(&Settings) + 'static>(
+    pub fn connect_font_dpi_notify<F: Fn(&Settings) + 'static>(&self, f: F) -> SignalHandlerId {
+        unimplemented!()
+    }
+
+    pub fn connect_font_hint_style_notify<F: Fn(&Settings) + 'static>(
         &self,
         f: F,
     ) -> SignalHandlerId {
         unimplemented!()
     }
 
-    pub fn connect_property_font_hint_style_notify<F: Fn(&Settings) + 'static>(
+    pub fn connect_font_hinting_notify<F: Fn(&Settings) + 'static>(&self, f: F) -> SignalHandlerId {
+        unimplemented!()
+    }
+
+    pub fn connect_font_name_notify<F: Fn(&Settings) + 'static>(&self, f: F) -> SignalHandlerId {
+        unimplemented!()
+    }
+
+    pub fn connect_font_subpixel_order_notify<F: Fn(&Settings) + 'static>(
         &self,
         f: F,
     ) -> SignalHandlerId {
         unimplemented!()
     }
 
-    pub fn connect_property_font_hinting_notify<F: Fn(&Settings) + 'static>(
+    pub fn connect_fontconfig_timestamp_notify<F: Fn(&Settings) + 'static>(
         &self,
         f: F,
     ) -> SignalHandlerId {
         unimplemented!()
     }
 
-    pub fn connect_property_font_name_notify<F: Fn(&Settings) + 'static>(
+    pub fn connect_long_press_duration_notify<F: Fn(&Settings) + 'static>(
         &self,
         f: F,
     ) -> SignalHandlerId {
         unimplemented!()
     }
 
-    pub fn connect_property_font_subpixel_order_notify<F: Fn(&Settings) + 'static>(
+    pub fn connect_password_hint_time_notify<F: Fn(&Settings) + 'static>(
         &self,
         f: F,
     ) -> SignalHandlerId {
         unimplemented!()
     }
 
-    pub fn connect_property_fontconfig_timestamp_notify<F: Fn(&Settings) + 'static>(
+    pub fn connect_unscaled_font_dpi_notify<F: Fn(&Settings) + 'static>(
         &self,
         f: F,
     ) -> SignalHandlerId {
         unimplemented!()
     }
 
-    pub fn connect_property_long_press_duration_notify<F: Fn(&Settings) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
-        unimplemented!()
-    }
-
-    pub fn connect_property_password_hint_time_notify<F: Fn(&Settings) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
-        unimplemented!()
-    }
-
-    pub fn connect_property_unscaled_font_dpi_notify<F: Fn(&Settings) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
-        unimplemented!()
-    }
-
-    pub fn connect_property_window_scaling_factor_notify<F: Fn(&Settings) + 'static>(
+    pub fn connect_window_scaling_factor_notify<F: Fn(&Settings) + 'static>(
         &self,
         f: F,
     ) -> SignalHandlerId {

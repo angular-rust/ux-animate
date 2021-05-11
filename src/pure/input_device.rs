@@ -1,17 +1,13 @@
-use crate::prelude::*;
 use super::{
     Actor, Backend, DeviceManager, Event, EventSequence, InputAxis, InputDeviceType, InputMode,
-    InternalPoint, ModifierType, Stage,
+    ModifierType, Stage,
 };
-use glib::{
-    signal::{connect_raw, SignalHandlerId},
-};
-use std::boxed::Box as Box_;
-use std::{fmt, mem, mem::transmute};
+use crate::prelude::*;
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 #[derive(Debug, Clone)]
-pub struct InputDevice {
-}
+pub struct InputDevice {}
 
 impl InputDevice {
     /// Retrieves a pointer to the `InputDevice` that has been

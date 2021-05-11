@@ -1,11 +1,8 @@
+use super::{Actor, DragAxis, EventSequence, InputDevice, ModifierType, Stage};
 use crate::prelude::*;
-use super::{Action, Actor, ActorMeta, DragAxis, EventSequence, InputDevice, ModifierType, Stage};
 use crate::Rect;
-use glib::{
-    signal::{connect_raw, SignalHandlerId},
-};
-use std::boxed::Box as Box_;
-use std::{fmt, mem, mem::transmute};
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 // * @Title: ClutterDragAction
 // * @Short_Description: Action enabling dragging on actors

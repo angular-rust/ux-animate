@@ -1,6 +1,3 @@
-use crate::prelude::*;
-use super::PaintNode;
-// use glib::{object::Cast, translate::*};
 use std::fmt;
 
 // @extends PaintNode

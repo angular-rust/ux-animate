@@ -2,11 +2,13 @@
 use super::polygon_hachure_lines;
 use crate::{
     canvas::rough::{
-        geometry::{do_intersect, is_point_in_polygon, line_intersection, line_length},
-        Line, Op, OpSet, OpSetType, PatternFiller, RenderHelper, RoughOptions,
+        geometry::{is_point_in_polygon, line_length},
+        Line, Op, OpSet, OpSetType, RenderHelper, RoughOptions,
     },
     Point,
 };
+
+// do_intersect, line_intersection, PatternFiller
 
 pub struct IntersectionInfo {
     point: Point<f64>,
@@ -51,19 +53,19 @@ impl<H: RenderHelper> HachureFiller<H> {
     fn render_lines(&self, lines: &[Line<f64>], options: &RoughOptions) -> Vec<Op> {
         let mut ops: Vec<Op> = Vec::new();
         for line in lines.iter() {
-            let mut append =
-                self.helper
-                    .double_line_ops(line.start.x, line.start.y, line.end.x, line.end.y, options);
+            let mut append = self.helper.double_line_ops(
+                line.start.x,
+                line.start.y,
+                line.end.x,
+                line.end.y,
+                options,
+            );
             ops.append(append.as_mut());
         }
         ops
     }
 
-    fn connecting_lines(
-        &self,
-        polygon: &[Point<f64>],
-        lines: &[Line<f64>],
-    ) -> Vec<Line<f64>> {
+    fn connecting_lines(&self, polygon: &[Point<f64>], lines: &[Line<f64>]) -> Vec<Line<f64>> {
         let result: Vec<Line<f64>> = Vec::new();
         if lines.len() > 1 {
             for i in 1..lines.len() {

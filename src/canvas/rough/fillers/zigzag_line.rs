@@ -1,8 +1,10 @@
 use super::RenderHelper;
 use crate::{
-  canvas::rough::{geometry::line_length, Line, Op, OpSet, RoughOptions},
+  canvas::rough::{Line, Op, OpSet, RoughOptions},
   Point,
 };
+
+// geometry::line_length,
 
 //implements PatternFiller
 pub struct ZigZagLineFiller<H: RenderHelper> {

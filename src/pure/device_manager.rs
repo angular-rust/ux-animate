@@ -1,10 +1,7 @@
-use crate::prelude::*;
 use super::{Backend, InputDevice, InputDeviceType};
-use glib::{
-    signal::{connect_raw, SignalHandlerId},
-};
-use std::boxed::Box as Box_;
-use std::{fmt, mem::transmute};
+use crate::prelude::*;
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 // * SECTION:clutter-device-manager
 // * @short_description: Maintains the list of input devices

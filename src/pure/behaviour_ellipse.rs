@@ -1,11 +1,7 @@
+use super::{Alpha, Knot, RotateAxis, RotateDirection};
 use crate::prelude::*;
-use super::{Alpha, Behaviour, Knot, RotateAxis, RotateDirection};
-use glib::{
-    signal::{connect_raw, SignalHandlerId},
-};
-use std::boxed::Box as Box_;
-use std::mem::transmute;
-use std::{fmt, mem};
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 // * @Title: ClutterBehaviourEllipse
 // * @short_description: A behaviour interpolating position along an ellipse
@@ -155,23 +151,27 @@ impl<O: Is<BehaviourEllipse>> BehaviourEllipseExt for O {
     }
 
     fn get_direction(&self) -> RotateDirection {
-        let behaviour = self.as_ref(); 
+        let behaviour = self.as_ref();
         behaviour.direction
     }
 
     fn get_height(&self) -> i32 {
-        // let behaviour = self.as_ref(); 
+        // let behaviour = self.as_ref();
         // behaviour.height
         unimplemented!()
     }
 
     fn get_tilt(&self) -> (f64, f64, f64) {
         let behaviour = self.as_ref();
-        (behaviour.angle_tilt_x, behaviour.angle_tilt_y, behaviour.angle_tilt_z)
+        (
+            behaviour.angle_tilt_x,
+            behaviour.angle_tilt_y,
+            behaviour.angle_tilt_z,
+        )
     }
 
     fn get_width(&self) -> i32 {
-        // let behaviour = self.as_ref(); 
+        // let behaviour = self.as_ref();
         // behaviour.width
         unimplemented!()
     }

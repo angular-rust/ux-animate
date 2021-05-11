@@ -1,5 +1,4 @@
 use crate::prelude::*;
-use super::ActorMeta;
 use std::fmt;
 
 // * SECTION:clutter-constraint

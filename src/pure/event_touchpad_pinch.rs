@@ -1,5 +1,5 @@
 use super::{
-    Actor, EventFlags, EventSequence, EventType, InputDevice, ModifierType, Stage,
+    Actor, EventFlags, EventType, ModifierType, Stage,
     TouchpadGesturePhase,
 };
 

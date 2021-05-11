@@ -1,6 +1,4 @@
-use crate::prelude::*;
-use super::{BinAlignment, LayoutManager, Container};
-// use glib::{object as gobject, object::Cast, translate::*};
+use super::{BinAlignment, Container};
 use std::fmt;
 
 // * @short_description: A simple layout manager

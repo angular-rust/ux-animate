@@ -246,6 +246,7 @@ impl SetValue for EventFlags {
 
 bitflags! {
     pub struct FeatureFlags: u32 {
+        const NONE = 0;
         const TEXTURE_NPOT = 4;
         const SYNC_TO_VBLANK = 8;
         const TEXTURE_YUV = 16;

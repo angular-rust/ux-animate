@@ -1,8 +1,7 @@
 use super::{Knot, PathNode};
 use crate::prelude::*;
-use glib::signal::{connect_raw, SignalHandlerId};
-use std::boxed::Box as Box_;
-use std::{fmt, mem::transmute};
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 #[derive(Debug, Clone)]
 pub struct Path {}

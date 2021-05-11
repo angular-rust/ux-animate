@@ -1,13 +1,6 @@
-use crate::prelude::*;
-use super::{ActorMeta, Effect, OffscreenEffect};
-use glib::{
-    // object as gobject,
-    // object::{Cast, ObjectType as ObjectType_},
-    signal::{connect_raw, SignalHandlerId},
-    // translate::*,
-};
-use std::boxed::Box as Box_;
-use std::{fmt, mem::transmute};
+use super::OffscreenEffect;
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 // * SECTION:clutter-desaturate-effect
 // * @short_description: A desaturation effect
@@ -24,12 +17,12 @@ pub struct DesaturateEffect {
 
     /* the desaturation factor, also known as "strength" */
     factor: f64,
-  
+
     factor_uniform: i32,
-  
+
     tex_width: i32,
     tex_height: i32,
-  
+
     pipeline: Option<dx::Pipeline>,
 }
 

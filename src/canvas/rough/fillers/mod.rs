@@ -14,13 +14,13 @@ mod zigzag_line;
 // import { ResolvedOptions, OpSet, Op } from '../core';
 // import { Point } from '../geometry';
 
-pub(crate) use dashed::DashedFiller;
-pub(crate) use dot::DotFiller;
-pub(crate) use hachure::HachureFiller;
-pub(crate) use hatch::HatchFiller;
+// pub(crate) use dashed::DashedFiller;
+// pub(crate) use dot::DotFiller;
+// pub(crate) use hachure::HachureFiller;
+// pub(crate) use hatch::HatchFiller;
 pub(crate) use scanline_hachure::*;
-pub(crate) use zigzag::ZigZagFiller;
-pub(crate) use zigzag_line::ZigZagLineFiller;
+// pub(crate) use zigzag::ZigZagFiller;
+// pub(crate) use zigzag_line::ZigZagLineFiller;
 
 
 pub struct Line<T> {

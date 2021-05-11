@@ -1,15 +1,9 @@
-use crate::prelude::*;
-use super::{ActorMeta, DeformEffect, Effect, OffscreenEffect};
-use glib::{
-    signal::{connect_raw, SignalHandlerId},
-};
-use std::boxed::Box as Box_;
-use std::{fmt, mem::transmute};
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 // @extends DeformEffect, OffscreenEffect, Effect, ActorMeta
 #[derive(Debug, Clone)]
-pub struct PageTurnEffect{
-}
+pub struct PageTurnEffect {}
 
 impl PageTurnEffect {
     /// Creates a new `PageTurnEffect` instance with the given parameters

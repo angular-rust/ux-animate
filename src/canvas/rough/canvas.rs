@@ -3,10 +3,11 @@ use std::cell::RefCell;
 
 use super::{Drawable, OpSet, OpSetType, OpType, RoughConfig, RoughGenerator, RoughOptions};
 use crate::{
-    BaseLine, CanvasContext, Color, Direction, Gradient, GradientType, LineCap, LineJoin,
-    LinearGradient, Pattern, PatternExtend, Point, RadialGradient, RgbaColor, TextAlign,
-    TextMetrics, TextStyle, TextWeight,
+    BaseLine, CanvasContext, Color, Direction, Gradient, LineCap, LineJoin, Pattern, Point,
+    TextAlign, TextMetrics, TextStyle, TextWeight,
 };
+
+// GradientType, LinearGradient, PatternExtend, RadialGradient, RgbaColor,
 
 #[derive(Default)]
 struct RoughState {

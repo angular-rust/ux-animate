@@ -1,15 +1,11 @@
+use super::{Actor, Path};
 use crate::prelude::*;
-use super::{Actor, ActorMeta, Constraint, Path};
-use glib::{
-    signal::{connect_raw, SignalHandlerId},
-};
-use std::boxed::Box as Box_;
-use std::{fmt, mem::transmute};
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 // @extends Constraint, ActorMeta,
 #[derive(Debug, Clone)]
-pub struct PathConstraint {
-}
+pub struct PathConstraint {}
 
 impl PathConstraint {
     /// Creates a new `PathConstraint` with the given `path` and `offset`

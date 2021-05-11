@@ -1,8 +1,10 @@
-use super::RenderHelper;
+// use super::RenderHelper;
 use crate::{
-  canvas::rough::{geometry::line_length, Line, Op, OpSet, RoughOptions},
+  canvas::rough::{OpSet, RoughOptions},
   Point,
 };
+
+// geometry::line_length, Line, Op,
 
 //extends HachureFiller
 pub struct ZigZagFiller;

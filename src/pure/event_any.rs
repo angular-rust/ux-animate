@@ -1,4 +1,4 @@
-use super::{Actor, EventFlags, EventSequence, EventType, InputDevice, ModifierType, Stage};
+use super::{Actor, EventFlags, EventType, ModifierType, Stage};
 
 // * ClutterAnyEvent:
 // * @type: event type

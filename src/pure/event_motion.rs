@@ -1,4 +1,4 @@
-use super::{ModifierType, EventSequence, InputDevice, EventType, EventFlags, Stage, Actor};
+use super::{Actor, EventFlags, EventType, InputDevice, ModifierType, Stage};
 
 // * ClutterMotionEvent:
 // * @type: event type
@@ -21,7 +21,7 @@ pub struct MotionEvent {
     flags: EventFlags,
     stage: Option<Stage>,
     source: Option<Actor>,
-  
+
     x: f32,
     y: f32,
     modifier_state: ModifierType,

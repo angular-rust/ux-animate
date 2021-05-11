@@ -1,11 +1,7 @@
+use super::{Actor, EventSequence, LongPressState, ModifierType};
 use crate::prelude::*;
-use super::{Action, Actor, ActorMeta, LongPressState, ModifierType, EventSequence};
-use glib::{
-    signal::{connect_raw, SignalHandlerId},
-};
-use std::boxed::Box as Box_;
-use std::{fmt, mem, mem::transmute};
-
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 // * SECTION:clutter-click-action
 // * @Title: ClutterClickAction
@@ -81,20 +77,20 @@ pub struct ClickAction {
     event_id: u32,
     capture_id: u32,
     long_press_id: u32,
-  
+
     long_press_threshold: i32,
     long_press_duration: i32,
     drag_threshold: i32,
-  
+
     press_button: u32,
     press_device_id: i32,
     press_sequence: Option<EventSequence>,
     modifier_state: ModifierType,
     press_x: f32,
     press_y: f32,
-  
-    is_held    : bool,
-    is_pressed : bool,
+
+    is_held: bool,
+    is_pressed: bool,
 }
 
 impl Object for ClickAction {}

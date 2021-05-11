@@ -1,4 +1,4 @@
-use super::{ModifierType, EventSequence, EventFlags, InputDevice, EventType, Stage, Actor};
+use super::{Actor, EventFlags, EventType, InputDevice, ModifierType, Stage};
 
 // * ClutterKeyEvent:
 // * @type: event type
@@ -15,18 +15,18 @@ use super::{ModifierType, EventSequence, EventFlags, InputDevice, EventType, Sta
 // *
 // * Key event
 #[derive(Debug, Clone)]
-pub struct KeyEvent{
+pub struct KeyEvent {
     kind: EventType,
     time: u32,
     flags: EventFlags,
     stage: Option<Stage>,
     source: Option<Actor>,
-  
+
     modifier_state: ModifierType,
     keyval: u32,
     hardware_keycode: u16,
     unicode_value: u64, // gunichar
-    device: Option<InputDevice>
+    device: Option<InputDevice>,
 }
 
 impl KeyEvent {

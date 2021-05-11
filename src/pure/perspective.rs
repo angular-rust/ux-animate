@@ -1,5 +1,3 @@
-use std::mem;
-
 // * ClutterPerspective:
 // * @fovy: the field of view angle, in degrees, in the y direction
 // * @aspect: the aspect ratio that determines the field of view in the x

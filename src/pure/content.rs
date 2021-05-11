@@ -1,10 +1,7 @@
-use crate::prelude::*;
 use super::Actor;
-use glib::{
-    signal::{connect_raw, SignalHandlerId},
-};
-use std::boxed::Box as Box_;
-use std::{fmt, mem, mem::transmute};
+use crate::prelude::*;
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 // * SECTION:clutter-content
 // * @Title: ClutterContent
@@ -31,8 +28,7 @@ use std::{fmt, mem, mem::transmute};
 // * The #ClutterContentIface structure contains only
 // * private data.
 #[derive(Debug, Clone)]
-pub struct Content {
-}
+pub struct Content {}
 
 impl Object for Content {}
 impl Is<Content> for Content {}

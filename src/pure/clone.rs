@@ -1,10 +1,7 @@
+use super::Actor;
 use crate::prelude::*;
-use super::{Actor, Animatable, Container};
-use glib::{
-    signal::{connect_raw, SignalHandlerId},
-};
-use std::boxed::Box as Box_;
-use std::{fmt, mem::transmute};
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 // * @short_description: An actor that displays a clone of a source actor
 // *

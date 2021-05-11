@@ -1,5 +1,3 @@
-use std::mem;
-
 #[derive(Debug, Clone)]
 pub struct Knot {
     x: i32,

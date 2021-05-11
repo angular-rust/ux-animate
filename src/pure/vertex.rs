@@ -1,5 +1,3 @@
-use std::mem;
-
 #[derive(Debug, PartialOrd, Ord)] // Hash
 pub struct Vertex {
 }

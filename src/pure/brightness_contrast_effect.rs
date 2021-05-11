@@ -1,14 +1,5 @@
-use crate::prelude::*;
-use super::{ActorMeta, Effect, OffscreenEffect};
-use glib::{
-    // object as gobject,
-    // object::{Cast, ObjectType as ObjectType_},
-    signal::{connect_raw, SignalHandlerId},
-    // translate::*,
-};
-use std::boxed::Box as Box_;
-use std::mem::transmute;
-use std::{fmt, mem};
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 // * @short_description: Increase/decrease brightness and/or contrast of actor.
 // * @see_also: #ClutterEffect, #ClutterOffscreenEffect
@@ -25,19 +16,19 @@ pub struct BrightnessContrastEffect {
     brightness_red: f32,
     brightness_green: f32,
     brightness_blue: f32,
-  
+
     contrast_red: f32,
     contrast_green: f32,
     contrast_blue: f32,
-  
+
     brightness_multiplier_uniform: i32,
     brightness_offset_uniform: i32,
     contrast_uniform: i32,
-  
+
     tex_width: i32,
     tex_height: i32,
-  
-    pipeline: Option<dx::Pipeline>
+
+    pipeline: Option<dx::Pipeline>,
 }
 
 impl BrightnessContrastEffect {
@@ -64,7 +55,11 @@ impl BrightnessContrastEffect {
     /// return location for blue component of the
     ///  change in brightness
     pub fn get_brightness(&self) -> (f32, f32, f32) {
-        (self.brightness_red, self.brightness_green, self.brightness_blue)
+        (
+            self.brightness_red,
+            self.brightness_green,
+            self.brightness_blue,
+        )
     }
 
     /// Retrieves the contrast value used by `self`.

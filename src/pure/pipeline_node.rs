@@ -1,4 +1,3 @@
-use super::PaintNode;
 use std::fmt;
 
 // @extends PaintNode

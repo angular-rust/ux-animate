@@ -1,4 +1,3 @@
-use std::mem;
 use super::Vertex;
 
 // * ClutterActorBox:

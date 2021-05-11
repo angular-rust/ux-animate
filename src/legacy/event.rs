@@ -1,11 +1,13 @@
 #![allow(unused_macros)]
 
 use glib::translate::*;
-use libc::c_void;
-use std::{fmt, mem, ptr};
+// use libc::c_void;
+use std::fmt;
+// , mem, ptr
 
 // use AxisUse;
-use crate::{EventSequence, EventType, InputDevice, ModifierType};
+use crate::{EventSequence, EventType, InputDevice};
+// ModifierType
 
 glib_wrapper! {
     /// A generic UX Animate event.

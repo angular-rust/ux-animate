@@ -1,11 +1,10 @@
+use super::LayoutManager;
 use crate::prelude::*;
-use super::{ChildMeta, LayoutManager};
 use std::fmt;
 
 // @extends ChildMeta
 #[derive(Debug, Clone)]
-pub struct LayoutMeta {
-}
+pub struct LayoutMeta {}
 
 impl Object for LayoutMeta {}
 impl Is<LayoutMeta> for LayoutMeta {}

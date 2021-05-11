@@ -1,8 +1,5 @@
-use std::mem;
-
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct Margin {
-}
+pub struct Margin {}
 
 impl Margin {
     /// Creates a new `Margin`.

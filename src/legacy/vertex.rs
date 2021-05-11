@@ -1,5 +1,5 @@
 use glib::translate::*;
-use std::mem;
+// use std::mem;
 
 glib_wrapper! {
     #[derive(Debug, PartialOrd, Ord)] // Hash

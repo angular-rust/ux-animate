@@ -1,6 +1,3 @@
-use crate::prelude::*;
-use super::{ActorMeta, Effect, OffscreenEffect};
-// use glib::{object as gobject, object::Cast, translate::*};
 use std::fmt;
 
 // * @short_description: A blur effect

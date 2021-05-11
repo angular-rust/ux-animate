@@ -1,10 +1,7 @@
+use super::{Container, Orientation};
 use crate::prelude::*;
-use super::{LayoutManager, Orientation, Container};
-use glib::{
-    signal::{connect_raw, SignalHandlerId},
-};
-use std::boxed::Box as Box_;
-use std::{fmt, mem::transmute};
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 // * @short_description: A layout manager arranging children on a single line
 // *
@@ -29,12 +26,12 @@ pub struct BoxLayout {
     container: Option<Container>,
 
     spacing: u32,
-  
+
     easing_mode: u64,
     easing_duration: u32,
-  
+
     orientation: Orientation,
-  
+
     is_pack_start: bool,
     use_animations: bool,
     is_homogeneous: bool,

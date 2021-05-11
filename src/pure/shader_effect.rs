@@ -1,11 +1,10 @@
+use super::ShaderType;
 use crate::prelude::*;
-use super::{ActorMeta, Effect, OffscreenEffect, ShaderType};
 use std::fmt;
 
 // @extends OffscreenEffect, Effect, ActorMeta
 #[derive(Debug, Clone)]
-pub struct ShaderEffect {
-}
+pub struct ShaderEffect {}
 
 impl ShaderEffect {
     /// Creates a new `ShaderEffect`, to be applied to an actor using

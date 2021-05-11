@@ -1,16 +1,11 @@
 use crate::prelude::*;
-use super::{Timeline, Transition};
-use glib::{
-    signal::{connect_raw, SignalHandlerId},
-};
-use std::boxed::Box as Box_;
-use std::{fmt, mem::transmute};
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 // TODO: @implements Scriptable
 // @extends Transition, Timeline
 #[derive(Debug, Clone)]
-pub struct PropertyTransition {
-}
+pub struct PropertyTransition {}
 
 impl PropertyTransition {
     /// Creates a new `PropertyTransition`.

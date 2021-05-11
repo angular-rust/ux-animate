@@ -318,8 +318,8 @@ pub(crate) use self::point::InternalPoint;
 mod rect;
 pub(crate) use self::rect::InternalRect;
 
-mod size;
-pub(crate) use self::size::InternalSize;
+// mod size;
+// pub(crate) use self::size::InternalSize;
 
 mod state_key;
 pub use self::state_key::StateKey;

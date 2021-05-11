@@ -1,17 +1,12 @@
 use crate::prelude::*;
-use crate::{Color, RgbaColor};
-use super::{Actor, Animatable, Container};
-use glib::{
-    signal::{connect_raw, SignalHandlerId},
-};
-use std::boxed::Box as Box_;
-use std::{fmt, mem::transmute};
+use crate::Color;
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 // TODO: implements atk::ImplementorIface, Scriptable
 // @extends Actor,
 #[derive(Debug, Clone)]
-pub struct Rectangle {
-}
+pub struct Rectangle {}
 
 impl Object for Rectangle {}
 impl Is<Rectangle> for Rectangle {}
@@ -76,7 +71,7 @@ impl<O: Is<Rectangle>> RectangleExt for O {
         //         .expect("Return Value for property `border-color` getter")
         // }
         unimplemented!()
-    } 
+    }
 
     fn set_property_border_color(&self, color: Option<Color>) {
         // let color = match color {

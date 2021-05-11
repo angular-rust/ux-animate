@@ -14,6 +14,9 @@ use crate::prelude;
 mod action;
 pub use self::action::Action;
 
+mod actor_box;
+pub use self::actor_box::ActorBox;
+
 mod actor;
 pub use self::actor::{Actor, ActorExt};
 
@@ -128,6 +131,9 @@ pub use event_motion::MotionEvent;
 mod event_scroll;
 pub use event_scroll::ScrollEvent;
 
+mod event_sequence;
+pub use self::event_sequence::EventSequence;
+
 mod event_stage_state;
 pub use event_stage_state::StageStateEvent;
 
@@ -148,6 +154,9 @@ pub use self::fixed_layout::FixedLayout;
 
 mod flow_layout;
 pub use self::flow_layout::{FlowLayout, FlowLayoutExt};
+
+mod geometry;
+pub use self::geometry::Geometry;
 
 mod gesture_action;
 pub use self::gesture_action::{GestureAction, GestureActionExt};
@@ -170,14 +179,35 @@ pub use self::interval::{Interval, IntervalExt};
 mod keyframe_transition;
 pub use self::keyframe_transition::{KeyframeTransition, KeyframeTransitionExt};
 
+mod knot;
+pub use self::knot::Knot;
+
 mod layout_manager;
 pub use self::layout_manager::{LayoutManager, LayoutManagerExt};
 
 mod layout_meta;
 pub use self::layout_meta::{LayoutMeta, LayoutMetaExt};
 
+mod list_model;
+pub use self::list_model::ListModel;
+
+mod main_context;
+pub use self::main_context::*;
+
+mod margin;
+pub use self::margin::Margin;
+
+mod matrix;
+pub use self::matrix::Matrix;
+
 mod media;
 pub use self::media::{Media, MediaExt};
+
+mod model;
+pub use self::model::Model;
+
+mod model_iter;
+pub use self::model_iter::ModelIter;
 
 mod offscreen_effect;
 pub use self::offscreen_effect::{OffscreenEffect, OffscreenEffectExt};
@@ -197,17 +227,35 @@ pub use self::pan_action::{PanAction, PanActionExt};
 // mod param_spec_unit;
 // pub use self::param_spec_unit::{ParamSpecUnit};
 
-mod path;
-pub use self::path::{Path, PathExt};
+mod path_node;
+pub use self::path_node::PathNode;
+
+mod paint_volume;
+pub use self::paint_volume::PaintVolume;
 
 mod path_constraint;
 pub use self::path_constraint::PathConstraint;
 
+mod path;
+pub use self::path::{Path, PathExt};
+
+mod perspective;
+pub use self::perspective::{Perspective, Fog};
+
 mod pipeline_node;
 pub use self::pipeline_node::PipelineNode;
 
+mod platform;
+pub(crate) use self::platform::*;
+
+mod point;
+pub(crate) use self::point::InternalPoint;
+
 mod property_transition;
 pub use self::property_transition::{PropertyTransition, PropertyTransitionExt};
+
+mod rect;
+pub(crate) use self::rect::InternalRect;
 
 mod rectangle;
 pub use self::rectangle::{Rectangle, RectangleExt};
@@ -242,14 +290,20 @@ pub use self::shader_int::ShaderInt;
 mod shader_matrix;
 pub use self::shader_matrix::ShaderMatrix;
 
+// mod size;
+// pub(crate) use self::size::InternalSize;
+
 mod snap_constraint;
 pub use self::snap_constraint::SnapConstraint;
+
+mod stage_manager;
+pub use self::stage_manager::{StageManager, StageManagerExt};
 
 mod stage;
 pub use self::stage::{Stage, StageExt};
 
-mod stage_manager;
-pub use self::stage_manager::{StageManager, StageManagerExt};
+mod state_key;
+pub use self::state_key::StateKey;
 
 mod state;
 pub use self::state::State;
@@ -284,65 +338,14 @@ pub use self::transition::{Transition, TransitionExt};
 mod transition_group;
 pub use self::transition_group::{TransitionGroup, TransitionGroupExt};
 
-mod zoom_action;
-pub use self::zoom_action::{ZoomAction, ZoomActionExt};
-
-mod actor_box;
-pub use self::actor_box::ActorBox;
-
-// mod color;
-// pub(crate) use self::color::InternalColor;
-
-mod event_sequence;
-pub use self::event_sequence::EventSequence;
-
-mod geometry;
-pub use self::geometry::Geometry;
-
-mod knot;
-pub use self::knot::Knot;
-
-mod margin;
-pub use self::margin::Margin;
-
-mod matrix;
-pub use self::matrix::Matrix;
-
-mod list_model;
-pub use self::list_model::ListModel;
-
-mod model;
-pub use self::model::Model;
-
-mod model_iter;
-pub use self::model_iter::ModelIter;
-
-mod paint_volume;
-pub use self::paint_volume::PaintVolume;
-
-mod path_node;
-pub use self::path_node::PathNode;
-
-mod perspective;
-pub use self::perspective::{Perspective, Fog};
-
-mod point;
-pub(crate) use self::point::InternalPoint;
-
-mod rect;
-pub(crate) use self::rect::InternalRect;
-
-mod size;
-pub(crate) use self::size::InternalSize;
-
-mod state_key;
-pub use self::state_key::StateKey;
-
 mod units;
 pub use self::units::Units;
 
 mod vertex;
 pub use self::vertex::Vertex;
+
+mod zoom_action;
+pub use self::zoom_action::{ZoomAction, ZoomActionExt};
 
 mod enums;
 pub use self::enums::ActorAlign;

@@ -1,14 +1,10 @@
-use crate::prelude::*;
 use super::{Actor, ActorBox, AllocationFlags, Container, LayoutMeta};
-use glib::{
-    signal::{connect_raw, SignalHandlerId},
-};
-use std::boxed::Box as Box_;
-use std::{fmt, mem, mem::transmute};
+use crate::prelude::*;
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 #[derive(Debug, Clone)]
-pub struct LayoutManager {
-}
+pub struct LayoutManager {}
 
 impl Object for LayoutManager {}
 impl Is<LayoutManager> for LayoutManager {}

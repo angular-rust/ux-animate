@@ -1,11 +1,7 @@
+use super::{Alpha, RotateAxis, RotateDirection};
 use crate::prelude::*;
-use super::{Alpha, Behaviour, RotateAxis, RotateDirection};
-use glib::{
-    signal::{connect_raw, SignalHandlerId},
-};
-use std::boxed::Box as Box_;
-use std::{fmt, mem, mem::transmute};
-
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 // * @short_description: A behaviour controlling rotation
 // *
@@ -21,13 +17,13 @@ use std::{fmt, mem, mem::transmute};
 pub struct BehaviourRotate {
     angle_start: f64,
     angle_end: f64,
-  
+
     axis: RotateAxis,
     direction: RotateDirection,
-  
+
     center_x: i32,
     center_y: i32,
-    center_z: i32
+    center_z: i32,
 }
 
 impl BehaviourRotate {

@@ -1,15 +1,11 @@
+use super::FlowOrientation;
 use crate::prelude::*;
-use super::{FlowOrientation, LayoutManager};
-use glib::{
-    signal::{connect_raw, SignalHandlerId},
-};
-use std::boxed::Box as Box_;
-use std::{fmt, mem, mem::transmute};
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 // @extends LayoutManager
 #[derive(Debug, Clone)]
-pub struct FlowLayout {
-}
+pub struct FlowLayout {}
 
 impl FlowLayout {
     /// Creates a new `FlowLayout` with the given `orientation`
@@ -452,7 +448,6 @@ impl<O: Is<FlowLayout>> FlowLayoutExt for O {
         &self,
         f: F,
     ) -> SignalHandlerId {
-
         unimplemented!()
     }
 

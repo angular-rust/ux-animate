@@ -4,7 +4,6 @@ use glib::{
     translate::*,
     GString, StaticType, Value,
 };
-use std::boxed::Box as Box_;
 use std::fmt;
 
 glib_wrapper! {

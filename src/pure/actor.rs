@@ -1,21 +1,18 @@
 use super::{
-    Action, ActorAlign, ActorBox, ActorFlags, AllocationFlags, Animatable, AnimationMode,
-    ButtonEvent, Constraint, Container, Content, ContentGravity, ContentRepeat, CrossingEvent,
-    Effect, Event, InternalRect, KeyEvent, LayoutManager, Margin, Matrix, MotionEvent,
-    OffscreenRedirect, Orientation, PaintVolume, RequestMode, RotateAxis, ScalingFilter,
-    ScrollEvent, Stage, TextDirection, Transition, Vertex,
+    Action, ActorAlign, ActorBox, ActorFlags, AllocationFlags, AnimationMode, ButtonEvent,
+    Constraint, Content, ContentGravity, ContentRepeat, CrossingEvent, Effect, Event, InternalRect,
+    KeyEvent, LayoutManager, Margin, Matrix, MotionEvent, OffscreenRedirect, Orientation,
+    PaintVolume, RequestMode, RotateAxis, ScalingFilter, ScrollEvent, Stage, TextDirection,
+    Transition, Vertex,
 };
 use crate::prelude::*;
-use crate::{Color, RgbaColor};
-use glib::signal::{connect_raw, SignalHandlerId};
-use std::boxed::Box as Box_;
-use std::mem::transmute;
-use std::{fmt, mem};
+use crate::Color;
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 // @implements Animatable, Container
 #[derive(Debug, Clone)]
-pub struct Actor {
-}
+pub struct Actor {}
 
 impl Actor {
     /// Creates a new `Actor`.
@@ -2412,10 +2409,7 @@ pub trait ActorExt: 'static {
     fn set_property_clip_rect(&self, clip_rect: Option<&InternalRect>);
 
     /// Adds a `Constraint` to the actor
-    fn set_property_constraints<P: Is<Constraint>>(
-        &self,
-        constraints: Option<&P>,
-    );
+    fn set_property_constraints<P: Is<Constraint>>(&self, constraints: Option<&P>);
 
     /// Adds `Effect` to the list of effects be applied on a `Actor`
     fn set_property_effect<P: Is<Effect>>(&self, effect: Option<&P>);
@@ -4585,11 +4579,7 @@ impl<O: Is<Actor>> ActorExt for O {
         unimplemented!()
     }
 
-    fn set_child_above_sibling<P: Is<Actor>, Q: Is<Actor>>(
-        &self,
-        child: &P,
-        sibling: Option<&Q>,
-    ) {
+    fn set_child_above_sibling<P: Is<Actor>, Q: Is<Actor>>(&self, child: &P, sibling: Option<&Q>) {
         // unsafe {
         //     ffi::clutter_actor_set_child_above_sibling(
         //         self.as_ref().to_glib_none().0,
@@ -4611,11 +4601,7 @@ impl<O: Is<Actor>> ActorExt for O {
         unimplemented!()
     }
 
-    fn set_child_below_sibling<P: Is<Actor>, Q: Is<Actor>>(
-        &self,
-        child: &P,
-        sibling: Option<&Q>,
-    ) {
+    fn set_child_below_sibling<P: Is<Actor>, Q: Is<Actor>>(&self, child: &P, sibling: Option<&Q>) {
         // unsafe {
         //     ffi::clutter_actor_set_child_below_sibling(
         //         self.as_ref().to_glib_none().0,
@@ -5096,10 +5082,7 @@ impl<O: Is<Actor>> ActorExt for O {
         unimplemented!()
     }
 
-    fn set_property_constraints<P: Is<Constraint>>(
-        &self,
-        constraints: Option<&P>,
-    ) {
+    fn set_property_constraints<P: Is<Constraint>>(&self, constraints: Option<&P>) {
         // unsafe {
         //     gobject_sys::g_object_set_property(
         //         self.to_glib_none().0 as *mut gobject_sys::GObject,

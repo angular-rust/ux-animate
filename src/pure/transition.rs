@@ -1,16 +1,12 @@
+use super::{Animatable, Interval};
 use crate::prelude::*;
-use super::{Animatable, Interval, Timeline};
-use glib::{
-    signal::{connect_raw, SignalHandlerId},
-};
-use std::boxed::Box as Box_;
-use std::{fmt, mem::transmute};
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 // TODO: @implements Scriptable
 // @extends Timeline
 #[derive(Debug, Clone)]
-pub struct Transition {
-}
+pub struct Transition {}
 
 impl Object for Transition {}
 impl Is<Transition> for Transition {}

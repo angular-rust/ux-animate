@@ -1,16 +1,11 @@
 use crate::prelude::*;
-use super::{Actor, Animatable, Container};
-use glib::{
-    signal::{connect_raw, SignalHandlerId},
-};
-use std::boxed::Box as Box_;
-use std::{fmt, mem::transmute};
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 // TODO: implements atk::ImplementorIface, Scriptable, Animatable, Container
 // @extends Actor
 #[derive(Debug, Clone)]
-pub struct Texture {
-}
+pub struct Texture {}
 
 impl Object for Texture {}
 impl Is<Texture> for Texture {}

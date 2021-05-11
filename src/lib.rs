@@ -1,4 +1,3 @@
-#![allow(unused_imports)]
 #![allow(deprecated)]
 #![cfg_attr(feature = "cargo-clippy", allow(clippy::cast_ptr_alignment))]
 #![cfg_attr(feature = "cargo-clippy", allow(clippy::trivially_copy_pass_by_ref))]

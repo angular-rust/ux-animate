@@ -1,4 +1,5 @@
-use super::{polygon_hachure_lines, PatternFiller, RenderHelper};
+use super::{polygon_hachure_lines, RenderHelper};
+// PatternFiller
 use crate::{
     canvas::rough::{geometry::line_length, Line, Op, OpSet, OpSetType, RoughOptions},
     Point,

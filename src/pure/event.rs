@@ -1,24 +1,22 @@
-use crate::prelude::*;
 use super::{
     AnyEvent, ButtonEvent, CrossingEvent, EventSequence, EventType, InputDevice, KeyEvent,
-    ModifierType, MotionEvent, ScrollEvent, StageStateEvent, TouchEvent, TouchpadPinchEvent,
-    TouchpadSwipeEvent,
+    MotionEvent, ScrollEvent, StageStateEvent, TouchEvent, TouchpadPinchEvent, TouchpadSwipeEvent,
 };
-use std::{fmt, mem, ptr};
+use std::fmt;
 
 /// A generic UX Animate event wrapper.
 #[derive(Clone)]
 pub enum Event {
-    AnyEvent,           // any;
-    ButtonEvent,        // button;
-    KeyEvent,           // key;
-    MotionEvent,        // motion;
-    ScrollEvent,        // scroll;
-    StageStateEvent,    // stage_state;
-    CrossingEvent,      // crossing;
-    TouchEvent,         // touch;
-    TouchpadPinchEvent, // touchpad_pinch;
-    TouchpadSwipeEvent, // touchpad_swipe;
+    AnyEvent(AnyEvent),                     // any;
+    ButtonEvent(ButtonEvent),               // button;
+    KeyEvent(KeyEvent),                     // key;
+    MotionEvent(MotionEvent),               // motion;
+    ScrollEvent(ScrollEvent),               // scroll;
+    StageStateEvent(StageStateEvent),       // stage_state;
+    CrossingEvent(CrossingEvent),           // crossing;
+    TouchEvent(TouchEvent),                 // touch;
+    TouchpadPinchEvent(TouchpadPinchEvent), // touchpad_pinch;
+    TouchpadSwipeEvent(TouchpadSwipeEvent), // touchpad_swipe;
 }
 
 // event_wrapper!(Event, ClutterAnyEvent);

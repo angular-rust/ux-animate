@@ -35,6 +35,8 @@ float-cmp = { version = "0.5", default-features = false }
 ruex = "0.1"
 tiny-skia = "0.5"
 rand = "0.8"
+x11 = "2.18.2"
+once_cell = "1.7.2"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 ux-dx = "0.1"

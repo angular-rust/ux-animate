@@ -1,9 +1,8 @@
-use super::{Actor, Animatable, Container, InternalRect, TextBuffer};
+use super::{InternalRect, TextBuffer};
 use crate::prelude::*;
-use crate::{Color, RgbaColor};
-use glib::signal::{connect_raw, SignalHandlerId};
-use std::boxed::Box as Box_;
-use std::{fmt, mem, mem::transmute};
+use crate::Color;
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 // TODO: implements atk::ImplementorIface, Scriptable, Animatable, Container
 // @extends Actor,

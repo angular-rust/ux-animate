@@ -1,4 +1,4 @@
-use super::{Event, InputDevice, ModifierType, EventType, EventFlags, Stage, Actor};
+use super::{Actor, EventFlags, EventType, InputDevice, ModifierType, Stage};
 // * ClutterButtonEvent:
 // * @type: event type
 // * @time: event time
@@ -27,14 +27,14 @@ pub struct ButtonEvent {
     flags: EventFlags,
     stage: Option<Stage>,
     source: Option<Actor>,
-  
+
     x: f32,
     y: f32,
     modifier_state: ModifierType,
     button: u32,
     click_count: u32,
     axes: Option<f64>, /* Future use */
-    device: Option<InputDevice>
+    device: Option<InputDevice>,
 }
 
 impl ButtonEvent {

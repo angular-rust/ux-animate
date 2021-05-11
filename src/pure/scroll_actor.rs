@@ -1,16 +1,12 @@
+use super::{InternalPoint, InternalRect, ScrollMode};
 use crate::prelude::*;
-use super::{Actor, Animatable, Container, InternalPoint, InternalRect, ScrollMode};
-use glib::{
-    signal::{connect_raw, SignalHandlerId},
-};
-use std::boxed::Box as Box_;
-use std::{fmt, mem::transmute};
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 // TODO: implements atk::ImplementorIface, Scriptable, @implements Animatable, Container
 // @extends Actor
 #[derive(Debug, Clone)]
-pub struct ScrollActor {
-}
+pub struct ScrollActor {}
 
 impl ScrollActor {
     /// Creates a new `ScrollActor`.
@@ -39,7 +35,6 @@ impl Default for ScrollActor {
         Self::new()
     }
 }
-
 
 /// Trait containing all `ScrollActor` methods.
 ///

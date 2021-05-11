@@ -1,11 +1,6 @@
+use super::{Actor, AlignAxis};
 use crate::prelude::*;
-use super::{Actor, ActorMeta, AlignAxis, Constraint};
-use glib::{
-    signal::{connect_raw, SignalHandlerId},
-};
-use std::boxed::Box as Box_;
-use std::{fmt, mem::transmute};
-
+use std::fmt;
 
 // * ClutterAlignConstraint:
 // *
@@ -20,7 +15,6 @@ use std::{fmt, mem::transmute};
 #[derive(Debug, Clone)]
 pub struct AlignConstraint {
     // parent_instance: Constraint,
-
     actor: Option<Actor>,
     source: Option<Actor>,
     align_axis: AlignAxis,

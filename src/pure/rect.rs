@@ -1,6 +1,4 @@
-use crate::prelude::*;
 use super::InternalPoint;
-use std::mem;
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct InternalRect {

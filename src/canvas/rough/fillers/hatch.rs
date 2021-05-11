@@ -1,5 +1,5 @@
 use crate::{Point, canvas::rough::{RoughOptions, OpSet}};
-use super::HachureFiller;
+// use super::HachureFiller;
 
 //extends HachureFiller
 pub struct HatchFiller {

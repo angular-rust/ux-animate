@@ -1,4 +1,4 @@
-use super::{ModifierType, EventSequence, InputDevice, EventType, StageState, EventFlags, Stage, Actor};
+use super::{ModifierType, EventType, StageState, EventFlags, Stage, Actor};
 
 // * ClutterStageStateEvent:
 // * @type: event type

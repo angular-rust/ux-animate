@@ -1,6 +1,8 @@
-use super::{get_filler, Op, OpSet, OpSetType, Random, RoughOptions};
+use super::{Op, OpSet, OpSetType, RoughOptions};
 use crate::{OpType, Point};
 use std::{cmp::Ordering, f64::consts::PI};
+// get_filler, Random
+
 // import { RenderHelper } from './fillers/filler-interface.js';
 // import { parsePath, normalize, absolutize } from 'path-data-parser';
 

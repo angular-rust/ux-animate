@@ -1,10 +1,7 @@
+use super::Actor;
 use crate::prelude::*;
-use super::{Action, Actor, ActorMeta};
-use glib::{
-    signal::{connect_raw, SignalHandlerId},
-};
-use std::boxed::Box as Box_;
-use std::{fmt, mem::transmute};
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 // * SECTION:clutter-drop-action
 // * @Title: ClutterDropAction
@@ -42,7 +39,7 @@ use std::{fmt, mem::transmute};
 pub struct DropAction {
     actor: Option<Actor>,
     stage: Option<Actor>,
-  
+
     mapped_id: u64,
 }
 

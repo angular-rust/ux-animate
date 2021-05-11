@@ -1,12 +1,11 @@
+use super::AnimationMode;
 use crate::prelude::*;
-use std::{fmt, mem};
-use super::{AnimationMode, PropertyTransition, Timeline, Transition};
+use std::fmt;
 
 // TODO: , @implements Scriptable
 // @extends PropertyTransition, Transition, Timeline
 #[derive(Debug, Clone)]
-pub struct KeyframeTransition {
-}
+pub struct KeyframeTransition {}
 
 impl KeyframeTransition {
     /// Creates a new `KeyframeTransition` for `property_name`.

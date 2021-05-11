@@ -1,14 +1,6 @@
-use crate::prelude::*;
-use super::{ActorMeta, Effect, OffscreenEffect};
 use crate::{Color, RgbaColor};
-use glib::{
-    // object as gobject,
-    // object::{Cast, ObjectType as ObjectType_},
-    signal::{connect_raw, SignalHandlerId},
-    // translate::*,
-};
-use std::boxed::Box as Box_;
-use std::{fmt, mem::transmute};
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 // * SECTION:clutter-colorize-effect
 // * @short_description: A colorization effect
@@ -23,13 +15,13 @@ pub struct ColorizeEffect {
 
     /* the tint of the colorization */
     tint: Color,
-  
+
     tint_uniform: i32,
-  
+
     tex_width: i32,
     tex_height: i32,
-  
-    pipeline: Option<dx::Pipeline>
+
+    pipeline: Option<dx::Pipeline>,
 }
 
 impl ColorizeEffect {

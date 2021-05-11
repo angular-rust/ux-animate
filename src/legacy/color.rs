@@ -1,7 +1,7 @@
 use crate::StaticColor;
 use glib::{translate::*, GString};
-use std::{fmt, hash, mem};
-
+use std::{fmt, mem};
+// hash,
 glib_wrapper! {
     #[derive(Debug)] // PartialOrd, Ord
     pub struct InternalColor(Boxed<ffi::ClutterColor>);

@@ -1,15 +1,12 @@
-use crate::prelude::*;
 use super::{AnimationMode, InternalPoint, StepMode, TimelineDirection};
-use glib::{
-    signal::{connect_raw, SignalHandlerId},
-};
+use crate::prelude::*;
+use glib::signal::SignalHandlerId;
 use std::boxed::Box as Box_;
-use std::{fmt, mem, mem::transmute};
+use std::fmt;
 
 // TODO: @implements Scriptable
 #[derive(Debug, Clone)]
-pub struct Timeline {
-}
+pub struct Timeline {}
 
 impl Timeline {
     /// Creates a new `Timeline` with a duration of `msecs`.

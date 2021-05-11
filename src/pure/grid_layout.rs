@@ -1,15 +1,11 @@
+use super::{Actor, GridPosition, Orientation};
 use crate::prelude::*;
-use super::{Actor, GridPosition, LayoutManager, Orientation};
-use glib::{
-    signal::{connect_raw, SignalHandlerId},
-};
-use std::boxed::Box as Box_;
-use std::{fmt, mem::transmute};
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 // @extends LayoutManager
 #[derive(Debug, Clone)]
-pub struct GridLayout {
-}
+pub struct GridLayout {}
 
 impl GridLayout {
     /// Creates a new `GridLayout`

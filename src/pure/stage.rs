@@ -1,8 +1,7 @@
-use super::{Actor, Animatable, Container, Event, Fog, Group, Perspective, PickMode};
+use super::{Actor, Event, Fog, Perspective, PickMode, StageWindow};
 use crate::prelude::*;
-use glib::signal::{connect_raw, SignalHandlerId};
-use std::boxed::Box as Box_;
-use std::{fmt, mem, mem::transmute};
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 // * SECTION:clutter-stage
 // * @short_description: Top level visual element to which actors are placed.
@@ -27,7 +26,7 @@ use std::{fmt, mem, mem::transmute};
 #[derive(Debug, Clone)]
 pub struct Stage {
     /* the stage implementation */
-    // implementation: Option<StageWindow>,
+    implementation: Option<StageWindow>,
     perspective: Perspective,
     projection: dx::Matrix,
     inverse_projection: dx::Matrix,
@@ -60,7 +59,6 @@ pub struct Stage {
 
     // paint_data: ptr,
     // paint_notify: GDestroyNotify,
-
     relayout_pending: bool,
     redraw_pending: bool,
     is_fullscreen: bool,
@@ -98,6 +96,8 @@ impl Stage {
         // unsafe { Actor::from_glib_none(ffi::clutter_stage_new()).unsafe_cast() }
         unimplemented!()
     }
+
+    fn init(&self) {}
 }
 
 impl Object for Stage {}

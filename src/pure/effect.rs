@@ -1,5 +1,4 @@
 use crate::prelude::*;
-use super::ActorMeta;
 use std::fmt;
 
 // * SECTION:clutter-effect
@@ -138,9 +137,7 @@ use std::fmt;
 // *
 // @extends ActorMeta
 #[derive(Debug, Clone)]
-pub struct Effect {
-
-}
+pub struct Effect {}
 
 impl Object for Effect {}
 impl Is<Effect> for Effect {}

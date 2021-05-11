@@ -1,12 +1,11 @@
+use super::Transition;
 use crate::prelude::*;
-use super::{Timeline, Transition};
 use std::fmt;
 
 // TODO: @implements Scriptable
 // @extends Transition, Timeline
 #[derive(Debug, Clone)]
-pub struct TransitionGroup {
-}
+pub struct TransitionGroup {}
 
 impl TransitionGroup {
     /// Creates a new `TransitionGroup` instance.

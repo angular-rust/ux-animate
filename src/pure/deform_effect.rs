@@ -1,10 +1,6 @@
 use crate::prelude::*;
-use super::{ActorMeta, Effect, OffscreenEffect};
-use glib::{
-    signal::{connect_raw, SignalHandlerId},
-};
-use std::boxed::Box as Box_;
-use std::{fmt, mem, mem::transmute};
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 // * SECTION:clutter-deform-effect
 // * @Title: ClutterDeformEffect
@@ -42,7 +38,7 @@ pub struct DeformEffect {
     lines_primitive: Option<dx::Primitive>,
     n_vertices: i32,
     allocation_id: u64,
-  
+
     is_dirty: bool,
 }
 

@@ -1,6 +1,8 @@
 use super::Line;
-use crate::{Point, Rectangle};
+use crate::Point;
 use std::f64::consts::PI;
+
+// Rectangle
 
 pub fn rotate_points(points: &[Point<f64>], center: Point<f64>, degrees: f64) {
     if !points.is_empty() {

@@ -1,6 +1,5 @@
-use crate::prelude::*;
 use super::ModifierType;
-use std::{fmt, boxed::Box as Box_, collections::HashMap};
+use std::{fmt, collections::HashMap};
 
 struct BindingEntry {
     // gchar *name; /* interned string, do not free */

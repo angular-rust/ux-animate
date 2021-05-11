@@ -1,10 +1,7 @@
+use super::{Actor, BindCoordinate};
 use crate::prelude::*;
-use super::{Actor, ActorMeta, BindCoordinate, Constraint};
-use glib::{
-    signal::{connect_raw, SignalHandlerId},
-};
-use std::boxed::Box as Box_;
-use std::{fmt, mem::transmute};
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 // * SECTION:clutter-bind-constraint
 // * @Title: ClutterBindConstraint
@@ -65,11 +62,10 @@ use std::{fmt, mem::transmute};
 #[derive(Debug, Clone)]
 pub struct BindConstraint {
     // parent_instance: Constraint,
-
     actor: Option<Actor>,
     source: Option<Actor>,
     coordinate: BindCoordinate,
-    offset: f32
+    offset: f32,
 }
 
 impl BindConstraint {

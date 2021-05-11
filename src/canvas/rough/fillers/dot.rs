@@ -1,11 +1,11 @@
 use super::polygon_hachure_lines;
 use crate::{
     canvas::rough::{
-        geometry::line_length, Line, Op, OpSet, OpSetType, PatternFiller, RenderHelper,
-        RoughOptions,
+        geometry::line_length, Line, Op, OpSet, OpSetType, RenderHelper, RoughOptions,
     },
     Point,
 };
+// PatternFiller
 
 pub struct DotFiller<H: RenderHelper> {
     helper: H,

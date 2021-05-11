@@ -1,15 +1,11 @@
+use super::{Actor, InternalPoint, ZoomAxis};
 use crate::prelude::*;
-use super::{Action, Actor, ActorMeta, GestureAction, InternalPoint, ZoomAxis};
-use glib::{
-    signal::{connect_raw, SignalHandlerId},
-};
-use std::boxed::Box as Box_;
-use std::{fmt, mem::transmute};
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 // @extends GestureAction, Action, ActorMeta
 #[derive(Debug, Clone)]
-pub struct ZoomAction {
-}
+pub struct ZoomAction {}
 
 impl ZoomAction {
     /// Creates a new `ZoomAction` instance

@@ -1,6 +1,6 @@
 use crate::{
     Actor, Backend, DeviceManager, Event, EventSequence, InputAxis, InputDeviceType, InputMode,
-    InternalPoint, ModifierType, Stage,
+    ModifierType, Stage,
 };
 use glib::{
     object::{IsA, ObjectType as ObjectType_},
@@ -10,6 +10,7 @@ use glib::{
 };
 use std::boxed::Box as Box_;
 use std::{fmt, mem, mem::transmute};
+// InternalPoint
 
 glib_wrapper! {
     pub struct InputDevice(Object<ffi::ClutterInputDevice, ffi::ClutterInputDeviceClass, InputDeviceClass>);

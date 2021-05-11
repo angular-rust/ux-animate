@@ -1,6 +1,3 @@
-// Scriptable
-use super::{Actor, Animatable, Container};
-// use glib::{object as gobject, translate::*};
 use std::fmt;
 
 // TODO: implements atk::ImplementorIface, Scriptable

@@ -1,6 +1,6 @@
 use crate::prelude::*;
-use crate::{Color, RgbaColor};
-use super::{PaintNode, PipelineNode, ScalingFilter};
+use crate::{Color};
+use super::{ScalingFilter};
 use std::fmt;
 
 // @extends PipelineNode, PaintNode

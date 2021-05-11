@@ -1,15 +1,11 @@
+use super::{Actor, Event, EventSequence, GestureTriggerEdge, InputDevice};
 use crate::prelude::*;
-use super::{Action, Actor, ActorMeta, Event, EventSequence, GestureTriggerEdge, InputDevice};
-use glib::{
-    signal::{connect_raw, SignalHandlerId},
-};
-use std::boxed::Box as Box_;
-use std::{fmt, mem, mem::transmute};
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 // @extends Action, ActorMeta,
 #[derive(Debug, Clone)]
-pub struct GestureAction {
-}
+pub struct GestureAction {}
 
 impl GestureAction {
     /// Creates a new `GestureAction` instance.

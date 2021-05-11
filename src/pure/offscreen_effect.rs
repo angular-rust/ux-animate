@@ -1,5 +1,5 @@
 use crate::prelude::*;
-use super::{ActorMeta, Effect, InternalRect};
+use crate::Rect;
 use std::fmt;
 
 // @extends Effect, ActorMeta,
@@ -51,7 +51,7 @@ pub trait OffscreenEffectExt: 'static {
     ///
     /// `true` if the offscreen buffer has a valid rectangle,
     ///  and `false` otherwise
-    fn get_target_rect(&self) -> Option<InternalRect>;
+    fn get_target_rect(&self) -> Option<Rect<f64>>;
 
     //fn get_texture(&self) -> /*Unimplemented*/Option<dx::Handle>;
 
@@ -72,7 +72,7 @@ impl<O: Is<OffscreenEffect>> OffscreenEffectExt for O {
     //     }
     // }
 
-    fn get_target_rect(&self) -> Option<InternalRect> {
+    fn get_target_rect(&self) -> Option<Rect<f64>> {
         // unsafe {
         //     let mut rect = InternalRect::uninitialized();
         //     let ret = from_glib(ffi::clutter_offscreen_effect_get_target_rect(

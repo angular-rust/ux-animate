@@ -1,9 +1,8 @@
 use super::UnitType;
-use std::{fmt, mem};
+use std::fmt;
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct Units {
-}
+pub struct Units {}
 
 impl Units {
     /// Retrieves the unit type of the value stored inside `self`

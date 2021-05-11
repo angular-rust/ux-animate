@@ -1,14 +1,10 @@
+use super::{Actor, SnapEdge};
 use crate::prelude::*;
-use super::{Actor, ActorMeta, Constraint, SnapEdge};
-use glib::{
-    signal::{connect_raw, SignalHandlerId},
-};
-use std::boxed::Box as Box_;
-use std::{fmt, mem, mem::transmute};
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 // @extends Constraint, ActorMeta
-pub struct SnapConstraint {
-}
+pub struct SnapConstraint {}
 
 impl SnapConstraint {
     /// Creates a new `SnapConstraint` that will snap a `Actor`

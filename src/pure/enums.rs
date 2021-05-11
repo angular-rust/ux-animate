@@ -883,6 +883,12 @@ pub enum PickMode {
     All,
 }
 
+impl Default for PickMode {
+    fn default() -> Self {
+        PickMode::None
+    }
+}
+
 impl fmt::Display for PickMode {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(

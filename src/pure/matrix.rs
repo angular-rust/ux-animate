@@ -1,8 +1,5 @@
-use std::mem;
-
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct Matrix {
-}
+pub struct Matrix {}
 
 impl Matrix {
     //pub fn init_from_array(&mut self, values: /*Unimplemented*/FixedArray TypeId { ns_id: 0, id: 20 }; 16) -> Option<Matrix> {
