@@ -11,3 +11,7 @@ Cargo.lock
 
 /refs
 /examples
+**/*.h
+**/*.c
+**/*.rc
+**/*.cur
