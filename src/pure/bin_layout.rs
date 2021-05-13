@@ -1,9 +1,17 @@
-use super::{BinAlignment, Container};
+use super::{BinAlignment, Container, LayoutMeta};
 use std::fmt;
+
+#[derive(Debug, Clone)]
+pub struct BinLayer {
+    parent_instance: LayoutMeta,
+
+    x_align: BinAlignment,
+    y_align: BinAlignment,
+}
 
 // * @short_description: A simple layout manager
 // *
-// * #ClutterBinLayout is a layout manager which implements the following
+// * #BinLayout is a layout manager which implements the following
 // * policy:
 // *
 // *   - the preferred size is the maximum preferred size
@@ -15,13 +23,13 @@ use std::fmt;
 // *   alignment policies.
 // *
 // * The [bin-layout example](https://git.gnome.org/browse/clutter/tree/examples/bin-layout.c?h=clutter-1.18)
-// * shows how to pack actors inside a #ClutterBinLayout.
+// * shows how to pack actors inside a #BinLayout.
 // @extends LayoutManager
-pub struct BinLayout{
+pub struct BinLayout {
     x_align: BinAlignment,
     y_align: BinAlignment,
-  
-    container: Option<Container>
+
+    container: Option<Container>,
 }
 
 impl BinLayout {
@@ -37,14 +45,11 @@ impl BinLayout {
     ///
     /// the newly created layout manager
     pub fn new(x_align: BinAlignment, y_align: BinAlignment) -> BinLayout {
-        // unsafe {
-        //     LayoutManager::from_glib_none(ffi::clutter_bin_layout_new(
-        //         x_align.to_glib(),
-        //         y_align.to_glib(),
-        //     ))
-        //     .unsafe_cast()
-        // }
-        unimplemented!()
+        Self {
+            x_align,
+            y_align,
+            container: None,
+        }
     }
 }
 

@@ -2,15 +2,14 @@ use super::{Settings, MainContext};
 use glib::signal::SignalHandlerId;
 use std::{cell::RefCell, fmt};
 
-#[derive(Debug, Clone)]
 struct BackendProps {
-    cogl_renderer: Option<dx::Renderer>,
-    cogl_display: Option<dx::Display>,
-    cogl_context: Option<dx::Context>,
-    // cogl_source: GSource
-    dummy_onscreen: Option<dx::Onscreen>,
+    dx_renderer: Option<dx::pure::Renderer>,
+    dx_display: Option<dx::pure::Display>,
+    dx_context: Option<dx::pure::Context>,
+    // dx_source: GSource
+    dummy_onscreen: Option<dx::pure::Onscreen>,
 
-    // device_manager: Option<dx::DeviceManager>,
+    // device_manager: Option<dx::pure::DeviceManager>,
     font_options: Option<cairo::FontOptions>,
 
     font_name: Option<String>,
@@ -21,20 +20,19 @@ struct BackendProps {
 }
 // * @short_description: Backend abstraction
 // *
-// * Clutter can be compiled against different backends. Each backend
-// * has to implement a set of functions, in order to be used by Clutter.
+// *  can be compiled against different backends. Each backend
+// * has to implement a set of functions, in order to be used by .
 // *
-// * #ClutterBackend is the base class abstracting the various implementation;
+// * #Backend is the base class abstracting the various implementation;
 // * it provides a basic API to query the backend for generic information
 // * and settings.
-#[derive(Debug, Clone)]
 pub struct Backend {
     props: RefCell<BackendProps>,
 }
 
 impl Backend {
-    // * clutter_backend_get_cogl_context:
-    // * @backend: a #ClutterBackend
+    // * clutter_backend_get_dx_context:
+    // * @backend: a #Backend
     // *
     // * Retrieves the #CoglContext associated with the given clutter
     // * @backend. A #CoglContext is required when using some of the
@@ -44,13 +42,13 @@ impl Backend {
     // * be considered experimental too.
     // *
     // * This API is not yet supported on OSX because OSX still
-    // * uses the stub Cogl winsys and the Clutter backend doesn't
+    // * uses the stub Cogl winsys and the  backend doesn't
     // * explicitly create a CoglContext.
     // *
     // * Return value: (transfer none): The #CoglContext associated with @backend.
-    pub fn get_context(&self) -> Option<dx::Context> {
+    pub fn get_context(&self) -> Option<dx::pure::Context> {
         let props = self.props.borrow();
-        props.cogl_context.clone()
+        props.dx_context.clone()
     }
 
     pub fn create_context(&self) -> bool {
@@ -60,7 +58,7 @@ impl Backend {
         // gboolean allow_any;
         // int i;
       
-        // if backend.cogl_context != NULL {
+        // if backend.dx_context != NULL {
         //     return true;
         // }
       
@@ -77,7 +75,7 @@ impl Backend {
       
         // known_drivers = g_strsplit(drivers_list, ",", 0);
       
-        // for (i = 0; backend.cogl_context == NULL && known_drivers[i] != NULL; i++) {
+        // for (i = 0; backend.dx_context == NULL && known_drivers[i] != NULL; i++) {
         //     const char *driver_name = known_drivers[i];
         //     gboolean is_any = g_str_equal(driver_name, "*");
         //     int j;
@@ -109,43 +107,43 @@ impl Backend {
       
         // g_strfreev (known_drivers);
       
-        // if backend.cogl_context == NULL {
+        // if backend.dx_context == NULL {
         //     if internal_error != NULL {
         //       g_propagate_error(error, internal_error);
         //     } else {
         //       g_set_error_literal(error, CLUTTER_INIT_ERROR,
         //                            CLUTTER_INIT_ERROR_BACKEND,
-        //                           _("Unable to initialize the Clutter backend: no available drivers found."));
+        //                           _("Unable to initialize the  backend: no available drivers found."));
         //     }
         //     return false;
         // }
       
-        // backend.cogl_source = cogl_glib_source_new(backend.cogl_context, G_PRIORITY_DEFAULT);
-        // g_source_attach(backend.cogl_source, NULL);
+        // backend.dx_source = dx_glib_source_new(backend.dx_context, G_PRIORITY_DEFAULT);
+        // g_source_attach(backend.dx_source, NULL);
       
         true
     }
 
-    fn do_real_create_context(&self, driver_id: dx::Driver) -> bool {
+    fn do_real_create_context(&self, driver_id: dx::pure::Driver) -> bool {
         // fn error() -> bool {
-        //     if backend.cogl_display.is_some() {
-        //         cogl_object_unref(backend.cogl_display);
-        //         backend.cogl_display = NULL;
+        //     if backend.dx_display.is_some() {
+        //         dx_object_unref(backend.dx_display);
+        //         backend.dx_display = NULL;
         //     }
         
-        //     if backend.cogl_renderer.is_some() {
-        //         cogl_object_unref(backend.cogl_renderer);
-        //         backend.cogl_renderer = NULL;
+        //     if backend.dx_renderer.is_some() {
+        //         dx_object_unref(backend.dx_renderer);
+        //         backend.dx_renderer = NULL;
         //     }
         
         //     if swap_chain.is_some() {
-        //         cogl_object_unref(swap_chain);
+        //         dx_object_unref(swap_chain);
         //     }
             
         //     false
         // }
 
-        // ClutterBackendClass *klass;
+        // BackendClass *klass;
         // CoglSwapChain *swap_chain;
         // GError *internal_error;
         
@@ -157,12 +155,12 @@ impl Backend {
         // info!("Creating Cogl renderer");
         
         // if klass.get_renderer.is_some() {
-        //     backend.cogl_renderer = klass.get_renderer(backend, &internal_error);
+        //     backend.dx_renderer = klass.get_renderer(backend, &internal_error);
         // } else {
-        //     backend.cogl_renderer = cogl_renderer_new();
+        //     backend.dx_renderer = dx_renderer_new();
         // }
         
-        // if backend.cogl_renderer.is_none() {
+        // if backend.dx_renderer.is_none() {
         //     return error();
         // }
 
@@ -170,35 +168,35 @@ impl Backend {
         // // it needs to have an EGL-based renderer backend
         // #[cfg(feature = "wayland")]
         // if _wayland_compositor_display {
-        //     cogl_renderer_add_constraint(backend.cogl_renderer,
+        //     dx_renderer_add_constraint(backend.dx_renderer,
         //                                 COGL_RENDERER_CONSTRAINT_USES_EGL);
         // }
         
         // info!("Connecting the renderer");
-        // cogl_renderer_set_driver(backend.cogl_renderer, driver_id);
-        // if !cogl_renderer_connect(backend.cogl_renderer, &internal_error) {
+        // dx_renderer_set_driver(backend.dx_renderer, driver_id);
+        // if !dx_renderer_connect(backend.dx_renderer, &internal_error) {
         //     return error();
         // }
         
         // info!("Creating Cogl swap chain");
-        // swap_chain = cogl_swap_chain_new ();
+        // swap_chain = dx_swap_chain_new ();
         
         // info!("Creating Cogl display");
         // if klass.get_display.is_some() {
-        //     backend.cogl_display = klass.get_display(backend,
-        //                                                 backend.cogl_renderer,
+        //     backend.dx_display = klass.get_display(backend,
+        //                                                 backend.dx_renderer,
         //                                                 swap_chain,
         //                                                 &internal_error);
         // } else {
         //     CoglOnscreenTemplate *tmpl;
         
-        //     tmpl = cogl_onscreen_template_new(swap_chain);
+        //     tmpl = dx_onscreen_template_new(swap_chain);
 
         //     // XXX: I have some doubts that this is a good design.
         //     //
         //     // Conceptually should we be able to check an onscreen_template
         //     // without more details about the CoglDisplay configuration?
-        //     let res: bool = cogl_renderer_check_onscreen_template(backend.cogl_renderer,
+        //     let res: bool = dx_renderer_check_onscreen_template(backend.dx_renderer,
         //                                                 tmpl,
         //                                                 &internal_error);
 
@@ -206,35 +204,35 @@ impl Backend {
         //         return error();
         //     }
 
-        //     backend.cogl_display = cogl_display_new(backend.cogl_renderer, tmpl);
+        //     backend.dx_display = dx_display_new(backend.dx_renderer, tmpl);
 
         //     // the display owns the template
-        //     cogl_object_unref(tmpl);
+        //     dx_object_unref(tmpl);
         // }
         
-        // if backend.cogl_display.is_none() {
+        // if backend.dx_display.is_none() {
         //     return error();
         // }
         
         // #[cfg(feature = "wayland")]
-        // cogl_wayland_display_set_compositor_display(backend.cogl_display,
+        // dx_wayland_display_set_compositor_display(backend.dx_display,
         //                                         _wayland_compositor_display);
         
         
         // info!("Setting up the display");
-        // if !cogl_display_setup(backend.cogl_display, &internal_error) {
+        // if !dx_display_setup(backend.dx_display, &internal_error) {
         //     return error();
         // }
         
         // info!("Creating the Cogl context");
-        // backend.cogl_context = cogl_context_new(backend.cogl_display, &internal_error);
-        // if backend.cogl_context.is_none() {
+        // backend.dx_context = dx_context_new(backend.dx_display, &internal_error);
+        // if backend.dx_context.is_none() {
         //     return error();
         // }
         
         // // the display owns the renderer and the swap chain
-        // cogl_object_unref(backend.cogl_renderer);
-        // cogl_object_unref(swap_chain);
+        // dx_object_unref(backend.dx_renderer);
+        // dx_object_unref(swap_chain);
 
         true
     }

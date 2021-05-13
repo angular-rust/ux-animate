@@ -1,6 +1,6 @@
 use super::{Actor, EventFlags, EventType, InputDevice, ModifierType, Stage};
 
-// * ClutterKeyEvent:
+// * KeyEvent:
 // * @type: event type
 // * @time: event time
 // * @flags: event flags
@@ -14,7 +14,6 @@ use super::{Actor, EventFlags, EventType, InputDevice, ModifierType, Stage};
 // * device the event originated from, use clutter_event_get_source_device()
 // *
 // * Key event
-#[derive(Debug, Clone)]
 pub struct KeyEvent {
     kind: EventType,
     time: u32,

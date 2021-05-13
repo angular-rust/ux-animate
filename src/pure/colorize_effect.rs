@@ -4,14 +4,14 @@ use std::fmt;
 
 // * SECTION:clutter-colorize-effect
 // * @short_description: A colorization effect
-// * @see_also: #ClutterEffect, #ClutterOffscreenEffect
+// * @see_also: #Effect, #OffscreenEffect
 // *
-// * #ClutterColorizeEffect is a sub-class of #ClutterEffect that
+// * #ColorizeEffect is a sub-class of #Effect that
 // * colorizes an actor with the given tint.
 
 // @extends OffscreenEffect, Effect, ActorMeta
 pub struct ColorizeEffect {
-    // ClutterOffscreenEffect parent_instance;
+    // OffscreenEffect parent_instance;
 
     /* the tint of the colorization */
     tint: Color,
@@ -21,7 +21,7 @@ pub struct ColorizeEffect {
     tex_width: i32,
     tex_height: i32,
 
-    pipeline: Option<dx::Pipeline>,
+    pipeline: Option<dx::pure::Pipeline>,
 }
 
 impl ColorizeEffect {

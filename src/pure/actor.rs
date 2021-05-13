@@ -1,12 +1,12 @@
 use super::{
     Action, ActorAlign, ActorBox, ActorFlags, AllocationFlags, AnimationMode, ButtonEvent,
-    Constraint, Content, ContentGravity, ContentRepeat, CrossingEvent, Effect, Event, InternalRect,
+    Constraint, Content, ContentGravity, ContentRepeat, CrossingEvent, Effect, Event, 
     KeyEvent, LayoutManager, Margin, Matrix, MotionEvent, OffscreenRedirect, Orientation,
     PaintVolume, RequestMode, RotateAxis, ScalingFilter, ScrollEvent, Stage, TextDirection,
     Transition, Vertex,
 };
 use crate::prelude::*;
-use crate::Color;
+use crate::{Color, Rect};
 use glib::signal::SignalHandlerId;
 use std::fmt;
 
@@ -2397,7 +2397,7 @@ pub trait ActorExt: 'static {
     ///
     /// Setting this property will change the `Actor:has-clip`
     /// property as a side effect.
-    fn get_property_clip_rect(&self) -> Option<InternalRect>;
+    fn get_property_clip_rect(&self) -> Option<Rect<f32>>;
 
     /// The visible region of the actor, in actor-relative coordinates,
     /// expressed as a `Rect`.
@@ -2406,7 +2406,7 @@ pub trait ActorExt: 'static {
     ///
     /// Setting this property will change the `Actor:has-clip`
     /// property as a side effect.
-    fn set_property_clip_rect(&self, clip_rect: Option<&InternalRect>);
+    fn set_property_clip_rect(&self, clip_rect: Option<&Rect<f32>>);
 
     /// Adds a `Constraint` to the actor
     fn set_property_constraints<P: Is<Constraint>>(&self, constraints: Option<&P>);
@@ -3366,7 +3366,7 @@ impl<O: Is<Actor>> ActorExt for O {
     //     // >(
     //     //     item: *mut gobject_sys::GObject,
     //     //     user_data: glib_sys::gpointer,
-    //     // ) -> *mut ffi::ClutterActor {
+    //     // ) -> *mut ffi::Actor {
     //     //     let item = from_glib_borrow(item);
     //     //     let callback: &Q = &*(user_data as *mut _);
     //     //     let res = (*callback)(&item);
@@ -3522,7 +3522,7 @@ impl<O: Is<Actor>> ActorExt for O {
 
     fn get_background_color(&self) -> Color {
         // unsafe {
-        //     let mut color = InternalColor::uninitialized();
+        //     let mut color = Color::uninitialized();
         //     ffi::clutter_actor_get_background_color(
         //         self.as_ref().to_glib_none().0,
         //         color.to_glib_none_mut().0,
@@ -4565,7 +4565,7 @@ impl<O: Is<Actor>> ActorExt for O {
         //             blue,
         //             alpha,
         //         } = value.into();
-        //         Some(InternalColor::new(red, green, blue, alpha))
+        //         Some(Color::new(red, green, blue, alpha))
         //     }
         //     None => None,
         // };
@@ -5056,9 +5056,9 @@ impl<O: Is<Actor>> ActorExt for O {
         unimplemented!()
     }
 
-    fn get_property_clip_rect(&self) -> Option<InternalRect> {
+    fn get_property_clip_rect(&self) -> Option<Rect<f32>> {
         // unsafe {
-        //     let mut value = Value::from_type(<InternalRect as StaticType>::static_type());
+        //     let mut value = Value::from_type(<Rect as StaticType>::static_type());
         //     gobject_sys::g_object_get_property(
         //         self.to_glib_none().0 as *mut gobject_sys::GObject,
         //         b"clip-rect\0".as_ptr() as *const _,
@@ -5071,7 +5071,7 @@ impl<O: Is<Actor>> ActorExt for O {
         unimplemented!()
     }
 
-    fn set_property_clip_rect(&self, clip_rect: Option<&InternalRect>) {
+    fn set_property_clip_rect(&self, clip_rect: Option<&Rect<f32>>) {
         // unsafe {
         //     gobject_sys::g_object_set_property(
         //         self.to_glib_none().0 as *mut gobject_sys::GObject,

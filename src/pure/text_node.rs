@@ -30,7 +30,7 @@ impl TextNode {
         //             blue,
         //             alpha,
         //         } = value.into();
-        //         Some(InternalColor::new(red, green, blue, alpha))
+        //         Some(Color::new(red, green, blue, alpha))
         //     }
         //     None => None,
         // };

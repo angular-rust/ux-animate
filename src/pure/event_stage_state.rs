@@ -1,6 +1,6 @@
 use super::{ModifierType, EventType, StageState, EventFlags, Stage, Actor};
 
-// * ClutterStageStateEvent:
+// * StageStateEvent:
 // * @type: event type
 // * @time: event time
 // * @flags: event flags
@@ -9,9 +9,8 @@ use super::{ModifierType, EventType, StageState, EventFlags, Stage, Actor};
 // * @changed_mask: bitwise OR of the changed flags
 // * @new_state: bitwise OR of the current state flags
 // *
-// * Event signalling a change in the #ClutterStage state.
+// * Event signalling a change in the #Stage state.
 // *
-#[derive(Debug, Clone)]
 pub struct StageStateEvent {
     kind: EventType,
     time: u32,

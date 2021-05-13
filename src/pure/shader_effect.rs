@@ -44,9 +44,9 @@ impl AsRef<ShaderEffect> for ShaderEffect {
 ///
 /// [`ShaderEffect`](struct.ShaderEffect.html)
 pub trait ShaderEffectExt: 'static {
-    //fn get_program(&self) -> /*Unimplemented*/Option<dx::Handle>;
+    //fn get_program(&self) -> /*Unimplemented*/Option<dx::pure::Handle>;
 
-    //fn get_shader(&self) -> /*Unimplemented*/Option<dx::Handle>;
+    //fn get_shader(&self) -> /*Unimplemented*/Option<dx::pure::Handle>;
 
     /// Sets the source of the GLSL shader used by `self`
     ///
@@ -83,11 +83,11 @@ pub trait ShaderEffectExt: 'static {
 }
 
 impl<O: Is<ShaderEffect>> ShaderEffectExt for O {
-    //fn get_program(&self) -> /*Unimplemented*/Option<dx::Handle> {
+    //fn get_program(&self) -> /*Unimplemented*/Option<dx::pure::Handle> {
     //    unsafe { TODO: call clutter_sys:clutter_shader_effect_get_program() }
     //}
 
-    //fn get_shader(&self) -> /*Unimplemented*/Option<dx::Handle> {
+    //fn get_shader(&self) -> /*Unimplemented*/Option<dx::pure::Handle> {
     //    unsafe { TODO: call clutter_sys:clutter_shader_effect_get_shader() }
     //}
 

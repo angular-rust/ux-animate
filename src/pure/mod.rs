@@ -9,8 +9,6 @@
     clippy::wrong_self_convention
 )]
 
-use crate::prelude;
-
 mod action;
 pub use self::action::Action;
 
@@ -248,14 +246,8 @@ pub use self::pipeline_node::PipelineNode;
 mod platform;
 pub(crate) use self::platform::*;
 
-mod point;
-pub(crate) use self::point::InternalPoint;
-
 mod property_transition;
 pub use self::property_transition::{PropertyTransition, PropertyTransitionExt};
-
-mod rect;
-pub(crate) use self::rect::InternalRect;
 
 mod rectangle;
 pub use self::rectangle::{Rectangle, RectangleExt};
@@ -289,9 +281,6 @@ pub use self::shader_int::ShaderInt;
 
 mod shader_matrix;
 pub use self::shader_matrix::ShaderMatrix;
-
-// mod size;
-// pub(crate) use self::size::InternalSize;
 
 mod snap_constraint;
 pub use self::snap_constraint::SnapConstraint;
@@ -403,8 +392,8 @@ pub use self::flags::ScrollMode;
 pub use self::flags::StageState;
 pub use self::flags::SwipeDirection;
 
-pub type ActorCreateChildFunc = ffi::ClutterActorCreateChildFunc;
-pub type BindingActionFunc = ffi::ClutterBindingActionFunc;
+// pub type ActorCreateChildFunc = ffi::ActorCreateChildFunc;
+// pub type BindingActionFunc = ffi::BindingActionFunc;
 
 #[doc(hidden)]
 pub mod traits {
@@ -459,6 +448,3 @@ pub mod traits {
 }
 
 pub use glib::timeout_add_local as interval;
-
-impl prelude::Object for dx::Texture {}
-impl prelude::Is<dx::Texture> for dx::Texture {}

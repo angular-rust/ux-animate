@@ -1,6 +1,6 @@
-use super::{InternalRect, TextBuffer};
+use super::TextBuffer;
 use crate::prelude::*;
-use crate::Color;
+use crate::{Color, Rect};
 use glib::signal::SignalHandlerId;
 use std::fmt;
 
@@ -46,7 +46,7 @@ impl Text {
         //         blue,
         //         alpha,
         //     } = color.into();
-        //     InternalColor::new(red, green, blue, alpha)
+        //     Color::new(red, green, blue, alpha)
         // };
 
         // unsafe {
@@ -222,7 +222,7 @@ pub trait TextExt: 'static {
     /// coordinates.
     /// ## `rect`
     /// return location of a `Rect`
-    fn get_cursor_rect(&self) -> InternalRect;
+    fn get_cursor_rect(&self) -> Rect<f32>;
 
     /// Retrieves the size of the cursor of a `Text` actor.
     ///
@@ -929,7 +929,7 @@ impl<O: Is<Text>> TextExt for O {
 
     fn get_color(&self) -> Color {
         // unsafe {
-        //     let mut color = InternalColor::uninitialized();
+        //     let mut color = Color::uninitialized();
         //     ffi::clutter_text_get_color(self.as_ref().to_glib_none().0, color.to_glib_none_mut().0);
         //     color
         // }
@@ -938,7 +938,7 @@ impl<O: Is<Text>> TextExt for O {
 
     fn get_cursor_color(&self) -> Color {
         // unsafe {
-        //     let mut color = InternalColor::uninitialized();
+        //     let mut color = Color::uninitialized();
         //     ffi::clutter_text_get_cursor_color(
         //         self.as_ref().to_glib_none().0,
         //         color.to_glib_none_mut().0,
@@ -953,9 +953,9 @@ impl<O: Is<Text>> TextExt for O {
         unimplemented!()
     }
 
-    fn get_cursor_rect(&self) -> InternalRect {
+    fn get_cursor_rect(&self) -> Rect<f32> {
         // unsafe {
-        //     let mut rect = InternalRect::uninitialized();
+        //     let mut rect = Rect::uninitialized();
         //     ffi::clutter_text_get_cursor_rect(
         //         self.as_ref().to_glib_none().0,
         //         rect.to_glib_none_mut().0,
@@ -1097,7 +1097,7 @@ impl<O: Is<Text>> TextExt for O {
 
     fn get_selected_text_color(&self) -> Color {
         // unsafe {
-        //     let mut color = InternalColor::uninitialized();
+        //     let mut color = Color::uninitialized();
         //     ffi::clutter_text_get_selected_text_color(
         //         self.as_ref().to_glib_none().0,
         //         color.to_glib_none_mut().0,
@@ -1123,7 +1123,7 @@ impl<O: Is<Text>> TextExt for O {
 
     fn get_selection_color(&self) -> Color {
         // unsafe {
-        //     let mut color = InternalColor::uninitialized();
+        //     let mut color = Color::uninitialized();
         //     ffi::clutter_text_get_selection_color(
         //         self.as_ref().to_glib_none().0,
         //         color.to_glib_none_mut().0,
@@ -1236,7 +1236,7 @@ impl<O: Is<Text>> TextExt for O {
         //         blue,
         //         alpha,
         //     } = value.into();
-        //     InternalColor::new(red, green, blue, alpha)
+        //     Color::new(red, green, blue, alpha)
         // };
 
         // unsafe {
@@ -1254,7 +1254,7 @@ impl<O: Is<Text>> TextExt for O {
         //             blue,
         //             alpha,
         //         } = value.into();
-        //         Some(InternalColor::new(red, green, blue, alpha))
+        //         Some(Color::new(red, green, blue, alpha))
         //     }
         //     None => None,
         // };
@@ -1413,7 +1413,7 @@ impl<O: Is<Text>> TextExt for O {
         //             blue,
         //             alpha,
         //         } = value.into();
-        //         Some(InternalColor::new(red, green, blue, alpha))
+        //         Some(Color::new(red, green, blue, alpha))
         //     }
         //     None => None,
         // };
@@ -1448,7 +1448,7 @@ impl<O: Is<Text>> TextExt for O {
         //             blue,
         //             alpha,
         //         } = value.into();
-        //         Some(InternalColor::new(red, green, blue, alpha))
+        //         Some(Color::new(red, green, blue, alpha))
         //     }
         //     None => None,
         // };

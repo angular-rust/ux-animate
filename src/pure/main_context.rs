@@ -7,30 +7,30 @@ use std::{
 };
 
 // * SECTION:clutter-main
-// * @short_description: Various 'global' Clutter functions.
+// * @short_description: Various 'global'  functions.
 // *
-// * Functions to retrieve various global Clutter resources and other utility
+// * Functions to retrieve various global  resources and other utility
 // * functions for mainloops, events and threads
 // *
-// * ## The Clutter Threading Model
+// * ## The  Threading Model
 // *
-// * Clutter is *thread-aware*: all operations performed by Clutter are assumed
-// * to be under the Big Clutter Lock, which is created when the threading is
+// *  is *thread-aware*: all operations performed by  are assumed
+// * to be under the Big  Lock, which is created when the threading is
 // * initialized through clutter_init(), and entered when calling user-related
 // * code during event handling and actor drawing.
 // *
-// * The only safe and portable way to use the Clutter API in a multi-threaded
-// * environment is to only access the Clutter API from a thread that did called
+// * The only safe and portable way to use the  API in a multi-threaded
+// * environment is to only access the  API from a thread that did called
 // * clutter_init() and clutter_main().
 // *
-// * The common pattern for using threads with Clutter is to use worker threads
+// * The common pattern for using threads with  is to use worker threads
 // * to perform blocking operations and then install idle or timeout sources with
 // * the result when the thread finishes, and update the UI from those callbacks.
 // *
 // * For a working example of how to use a worker thread to update the UI, see
 // * [threads.c](https://git.gnome.org/browse/clutter/tree/examples/threads.c?h=clutter-1.18)
 
-#[derive(Default, Clone)]
+#[derive(Default)]
 pub struct MainContextProps {
     // the main windowing system backend
     backend: Option<Backend>,
@@ -69,9 +69,9 @@ pub struct MainContextProps {
     fb_b_mask_used: i32,
 
     // Global font map
-    // font_map: Option<dx::PangoFontMap>,
+    // font_map: Option<dx::pure::PangoFontMap>,
 
-    // stack of #ClutterEvent
+    // stack of #Event
     current_event: Option<Vec<Event>>,
 
     // list of repaint functions installed through
@@ -92,9 +92,9 @@ pub struct MainContextProps {
 
 unsafe impl Send for MainContextProps {}
 
-// * ClutterMainContext:
+// * MainContext:
 // *
-// * The shared state of Clutter
+// * The shared state of 
 pub struct MainContext {
     props: Arc<Mutex<MainContextProps>>,
 }
@@ -121,7 +121,8 @@ impl MainContext {
             Ok(props) => match &props.backend {
                 Some(backend) => {
                     let result = backend.clone();
-                    Some(result)
+                    // Some(result)
+                    unimplemented!()
                 }
                 None => None,
             },
@@ -155,7 +156,7 @@ fn base_init() {
 }
 
 fn get_text_direction() -> TextDirection {
-    // ClutterTextDirection dir = CLUTTER_TEXT_DIRECTION_LTR;
+    // TextDirection dir = CLUTTER_TEXT_DIRECTION_LTR;
     // const gchar *direction;
 
     // direction = g_getenv ("CLUTTER_TEXT_DIRECTION");
@@ -197,24 +198,24 @@ pub struct Features {
 }
 
 // * SECTION:clutter-feature
-// * @short_description: Run-time detection of Clutter features
+// * @short_description: Run-time detection of  features
 // *
-// * Parts of Clutter depend on the underlying platform, including the
+// * Parts of  depend on the underlying platform, including the
 // * capabilities of the backend used and the OpenGL features exposed through the
-// * Clutter and COGL API.
+// *  and COGL API.
 // *
-// * It is possible to ask whether Clutter has support for specific features at
+// * It is possible to ask whether  has support for specific features at
 // * run-time.
 // *
-// * See also cogl_get_features() and #CoglFeatureFlags
+// * See also dx_get_features() and #CoglFeatureFlags
 fn feature_init(backend: &Option<Backend>) -> bool {
-    // ClutterMainContext *context;
+    // MainContext *context;
 
     // CLUTTER_NOTE (MISC, "checking features");
 
     // if !__features {
     //     CLUTTER_NOTE (MISC, "allocating features data");
-    //     __features = g_new0 (ClutterFeatures, 1);
+    //     __features = g_new0 (Features, 1);
     //     __features->features_set = FALSE; /* don't rely on zero-ing */
     // }
 
@@ -234,7 +235,7 @@ fn feature_init(backend: &Option<Backend>) -> bool {
         None => {}
     }
 
-    // __features->flags = (clutter_features_from_cogl (cogl_get_features ())
+    // __features->flags = (clutter_features_from_cogl (dx_get_features ())
     //                     | _clutter_backend_get_features (context->backend));
 
     // __features->features_set = TRUE;
@@ -244,26 +245,26 @@ fn feature_init(backend: &Option<Backend>) -> bool {
     return true;
 }
 
-fn features_from_cogl(cogl_flags: dx::FeatureFlags) -> FeatureFlags {
+fn features_from_cogl(dx_flags: dx::pure::FeatureFlags) -> FeatureFlags {
     let mut clutter_flags: FeatureFlags = FeatureFlags::NONE;
 
-    if (cogl_flags & dx::FeatureFlags::TEXTURE_NPOT).bits() != 0 {
+    if (dx_flags & dx::pure::FeatureFlags::TEXTURE_NPOT).bits() != 0 {
         clutter_flags |= FeatureFlags::TEXTURE_NPOT;
     }
 
-    if (cogl_flags & dx::FeatureFlags::TEXTURE_YUV).bits() != 0 {
+    if (dx_flags & dx::pure::FeatureFlags::TEXTURE_YUV).bits() != 0 {
         clutter_flags |= FeatureFlags::TEXTURE_YUV;
     }
 
-    if (cogl_flags & dx::FeatureFlags::TEXTURE_READ_PIXELS).bits() != 0 {
+    if (dx_flags & dx::pure::FeatureFlags::TEXTURE_READ_PIXELS).bits() != 0 {
         clutter_flags |= FeatureFlags::TEXTURE_READ_PIXELS;
     }
 
-    if (cogl_flags & dx::FeatureFlags::SHADERS_GLSL).bits() != 0 {
+    if (dx_flags & dx::pure::FeatureFlags::SHADERS_GLSL).bits() != 0 {
         clutter_flags |= FeatureFlags::SHADERS_GLSL;
     }
 
-    if (cogl_flags & dx::FeatureFlags::OFFSCREEN).bits() != 0 {
+    if (dx_flags & dx::pure::FeatureFlags::OFFSCREEN).bits() != 0 {
         clutter_flags |= FeatureFlags::OFFSCREEN;
     }
 
@@ -339,7 +340,7 @@ fn init_real(props: &mut MainContextProps) -> InitError {
 // * @argv: (array length=argc) (inout) (allow-none): A pointer to an array
 // *   of arguments.
 // *
-// * Initialises everything needed to operate with Clutter and parses some
+// * Initialises everything needed to operate with  and parses some
 // * standard command line options; @argc and @argv are adjusted accordingly
 // * so your own code will never see those standard arguments.
 // *
@@ -353,11 +354,11 @@ fn init_real(props: &mut MainContextProps) -> InitError {
 // * pointer.
 // *
 // * If this function fails, and returns an error code, any subsequent
-// * Clutter API will have undefined behaviour - including segmentation
+// *  API will have undefined behaviour - including segmentation
 // * faults and assertion failures. Make sure to handle the returned
-// * #ClutterInitError enumeration value.
+// * #InitError enumeration value.
 // *
-// * Return value: a #ClutterInitError value
+// * Return value: a #InitError value
 pub fn animate_init() {
     base_init();
     let ctx = MainContext::global();
@@ -417,7 +418,7 @@ pub enum CullResult {
     ResultPartial,
 }
 
-// * ClutterInitError:
+// * InitError:
 // * @CLUTTER_INIT_SUCCESS: Initialisation successful
 // * @CLUTTER_INIT_ERROR_UNKNOWN: Unknown error
 // * @CLUTTER_INIT_ERROR_THREADS: Thread initialisation failed

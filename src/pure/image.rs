@@ -40,7 +40,7 @@ impl AsRef<Image> for Image {
 ///
 /// [`Image`](struct.Image.html)
 pub trait ImageExt: 'static {
-    //fn set_area(&self, data: &[u8], pixel_format: dx::PixelFormat, rect: &cairo::RectangleInt, row_stride: u32) -> Result<(), glib::Error>;
+    //fn set_area(&self, data: &[u8], pixel_format: dx::pure::PixelFormat, rect: &cairo::RectangleInt, row_stride: u32) -> Result<(), glib::Error>;
 
     /// Sets the image data stored inside a `glib::Bytes` to be displayed by `self`.
     ///
@@ -69,24 +69,24 @@ pub trait ImageExt: 'static {
     fn set_bytes(
         &self,
         data: &glib::Bytes,
-        pixel_format: dx::PixelFormat,
+        pixel_format: dx::pure::PixelFormat,
         width: u32,
         height: u32,
         row_stride: u32,
     ) -> Result<(), glib::Error>;
 
-    //fn set_data(&self, data: &[u8], pixel_format: dx::PixelFormat, width: u32, height: u32, row_stride: u32) -> Result<(), glib::Error>;
+    //fn set_data(&self, data: &[u8], pixel_format: dx::pure::PixelFormat, width: u32, height: u32, row_stride: u32) -> Result<(), glib::Error>;
 }
 
 impl<O: Is<Image>> ImageExt for O {
-    //fn set_area(&self, data: &[u8], pixel_format: dx::PixelFormat, rect: &cairo::RectangleInt, row_stride: u32) -> Result<(), glib::Error> {
+    //fn set_area(&self, data: &[u8], pixel_format: dx::pure::PixelFormat, rect: &cairo::RectangleInt, row_stride: u32) -> Result<(), glib::Error> {
     //    unsafe { TODO: call clutter_sys:clutter_image_set_area() }
     //}
 
     fn set_bytes(
         &self,
         data: &glib::Bytes,
-        pixel_format: dx::PixelFormat,
+        pixel_format: dx::pure::PixelFormat,
         width: u32,
         height: u32,
         row_stride: u32,
@@ -111,7 +111,7 @@ impl<O: Is<Image>> ImageExt for O {
         unimplemented!()
     }
 
-    //fn set_data(&self, data: &[u8], pixel_format: dx::PixelFormat, width: u32, height: u32, row_stride: u32) -> Result<(), glib::Error> {
+    //fn set_data(&self, data: &[u8], pixel_format: dx::pure::PixelFormat, width: u32, height: u32, row_stride: u32) -> Result<(), glib::Error> {
     //    unsafe { TODO: call clutter_sys:clutter_image_set_data() }
     //}
 }

@@ -2,7 +2,7 @@ use super::{Actor, EventFlags, EventType, InputDevice, ModifierType, Stage};
 
 // Window, NotifyType, CrossingMode
 
-// * ClutterCrossingEvent:
+// * CrossingEvent:
 // * @type: event type
 // * @time: event time
 // * @flags: event flags
@@ -16,7 +16,6 @@ use super::{Actor, EventFlags, EventType, InputDevice, ModifierType, Stage};
 // *
 // * Event for the movement of the pointer across different actors
 // *
-#[derive(Debug, Clone)]
 pub struct CrossingEvent {
     kind: EventType,
     time: u32,

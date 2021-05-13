@@ -1,5 +1,6 @@
-use super::{AnimationMode, InternalPoint, StepMode, TimelineDirection};
+use super::{AnimationMode, StepMode, TimelineDirection};
 use crate::prelude::*;
+use crate::Point;
 use glib::signal::SignalHandlerId;
 use std::boxed::Box as Box_;
 use std::fmt;
@@ -115,7 +116,7 @@ pub trait TimelineExt: 'static {
     ///
     /// `true` if the `self` is using a cubic bezier progress
     ///  more, and `false` otherwise
-    fn get_cubic_bezier_progress(&self) -> Option<(InternalPoint, InternalPoint)>;
+    fn get_cubic_bezier_progress(&self) -> Option<(Point<f32>, Point<f32>)>;
 
     /// Retrieves the current repeat for a timeline.
     ///
@@ -319,7 +320,7 @@ pub trait TimelineExt: 'static {
     /// the first control point for the cubic bezier
     /// ## `c_2`
     /// the second control point for the cubic bezier
-    fn set_cubic_bezier_progress(&self, c_1: &InternalPoint, c_2: &InternalPoint);
+    fn set_cubic_bezier_progress(&self, c_1: &Point<f32>, c_2: &Point<f32>);
 
     /// Sets the delay, in milliseconds, before `self` should start.
     /// ## `msecs`
@@ -531,10 +532,10 @@ impl<O: Is<Timeline>> TimelineExt for O {
         unimplemented!()
     }
 
-    fn get_cubic_bezier_progress(&self) -> Option<(InternalPoint, InternalPoint)> {
+    fn get_cubic_bezier_progress(&self) -> Option<(Point<f32>, Point<f32>)> {
         // unsafe {
-        //     let mut c_1 = InternalPoint::uninitialized();
-        //     let mut c_2 = InternalPoint::uninitialized();
+        //     let mut c_1 = Point::uninitialized();
+        //     let mut c_2 = Point::uninitialized();
         //     let ret = from_glib(ffi::clutter_timeline_get_cubic_bezier_progress(
         //         self.as_ref().to_glib_none().0,
         //         c_1.to_glib_none_mut().0,
@@ -695,7 +696,7 @@ impl<O: Is<Timeline>> TimelineExt for O {
         unimplemented!()
     }
 
-    fn set_cubic_bezier_progress(&self, c_1: &InternalPoint, c_2: &InternalPoint) {
+    fn set_cubic_bezier_progress(&self, c_1: &Point<f32>, c_2: &Point<f32>) {
         // unsafe {
         //     ffi::clutter_timeline_set_cubic_bezier_progress(
         //         self.as_ref().to_glib_none().0,
@@ -734,7 +735,7 @@ impl<O: Is<Timeline>> TimelineExt for O {
         // let func_data: Box_<Option<Box_<dyn Fn(&Timeline, f64, f64) -> f64 + 'static>>> =
         //     Box_::new(func);
         // unsafe extern "C" fn func_func(
-        //     timeline: *mut ffi::ClutterTimeline,
+        //     timeline: *mut ffi::Timeline,
         //     elapsed: libc::c_double,
         //     total: libc::c_double,
         //     user_data: glib_sys::gpointer,

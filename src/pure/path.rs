@@ -63,20 +63,20 @@ pub trait PathExt: 'static {
 
     /// Adds a `PathNodeType::CurveTo` type node to the path. This causes
     /// the actor to follow a bezier from the last node to (`x_3`, `y_3`) using
-    /// (`x_1`, `y_1`) and (`x_2`,`y_2`) as control points.
-    /// ## `x_1`
+    /// (`x1`, `y1`) and (`x2`,`y2`) as control points.
+    /// ## `x1`
     /// the x coordinate of the first control point
-    /// ## `y_1`
+    /// ## `y1`
     /// the y coordinate of the first control point
-    /// ## `x_2`
+    /// ## `x2`
     /// the x coordinate of the second control point
-    /// ## `y_2`
+    /// ## `y2`
     /// the y coordinate of the second control point
     /// ## `x_3`
     /// the x coordinate of the third control point
     /// ## `y_3`
     /// the y coordinate of the third control point
-    fn add_curve_to(&self, x_1: i32, y_1: i32, x_2: i32, y_2: i32, x_3: i32, y_3: i32);
+    fn add_curve_to(&self, x1: i32, y1: i32, x2: i32, y2: i32, x_3: i32, y_3: i32);
 
     /// Adds a `PathNodeType::LineTo` type node to the path. This causes the
     /// actor to move to the new coordinates in a straight line.
@@ -102,19 +102,19 @@ pub trait PathExt: 'static {
 
     /// Same as `PathExt::add_curve_to` except the coordinates are
     /// relative to the previous node.
-    /// ## `x_1`
+    /// ## `x1`
     /// the x coordinate of the first control point
-    /// ## `y_1`
+    /// ## `y1`
     /// the y coordinate of the first control point
-    /// ## `x_2`
+    /// ## `x2`
     /// the x coordinate of the second control point
-    /// ## `y_2`
+    /// ## `y2`
     /// the y coordinate of the second control point
     /// ## `x_3`
     /// the x coordinate of the third control point
     /// ## `y_3`
     /// the y coordinate of the third control point
-    fn add_rel_curve_to(&self, x_1: i32, y_1: i32, x_2: i32, y_2: i32, x_3: i32, y_3: i32);
+    fn add_rel_curve_to(&self, x1: i32, y1: i32, x2: i32, y2: i32, x_3: i32, y_3: i32);
 
     /// Same as `PathExt::add_line_to` except the coordinates are
     /// relative to the previous node.
@@ -289,14 +289,14 @@ impl<O: Is<Path>> PathExt for O {
         unimplemented!()
     }
 
-    fn add_curve_to(&self, x_1: i32, y_1: i32, x_2: i32, y_2: i32, x_3: i32, y_3: i32) {
+    fn add_curve_to(&self, x1: i32, y1: i32, x2: i32, y2: i32, x_3: i32, y_3: i32) {
         // unsafe {
         //     ffi::clutter_path_add_curve_to(
         //         self.as_ref().to_glib_none().0,
-        //         x_1,
-        //         y_1,
-        //         x_2,
-        //         y_2,
+        //         x1,
+        //         y1,
+        //         x2,
+        //         y2,
         //         x_3,
         //         y_3,
         //     );
@@ -325,14 +325,14 @@ impl<O: Is<Path>> PathExt for O {
         unimplemented!()
     }
 
-    fn add_rel_curve_to(&self, x_1: i32, y_1: i32, x_2: i32, y_2: i32, x_3: i32, y_3: i32) {
+    fn add_rel_curve_to(&self, x1: i32, y1: i32, x2: i32, y2: i32, x_3: i32, y_3: i32) {
         // unsafe {
         //     ffi::clutter_path_add_rel_curve_to(
         //         self.as_ref().to_glib_none().0,
-        //         x_1,
-        //         y_1,
-        //         x_2,
-        //         y_2,
+        //         x1,
+        //         y1,
+        //         x2,
+        //         y2,
         //         x_3,
         //         y_3,
         //     );
@@ -372,7 +372,7 @@ impl<O: Is<Path>> PathExt for O {
     fn foreach<P: FnMut(&PathNode)>(&self, callback: P) {
         // let callback_data: P = callback;
         // unsafe extern "C" fn callback_func<P: FnMut(&PathNode)>(
-        //     node: *const ffi::ClutterPathNode,
+        //     node: *const ffi::PathNode,
         //     data: glib_sys::gpointer,
         // ) {
         //     let node = from_glib_borrow(node);

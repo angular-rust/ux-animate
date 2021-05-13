@@ -1,6 +1,6 @@
 use super::{Actor, EventFlags, EventType, InputDevice, ModifierType, Stage};
 
-// * ClutterMotionEvent:
+// * MotionEvent:
 // * @type: event type
 // * @time: event time
 // * @flags: event flags
@@ -14,7 +14,6 @@ use super::{Actor, EventFlags, EventType, InputDevice, ModifierType, Stage};
 // * device the event originated from, use clutter_event_get_source_device()
 // *
 // * Event for the pointer motion
-#[derive(Debug, Clone)]
 pub struct MotionEvent {
     kind: EventType,
     time: u32,

@@ -2,7 +2,7 @@
 // use std::fmt;
 
 // glib_wrapper! {
-//     pub struct Scriptable(Interface<ffi::ClutterScriptable>);
+//     pub struct Scriptable(Interface<ffi::Scriptable>);
 
 //     match fn {
 //         get_type => || ffi::clutter_scriptable_get_type(),
@@ -57,7 +57,7 @@
 //     /// the value of the property
 //     fn set_custom_property<P: Is<Script>>(&self, script: &P, name: &str, value: &glib::Value);
 
-//     /// Sets `id_` as the unique Clutter script it for this instance of
+//     /// Sets `id_` as the unique  script it for this instance of
 //     /// `ScriptableIface`.
 //     ///
 //     /// This name can be used by user interface designer applications to

@@ -3,7 +3,7 @@ use super::{
     TouchpadGesturePhase,
 };
 
-// * ClutterTouchpadPinchEvent:
+// * TouchpadPinchEvent:
 // * @type: event type
 // * @time: event time
 // * @flags: event flags
@@ -26,7 +26,6 @@ use super::{
 // * report the current scale relative to the initial 1.0 value
 // * (eg. 0.5 being half the size, 2.0 twice as big).
 // *
-#[derive(Debug, Clone)]
 pub struct TouchpadPinchEvent {
     kind: EventType,
     time: u32,

@@ -1,5 +1,5 @@
 use super::{Actor, EventFlags, EventType, InputDevice, ModifierType, Stage};
-// * ClutterButtonEvent:
+// * ButtonEvent:
 // * @type: event type
 // * @time: event time
 // * @flags: event flags
@@ -20,7 +20,6 @@ use super::{Actor, EventFlags, EventType, InputDevice, ModifierType, Stage};
 // * The event coordinates are relative to the stage that received the
 // * event, and can be transformed into actor-relative coordinates by
 // * using clutter_actor_transform_stage_point().
-#[derive(Debug, Clone)]
 pub struct ButtonEvent {
     kind: EventType,
     time: u32,

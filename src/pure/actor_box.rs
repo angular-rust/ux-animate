@@ -1,6 +1,6 @@
 use super::Vertex;
 
-// * ClutterActorBox:
+// * ActorBox:
 // * @x1: X coordinate of the top left corner
 // * @y1: Y coordinate of the top left corner
 // * @x2: X coordinate of the bottom right corner
@@ -82,66 +82,65 @@ impl ActorBox {
     }
 
     pub fn from_vertices(&mut self, verts: &[Vertex; 4]) {     
-        // // 4-way min/max
-        // let mut x1 = verts[0].x;
-        // let mut y1 = verts[0].y;
+        // 4-way min/max
+        let mut x1 = verts[0].x;
+        let mut y1 = verts[0].y;
       
-        // if verts[1].x < x1 {
-        //   x1 = verts[1].x;
-        // }
+        if verts[1].x < x1 {
+          x1 = verts[1].x;
+        }
       
-        // if verts[2].x < x1 {
-        //   x1 = verts[2].x;
-        // }
+        if verts[2].x < x1 {
+          x1 = verts[2].x;
+        }
       
-        // if verts[3].x < x1 {
-        //   x1 = verts[3].x;
-        // }
+        if verts[3].x < x1 {
+          x1 = verts[3].x;
+        }
       
-        // if verts[1].y < y1 {
-        //   y1 = verts[1].y;
-        // }
+        if verts[1].y < y1 {
+          y1 = verts[1].y;
+        }
       
-        // if verts[2].y < y1 {
-        //   y1 = verts[2].y;
-        // }
+        if verts[2].y < y1 {
+          y1 = verts[2].y;
+        }
       
-        // if verts[3].y < y1 {
-        //   y1 = verts[3].y;
-        // }
+        if verts[3].y < y1 {
+          y1 = verts[3].y;
+        }
       
-        // let mut x2 = verts[0].x;
-        // let mut y2 = verts[0].y;
+        let mut x2 = verts[0].x;
+        let mut y2 = verts[0].y;
       
-        // if verts[1].x > x2 {
-        //   x2 = verts[1].x;
-        // }
+        if verts[1].x > x2 {
+          x2 = verts[1].x;
+        }
       
-        // if verts[2].x > x2 {
-        //   x2 = verts[2].x;
-        // }
+        if verts[2].x > x2 {
+          x2 = verts[2].x;
+        }
       
-        // if verts[3].x > x2 {
-        //   x2 = verts[3].x;
-        // }
+        if verts[3].x > x2 {
+          x2 = verts[3].x;
+        }
       
-        // if verts[1].y > y2 {
-        //   y2 = verts[1].y;
-        // }
+        if verts[1].y > y2 {
+          y2 = verts[1].y;
+        }
       
-        // if verts[2].y > y2 {
-        //   y2 = verts[2].y;
-        // }
+        if verts[2].y > y2 {
+          y2 = verts[2].y;
+        }
       
-        // if verts[3].y > y2 {
-        //   y2 = verts[3].y;
-        // }
+        if verts[3].y > y2 {
+          y2 = verts[3].y;
+        }
       
-        // self.x1 = x1;
-        // self.x2 = x2;
-        // self.y1 = y1;
-        // self.y2 = y2;
-        unimplemented!()
+        self.x1 = x1;
+        self.x2 = x2;
+        self.y1 = y1;
+        self.y2 = y2;
     }
 
     /// Retrieves the area of `self`
@@ -234,19 +233,18 @@ impl ActorBox {
     /// the interpolation progress
     /// ## `result`
     /// return location for the interpolation
-    pub fn interpolate(&self, dest: &ActorBox, progress: f64) -> Self {
-        // let x1 = self.x1 + (dest.x1 - self.x1) * progress;
-        // let y1 = self.y1 + (dest.y1 - self.y1) * progress;
-        // let x2 = self.x2 + (dest.x2 - self.x2) * progress;
-        // let y2 = self.y2 + (dest.y2 - self.y2) * progress;
+    pub fn interpolate(&self, dest: &ActorBox, progress: f32) -> Self {
+        let x1 = self.x1 + (dest.x1 - self.x1) * progress;
+        let y1 = self.y1 + (dest.y1 - self.y1) * progress;
+        let x2 = self.x2 + (dest.x2 - self.x2) * progress;
+        let y2 = self.y2 + (dest.y2 - self.y2) * progress;
         
-        // Self {
-        //     x1,
-        //     y1,
-        //     x2,
-        //     y2,
-        // }
-        unimplemented!()
+        Self {
+            x1,
+            y1,
+            x2,
+            y2,
+        }
     }
 
     /// Changes the origin of `self`, maintaining the size of the `ActorBox`.

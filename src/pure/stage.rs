@@ -6,31 +6,30 @@ use std::fmt;
 // * SECTION:clutter-stage
 // * @short_description: Top level visual element to which actors are placed.
 // *
-// * #ClutterStage is a top level 'window' on which child actors are placed
+// * #Stage is a top level 'window' on which child actors are placed
 // * and manipulated.
 // *
 // * Backends might provide support for multiple stages. The support for this
 // * feature can be checked at run-time using the clutter_feature_available()
 // * function and the %CLUTTER_FEATURE_STAGE_MULTIPLE flag. If the backend used
-// * supports multiple stages, new #ClutterStage instances can be created
+// * supports multiple stages, new #Stage instances can be created
 // * using clutter_stage_new(). These stages must be managed by the developer
 // * using clutter_actor_destroy(), which will take care of destroying all the
 // * actors contained inside them.
 // *
-// * #ClutterStage is a proxy actor, wrapping the backend-specific
+// * #Stage is a proxy actor, wrapping the backend-specific
 // * implementation of the windowing system. It is possible to subclass
-// * #ClutterStage, as long as every overridden virtual function chains up to
+// * #Stage, as long as every overridden virtual function chains up to
 // * the parent class corresponding function.
 // TODO: implements atk::ImplementorIface, Scriptable, Animatable, Container
 // @extends Group, Actor
-#[derive(Debug, Clone)]
 pub struct Stage {
     /* the stage implementation */
     implementation: Option<StageWindow>,
     perspective: Perspective,
-    projection: dx::Matrix,
-    inverse_projection: dx::Matrix,
-    view: dx::Matrix,
+    projection: dx::pure::Matrix,
+    inverse_projection: dx::pure::Matrix,
+    view: dx::pure::Matrix,
     viewport: [f32; 4],
 
     fog: Fog,
@@ -46,7 +45,7 @@ pub struct Stage {
     // current_clip_planes: [Plane; 4],
     pending_queue_redraws: Option<Vec<String>>,
 
-    active_framebuffer: Option<dx::Framebuffer>,
+    active_framebuffer: Option<dx::pure::Framebuffer>,
 
     sync_delay: i32,
 

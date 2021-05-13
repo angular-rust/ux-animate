@@ -64,10 +64,10 @@ impl fmt::Display for AlignAxis {
 }
 
 /// The animation modes used by `Alpha` and `Animation`. This
-/// enumeration can be expanded in later versions of Clutter.
+/// enumeration can be expanded in later versions of .
 ///
 /// <figure id="easing-modes">
-///  `<title>`Easing modes provided by Clutter`</title>`
+///  `<title>`Easing modes provided by `</title>`
 ///  <graphic fileref="easing-modes.png" format="PNG"/>
 /// `</figure>`
 ///
@@ -278,13 +278,13 @@ pub enum BindCoordinate {
     /// Bind the height
     Height,
     /// Equivalent to to `BindCoordinate::X` and
-    ///  `BindCoordinate::Y` (added in Clutter 1.6)
+    ///  `BindCoordinate::Y` (added in  1.6)
     Position,
     /// Equivalent to `BindCoordinate::Width` and
-    ///  `BindCoordinate::Height` (added in Clutter 1.6)
+    ///  `BindCoordinate::Height` (added in  1.6)
     Size,
     /// Equivalent to `BindCoordinate::Position` and
-    ///  `BindCoordinate::Size` (added in Clutter 1.10)
+    ///  `BindCoordinate::Size` (added in  1.10)
     All,
 }
 
@@ -628,7 +628,7 @@ impl fmt::Display for InitError {
     }
 }
 
-/// The type of axes Clutter recognizes on a `InputDevice`
+/// The type of axes  recognizes on a `InputDevice`
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 pub enum InputAxis {
     /// Unused axis
@@ -1145,7 +1145,7 @@ impl fmt::Display for SnapEdge {
     }
 }
 
-/// Named colors, for accessing global colors defined by Clutter
+/// Named colors, for accessing global colors defined by 
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 pub enum StaticColor {
     /// White color (ffffffff)

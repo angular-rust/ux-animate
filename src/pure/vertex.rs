@@ -1,5 +1,8 @@
-#[derive(Debug, PartialOrd, Ord)] // Hash
+#[derive(Debug, PartialOrd, Clone)] // Hash
 pub struct Vertex {
+    pub x: f32,
+    pub y: f32,
+    pub z: f32,
 }
 
 impl Vertex {

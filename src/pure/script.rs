@@ -6,7 +6,7 @@
 // use std::{fmt, mem::transmute, ptr};
 
 // glib_wrapper! {
-//     pub struct Script(Object<ffi::ClutterScript, ffi::ClutterScriptClass, ScriptClass>);
+//     pub struct Script(Object<ffi::Script, ffi::ScriptClass, ScriptClass>);
 
 //     match fn {
 //         get_type => || ffi::clutter_script_get_type(),
@@ -359,7 +359,7 @@
 
 //     fn connect_property_filename_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_filename_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::ClutterScript,
+//             this: *mut ffi::Script,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -386,7 +386,7 @@
 //         f: F,
 //     ) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_filename_set_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::ClutterScript,
+//             this: *mut ffi::Script,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -413,7 +413,7 @@
 //         f: F,
 //     ) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_translation_domain_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::ClutterScript,
+//             this: *mut ffi::Script,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where

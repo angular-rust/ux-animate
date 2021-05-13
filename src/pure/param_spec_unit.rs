@@ -1,7 +1,7 @@
 // use std::fmt;
 
 // glib_wrapper! {
-//     pub struct ParamSpecUnit(Object<ffi::ClutterParamSpecUnit, ParamSpecUnitClass>) @extends glib::ParamSpec;
+//     pub struct ParamSpecUnit(Object<ffi::ParamSpecUnit, ParamSpecUnitClass>) @extends glib::ParamSpec;
 
 //     match fn {
 //         get_type => || ffi::clutter_param_units_get_type(),

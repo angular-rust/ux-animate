@@ -1,5 +1,6 @@
-use super::{InternalPoint, InternalRect, ScrollMode};
+use super::ScrollMode;
 use crate::prelude::*;
+use crate::{Point, Rect};
 use glib::signal::SignalHandlerId;
 use std::fmt;
 
@@ -58,12 +59,12 @@ pub trait ScrollActorExt: 'static {
     /// to transition from the current scroll origin to the new one.
     /// ## `point`
     /// a `Point`
-    fn scroll_to_point(&self, point: &InternalPoint);
+    fn scroll_to_point(&self, point: &Point<f32>);
 
     /// Scrolls `self` so that `rect` is in the visible portion.
     /// ## `rect`
     /// a `Rect`
-    fn scroll_to_rect(&self, rect: &InternalRect);
+    fn scroll_to_rect(&self, rect: &Rect<f32>);
 
     /// Sets the `ScrollActor:scroll-mode` property.
     /// ## `mode`
@@ -83,7 +84,7 @@ impl<O: Is<ScrollActor>> ScrollActorExt for O {
         unimplemented!()
     }
 
-    fn scroll_to_point(&self, point: &InternalPoint) {
+    fn scroll_to_point(&self, point: &Point<f32>) {
         // unsafe {
         //     ffi::clutter_scroll_actor_scroll_to_point(
         //         self.as_ref().to_glib_none().0,
@@ -93,7 +94,7 @@ impl<O: Is<ScrollActor>> ScrollActorExt for O {
         unimplemented!()
     }
 
-    fn scroll_to_rect(&self, rect: &InternalRect) {
+    fn scroll_to_rect(&self, rect: &Rect<f32>) {
         // unsafe {
         //     ffi::clutter_scroll_actor_scroll_to_rect(
         //         self.as_ref().to_glib_none().0,

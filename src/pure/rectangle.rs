@@ -60,7 +60,7 @@ pub trait RectangleExt: 'static {
 impl<O: Is<Rectangle>> RectangleExt for O {
     fn get_property_border_color(&self) -> Option<Color> {
         // unsafe {
-        //     let mut value = Value::from_type(<InternalColor as StaticType>::static_type());
+        //     let mut value = Value::from_type(<Color as StaticType>::static_type());
         //     gobject_sys::g_object_get_property(
         //         self.to_glib_none().0 as *mut gobject_sys::GObject,
         //         b"border-color\0".as_ptr() as *const _,
@@ -82,7 +82,7 @@ impl<O: Is<Rectangle>> RectangleExt for O {
         //             blue,
         //             alpha,
         //         } = value.into();
-        //         Some(InternalColor::new(red, green, blue, alpha))
+        //         Some(Color::new(red, green, blue, alpha))
         //     }
         //     None => None,
         // };
@@ -125,7 +125,7 @@ impl<O: Is<Rectangle>> RectangleExt for O {
 
     fn get_property_color(&self) -> Option<Color> {
         // unsafe {
-        //     let mut value = Value::from_type(<InternalColor as StaticType>::static_type());
+        //     let mut value = Value::from_type(<Color as StaticType>::static_type());
         //     gobject_sys::g_object_get_property(
         //         self.to_glib_none().0 as *mut gobject_sys::GObject,
         //         b"color\0".as_ptr() as *const _,
@@ -147,7 +147,7 @@ impl<O: Is<Rectangle>> RectangleExt for O {
         //             blue,
         //             alpha,
         //         } = value.into();
-        //         Some(InternalColor::new(red, green, blue, alpha))
+        //         Some(Color::new(red, green, blue, alpha))
         //     }
         //     None => None,
         // };

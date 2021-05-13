@@ -6,19 +6,19 @@ use std::fmt;
 // * SECTION:clutter-container
 // * @short_description: An interface for container actors
 // *
-// * #ClutterContainer is an interface implemented by #ClutterActor, and
+// * #Container is an interface implemented by #Actor, and
 // * it provides some common API for notifying when a child actor is added
 // * or removed, as well as the infrastructure for accessing child properties
-// * through #ClutterChildMeta.
+// * through #ChildMeta.
 // *
-// * Until Clutter 1.10, the #ClutterContainer interface was also the public
+// * Until  1.10, the #Container interface was also the public
 // * API for implementing container actors; this part of the interface has
-// * been deprecated: #ClutterContainer has a default implementation which
-// * defers to #ClutterActor the child addition and removal, as well as the
-// * iteration. See the documentation of #ClutterContainerIface for the list
+// * been deprecated: #Container has a default implementation which
+// * defers to #Actor the child addition and removal, as well as the
+// * iteration. See the documentation of #ContainerIface for the list
 // * of virtual functions that should be overridden.
 
-// * ClutterContainerIface:
+// * ContainerIface:
 // * @add: virtual function for adding an actor to the container. This virtual
 // *   function is deprecated, and it should not be overridden.
 // * @remove: virtual function for removing an actor from the container. This
@@ -26,9 +26,9 @@ use std::fmt;
 // * @foreach: virtual function for iterating over the container's children.
 // *   This virtual function is deprecated, and it should not be overridden.
 // * @foreach_with_internals: virtual functions for iterating over the
-// *   container's children, both added using the #ClutterContainer API
+// *   container's children, both added using the #Container API
 // *   and internal children. The implementation of this virtual function
-// *   is required only if the #ClutterContainer implementation has
+// *   is required only if the #Container implementation has
 // *   internal children. This virtual function is deprecated, and it should
 // *   not be overridden.
 // * @raise: virtual function for raising a child. This virtual function is
@@ -42,15 +42,15 @@ use std::fmt;
 // *   each of the containers children.
 // * @create_child_meta: virtual function that gets called for each added
 // *   child, the function should instantiate an object of type
-// *   #ClutterContainerIface::child_meta_type, set the container and actor
+// *   #ContainerIface::child_meta_type, set the container and actor
 // *   fields in the instance and add the record to a data structure for
-// *   subsequent access for #ClutterContainerIface::get_child_meta
+// *   subsequent access for #ContainerIface::get_child_meta
 // * @destroy_child_meta: virtual function that gets called when a child is
 // *   removed; it shuld release all resources held by the record
 // * @get_child_meta: return the record for a container child
-// * @actor_added: class handler for #ClutterContainer::actor-added
-// * @actor_removed: class handler for #ClutterContainer::actor-removed
-// * @child_notify: class handler for #ClutterContainer::child-notify
+// * @actor_added: class handler for #Container::actor-added
+// * @actor_removed: class handler for #Container::actor-removed
+// * @child_notify: class handler for #Container::child-notify
 // *
 // * Base interface for container actors. The @add, @remove and @foreach
 // * virtual functions must be provided by any implementation; the other

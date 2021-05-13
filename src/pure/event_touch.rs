@@ -1,6 +1,6 @@
 use super::{Actor, EventFlags, EventSequence, EventType, InputDevice, ModifierType, Stage};
 
-// * ClutterTouchEvent:
+// * TouchEvent:
 // * @type: event type
 // * @time: event time
 // * @flags: event flags
@@ -9,9 +9,9 @@ use super::{Actor, EventFlags, EventSequence, EventType, InputDevice, ModifierTy
 // * @x: the X coordinate of the pointer, relative to the stage
 // * @y: the Y coordinate of the pointer, relative to the stage
 // * @sequence: the event sequence that this event belongs to
-// * @modifier_state: (type ClutterModifierType): a bit-mask representing the state
+// * @modifier_state: (type ModifierType): a bit-mask representing the state
 // *   of modifier keys (e.g. Control, Shift, and Alt) and the pointer
-// *   buttons. See #ClutterModifierType
+// *   buttons. See #ModifierType
 // * @axes: reserved
 // * @device: the device that originated the event. If you want the physical
 // * device the event originated from, use clutter_event_get_source_device()
@@ -29,7 +29,6 @@ use super::{Actor, EventFlags, EventSequence, EventType, InputDevice, ModifierTy
 // * With multi-touch capable devices there can be multiple event sequence
 // * running at the same time.
 // *
-#[derive(Debug, Clone)]
 pub struct TouchEvent {
     kind: EventType,
     time: u32,

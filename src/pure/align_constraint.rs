@@ -2,15 +2,15 @@ use super::{Actor, AlignAxis};
 use crate::prelude::*;
 use std::fmt;
 
-// * ClutterAlignConstraint:
+// * AlignConstraint:
 // *
-// * #ClutterAlignConstraint is an opaque structure
+// * #AlignConstraint is an opaque structure
 // * whose members cannot be directly accesses
 // * @Short_Description: A constraint aligning the position of an actor
 // *
-// * #ClutterAlignConstraint is a #ClutterConstraint that aligns the position
-// * of the #ClutterActor to which it is applied to the size of another
-// * #ClutterActor using an alignment factor
+// * #AlignConstraint is a #Constraint that aligns the position
+// * of the #Actor to which it is applied to the size of another
+// * #Actor using an alignment factor
 // @extends Constraint, ActorMeta,
 #[derive(Debug, Clone)]
 pub struct AlignConstraint {

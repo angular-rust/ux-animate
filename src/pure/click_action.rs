@@ -4,42 +4,42 @@ use glib::signal::SignalHandlerId;
 use std::fmt;
 
 // * SECTION:clutter-click-action
-// * @Title: ClutterClickAction
+// * @Title: ClickAction
 // * @Short_Description: Action for clickable actors
 // *
-// * #ClutterClickAction is a sub-class of #ClutterAction that implements
+// * #ClickAction is a sub-class of #Action that implements
 // * the logic for clickable actors, by using the low level events of
-// * #ClutterActor, such as #ClutterActor::button-press-event and
-// * #ClutterActor::button-release-event, to synthesize the high level
-// * #ClutterClickAction::clicked signal.
+// * #Actor, such as #Actor::button-press-event and
+// * #Actor::button-release-event, to synthesize the high level
+// * #ClickAction::clicked signal.
 // *
-// * To use #ClutterClickAction you just need to apply it to a #ClutterActor
+// * To use #ClickAction you just need to apply it to a #Actor
 // * using clutter_actor_add_action() and connect to the
-// * #ClutterClickAction::clicked signal:
+// * #ClickAction::clicked signal:
 // *
 // * |[
-// *   ClutterAction *action = clutter_click_action_new ();
+// *   Action *action = clutter_click_action_new ();
 // *
 // *   clutter_actor_add_action (actor, action);
 // *
 // *   g_signal_connect (action, "clicked", G_CALLBACK (on_clicked), NULL);
 // * ]|
 // *
-// * #ClutterClickAction also supports long press gestures: a long press is
+// * #ClickAction also supports long press gestures: a long press is
 // * activated if the pointer remains pressed within a certain threshold (as
-// * defined by the #ClutterClickAction:long-press-threshold property) for a
+// * defined by the #ClickAction:long-press-threshold property) for a
 // * minimum amount of time (as the defined by the
-// * #ClutterClickAction:long-press-duration property).
-// * The #ClutterClickAction::long-press signal is emitted multiple times,
-// * using different #ClutterLongPressState values; to handle long presses
-// * you should connect to the #ClutterClickAction::long-press signal and
+// * #ClickAction:long-press-duration property).
+// * The #ClickAction::long-press signal is emitted multiple times,
+// * using different #LongPressState values; to handle long presses
+// * you should connect to the #ClickAction::long-press signal and
 // * handle the different states:
 // *
 // * |[
 // *   static gboolean
-// *   on_long_press (ClutterClickAction    *action,
-// *                  ClutterActor          *actor,
-// *                  ClutterLongPressState  state)
+// *   on_long_press (ClickAction    *action,
+// *                  Actor          *actor,
+// *                  LongPressState  state)
 // *   {
 // *     switch (state)
 // *       {

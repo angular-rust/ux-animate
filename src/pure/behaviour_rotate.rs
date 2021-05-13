@@ -5,13 +5,13 @@ use std::fmt;
 
 // * @short_description: A behaviour controlling rotation
 // *
-// * A #ClutterBehaviourRotate rotate actors between a starting and ending
+// * A #BehaviourRotate rotate actors between a starting and ending
 // * angle on a given axis.
 // *
-// * The #ClutterBehaviourRotate is available since version 0.4.
+// * The #BehaviourRotate is available since version 0.4.
 // *
-// * Deprecated: 1.6: Use the #ClutterActor rotation properties and
-// *   clutter_actor_animate(), or #ClutterAnimator, or #ClutterState
+// * Deprecated: 1.6: Use the #Actor rotation properties and
+// *   clutter_actor_animate(), or #Animator, or #State
 // *   instead.
 #[derive(Debug, Clone)]
 pub struct BehaviourRotate {

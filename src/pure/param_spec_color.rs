@@ -2,7 +2,7 @@
 // use std::fmt;
 
 // glib_wrapper! {
-//     pub struct ParamSpecColor(Object<ffi::ClutterParamSpecColor, ParamSpecColorClass>) @extends gobject::ParamSpec;
+//     pub struct ParamSpecColor(Object<ffi::ParamSpecColor, ParamSpecColorClass>) @extends gobject::ParamSpec;
 
 //     match fn {
 //         get_type => || ffi::clutter_param_color_get_type(),

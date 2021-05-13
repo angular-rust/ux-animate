@@ -5,7 +5,7 @@ struct BindingEntry {
     // gchar *name; /* interned string, do not free */
 
     // guint key_val;
-    // ClutterModifierType modifiers;
+    // ModifierType modifiers;
   
     // GClosure *closure;
   
@@ -13,7 +13,7 @@ struct BindingEntry {
 }
 // * @short_description: Pool for key bindings
 // *
-// * #ClutterBindingPool is a data structure holding a set of key bindings.
+// * #BindingPool is a data structure holding a set of key bindings.
 // * Each key binding associates a key symbol (eventually with modifiers)
 // * to an action. A callback function is associated to each action.
 // *
@@ -22,7 +22,7 @@ struct BindingEntry {
 // * multiple actions with the same name, and the same callback can be used
 // * to handle multiple key bindings.
 // *
-// * Actors requiring key bindings should create a new #ClutterBindingPool
+// * Actors requiring key bindings should create a new #BindingPool
 // * inside their class initialization function and then install actions
 // * like this:
 // *
@@ -30,7 +30,7 @@ struct BindingEntry {
 // * static void
 // * foo_class_init (FooClass *klass)
 // * {
-// *   ClutterBindingPool *binding_pool;
+// *   BindingPool *binding_pool;
 // *
 // *   binding_pool = clutter_binding_pool_get_for_class (klass);
 // *
@@ -51,16 +51,16 @@ struct BindingEntry {
 // *    gboolean (* callback) (GObject             *instance,
 // *                           const gchar         *action_name,
 // *                           guint                key_val,
-// *                           ClutterModifierType  modifiers,
+// *                           ModifierType  modifiers,
 // *                           gpointer             user_data);
 // * ]|
 // *
-// * The actor should then override the #ClutterActor::key-press-event and
-// * use clutter_binding_pool_activate() to match a #ClutterKeyEvent structure
+// * The actor should then override the #Actor::key-press-event and
+// * use clutter_binding_pool_activate() to match a #KeyEvent structure
 // * to one of the actions:
 // *
 // * |[<!-- language="C" -->
-// *   ClutterBindingPool *pool;
+// *   BindingPool *pool;
 // *
 // *   // retrieve the binding pool for the type of the actor
 // *   pool = clutter_binding_pool_find (G_OBJECT_TYPE_NAME (actor));
@@ -203,7 +203,7 @@ impl BindingPool {
     //         gobject: *mut gobject_sys::GObject,
     //         action_name: *const libc::c_char,
     //         key_val: libc::c_uint,
-    //         modifiers: ffi::ClutterModifierType,
+    //         modifiers: ffi::ModifierType,
     //         user_data: glib_sys::gpointer,
     //     ) -> glib_sys::gboolean {
     //         let gobject = from_glib_borrow(gobject);
@@ -299,7 +299,7 @@ impl BindingPool {
     //         gobject: *mut gobject_sys::GObject,
     //         action_name: *const libc::c_char,
     //         key_val: libc::c_uint,
-    //         modifiers: ffi::ClutterModifierType,
+    //         modifiers: ffi::ModifierType,
     //         user_data: glib_sys::gpointer,
     //     ) -> glib_sys::gboolean {
     //         let gobject = from_glib_borrow(gobject);

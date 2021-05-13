@@ -3,39 +3,38 @@ use glib::signal::SignalHandlerId;
 use std::fmt;
 
 // * SECTION:clutter-deform-effect
-// * @Title: ClutterDeformEffect
+// * @Title: DeformEffect
 // * @Short_Description: A base class for effects deforming the geometry
 // *   of an actor
 // *
-// * #ClutterDeformEffect is an abstract class providing all the plumbing
+// * #DeformEffect is an abstract class providing all the plumbing
 // * for creating effects that result in the deformation of an actor's
 // * geometry.
 // *
-// * #ClutterDeformEffect uses offscreen buffers to render the contents of
-// * a #ClutterActor and then the Cogl vertex buffers API to submit the
+// * #DeformEffect uses offscreen buffers to render the contents of
+// * a #Actor and then the Cogl vertex buffers API to submit the
 // * geometry to the GPU.
 // *
-// * #ClutterDeformEffect is available since Clutter 1.4
+// * #DeformEffect is available since  1.4
 // *
-// * ## Implementing ClutterDeformEffect
+// * ## Implementing DeformEffect
 // *
-// * Sub-classes of #ClutterDeformEffect should override the
-// * #ClutterDeformEffectClass.deform_vertex() virtual function; this function
+// * Sub-classes of #DeformEffect should override the
+// * #DeformEffectClass.deform_vertex() virtual function; this function
 // * is called on every vertex that needs to be deformed by the effect.
 // * Each passed vertex is an in-out parameter that initially contains the
 // * position of the vertex and should be modified according to a specific
 // * deformation algorithm.
 // @extends OffscreenEffect, Effect, ActorMeta,
-#[derive(Debug, Clone)]
 pub struct DeformEffect {
-    back_pipeline: Option<dx::Pipeline>,
+    back_pipeline: Option<dx::pure::Pipeline>,
 
     x_tiles: i32,
     y_tiles: i32,
 
-    buffer: Option<dx::AttributeBuffer>,
-    primitive: Option<dx::Primitive>,
-    lines_primitive: Option<dx::Primitive>,
+    buffer: Option<dx::pure::AttributeBuffer>,
+    primitive: Option<dx::pure::Primitive>,
+    lines_primitive: Option<dx::pure::Primitive>,
     n_vertices: i32,
     allocation_id: u64,
 
@@ -50,7 +49,7 @@ impl Object for DeformEffect {}
 ///
 /// [`DeformEffect`](struct.DeformEffect.html), [`PageTurnEffect`](struct.PageTurnEffect.html)
 pub trait DeformEffectExt: 'static {
-    //fn get_back_material(&self) -> /*Unimplemented*/Option<dx::Handle>;
+    //fn get_back_material(&self) -> /*Unimplemented*/Option<dx::pure::Handle>;
 
     /// Retrieves the number of horizontal and vertical tiles used to sub-divide
     /// the actor's geometry during the effect
@@ -66,7 +65,7 @@ pub trait DeformEffectExt: 'static {
     /// to an actor, it will queue a redraw
     fn invalidate(&self);
 
-    //fn set_back_material(&self, material: /*Unimplemented*/Option<dx::Handle>);
+    //fn set_back_material(&self, material: /*Unimplemented*/Option<dx::pure::Handle>);
 
     /// Sets the number of horizontal and vertical tiles to be used
     /// when applying the effect
@@ -101,7 +100,7 @@ pub trait DeformEffectExt: 'static {
 }
 
 impl<O: Is<DeformEffect>> DeformEffectExt for O {
-    //fn get_back_material(&self) -> /*Unimplemented*/Option<dx::Handle> {
+    //fn get_back_material(&self) -> /*Unimplemented*/Option<dx::pure::Handle> {
     //    unimplemented!()
     //}
 
@@ -113,7 +112,7 @@ impl<O: Is<DeformEffect>> DeformEffectExt for O {
         unimplemented!()
     }
 
-    //fn set_back_material(&self, material: /*Unimplemented*/Option<dx::Handle>) {
+    //fn set_back_material(&self, material: /*Unimplemented*/Option<dx::pure::Handle>) {
     //    unimplemented!()
     //}
 

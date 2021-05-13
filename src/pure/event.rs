@@ -5,7 +5,6 @@ use super::{
 use std::fmt;
 
 /// A generic UX Animate event wrapper.
-#[derive(Clone)]
 pub enum Event {
     AnyEvent(AnyEvent),                     // any;
     ButtonEvent(ButtonEvent),               // button;
@@ -19,7 +18,7 @@ pub enum Event {
     TouchpadSwipeEvent(TouchpadSwipeEvent), // touchpad_swipe;
 }
 
-// event_wrapper!(Event, ClutterAnyEvent);
+// event_wrapper!(Event, AnyEvent);
 
 impl Event {
     /// Creates a new event.
@@ -47,7 +46,7 @@ impl Event {
     // pub fn set_handler<F: Fn(&mut Event) + 'static>(handler: Option<F>) {
     //     assert_initialized_main_thread!();
     //     unsafe extern "C" fn event_handler_trampoline<F: Fn(&mut Event) + 'static>(
-    //         event: *mut ffi::ClutterEvent,
+    //         event: *mut ffi::Event,
     //         ptr: glib_sys::gpointer,
     //     ) {
     //         if ptr != ptr::null_mut() {

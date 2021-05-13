@@ -4,28 +4,28 @@ use glib::signal::SignalHandlerId;
 use std::fmt;
 
 // * SECTION:clutter-content
-// * @Title: ClutterContent
+// * @Title: Content
 // * @Short_Description: Delegate for painting the content of an actor
 // *
-// * #ClutterContent is an interface to implement types responsible for
-// * painting the content of a #ClutterActor.
+// * #Content is an interface to implement types responsible for
+// * painting the content of a #Actor.
 // *
-// * Multiple actors can use the same #ClutterContent instance, in order
+// * Multiple actors can use the same #Content instance, in order
 // * to share the resources associated with painting the same content.
 // *
-// * ClutterContentIface:
+// * ContentIface:
 // * @get_preferred_size: virtual function; should be overridden by subclasses
-// *   of #ClutterContent that have a natural size
+// *   of #Content that have a natural size
 // * @paint_content: virtual function; called each time the content needs to
 // *   paint itself
-// * @attached: virtual function; called each time a #ClutterContent is attached
-// *   to a #ClutterActor.
-// * @detached: virtual function; called each time a #ClutterContent is detached
-// *   from a #ClutterActor.
-// * @invalidate: virtual function; called each time a #ClutterContent state
+// * @attached: virtual function; called each time a #Content is attached
+// *   to a #Actor.
+// * @detached: virtual function; called each time a #Content is detached
+// *   from a #Actor.
+// * @invalidate: virtual function; called each time a #Content state
 // *   is changed.
 // *
-// * The #ClutterContentIface structure contains only
+// * The #ContentIface structure contains only
 // * private data.
 #[derive(Debug, Clone)]
 pub struct Content {}

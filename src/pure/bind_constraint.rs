@@ -4,12 +4,12 @@ use glib::signal::SignalHandlerId;
 use std::fmt;
 
 // * SECTION:clutter-bind-constraint
-// * @Title: ClutterBindConstraint
+// * @Title: BindConstraint
 // * @Short_Description: A constraint binding the position or size of an actor
 // *
-// * #ClutterBindConstraint is a #ClutterConstraint that binds the
-// * position or the size of the #ClutterActor to which it is applied
-// * to the the position or the size of another #ClutterActor, or
+// * #BindConstraint is a #Constraint that binds the
+// * position or the size of the #Actor to which it is applied
+// * to the the position or the size of another #Actor, or
 // * "source".
 // *
 // * An offset can be applied to the constraint, to avoid overlapping. The offset
@@ -57,7 +57,7 @@ use std::fmt;
 // *                        NULL);
 // * ]|
 // *
-// * #ClutterBindConstraint is available since Clutter 1.4
+// * #BindConstraint is available since  1.4
 // @extends Constraint, ActorMeta
 #[derive(Debug, Clone)]
 pub struct BindConstraint {

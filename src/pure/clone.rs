@@ -5,12 +5,12 @@ use std::fmt;
 
 // * @short_description: An actor that displays a clone of a source actor
 // *
-// * #ClutterClone is a #ClutterActor which draws with the paint
+// * #Clone is a #Actor which draws with the paint
 // * function of another actor, scaled to fit its own allocation.
 // *
-// * #ClutterClone can be used to efficiently clone any other actor.
+// * #Clone can be used to efficiently clone any other actor.
 // *
-// * Unlike clutter_texture_new_from_actor(), #ClutterClone does not require
+// * Unlike clutter_texture_new_from_actor(), #Clone does not require
 // * the presence of support for FBOs in the underlying GL or GLES
 // * implementation.
 // TODO: implements atk::ImplementorIface, Scriptable

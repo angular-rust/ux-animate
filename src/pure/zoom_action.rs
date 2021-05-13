@@ -1,5 +1,6 @@
-use super::{Actor, InternalPoint, ZoomAxis};
+use super::{Actor, ZoomAxis};
 use crate::prelude::*;
+use crate::Point;
 use glib::signal::SignalHandlerId;
 use std::fmt;
 
@@ -43,13 +44,13 @@ pub trait ZoomActionExt: 'static {
     /// Retrieves the focal point of the current zoom
     /// ## `point`
     /// a `Point`
-    fn get_focal_point(&self) -> InternalPoint;
+    fn get_focal_point(&self) -> Point<f32>;
 
     /// Retrieves the focal point relative to the actor's coordinates of
     /// the current zoom
     /// ## `point`
     /// a `Point`
-    fn get_transformed_focal_point(&self) -> InternalPoint;
+    fn get_transformed_focal_point(&self) -> Point<f32>;
 
     /// Retrieves the axis constraint set by `ZoomActionExt::set_zoom_axis`
     ///
@@ -82,7 +83,7 @@ pub trait ZoomActionExt: 'static {
     ///
     /// `true` if the zoom should continue, and `false` if
     ///  the zoom should be cancelled.
-    fn connect_zoom<F: Fn(&Self, &Actor, &InternalPoint, f64) -> bool + 'static>(
+    fn connect_zoom<F: Fn(&Self, &Actor, &Point<f32>, f64) -> bool + 'static>(
         &self,
         f: F,
     ) -> SignalHandlerId;
@@ -91,9 +92,9 @@ pub trait ZoomActionExt: 'static {
 }
 
 impl<O: Is<ZoomAction>> ZoomActionExt for O {
-    fn get_focal_point(&self) -> InternalPoint {
+    fn get_focal_point(&self) -> Point<f32> {
         // unsafe {
-        //     let mut point = InternalPoint::uninitialized();
+        //     let mut point = Point::uninitialized();
         //     ffi::clutter_zoom_action_get_focal_point(
         //         self.as_ref().to_glib_none().0,
         //         point.to_glib_none_mut().0,
@@ -103,9 +104,9 @@ impl<O: Is<ZoomAction>> ZoomActionExt for O {
         unimplemented!()
     }
 
-    fn get_transformed_focal_point(&self) -> InternalPoint {
+    fn get_transformed_focal_point(&self) -> Point<f32> {
         // unsafe {
-        //     let mut point = InternalPoint::uninitialized();
+        //     let mut point = Point::uninitialized();
         //     ffi::clutter_zoom_action_get_transformed_focal_point(
         //         self.as_ref().to_glib_none().0,
         //         point.to_glib_none_mut().0,
@@ -131,7 +132,7 @@ impl<O: Is<ZoomAction>> ZoomActionExt for O {
         unimplemented!()
     }
 
-    fn connect_zoom<F: Fn(&Self, &Actor, &InternalPoint, f64) -> bool + 'static>(
+    fn connect_zoom<F: Fn(&Self, &Actor, &Point<f32>, f64) -> bool + 'static>(
         &self,
         f: F,
     ) -> SignalHandlerId {

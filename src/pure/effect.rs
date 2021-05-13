@@ -4,24 +4,24 @@ use std::fmt;
 // * SECTION:clutter-effect
 // * @short_description: Base class for actor effects
 // *
-// * The #ClutterEffect class provides a default type and API for creating
+// * The #Effect class provides a default type and API for creating
 // * effects for generic actors.
 // *
-// * Effects are a #ClutterActorMeta sub-class that modify the way an actor
+// * Effects are a #ActorMeta sub-class that modify the way an actor
 // * is painted in a way that is not part of the actor's implementation.
 // *
 // * Effects should be the preferred way to affect the paint sequence of an
 // * actor without sub-classing the actor itself and overriding the
-// * #ClutterActorClass.paint()_ virtual function.
+// * #ActorClass.paint()_ virtual function.
 // *
-// * ## Implementing a ClutterEffect
+// * ## Implementing a Effect
 // *
-// * Creating a sub-class of #ClutterEffect requires overriding the
-// * #ClutterEffectClass.paint() method. The implementation of the function should look
+// * Creating a sub-class of #Effect requires overriding the
+// * #EffectClass.paint() method. The implementation of the function should look
 // * something like this:
 // *
 // * |[
-// * void effect_paint (ClutterEffect *effect, ClutterEffectPaintFlags flags)
+// * void effect_paint (Effect *effect, EffectPaintFlags flags)
 // * {
 // *   // Set up initialisation of the paint such as binding a
 // *   // CoglOffscreen or other operations
@@ -29,7 +29,7 @@ use std::fmt;
 // *   // Chain to the next item in the paint sequence. This will either call
 // *   // ‘paint’ on the next effect or just paint the actor if this is
 // *   // the last effect.
-// *   ClutterActor *actor =
+// *   Actor *actor =
 // *     clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (effect));
 // *
 // *   clutter_actor_continue_paint (actor);
@@ -43,48 +43,48 @@ use std::fmt;
 // * contains a cached image of the actor. In that case it can optimise painting by
 // * avoiding the actor paint and instead painting the cached image.
 // *
-// * The %CLUTTER_EFFECT_PAINT_ACTOR_DIRTY flag is useful in this case. Clutter will set
+// * The %CLUTTER_EFFECT_PAINT_ACTOR_DIRTY flag is useful in this case.  will set
 // * this flag when a redraw has been queued on the actor since it was last painted. The
 // * effect can use this information to decide if the cached image is still valid.
 // *
-// * ## A simple ClutterEffect implementation
+// * ## A simple Effect implementation
 // *
 // * The example below creates two rectangles: one will be painted "behind" the actor,
 // * while another will be painted "on top" of the actor.
 // *
-// * The #ClutterActorMetaClass.set_actor() implementation will create the two materials
-// * used for the two different rectangles; the #ClutterEffectClass.paint() implementation
-// * will paint the first material using cogl_rectangle(), before continuing and then it
+// * The #ActorMetaClass.set_actor() implementation will create the two materials
+// * used for the two different rectangles; the #EffectClass.paint() implementation
+// * will paint the first material using dx_rectangle(), before continuing and then it
 // * will paint paint the second material after.
 // *
 // *  |[
 // *  typedef struct {
-// *    ClutterEffect parent_instance;
+// *    Effect parent_instance;
 // *
 // *    CoglHandle rect_1;
 // *    CoglHandle rect_2;
 // *  } MyEffect;
 // *
-// *  typedef struct _ClutterEffectClass MyEffectClass;
+// *  typedef struct _EffectClass MyEffectClass;
 // *
 // *  G_DEFINE_TYPE (MyEffect, my_effect, CLUTTER_TYPE_EFFECT);
 // *
 // *  static void
-// *  my_effect_set_actor (ClutterActorMeta *meta,
-// *                       ClutterActor     *actor)
+// *  my_effect_set_actor (ActorMeta *meta,
+// *                       Actor     *actor)
 // *  {
 // *    MyEffect *self = MY_EFFECT (meta);
 // *
 // *    // Clear the previous state //
 // *    if (self->rect_1)
 // *      {
-// *        cogl_handle_unref (self->rect_1);
+// *        dx_handle_unref (self->rect_1);
 // *        self->rect_1 = NULL;
 // *      }
 // *
 // *    if (self->rect_2)
 // *      {
-// *        cogl_handle_unref (self->rect_2);
+// *        dx_handle_unref (self->rect_2);
 // *        self->rect_2 = NULL;
 // *      }
 // *
@@ -96,16 +96,16 @@ use std::fmt;
 // *      return;
 // *
 // *    // Create a red material
-// *    self->rect_1 = cogl_material_new ();
-// *    cogl_material_set_color4f (self->rect_1, 1.0, 0.0, 0.0, 1.0);
+// *    self->rect_1 = dx_material_new ();
+// *    dx_material_set_color4f (self->rect_1, 1.0, 0.0, 0.0, 1.0);
 // *
 // *    // Create a green material
-// *    self->rect_2 = cogl_material_new ();
-// *    cogl_material_set_color4f (self->rect_2, 0.0, 1.0, 0.0, 1.0);
+// *    self->rect_2 = dx_material_new ();
+// *    dx_material_set_color4f (self->rect_2, 0.0, 1.0, 0.0, 1.0);
 // *  }
 // *
 // *  static gboolean
-// *  my_effect_paint (ClutterEffect *effect)
+// *  my_effect_paint (Effect *effect)
 // *  {
 // *    MyEffect *self = MY_EFFECT (effect);
 // *    gfloat width, height;
@@ -113,21 +113,21 @@ use std::fmt;
 // *    clutter_actor_get_size (self->actor, &width, &height);
 // *
 // *    // Paint the first rectangle in the upper left quadrant
-// *    cogl_set_source (self->rect_1);
-// *    cogl_rectangle (0, 0, width / 2, height / 2);
+// *    dx_set_source (self->rect_1);
+// *    dx_rectangle (0, 0, width / 2, height / 2);
 // *
 // *    // Continue to the rest of the paint sequence
 // *    clutter_actor_continue_paint (self->actor);
 // *
 // *    // Paint the second rectangle in the lower right quadrant
-// *    cogl_set_source (self->rect_2);
-// *    cogl_rectangle (width / 2, height / 2, width, height);
+// *    dx_set_source (self->rect_2);
+// *    dx_rectangle (width / 2, height / 2, width, height);
 // *  }
 // *
 // *  static void
 // *  my_effect_class_init (MyEffectClass *klass)
 // *  {
-// *    ClutterActorMetaClas *meta_class = CLUTTER_ACTOR_META_CLASS (klass);
+// *    ActorMetaClas *meta_class = CLUTTER_ACTOR_META_CLASS (klass);
 // *
 // *    meta_class->set_actor = my_effect_set_actor;
 // *

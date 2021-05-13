@@ -2,15 +2,15 @@ use glib::signal::SignalHandlerId;
 use std::fmt;
 
 // * @short_description: Increase/decrease brightness and/or contrast of actor.
-// * @see_also: #ClutterEffect, #ClutterOffscreenEffect
+// * @see_also: #Effect, #OffscreenEffect
 // *
-// * #ClutterBrightnessContrastEffect is a sub-class of #ClutterEffect that
-// * changes the overall brightness of a #ClutterActor.
+// * #BrightnessContrastEffect is a sub-class of #Effect that
+// * changes the overall brightness of a #Actor.
 // *
-// * #ClutterBrightnessContrastEffect is available since Clutter 1.10
+// * #BrightnessContrastEffect is available since  1.10
 // @extends OffscreenEffect, Effect, ActorMeta
 pub struct BrightnessContrastEffect {
-    // ClutterOffscreenEffect parent_instance;
+    // OffscreenEffect parent_instance;
 
     /* Brightness and contrast changes. */
     brightness_red: f32,
@@ -28,7 +28,7 @@ pub struct BrightnessContrastEffect {
     tex_width: i32,
     tex_height: i32,
 
-    pipeline: Option<dx::Pipeline>,
+    pipeline: Option<dx::pure::Pipeline>,
 }
 
 impl BrightnessContrastEffect {

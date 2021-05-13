@@ -7,11 +7,11 @@ use std::fmt;
 // * SECTION:clutter-child-meta
 // * @short_description: Wrapper for actors inside a container
 // *
-// * #ClutterChildMeta is a wrapper object created by #ClutterContainer
+// * #ChildMeta is a wrapper object created by #Container
 // * implementations in order to store child-specific data and properties.
 // *
-// * A #ClutterChildMeta wraps a #ClutterActor inside a #ClutterContainer.
-// * ClutterChildMeta:
+// * A #ChildMeta wraps a #Actor inside a #Container.
+// * ChildMeta:
 // * @container: the container handling this data
 // * @actor: the actor wrapped by this data
 // * 
@@ -20,20 +20,20 @@ use std::fmt;
 // * about each individual child added to a container.
 // *
 // * In order to use it you should create your own subclass of
-// * #ClutterChildMeta and set the #ClutterContainerIface child_meta_type
+// * #ChildMeta and set the #ContainerIface child_meta_type
 // * interface member to your subclass type, like:
 // *
 // * |[
 // * static void
-// * my_container_iface_init (ClutterContainerIface *iface)
+// * my_container_iface_init (ContainerIface *iface)
 // * {
-// *   // set the rest of the #ClutterContainer vtable
+// *   // set the rest of the #Container vtable
 // *
 // *   container_iface->child_meta_type  = MY_TYPE_CHILD_META;
 // * }
 // * ]|
 // *
-// * This will automatically create a #ClutterChildMeta of type
+// * This will automatically create a #ChildMeta of type
 // * `MY_TYPE_CHILD_META` for every actor that is added to the container.
 // *
 // * The child data for an actor can be retrieved using the
@@ -44,9 +44,9 @@ use std::fmt;
 // * act like g_object_set() and g_object_get().
 // *
 // * You can provide hooks for your own storage as well as control the
-// * instantiation by overriding the #ClutterContainerIface virtual functions
-// * #ClutterContainerIface.create_child_meta(), #ClutterContainerIface.destroy_child_meta(),
-// * and #ClutterContainerIface.get_child_meta().
+// * instantiation by overriding the #ContainerIface virtual functions
+// * #ContainerIface.create_child_meta(), #ContainerIface.destroy_child_meta(),
+// * and #ContainerIface.get_child_meta().
 
 #[derive(Debug, Clone)]
 pub struct ChildMeta {

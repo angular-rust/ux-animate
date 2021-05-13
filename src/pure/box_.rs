@@ -1,14 +1,9 @@
-use crate::{Actor, Animatable, Container};
-use glib::{object as gobject, translate::*};
+use crate::Actor;
 use std::fmt;
 
-// TODO: implements atk::ImplementorIface, Scriptable
-glib_wrapper! {
-    pub struct Box(Object<ffi::ClutterBox, ffi::ClutterBoxClass, BoxClass>) @extends Actor, gobject::InitiallyUnowned, @implements Animatable, Container;
-
-    match fn {
-        get_type => || ffi::clutter_box_get_type(),
-    }
+// @implements Animatable, Container, atk::ImplementorIface, Scriptable
+pub struct Box {
+    inner: Option<Actor>,
 }
 
 impl Box {}

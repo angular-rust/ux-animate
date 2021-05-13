@@ -1,25 +1,26 @@
+use super::Actor;
 use std::fmt;
 
 // * @short_description: A blur effect
-// * @see_also: #ClutterEffect, #ClutterOffscreenEffect
+// * @see_also: #Effect, #OffscreenEffect
 // *
-// * #ClutterBlurEffect is a sub-class of #ClutterEffect that allows blurring a
+// * #BlurEffect is a sub-class of #Effect that allows blurring a
 // * actor and its contents.
 // *
-// * #ClutterBlurEffect is available since Clutter 1.4
+// * #BlurEffect is available since  1.4
 // @extends OffscreenEffect, Effect, ActorMeta,
 pub struct BlurEffect {
-//     ClutterOffscreenEffect parent_instance;
+    // parent_instance: OffscreenEffect,
 
-//     /* a back pointer to our actor, so that we can query it */
-//     ClutterActor *actor;
-  
-//     gint pixel_step_uniform;
-  
-//     gint tex_width;
-//     gint tex_height;
-  
-//     CoglPipeline *pipeline;
+    // a back pointer to our actor, so that we can query it
+    actor: Option<Actor>,
+
+    pixel_step_uniform: i32,
+
+    tex_width: u32,
+    tex_height: u32,
+
+    pipeline: Option<dx::pure::Pipeline>,
 }
 
 impl BlurEffect {
@@ -30,7 +31,13 @@ impl BlurEffect {
     ///
     /// the newly created `BlurEffect` or `None`
     pub fn new() -> BlurEffect {
-        unimplemented!()
+        Self {
+            actor: None,
+            pixel_step_uniform: 0,
+            tex_width: 0,
+            tex_height: 0,
+            pipeline: None,
+        }
     }
 }
 

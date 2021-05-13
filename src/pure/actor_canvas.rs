@@ -4,37 +4,36 @@ use glib::signal::SignalHandlerId;
 use std::fmt;
 // use cairo::Context;
 
-// * ClutterCanvas:
+// * Canvas:
 // *
-// * The #ClutterCanvas structure contains
+// * The #Canvas structure contains
 // * private data and should only be accessed using the provided
 // * API.
-// * @Title: ClutterCanvas
+// * @Title: Canvas
 // * @Short_Description: Content for 2D painting
-// * @See_Also: #ClutterContent
+// * @See_Also: #Content
 // *
-// * The #ClutterCanvas class is a #ClutterContent implementation that allows
+// * The #Canvas class is a #Content implementation that allows
 // * drawing using the Cairo API on a 2D surface.
 // *
-// * In order to draw on a #ClutterCanvas, you should connect a handler to the
-// * #ClutterCanvas::draw signal; the signal will receive a #cairo_t context
-// * that can be used to draw. #ClutterCanvas will emit the #ClutterCanvas::draw
+// * In order to draw on a #Canvas, you should connect a handler to the
+// * #Canvas::draw signal; the signal will receive a #cairo_t context
+// * that can be used to draw. #Canvas will emit the #Canvas::draw
 // * signal when invalidated using clutter_content_invalidate().
 // *
 // * See [canvas.c](https://git.gnome.org/browse/clutter/tree/examples/canvas.c?h=clutter-1.18)
-// * for an example of how to use #ClutterCanvas.
+// * for an example of how to use #Canvas.
 // @implements Content
-#[derive(Debug, Clone)]
 pub struct ActorCanvas {
     cr: cairo::Context,
 
     width: u32,
     height: u32,
 
-    texture: dx::Texture,
+    texture: dx::pure::Texture,
     dirty: bool,
 
-    buffer: dx::Bitmap,
+    buffer: dx::pure::Bitmap,
 
     scale_factor: u32,
     scale_factor_set: bool,

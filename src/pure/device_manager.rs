@@ -6,14 +6,13 @@ use std::fmt;
 // * SECTION:clutter-device-manager
 // * @short_description: Maintains the list of input devices
 // *
-// * #ClutterDeviceManager is a singleton object, owned by Clutter, which
-// * maintains the list of #ClutterInputDevice<!-- -->s.
+// * #DeviceManager is a singleton object, owned by , which
+// * maintains the list of #InputDevice<!-- -->s.
 // *
-// * Depending on the backend used by Clutter it is possible to use the
-// * #ClutterDeviceManager::device-added and
-// * #ClutterDeviceManager::device-removed to monitor addition and removal
+// * Depending on the backend used by  it is possible to use the
+// * #DeviceManager::device-added and
+// * #DeviceManager::device-removed to monitor addition and removal
 // * of devices.
-#[derive(Debug, Clone)]
 pub struct DeviceManager {
     // back-pointer to the backend
     backend: Option<Backend>,
@@ -25,7 +24,7 @@ impl DeviceManager {
     /// # Returns
     ///
     /// the `DeviceManager` singleton.
-    ///  The returned instance is owned by Clutter and it should not be
+    ///  The returned instance is owned by  and it should not be
     ///  modified or freed
     pub fn get_default() -> Option<DeviceManager> {
         unimplemented!()

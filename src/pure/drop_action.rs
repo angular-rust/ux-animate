@@ -4,36 +4,36 @@ use glib::signal::SignalHandlerId;
 use std::fmt;
 
 // * SECTION:clutter-drop-action
-// * @Title: ClutterDropAction
+// * @Title: DropAction
 // * @short_description: An action for drop targets
 // *
-// * #ClutterDropAction is a #ClutterAction that allows a #ClutterActor
+// * #DropAction is a #Action that allows a #Actor
 // * implementation to control what happens when an actor dragged using
-// * a #ClutterDragAction crosses the target area or when a dragged actor
+// * a #DragAction crosses the target area or when a dragged actor
 // * is released (or "dropped") on the target area.
 // *
-// * A trivial use of #ClutterDropAction consists in connecting to the
-// * #ClutterDropAction::drop signal and handling the drop from there,
+// * A trivial use of #DropAction consists in connecting to the
+// * #DropAction::drop signal and handling the drop from there,
 // * for instance:
 // *
 // * |[<!-- language="C" -->
-// *   ClutterAction *action = clutter_drop_action ();
+// *   Action *action = clutter_drop_action ();
 // *
 // *   g_signal_connect (action, "drop", G_CALLBACK (on_drop), NULL);
 // *   clutter_actor_add_action (an_actor, action);
 // * ]|
 // *
-// * The #ClutterDropAction::can-drop can be used to control whether the
-// * #ClutterDropAction::drop signal is going to be emitted; returning %FALSE
-// * from a handler connected to the #ClutterDropAction::can-drop signal will
-// * cause the #ClutterDropAction::drop signal to be skipped when the input
+// * The #DropAction::can-drop can be used to control whether the
+// * #DropAction::drop signal is going to be emitted; returning %FALSE
+// * from a handler connected to the #DropAction::can-drop signal will
+// * cause the #DropAction::drop signal to be skipped when the input
 // * device button is released.
 // *
-// * It's important to note that #ClutterDropAction will only work with
-// * actors dragged using #ClutterDragAction.
+// * It's important to note that #DropAction will only work with
+// * actors dragged using #DragAction.
 // *
 // * See [drop-action.c](https://git.gnome.org/browse/clutter/tree/examples/drop-action.c?h=clutter-1.18)
-// * for an example of how to use #ClutterDropAction.
+// * for an example of how to use #DropAction.
 // @extends Action, ActorMeta
 #[derive(Debug, Clone)]
 pub struct DropAction {

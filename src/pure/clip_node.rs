@@ -1,7 +1,8 @@
+use super::PaintNode;
 use std::fmt;
 
-// @extends PaintNode
 pub struct ClipNode {
+    inner: PaintNode,
 }
 
 impl ClipNode {
@@ -13,7 +14,9 @@ impl ClipNode {
     /// the newly created `PaintNode`.
     ///  Use `PaintNodeExt::unref` when done.
     pub fn new() -> ClipNode {
-        unimplemented!()
+        Self{
+            inner: Default::default()
+        }
     }
 }
 

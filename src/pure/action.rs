@@ -1,18 +1,17 @@
 use crate::prelude::*;
-// use super::ActorMeta;
+use super::ActorMeta;
 use std::fmt;
 
-// * ClutterAction:
+// * Action:
 // *
-// * The #ClutterAction structure contains only private data and
+// * The #Action structure contains only private data and
 // * should be accessed using the provided API.
 // *
 
 // It should be Trait
-// extends ActorMeta
 #[derive(Debug, Clone)]
 pub struct Action {
-    // parent_instance: ClutterActorMeta,
+    inner: ActorMeta,
 }
 
 impl Action {
@@ -25,6 +24,12 @@ impl Is<Action> for Action {}
 impl AsRef<Action> for Action {
     fn as_ref(&self) -> &Action {
         self
+    }
+}
+
+impl AsRef<ActorMeta> for Action {
+    fn as_ref(&self) -> &ActorMeta {
+        &self.inner
     }
 }
 

@@ -2,7 +2,7 @@ use crate::prelude::*;
 use super::Interval;
 use std::fmt;
 
-// * ClutterAnimatableIface:
+// * AnimatableIface:
 // * @animate_property: virtual function for custom interpolation of a
 // *   property. This virtual function is deprecated
 // * @find_property: virtual function for retrieving the #GParamSpec of
@@ -15,22 +15,22 @@ use std::fmt;
 // *   of a property
 // *
 // * Base interface for #GObject<!-- -->s that can be animated by a
-// * a #ClutterAnimation.
+// * a #Animation.
 // * @short_description: Interface for animatable classes
 // *
-// * #ClutterAnimatable is an interface that allows a #GObject class
-// * to control how a #ClutterAnimation will animate a property.
+// * #Animatable is an interface that allows a #GObject class
+// * to control how a #Animation will animate a property.
 // *
-// * Each #ClutterAnimatable should implement the
-// * #ClutterAnimatableIface.interpolate_property() virtual function of the
+// * Each #Animatable should implement the
+// * #AnimatableIface.interpolate_property() virtual function of the
 // * interface to compute the animation state between two values of an interval
 // * depending on a progress factor, expressed as a floating point value.
 // *
-// * If a #ClutterAnimatable is animated by a #ClutterAnimation
-// * instance, the #ClutterAnimation will call
+// * If a #Animatable is animated by a #Animation
+// * instance, the #Animation will call
 // * clutter_animatable_interpolate_property() passing the name of the
 // * currently animated property; the values interval; and the progress factor.
-// * The #ClutterAnimatable implementation should return the computed value for
+// * The #Animatable implementation should return the computed value for
 // * the animated
 // * property.
 

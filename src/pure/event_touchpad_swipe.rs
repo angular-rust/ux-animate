@@ -3,7 +3,7 @@ use super::{
     TouchpadGesturePhase,
 };
 
-// * ClutterTouchpadSwipeEvent
+// * TouchpadSwipeEvent
 // * @type: event type
 // * @time: event time
 // * @flags: event flags
@@ -19,7 +19,6 @@ use super::{
 // * Used for touchpad swipe gesture events. The current state of the
 // * gesture will be determined by the @phase field.
 // *
-#[derive(Debug, Clone)]
 pub struct TouchpadSwipeEvent {
     kind: EventType,
     time: u32,

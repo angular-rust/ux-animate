@@ -4,14 +4,14 @@ use crate::Rect;
 use glib::signal::SignalHandlerId;
 use std::fmt;
 
-// * @Title: ClutterDragAction
+// * @Title: DragAction
 // * @Short_Description: Action enabling dragging on actors
 // *
-// * #ClutterDragAction is a sub-class of #ClutterAction that implements
+// * #DragAction is a sub-class of #Action that implements
 // * all the necessary logic for dragging actors.
 // *
-// * The simplest usage of #ClutterDragAction consists in adding it to
-// * a #ClutterActor and setting it as reactive; for instance, the following
+// * The simplest usage of #DragAction consists in adding it to
+// * a #Actor and setting it as reactive; for instance, the following
 // * code:
 // *
 // * |[<!-- language="C" -->
@@ -23,25 +23,24 @@ use std::fmt;
 // * whenever the pointer's button is pressed over the actor and moved
 // * across the stage.
 // *
-// * The #ClutterDragAction will signal the begin and the end of a dragging
-// * through the #ClutterDragAction::drag-begin and #ClutterDragAction::drag-end
+// * The #DragAction will signal the begin and the end of a dragging
+// * through the #DragAction::drag-begin and #DragAction::drag-end
 // * signals, respectively. Each pointer motion during a drag will also result
-// * in the #ClutterDragAction::drag-motion signal to be emitted.
+// * in the #DragAction::drag-motion signal to be emitted.
 // *
-// * It is also possible to set another #ClutterActor as the dragged actor
+// * It is also possible to set another #Actor as the dragged actor
 // * by calling clutter_drag_action_set_drag_handle() from within a handle
-// * of the #ClutterDragAction::drag-begin signal. The drag handle must be
-// * parented and exist between the emission of #ClutterDragAction::drag-begin
-// * and #ClutterDragAction::drag-end.
+// * of the #DragAction::drag-begin signal. The drag handle must be
+// * parented and exist between the emission of #DragAction::drag-begin
+// * and #DragAction::drag-end.
 // *
 // * The [drag-action example](https://git.gnome.org/browse/clutter/tree/examples/drag-action.c?h=clutter-1.18)
-// * allows dragging the rectangle around the stage using a #ClutterDragAction.
+// * allows dragging the rectangle around the stage using a #DragAction.
 // * When pressing the `Shift` key the actor that is being dragged will be a
 // * separate rectangle, and when the drag ends, the original rectangle will be
 // * animated to the final drop coordinates.
 // *
 // @extends Action, ActorMeta,
-#[derive(Debug, Clone)]
 pub struct DragAction {
     stage: Option<Stage>,
 

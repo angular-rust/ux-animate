@@ -1,14 +1,13 @@
 use super::{Actor, EventFlags, EventType, ModifierType, Stage};
 
-// * ClutterAnyEvent:
+// * AnyEvent:
 // * @type: event type
 // * @time: event time
 // * @flags: event flags
 // * @source: event source actor
 // *
-// * Common members for a #ClutterEvent
+// * Common members for a #Event
 // *
-#[derive(Debug, Clone)]
 pub struct AnyEvent {
     kind: EventType,
     time: u32,

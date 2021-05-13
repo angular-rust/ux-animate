@@ -3,7 +3,7 @@ use super::{
     ScrollSource, Stage,
 };
 
-// * ClutterScrollEvent:
+// * ScrollEvent:
 // * @type: event type
 // * @time: event time
 // * @flags: event flags
@@ -20,7 +20,6 @@ use super::{
 // * @finish_flags: the axes that were stopped in this event. This field is available since 1.26
 // *
 // * Scroll wheel (or similar device) event
-#[derive(Debug, Clone)]
 pub struct ScrollEvent {
     kind: EventType,
     time: u32,
