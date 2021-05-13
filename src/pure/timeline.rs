@@ -1,12 +1,11 @@
-use super::{AnimationMode, StepMode, TimelineDirection};
+use super::{AnimationMode, StepMode, TimelineDirection, HandlerId};
 use crate::prelude::*;
 use crate::Point;
-use glib::signal::SignalHandlerId;
 use std::boxed::Box as Box_;
 use std::fmt;
 
 // TODO: @implements Scriptable
-#[derive(Debug, Clone)]
+#[derive(Default, Debug, Clone)]
 pub struct Timeline {}
 
 impl Timeline {
@@ -19,8 +18,7 @@ impl Timeline {
     /// the newly created `Timeline` instance. Use
     ///  `gobject::ObjectExt::unref` when done using it
     pub fn new(msecs: u32) -> Timeline {
-        // unsafe { from_glib_full(ffi::clutter_timeline_new(msecs)) }
-        unimplemented!()
+        Default::default()
     }
 }
 
@@ -405,7 +403,7 @@ pub trait TimelineExt: 'static {
     /// If you want to get notification on whether the `Timeline` has
     /// been stopped or has finished its run, including its eventual repeats,
     /// you should use the `Timeline::stopped` signal instead.
-    fn connect_completed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_completed<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
     /// The ::marker-reached signal is emitted each time a timeline
     /// reaches a marker set with
@@ -433,23 +431,23 @@ pub trait TimelineExt: 'static {
     /// the name of the marker reached
     /// ## `msecs`
     /// the elapsed time
-    fn connect_marker_reached<F: Fn(&Self, &str, i32) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_marker_reached<F: Fn(&Self, &str, i32) + 'static>(&self, f: F) -> HandlerId;
 
     /// The ::new-frame signal is emitted for each timeline running
     /// timeline before a new frame is drawn to give animations a chance
     /// to update the scene.
     /// ## `msecs`
     /// the elapsed time between 0 and duration
-    fn connect_new_frame<F: Fn(&Self, i32) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_new_frame<F: Fn(&Self, i32) + 'static>(&self, f: F) -> HandlerId;
 
     /// The ::paused signal is emitted when `TimelineExt::pause` is invoked.
-    fn connect_paused<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_paused<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
     /// The ::started signal is emitted when the timeline starts its run.
     /// This might be as soon as `TimelineExt::start` is invoked or
     /// after the delay set in the Timeline:delay property has
     /// expired.
-    fn connect_started<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_started<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
     /// The `Timeline::stopped` signal is emitted when the timeline
     /// has been stopped, either because `TimelineExt::stop` has been
@@ -463,24 +461,24 @@ pub trait TimelineExt: 'static {
     /// ## `is_finished`
     /// `true` if the signal was emitted at the end of the
     ///  timeline.
-    fn connect_stopped<F: Fn(&Self, bool) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_stopped<F: Fn(&Self, bool) + 'static>(&self, f: F) -> HandlerId;
 
     fn connect_property_auto_reverse_notify<F: Fn(&Self) + 'static>(&self, f: F)
-        -> SignalHandlerId;
+        -> HandlerId;
 
-    fn connect_property_delay_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_delay_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_direction_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_direction_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_duration_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_duration_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
     fn connect_property_progress_mode_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 
     fn connect_property_repeat_count_notify<F: Fn(&Self) + 'static>(&self, f: F)
-        -> SignalHandlerId;
+        -> HandlerId;
 }
 
 impl<O: Is<Timeline>> TimelineExt for O {
@@ -816,60 +814,60 @@ impl<O: Is<Timeline>> TimelineExt for O {
         // }
     }
 
-    fn connect_completed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_completed<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_marker_reached<F: Fn(&Self, &str, i32) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_marker_reached<F: Fn(&Self, &str, i32) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_new_frame<F: Fn(&Self, i32) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_new_frame<F: Fn(&Self, i32) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_paused<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_paused<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_started<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_started<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_stopped<F: Fn(&Self, bool) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_stopped<F: Fn(&Self, bool) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
     fn connect_property_auto_reverse_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_delay_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_delay_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_direction_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_direction_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_duration_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_duration_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
     fn connect_property_progress_mode_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
     fn connect_property_repeat_count_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 }

@@ -9,6 +9,8 @@
     clippy::wrong_self_convention
 )]
 
+use std::num::NonZeroU64;
+
 mod action;
 pub use self::action::Action;
 
@@ -152,9 +154,6 @@ pub use self::fixed_layout::FixedLayout;
 
 mod flow_layout;
 pub use self::flow_layout::{FlowLayout, FlowLayoutExt};
-
-mod geometry;
-pub use self::geometry::Geometry;
 
 mod gesture_action;
 pub use self::gesture_action::{GestureAction, GestureActionExt};
@@ -394,6 +393,9 @@ pub use self::flags::SwipeDirection;
 
 // pub type ActorCreateChildFunc = ffi::ActorCreateChildFunc;
 // pub type BindingActionFunc = ffi::BindingActionFunc;
+
+#[derive(Debug, Eq, PartialEq)]
+pub struct HandlerId(NonZeroU64);
 
 #[doc(hidden)]
 pub mod traits {

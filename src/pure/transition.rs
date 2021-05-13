@@ -1,6 +1,5 @@
-use super::{Animatable, Interval};
+use super::{Animatable, HandlerId, Interval};
 use crate::prelude::*;
-use glib::signal::SignalHandlerId;
 use std::fmt;
 
 // TODO: @implements Scriptable
@@ -116,14 +115,12 @@ pub trait TransitionExt: 'static {
     /// a `gobject::Value` with the final value of the transition
     fn set_to_value(&self, value: &glib::Value);
 
-    fn connect_property_animatable_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_animatable_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_interval_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_interval_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_remove_on_complete_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_remove_on_complete_notify<F: Fn(&Self) + 'static>(&self, f: F)
+        -> HandlerId;
 }
 
 impl<O: Is<Transition>> TransitionExt for O {
@@ -212,18 +209,18 @@ impl<O: Is<Transition>> TransitionExt for O {
         unimplemented!()
     }
 
-    fn connect_property_animatable_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_animatable_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_interval_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_interval_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
     fn connect_property_remove_on_complete_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 }

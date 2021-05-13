@@ -1,6 +1,5 @@
-use super::{Actor, SnapEdge};
+use super::{Actor, HandlerId, SnapEdge};
 use crate::prelude::*;
-use glib::signal::SignalHandlerId;
 use std::fmt;
 
 // @extends Constraint, ActorMeta
@@ -189,28 +188,28 @@ impl SnapConstraint {
     pub fn connect_property_from_edge_notify<F: Fn(&SnapConstraint) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
     pub fn connect_property_offset_notify<F: Fn(&SnapConstraint) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
     pub fn connect_property_source_notify<F: Fn(&SnapConstraint) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
     pub fn connect_property_to_edge_notify<F: Fn(&SnapConstraint) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 }

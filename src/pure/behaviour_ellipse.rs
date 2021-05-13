@@ -1,6 +1,5 @@
-use super::{Alpha, Knot, RotateAxis, RotateDirection};
+use super::{Alpha, HandlerId, Knot, RotateAxis, RotateDirection};
 use crate::prelude::*;
-use glib::signal::SignalHandlerId;
 use std::fmt;
 
 // * @Title: BehaviourEllipse
@@ -56,6 +55,13 @@ impl BehaviourEllipse {
 }
 
 impl Object for BehaviourEllipse {}
+impl Is<BehaviourEllipse> for BehaviourEllipse {}
+
+impl AsRef<BehaviourEllipse> for BehaviourEllipse {
+    fn as_ref(&self) -> &BehaviourEllipse {
+        self
+    }
+}
 
 pub trait BehaviourEllipseExt: 'static {
     fn get_angle_end(&self) -> f64;
@@ -102,26 +108,23 @@ pub trait BehaviourEllipseExt: 'static {
 
     fn set_property_angle_tilt_z(&self, angle_tilt_z: f64);
 
-    fn connect_property_angle_end_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_angle_end_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_angle_start_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_angle_start_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_angle_tilt_x_notify<F: Fn(&Self) + 'static>(&self, f: F)
-        -> SignalHandlerId;
+    fn connect_property_angle_tilt_x_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_angle_tilt_y_notify<F: Fn(&Self) + 'static>(&self, f: F)
-        -> SignalHandlerId;
+    fn connect_property_angle_tilt_y_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_angle_tilt_z_notify<F: Fn(&Self) + 'static>(&self, f: F)
-        -> SignalHandlerId;
+    fn connect_property_angle_tilt_z_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_center_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_center_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_direction_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_direction_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_height_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_height_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_width_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_width_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<BehaviourEllipse>> BehaviourEllipseExt for O {
@@ -232,48 +235,39 @@ impl<O: Is<BehaviourEllipse>> BehaviourEllipseExt for O {
         unimplemented!()
     }
 
-    fn connect_property_angle_end_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_angle_end_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_angle_start_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_angle_start_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_angle_tilt_x_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_angle_tilt_x_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_angle_tilt_y_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_angle_tilt_y_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_angle_tilt_z_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_angle_tilt_z_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_center_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_center_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_direction_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_direction_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_height_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_height_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_width_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_width_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 }

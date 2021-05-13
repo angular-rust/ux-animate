@@ -10,7 +10,7 @@
 // * Stage perspective definition. #Perspective is only used by
 // * the fixed point version of clutter_stage_set_perspective().
 // *
-#[derive(Debug, Clone)]
+#[derive(Default, Debug, Clone)]
 pub struct Perspective {
     fovy: f32,
     aspect: f32,
@@ -30,7 +30,7 @@ pub struct Perspective {
 // *
 // * Deprecated: 1.10: The fog-related API in #Stage has been
 // *   deprecated as well.
-#[derive(Debug, Clone)]
+#[derive(Default, Debug, Clone)]
 pub struct Fog {
     z_near: f32,
     z_far: f32,

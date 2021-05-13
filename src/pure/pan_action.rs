@@ -1,11 +1,78 @@
-use super::{Actor, PanAxis};
+use super::{Actor, HandlerId, PanAxis, Timeline};
 use crate::prelude::*;
-use glib::signal::SignalHandlerId;
 use std::fmt;
 
-// @extends GestureAction, Action, ActorMeta
 #[derive(Debug, Clone)]
-pub struct PanAction {}
+pub enum PanState {
+    Inactive,
+    Panning,
+    Interpolating,
+}
+
+impl Default for PanState {
+    fn default() -> Self {
+        Self::Inactive
+    }
+}
+
+#[derive(Debug, Clone)]
+pub enum PinState {
+    Unknown,
+    None,
+    Horizontal,
+    Vertical,
+}
+
+impl Default for PinState {
+    fn default() -> Self {
+        Self::None
+    }
+}
+
+// * SECTION:clutter-pan-action
+// * @Title: ClutterPanAction
+// * @Short_Description: Action for pan gestures
+// *
+// * #ClutterPanAction is a sub-class of #ClutterGestureAction that implements
+// * the logic for recognizing pan gestures.
+// *
+// * The simplest usage of #ClutterPanAction consists in adding it to
+// * a #ClutterActor with a child and setting it as reactive; for instance,
+// * the following code:
+// *
+// * |[
+// *   clutter_actor_add_action (actor, clutter_pan_action_new ());
+// *   clutter_actor_set_reactive (actor, TRUE);
+// * ]|
+// *
+// * will automatically result in the actor children to be moved
+// * when dragging.
+// @extends GestureAction, Action, ActorMeta
+#[derive(Default, Debug, Clone)]
+pub struct PanAction {
+    pan_axis: PanAxis,
+
+    state: PanState,
+
+    // Variables for storing acceleration information
+    deceleration_timeline: Option<Timeline>,
+    target_x: f32,
+    target_y: f32,
+    dx: f32,
+    dy: f32,
+    deceleration_rate: f64,
+    acceleration_factor: f64,
+
+    // Inertial motion tracking
+    interpolated_x: f32,
+    interpolated_y: f32,
+    release_x: f32,
+    release_y: f32,
+
+    should_interpolate: bool,
+
+    pin_state: PinState,
+}
 
 impl PanAction {
     /// Creates a new `PanAction` instance
@@ -14,14 +81,16 @@ impl PanAction {
     ///
     /// the newly created `PanAction`
     pub fn new() -> PanAction {
-        // unsafe { Action::from_glib_none(ffi::clutter_pan_action_new()).unsafe_cast() }
-        unimplemented!()
+        Default::default()
     }
 }
 
-impl Default for PanAction {
-    fn default() -> Self {
-        Self::new()
+impl Object for PanAction {}
+impl Is<PanAction> for PanAction {}
+
+impl AsRef<PanAction> for PanAction {
+    fn as_ref(&self) -> &PanAction {
+        self
     }
 }
 
@@ -139,28 +208,25 @@ pub trait PanActionExt: 'static {
     ///
     /// `true` if the pan should continue, and `false` if
     ///  the pan should be cancelled.
-    fn connect_pan<F: Fn(&Self, &Actor, bool) -> bool + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_pan<F: Fn(&Self, &Actor, bool) -> bool + 'static>(&self, f: F) -> HandlerId;
 
     /// The ::pan-stopped signal is emitted at the end of the interpolation
     /// phase of the pan action, only when :interpolate is set to `true`.
     /// ## `actor`
     /// the `Actor` attached to the `action`
-    fn connect_pan_stopped<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_pan_stopped<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> HandlerId;
 
     fn connect_property_acceleration_factor_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 
-    fn connect_property_deceleration_notify<F: Fn(&Self) + 'static>(&self, f: F)
-        -> SignalHandlerId;
+    fn connect_property_deceleration_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_interpolate_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_interpolate_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_pan_axis_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_pan_axis_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
-
-impl Object for PanAction {}
 
 impl<O: Is<PanAction>> PanActionExt for O {
     fn get_acceleration_factor(&self) -> f64 {
@@ -271,33 +337,30 @@ impl<O: Is<PanAction>> PanActionExt for O {
         unimplemented!()
     }
 
-    fn connect_pan<F: Fn(&Self, &Actor, bool) -> bool + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_pan<F: Fn(&Self, &Actor, bool) -> bool + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_pan_stopped<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_pan_stopped<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
     fn connect_property_acceleration_factor_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_deceleration_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_deceleration_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_interpolate_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_interpolate_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_pan_axis_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_pan_axis_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 }

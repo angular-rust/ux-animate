@@ -1,5 +1,5 @@
+use super::HandlerId;
 use crate::prelude::*;
-use glib::signal::SignalHandlerId;
 use std::fmt;
 
 // * SECTION:clutter-deform-effect
@@ -42,6 +42,13 @@ pub struct DeformEffect {
 }
 
 impl Object for DeformEffect {}
+impl Is<DeformEffect> for DeformEffect {}
+
+impl AsRef<DeformEffect> for DeformEffect {
+    fn as_ref(&self) -> &DeformEffect {
+        self
+    }
+}
 
 /// Trait containing all `DeformEffect` methods.
 ///
@@ -94,9 +101,9 @@ pub trait DeformEffectExt: 'static {
     /// smaller the tiles
     fn set_property_y_tiles(&self, y_tiles: u32);
 
-    fn connect_property_x_tiles_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_x_tiles_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_y_tiles_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_y_tiles_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<DeformEffect>> DeformEffectExt for O {
@@ -136,11 +143,11 @@ impl<O: Is<DeformEffect>> DeformEffectExt for O {
         unimplemented!()
     }
 
-    fn connect_property_x_tiles_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_x_tiles_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_y_tiles_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_y_tiles_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 }

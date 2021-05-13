@@ -1,5 +1,4 @@
-use super::OffscreenEffect;
-use glib::signal::SignalHandlerId;
+use super::{HandlerId, OffscreenEffect};
 use std::fmt;
 
 // * SECTION:clutter-desaturate-effect
@@ -59,7 +58,7 @@ impl DesaturateEffect {
     pub fn connect_property_factor_notify<F: Fn(&DesaturateEffect) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 }

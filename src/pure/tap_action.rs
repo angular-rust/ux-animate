@@ -1,11 +1,31 @@
-use super::Actor;
+use super::{Actor, GestureAction, HandlerId};
 use crate::prelude::*;
-use glib::signal::SignalHandlerId;
 use std::fmt;
 
+// * SECTION:clutter-tap-action
+// * @Title: ClutterTapAction
+// * @Short_Description: Action for tap gestures
+// *
+// * #ClutterTapAction is a sub-class of #ClutterGestureAction that implements
+// * the logic for recognizing mouse clicks and touch tap gestures.
+// *
+// * The simplest usage of #ClutterTapAction consists in adding it to
+// * a #ClutterActor, setting it as reactive and connecting a
+// * callback for the #ClutterTapAction::tap signal, along the lines of the
+// * following code:
+// *
+// * |[
+// *   clutter_actor_add_action (actor, clutter_tap_action_new ());
+// *   clutter_actor_set_reactive (actor, TRUE);
+// *   g_signal_connect (action, "tap", G_CALLBACK (on_tap_callback), NULL);
+// * ]|
+// *
+// * Since: 1.14
 // @extends GestureAction, Action, ActorMeta
-#[derive(Debug, Clone)]
-pub struct TapAction {}
+#[derive(Default, Debug)]
+pub struct TapAction {
+    inner: GestureAction,
+}
 
 impl TapAction {
     /// Creates a new `TapAction` instance
@@ -14,8 +34,7 @@ impl TapAction {
     ///
     /// the newly created `TapAction`
     pub fn new() -> TapAction {
-        // unsafe { Action::from_glib_none(ffi::clutter_tap_action_new()).unsafe_cast() }
-        unimplemented!()
+        Default::default()
     }
 }
 
@@ -28,12 +47,6 @@ impl AsRef<TapAction> for TapAction {
     }
 }
 
-impl Default for TapAction {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
 /// Trait containing all `TapAction` methods.
 ///
 /// # Implementors
@@ -43,11 +56,11 @@ pub trait TapActionExt: 'static {
     /// The ::tap signal is emitted when the tap gesture is complete.
     /// ## `actor`
     /// the `Actor` attached to the `action`
-    fn connect_tap<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_tap<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<TapAction>> TapActionExt for O {
-    fn connect_tap<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_tap<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 }

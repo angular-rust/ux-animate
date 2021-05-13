@@ -1,4 +1,4 @@
-use glib::signal::SignalHandlerId;
+use super::HandlerId;
 use once_cell::sync::OnceCell;
 use std::fmt;
 
@@ -444,92 +444,74 @@ impl Settings {
         unimplemented!()
     }
 
-    pub fn connect_dnd_drag_threshold_notify<F: Fn(&Settings) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    pub fn connect_dnd_drag_threshold_notify<F: Fn(&Settings) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
     pub fn connect_double_click_distance_notify<F: Fn(&Settings) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
-    pub fn connect_double_click_time_notify<F: Fn(&Settings) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    pub fn connect_double_click_time_notify<F: Fn(&Settings) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    pub fn connect_font_antialias_notify<F: Fn(&Settings) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    pub fn connect_font_antialias_notify<F: Fn(&Settings) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    pub fn connect_font_dpi_notify<F: Fn(&Settings) + 'static>(&self, f: F) -> SignalHandlerId {
+    pub fn connect_font_dpi_notify<F: Fn(&Settings) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    pub fn connect_font_hint_style_notify<F: Fn(&Settings) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    pub fn connect_font_hint_style_notify<F: Fn(&Settings) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    pub fn connect_font_hinting_notify<F: Fn(&Settings) + 'static>(&self, f: F) -> SignalHandlerId {
+    pub fn connect_font_hinting_notify<F: Fn(&Settings) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    pub fn connect_font_name_notify<F: Fn(&Settings) + 'static>(&self, f: F) -> SignalHandlerId {
+    pub fn connect_font_name_notify<F: Fn(&Settings) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
     pub fn connect_font_subpixel_order_notify<F: Fn(&Settings) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
     pub fn connect_fontconfig_timestamp_notify<F: Fn(&Settings) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
     pub fn connect_long_press_duration_notify<F: Fn(&Settings) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
-    pub fn connect_password_hint_time_notify<F: Fn(&Settings) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    pub fn connect_password_hint_time_notify<F: Fn(&Settings) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    pub fn connect_unscaled_font_dpi_notify<F: Fn(&Settings) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    pub fn connect_unscaled_font_dpi_notify<F: Fn(&Settings) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
     pub fn connect_window_scaling_factor_notify<F: Fn(&Settings) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 }

@@ -1,6 +1,5 @@
-use super::{Actor, Path};
+use super::{Actor, HandlerId, Path};
 use crate::prelude::*;
-use glib::signal::SignalHandlerId;
 use std::fmt;
 
 // @extends Constraint, ActorMeta,
@@ -86,21 +85,21 @@ impl PathConstraint {
     pub fn connect_node_reached<F: Fn(&PathConstraint, &Actor, u32) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
     pub fn connect_property_offset_notify<F: Fn(&PathConstraint) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
     pub fn connect_property_path_notify<F: Fn(&PathConstraint) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 }

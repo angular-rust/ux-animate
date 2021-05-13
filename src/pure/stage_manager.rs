@@ -1,6 +1,5 @@
-use super::Stage;
+use super::{HandlerId, Stage};
 use crate::prelude::*;
-use glib::signal::SignalHandlerId;
 use std::fmt;
 
 #[derive(Debug, Clone)]
@@ -65,18 +64,15 @@ pub trait StageManagerExt: 'static {
     /// has been added to the stage manager.
     /// ## `stage`
     /// the added stage
-    fn connect_stage_added<F: Fn(&Self, &Stage) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_stage_added<F: Fn(&Self, &Stage) + 'static>(&self, f: F) -> HandlerId;
 
     /// The ::stage-removed signal is emitted each time a `Stage`
     /// has been removed from the stage manager.
     /// ## `stage`
     /// the removed stage
-    fn connect_stage_removed<F: Fn(&Self, &Stage) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_stage_removed<F: Fn(&Self, &Stage) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_default_stage_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_default_stage_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<StageManager>> StageManagerExt for O {
@@ -107,18 +103,15 @@ impl<O: Is<StageManager>> StageManagerExt for O {
         unimplemented!()
     }
 
-    fn connect_stage_added<F: Fn(&Self, &Stage) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_stage_added<F: Fn(&Self, &Stage) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_stage_removed<F: Fn(&Self, &Stage) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_stage_removed<F: Fn(&Self, &Stage) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_default_stage_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_default_stage_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 }

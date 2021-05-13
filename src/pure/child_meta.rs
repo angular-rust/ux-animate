@@ -55,6 +55,13 @@ pub struct ChildMeta {
 }
 
 impl Object for ChildMeta {}
+impl Is<ChildMeta> for ChildMeta {}
+
+impl AsRef<ChildMeta> for ChildMeta {
+    fn as_ref(&self) -> &ChildMeta {
+        self
+    }
+}
 
 /// Trait containing all `ChildMeta` methods.
 ///

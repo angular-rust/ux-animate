@@ -1,6 +1,5 @@
-use super::Actor;
+use super::{Actor, HandlerId};
 use crate::prelude::*;
-use glib::signal::SignalHandlerId;
 use std::fmt;
 
 // * @short_description: An actor that displays a clone of a source actor
@@ -35,6 +34,13 @@ impl Clone {
 }
 
 impl Object for Clone {}
+impl Is<Clone> for Clone {}
+
+impl AsRef<Clone> for Clone {
+    fn as_ref(&self) -> &Clone {
+        self
+    }
+}
 
 /// Trait containing all `Clone` methods.
 ///
@@ -54,7 +60,7 @@ pub trait CloneExt: 'static {
     /// a `Actor`, or `None`
     fn set_source<P: Is<Actor>>(&self, source: Option<&P>);
 
-    fn connect_property_source_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_source_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<Clone>> CloneExt for O {
@@ -68,7 +74,7 @@ impl<O: Is<Clone>> CloneExt for O {
         unimplemented!()
     }
 
-    fn connect_property_source_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_source_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 }

@@ -1,6 +1,5 @@
-use super::{Actor, EventSequence, LongPressState, ModifierType};
+use super::{Actor, EventSequence, HandlerId, LongPressState, ModifierType};
 use crate::prelude::*;
-use glib::signal::SignalHandlerId;
 use std::fmt;
 
 // * SECTION:clutter-click-action
@@ -70,7 +69,7 @@ use std::fmt;
 // * ]|
 // *
 // @extends Action, ActorMeta
-#[derive(Debug, Clone)]
+#[derive(Default, Debug, Clone)]
 pub struct ClickAction {
     stage: Option<Actor>,
 
@@ -93,8 +92,6 @@ pub struct ClickAction {
     is_pressed: bool,
 }
 
-impl Object for ClickAction {}
-
 impl ClickAction {
     /// Creates a new `ClickAction` instance
     ///
@@ -102,14 +99,16 @@ impl ClickAction {
     ///
     /// the newly created `ClickAction`
     pub fn new() -> ClickAction {
-        // unsafe { Action::from_glib_none(ffi::clutter_click_action_new()).unsafe_cast() }
-        unimplemented!()
+        Default::default()
     }
 }
 
-impl Default for ClickAction {
-    fn default() -> Self {
-        Self::new()
+impl Object for ClickAction {}
+impl Is<ClickAction> for ClickAction {}
+
+impl AsRef<ClickAction> for ClickAction {
+    fn as_ref(&self) -> &ClickAction {
+        self
     }
 }
 
@@ -193,7 +192,7 @@ pub trait ClickActionExt: 'static {
     /// pointer button press and release events
     /// ## `actor`
     /// the `Actor` attached to the `action`
-    fn connect_clicked<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_clicked<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> HandlerId;
 
     /// The ::long-press signal is emitted during the long press gesture
     /// handling.
@@ -222,21 +221,21 @@ pub trait ClickActionExt: 'static {
     fn connect_long_press<F: Fn(&Self, &Actor, LongPressState) -> bool + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 
-    fn connect_property_held_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_held_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
     fn connect_property_long_press_duration_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 
     fn connect_property_long_press_threshold_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 
-    fn connect_property_pressed_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_pressed_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<ClickAction>> ClickActionExt for O {
@@ -283,36 +282,36 @@ impl<O: Is<ClickAction>> ClickActionExt for O {
         unimplemented!()
     }
 
-    fn connect_clicked<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_clicked<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
     fn connect_long_press<F: Fn(&Self, &Actor, LongPressState) -> bool + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_held_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_held_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
     fn connect_property_long_press_duration_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
     fn connect_property_long_press_threshold_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_pressed_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_pressed_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 }

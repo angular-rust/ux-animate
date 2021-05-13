@@ -1,6 +1,5 @@
-use super::{Actor, ChildMeta};
+use super::{Actor, ChildMeta, HandlerId};
 use crate::prelude::*;
-use glib::signal::SignalHandlerId;
 use std::fmt;
 
 // * SECTION:clutter-container
@@ -108,6 +107,13 @@ impl Container {
 }
 
 impl Object for Container {}
+impl Is<Container> for Container {}
+
+impl AsRef<Container> for Container {
+    fn as_ref(&self) -> &Container {
+        self
+    }
+}
 
 /// Trait containing all `Container` methods.
 ///
@@ -204,13 +210,13 @@ pub trait ContainerExt: 'static {
     /// has been added to `container`.
     /// ## `actor`
     /// the new child that has been added to `container`
-    fn connect_actor_added<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_actor_added<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> HandlerId;
 
     /// The ::actor-removed signal is emitted each time an actor
     /// is removed from `container`.
     /// ## `actor`
     /// the child that has been removed from `container`
-    fn connect_actor_removed<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_actor_removed<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> HandlerId;
 
     /// The ::child-notify signal is emitted each time a property is
     /// being set through the `Container::child_set` and
@@ -222,7 +228,7 @@ pub trait ContainerExt: 'static {
     fn connect_child_notify<F: Fn(&Self, &Actor, &glib::ParamSpec) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 }
 
 impl<O: Is<Container>> ContainerExt for O {
@@ -262,18 +268,18 @@ impl<O: Is<Container>> ContainerExt for O {
         unimplemented!()
     }
 
-    fn connect_actor_added<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_actor_added<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_actor_removed<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_actor_removed<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
     fn connect_child_notify<F: Fn(&Self, &Actor, &glib::ParamSpec) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 }

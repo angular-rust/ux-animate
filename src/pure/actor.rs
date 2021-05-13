@@ -1,17 +1,16 @@
 use super::{
     Action, ActorAlign, ActorBox, ActorFlags, AllocationFlags, AnimationMode, ButtonEvent,
-    Constraint, Content, ContentGravity, ContentRepeat, CrossingEvent, Effect, Event, 
+    Constraint, Content, ContentGravity, ContentRepeat, CrossingEvent, Effect, Event, HandlerId,
     KeyEvent, LayoutManager, Margin, Matrix, MotionEvent, OffscreenRedirect, Orientation,
     PaintVolume, RequestMode, RotateAxis, ScalingFilter, ScrollEvent, Stage, TextDirection,
     Transition, Vertex,
 };
 use crate::prelude::*;
 use crate::{Color, Rect};
-use glib::signal::SignalHandlerId;
 use std::fmt;
 
 // @implements Animatable, Container
-#[derive(Debug, Clone)]
+#[derive(Default, Debug, Clone)]
 pub struct Actor {}
 
 impl Actor {
@@ -35,12 +34,6 @@ impl Is<Actor> for Actor {}
 impl AsRef<Actor> for Actor {
     fn as_ref(&self) -> &Actor {
         self
-    }
-}
-
-impl Default for Actor {
-    fn default() -> Self {
-        Self::new()
     }
 }
 
@@ -2674,7 +2667,7 @@ pub trait ActorExt: 'static {
     fn connect_allocation_changed<F: Fn(&Self, &ActorBox, AllocationFlags) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 
     /// The ::button-press-event signal is emitted each time a mouse button
     /// is pressed on `actor`.
@@ -2688,7 +2681,7 @@ pub trait ActorExt: 'static {
     fn connect_button_press_event<F: Fn(&Self, &ButtonEvent) -> bool + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 
     /// The ::button-release-event signal is emitted each time a mouse button
     /// is released on `actor`.
@@ -2702,7 +2695,7 @@ pub trait ActorExt: 'static {
     fn connect_button_release_event<F: Fn(&Self, &ButtonEvent) -> bool + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 
     /// The ::captured-event signal is emitted when an event is captured.
     /// This signal will be emitted starting from the top-level
@@ -2718,10 +2711,7 @@ pub trait ActorExt: 'static {
     ///
     /// `true` if the event has been handled by the actor,
     ///  or `false` to continue the emission.
-    fn connect_captured_event<F: Fn(&Self, &Event) -> bool + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_captured_event<F: Fn(&Self, &Event) -> bool + 'static>(&self, f: F) -> HandlerId;
 
     /// The ::destroy signal notifies that all references held on the
     /// actor which emitted it should be released.
@@ -2737,7 +2727,7 @@ pub trait ActorExt: 'static {
     /// class handler of this signal and call `ActorExt::destroy` on
     /// their children. When overriding the default class handler, it is
     /// required to chain up to the parent's implementation.
-    fn connect_destroy<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_destroy<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
     /// The ::enter-event signal is emitted when the pointer enters the `actor`
     /// ## `event`
@@ -2750,7 +2740,7 @@ pub trait ActorExt: 'static {
     fn connect_enter_event<F: Fn(&Self, &CrossingEvent) -> bool + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 
     /// The ::event signal is emitted each time an event is received
     /// by the `actor`. This signal will be emitted on every actor,
@@ -2763,17 +2753,17 @@ pub trait ActorExt: 'static {
     ///
     /// `true` if the event has been handled by the actor,
     ///  or `false` to continue the emission.
-    fn connect_event<F: Fn(&Self, &Event) -> bool + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_event<F: Fn(&Self, &Event) -> bool + 'static>(&self, f: F) -> HandlerId;
 
     /// The ::hide signal is emitted when an actor is no longer rendered
     /// on the stage.
-    fn connect_hide<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_hide<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
     /// The ::key-focus-in signal is emitted when `actor` receives key focus.
-    fn connect_key_focus_in<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_key_focus_in<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
     /// The ::key-focus-out signal is emitted when `actor` loses key focus.
-    fn connect_key_focus_out<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_key_focus_out<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
     /// The ::key-press-event signal is emitted each time a keyboard button
     /// is pressed while `actor` has key focus (see `StageExt::set_key_focus`).
@@ -2784,10 +2774,8 @@ pub trait ActorExt: 'static {
     ///
     /// `true` if the event has been handled by the actor,
     ///  or `false` to continue the emission.
-    fn connect_key_press_event<F: Fn(&Self, &KeyEvent) -> bool + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_key_press_event<F: Fn(&Self, &KeyEvent) -> bool + 'static>(&self, f: F)
+        -> HandlerId;
 
     /// The ::key-release-event signal is emitted each time a keyboard button
     /// is released while `actor` has key focus (see
@@ -2802,7 +2790,7 @@ pub trait ActorExt: 'static {
     fn connect_key_release_event<F: Fn(&Self, &KeyEvent) -> bool + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 
     /// The ::leave-event signal is emitted when the pointer leaves the `actor`.
     /// ## `event`
@@ -2815,7 +2803,7 @@ pub trait ActorExt: 'static {
     fn connect_leave_event<F: Fn(&Self, &CrossingEvent) -> bool + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 
     /// The ::motion-event signal is emitted each time the mouse pointer is
     /// moved over `actor`.
@@ -2826,15 +2814,13 @@ pub trait ActorExt: 'static {
     ///
     /// `true` if the event has been handled by the actor,
     ///  or `false` to continue the emission.
-    fn connect_motion_event<F: Fn(&Self, &MotionEvent) -> bool + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_motion_event<F: Fn(&Self, &MotionEvent) -> bool + 'static>(&self, f: F)
+        -> HandlerId;
 
     /// This signal is emitted when the parent of the actor changes.
     /// ## `old_parent`
     /// the previous parent of the actor, or `None`
-    fn connect_parent_set<F: Fn(&Self, Option<&Actor>) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_parent_set<F: Fn(&Self, Option<&Actor>) + 'static>(&self, f: F) -> HandlerId;
 
     /// The ::queue_redraw signal is emitted when `ActorExt::queue_redraw`
     /// is called on `origin`.
@@ -2882,7 +2868,7 @@ pub trait ActorExt: 'static {
     /// or `threads_add_repaint_func_full`.
     /// ## `origin`
     /// the actor which initiated the redraw request
-    fn connect_queue_redraw<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_queue_redraw<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> HandlerId;
 
     /// The ::queue_layout signal is emitted when `ActorExt::queue_relayout`
     /// is called on an actor.
@@ -2894,7 +2880,7 @@ pub trait ActorExt: 'static {
     /// The main purpose of this signal is to allow relayout to be propagated
     /// properly in the presence of `Clone` actors. Applications will
     /// not normally need to connect to this signal.
-    fn connect_queue_relayout<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_queue_relayout<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
     /// The ::scroll-event signal is emitted each time the mouse is
     /// scrolled on `actor`
@@ -2905,14 +2891,12 @@ pub trait ActorExt: 'static {
     ///
     /// `true` if the event has been handled by the actor,
     ///  or `false` to continue the emission.
-    fn connect_scroll_event<F: Fn(&Self, &ScrollEvent) -> bool + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_scroll_event<F: Fn(&Self, &ScrollEvent) -> bool + 'static>(&self, f: F)
+        -> HandlerId;
 
     /// The ::show signal is emitted when an actor is visible and
     /// rendered on the stage.
-    fn connect_show<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_show<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
     /// The ::touch-event signal is emitted each time a touch
     /// begin/end/update/cancel event.
@@ -2923,7 +2907,7 @@ pub trait ActorExt: 'static {
     ///
     /// `EVENT_STOP` if the event has been handled by
     ///  the actor, or `EVENT_PROPAGATE` to continue the emission.
-    fn connect_touch_event<F: Fn(&Self, &Event) -> bool + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_touch_event<F: Fn(&Self, &Event) -> bool + 'static>(&self, f: F) -> HandlerId;
 
     /// The ::transition-stopped signal is emitted once a transition
     /// is stopped; a transition is stopped once it reached its total
@@ -2934,243 +2918,168 @@ pub trait ActorExt: 'static {
     /// the name of the transition
     /// ## `is_finished`
     /// whether the transition was finished, or stopped
-    fn connect_transition_stopped<F: Fn(&Self, &str, bool) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_transition_stopped<F: Fn(&Self, &str, bool) + 'static>(&self, f: F) -> HandlerId;
 
     /// The ::transitions-completed signal is emitted once all transitions
     /// involving `actor` are complete.
-    fn connect_transitions_completed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_transitions_completed<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_actions_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_actions_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_allocation_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_allocation_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_background_color_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_background_color_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
     fn connect_property_background_color_set_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 
-    fn connect_property_child_transform_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_child_transform_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
     fn connect_property_child_transform_set_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 
-    fn connect_property_clip_rect_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_clip_rect_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_clip_to_allocation_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_clip_to_allocation_notify<F: Fn(&Self) + 'static>(&self, f: F)
+        -> HandlerId;
 
-    fn connect_property_constraints_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_constraints_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_content_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_content_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_content_box_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_content_box_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_content_gravity_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_content_gravity_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_content_repeat_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_content_repeat_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_effect_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_effect_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_first_child_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_first_child_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_fixed_position_set_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_fixed_position_set_notify<F: Fn(&Self) + 'static>(&self, f: F)
+        -> HandlerId;
 
-    fn connect_property_fixed_x_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_fixed_x_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_fixed_y_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_fixed_y_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_has_clip_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_has_clip_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_has_pointer_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_has_pointer_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_height_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_height_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_last_child_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_last_child_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_layout_manager_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_layout_manager_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
     fn connect_property_magnification_filter_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 
-    fn connect_property_mapped_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_mapped_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_margin_bottom_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_margin_bottom_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_margin_left_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_margin_left_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_margin_right_notify<F: Fn(&Self) + 'static>(&self, f: F)
-        -> SignalHandlerId;
+    fn connect_property_margin_right_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_margin_top_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_margin_top_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_min_height_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_min_height_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_min_height_set_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_min_height_set_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_min_width_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_min_width_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_min_width_set_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_min_width_set_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
     fn connect_property_minification_filter_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 
-    fn connect_property_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_natural_height_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_natural_height_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_natural_height_set_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_natural_height_set_notify<F: Fn(&Self) + 'static>(&self, f: F)
+        -> HandlerId;
 
-    fn connect_property_natural_width_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_natural_width_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_natural_width_set_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_natural_width_set_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_offscreen_redirect_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_offscreen_redirect_notify<F: Fn(&Self) + 'static>(&self, f: F)
+        -> HandlerId;
 
-    fn connect_property_opacity_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_opacity_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_pivot_point_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_pivot_point_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_pivot_point_z_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_pivot_point_z_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_position_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_position_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_reactive_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_reactive_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_realized_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_realized_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_request_mode_notify<F: Fn(&Self) + 'static>(&self, f: F)
-        -> SignalHandlerId;
+    fn connect_property_request_mode_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_rotation_angle_x_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_rotation_angle_x_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_rotation_angle_y_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_rotation_angle_y_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_rotation_angle_z_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_rotation_angle_z_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_scale_x_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_scale_x_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_scale_y_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_scale_y_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_scale_z_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_scale_z_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_show_on_set_parent_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_show_on_set_parent_notify<F: Fn(&Self) + 'static>(&self, f: F)
+        -> HandlerId;
 
-    fn connect_property_size_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_size_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_text_direction_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_text_direction_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_transform_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_transform_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_transform_set_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_transform_set_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_translation_x_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_translation_x_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_translation_y_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_translation_y_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_translation_z_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_translation_z_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_visible_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_visible_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_width_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_width_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_x_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_x_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_x_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_x_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_x_expand_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_x_expand_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_y_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_y_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_y_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_y_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_y_expand_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_y_expand_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_z_position_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_z_position_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<Actor>> ActorExt for O {
@@ -5781,494 +5690,422 @@ impl<O: Is<Actor>> ActorExt for O {
     fn connect_allocation_changed<F: Fn(&Self, &ActorBox, AllocationFlags) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
     fn connect_button_press_event<F: Fn(&Self, &ButtonEvent) -> bool + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
     fn connect_button_release_event<F: Fn(&Self, &ButtonEvent) -> bool + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_captured_event<F: Fn(&Self, &Event) -> bool + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_captured_event<F: Fn(&Self, &Event) -> bool + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_destroy<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_destroy<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
     fn connect_enter_event<F: Fn(&Self, &CrossingEvent) -> bool + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_event<F: Fn(&Self, &Event) -> bool + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_event<F: Fn(&Self, &Event) -> bool + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_hide<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_hide<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_key_focus_in<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_key_focus_in<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_key_focus_out<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_key_focus_out<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
     fn connect_key_press_event<F: Fn(&Self, &KeyEvent) -> bool + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
     fn connect_key_release_event<F: Fn(&Self, &KeyEvent) -> bool + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
     fn connect_leave_event<F: Fn(&Self, &CrossingEvent) -> bool + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
     fn connect_motion_event<F: Fn(&Self, &MotionEvent) -> bool + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_parent_set<F: Fn(&Self, Option<&Actor>) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_parent_set<F: Fn(&Self, Option<&Actor>) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_queue_redraw<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_queue_redraw<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_queue_relayout<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_queue_relayout<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
     fn connect_scroll_event<F: Fn(&Self, &ScrollEvent) -> bool + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_show<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_show<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_touch_event<F: Fn(&Self, &Event) -> bool + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_touch_event<F: Fn(&Self, &Event) -> bool + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_transition_stopped<F: Fn(&Self, &str, bool) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_transition_stopped<F: Fn(&Self, &str, bool) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_transitions_completed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_transitions_completed<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_actions_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_actions_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_allocation_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_allocation_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_background_color_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_background_color_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
     fn connect_property_background_color_set_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_child_transform_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_child_transform_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
     fn connect_property_child_transform_set_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_clip_rect_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_clip_rect_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
     fn connect_property_clip_to_allocation_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_constraints_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_constraints_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_content_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_content_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_content_box_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_content_box_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_content_gravity_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_content_gravity_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_content_repeat_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_content_repeat_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_effect_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_effect_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_first_child_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_first_child_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
     fn connect_property_fixed_position_set_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_fixed_x_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_fixed_x_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_fixed_y_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_fixed_y_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_has_clip_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_has_clip_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_has_pointer_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_has_pointer_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_height_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_height_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_last_child_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_last_child_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_layout_manager_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_layout_manager_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
     fn connect_property_magnification_filter_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_mapped_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_mapped_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_margin_bottom_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_margin_bottom_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_margin_left_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_margin_left_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_margin_right_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_margin_right_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_margin_top_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_margin_top_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_min_height_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_min_height_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_min_height_set_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_min_height_set_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_min_width_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_min_width_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_min_width_set_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_min_width_set_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
     fn connect_property_minification_filter_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_natural_height_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_natural_height_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
     fn connect_property_natural_height_set_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_natural_width_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_natural_width_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_natural_width_set_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_natural_width_set_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
     fn connect_property_offscreen_redirect_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_opacity_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_opacity_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_pivot_point_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_pivot_point_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_pivot_point_z_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_pivot_point_z_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_position_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_position_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_reactive_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_reactive_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_realized_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_realized_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_request_mode_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_request_mode_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_rotation_angle_x_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_rotation_angle_x_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_rotation_angle_y_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_rotation_angle_y_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_rotation_angle_z_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_rotation_angle_z_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_scale_x_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_scale_x_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_scale_y_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_scale_y_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_scale_z_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_scale_z_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
     fn connect_property_show_on_set_parent_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_size_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_size_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_text_direction_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_text_direction_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_transform_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_transform_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_transform_set_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_transform_set_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_translation_x_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_translation_x_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_translation_y_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_translation_y_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_translation_z_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_translation_z_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_visible_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_visible_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_width_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_width_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_x_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_x_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_x_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_x_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_x_expand_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_x_expand_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_y_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_y_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_y_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_y_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_y_expand_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_y_expand_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_z_position_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_z_position_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 }

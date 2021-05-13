@@ -1,11 +1,10 @@
-use super::{Actor, ZoomAxis};
+use super::{Actor, HandlerId, ZoomAxis};
 use crate::prelude::*;
 use crate::Point;
-use glib::signal::SignalHandlerId;
 use std::fmt;
 
 // @extends GestureAction, Action, ActorMeta
-#[derive(Debug, Clone)]
+#[derive(Default, Debug, Clone)]
 pub struct ZoomAction {}
 
 impl ZoomAction {
@@ -26,12 +25,6 @@ impl Is<ZoomAction> for ZoomAction {}
 impl AsRef<ZoomAction> for ZoomAction {
     fn as_ref(&self) -> &ZoomAction {
         self
-    }
-}
-
-impl Default for ZoomAction {
-    fn default() -> Self {
-        Self::new()
     }
 }
 
@@ -86,9 +79,9 @@ pub trait ZoomActionExt: 'static {
     fn connect_zoom<F: Fn(&Self, &Actor, &Point<f32>, f64) -> bool + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 
-    fn connect_property_zoom_axis_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_zoom_axis_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<ZoomAction>> ZoomActionExt for O {
@@ -135,11 +128,11 @@ impl<O: Is<ZoomAction>> ZoomActionExt for O {
     fn connect_zoom<F: Fn(&Self, &Actor, &Point<f32>, f64) -> bool + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_zoom_axis_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_zoom_axis_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 }

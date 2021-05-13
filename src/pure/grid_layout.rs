@@ -1,10 +1,9 @@
-use super::{Actor, GridPosition, Orientation};
+use super::{Actor, GridPosition, HandlerId, Orientation};
 use crate::prelude::*;
-use glib::signal::SignalHandlerId;
 use std::fmt;
 
 // @extends LayoutManager
-#[derive(Debug, Clone)]
+#[derive(Default, Debug, Clone)]
 pub struct GridLayout {}
 
 impl GridLayout {
@@ -19,9 +18,12 @@ impl GridLayout {
     }
 }
 
-impl Default for GridLayout {
-    fn default() -> Self {
-        Self::new()
+impl Object for GridLayout {}
+impl Is<GridLayout> for GridLayout {}
+
+impl AsRef<GridLayout> for GridLayout {
+    fn as_ref(&self) -> &GridLayout {
+        self
     }
 }
 
@@ -186,27 +188,17 @@ pub trait GridLayoutExt: 'static {
     /// the spacing between rows of the layout, in pixels
     fn set_row_spacing(&self, spacing: u32);
 
-    fn connect_property_column_homogeneous_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_column_homogeneous_notify<F: Fn(&Self) + 'static>(&self, f: F)
+        -> HandlerId;
 
-    fn connect_property_column_spacing_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_column_spacing_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_orientation_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_orientation_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_row_homogeneous_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_row_homogeneous_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_row_spacing_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_row_spacing_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
-
-impl Object for GridLayout {}
 
 impl<O: Is<GridLayout>> GridLayoutExt for O {
     fn attach<P: Is<Actor>>(&self, child: &P, left: i32, top: i32, width: i32, height: i32) {
@@ -364,29 +356,23 @@ impl<O: Is<GridLayout>> GridLayoutExt for O {
     fn connect_property_column_homogeneous_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_column_spacing_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_column_spacing_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_orientation_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_orientation_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_row_homogeneous_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_row_homogeneous_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_row_spacing_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_row_spacing_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 }

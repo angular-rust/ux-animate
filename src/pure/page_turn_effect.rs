@@ -1,4 +1,4 @@
-use glib::signal::SignalHandlerId;
+use super::HandlerId;
 use std::fmt;
 
 // @extends DeformEffect, OffscreenEffect, Effect, ActorMeta
@@ -89,21 +89,21 @@ impl PageTurnEffect {
     pub fn connect_property_angle_notify<F: Fn(&PageTurnEffect) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
     pub fn connect_property_period_notify<F: Fn(&PageTurnEffect) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
     pub fn connect_property_radius_notify<F: Fn(&PageTurnEffect) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 }

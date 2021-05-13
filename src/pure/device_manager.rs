@@ -1,6 +1,5 @@
-use super::{Backend, InputDevice, InputDeviceType};
+use super::{Backend, HandlerId, InputDevice, InputDeviceType};
 use crate::prelude::*;
-use glib::signal::SignalHandlerId;
 use std::fmt;
 
 // * SECTION:clutter-device-manager
@@ -32,6 +31,13 @@ impl DeviceManager {
 }
 
 impl Object for DeviceManager {}
+impl Is<DeviceManager> for DeviceManager {}
+
+impl AsRef<DeviceManager> for DeviceManager {
+    fn as_ref(&self) -> &DeviceManager {
+        self
+    }
+}
 
 /// Trait containing all `DeviceManager` methods.
 ///
@@ -89,14 +95,13 @@ pub trait DeviceManagerExt: 'static {
     /// added to the `DeviceManager`
     /// ## `device`
     /// the newly added `InputDevice`
-    fn connect_device_added<F: Fn(&Self, &InputDevice) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_device_added<F: Fn(&Self, &InputDevice) + 'static>(&self, f: F) -> HandlerId;
 
     /// The ::device-removed signal is emitted each time a device has been
     /// removed from the `DeviceManager`
     /// ## `device`
     /// the removed `InputDevice`
-    fn connect_device_removed<F: Fn(&Self, &InputDevice) + 'static>(&self, f: F)
-        -> SignalHandlerId;
+    fn connect_device_removed<F: Fn(&Self, &InputDevice) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<DeviceManager>> DeviceManagerExt for O {
@@ -120,14 +125,11 @@ impl<O: Is<DeviceManager>> DeviceManagerExt for O {
         unimplemented!()
     }
 
-    fn connect_device_added<F: Fn(&Self, &InputDevice) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_device_added<F: Fn(&Self, &InputDevice) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_device_removed<F: Fn(&Self, &InputDevice) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_device_removed<F: Fn(&Self, &InputDevice) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 }

@@ -3,7 +3,7 @@ use crate::prelude::*;
 use std::fmt;
 
 // @implements Content
-#[derive(Debug, Clone)]
+#[derive(Default, Debug, Clone)]
 pub struct Image {}
 
 impl Image {
@@ -27,12 +27,6 @@ impl AsRef<Image> for Image {
         self
     }
 }
-
-// impl Default for Image {
-//     fn default() -> Self {
-//         Self::new()
-//     }
-// }
 
 /// Trait containing all `Image` methods.
 ///

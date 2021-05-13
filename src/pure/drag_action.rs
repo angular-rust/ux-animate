@@ -1,7 +1,6 @@
-use super::{Actor, DragAxis, EventSequence, InputDevice, ModifierType, Stage};
+use super::{Actor, DragAxis, EventSequence, HandlerId, InputDevice, ModifierType, Stage};
 use crate::prelude::*;
 use crate::Rect;
-use glib::signal::SignalHandlerId;
 use std::fmt;
 
 // * @Title: DragAction
@@ -41,6 +40,7 @@ use std::fmt;
 // * animated to the final drop coordinates.
 // *
 // @extends Action, ActorMeta,
+#[derive(Default)]
 pub struct DragAction {
     stage: Option<Stage>,
 
@@ -81,15 +81,16 @@ impl DragAction {
     ///
     /// the newly created `DragAction`
     pub fn new() -> DragAction {
-        unimplemented!()
+        Default::default()
     }
 }
 
 impl Object for DragAction {}
+impl Is<DragAction> for DragAction {}
 
-impl Default for DragAction {
-    fn default() -> Self {
-        Self::new()
+impl AsRef<DragAction> for DragAction {
+    fn as_ref(&self) -> &DragAction {
+        self
     }
 }
 
@@ -274,7 +275,7 @@ pub trait DragActionExt: 'static {
     fn connect_drag_begin<F: Fn(&Self, &Actor, f32, f32, ModifierType) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 
     /// The ::drag-end signal is emitted at the end of the dragging,
     /// when the pointer button's is released
@@ -292,7 +293,7 @@ pub trait DragActionExt: 'static {
     fn connect_drag_end<F: Fn(&Self, &Actor, f32, f32, ModifierType) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 
     /// The ::drag-motion signal is emitted for each motion event after
     /// the `DragAction::drag-begin` signal has been emitted.
@@ -319,10 +320,7 @@ pub trait DragActionExt: 'static {
     /// the Y component of the distance between the press event
     ///  that began the dragging and the current position of the pointer,
     ///  as of the latest motion event
-    fn connect_drag_motion<F: Fn(&Self, &Actor, f32, f32) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_drag_motion<F: Fn(&Self, &Actor, f32, f32) + 'static>(&self, f: F) -> HandlerId;
 
     /// The ::drag-progress signal is emitted for each motion event after
     /// the `DragAction::drag-begin` signal has been emitted.
@@ -353,28 +351,19 @@ pub trait DragActionExt: 'static {
     fn connect_drag_progress<F: Fn(&Self, &Actor, f32, f32) -> bool + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 
-    fn connect_property_drag_area_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_drag_area_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_drag_area_set_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_drag_area_set_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_drag_axis_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_drag_axis_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_drag_handle_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_drag_handle_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_x_drag_threshold_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_x_drag_threshold_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_y_drag_threshold_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_y_drag_threshold_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<DragAction>> DragActionExt for O {
@@ -441,61 +430,49 @@ impl<O: Is<DragAction>> DragActionExt for O {
     fn connect_drag_begin<F: Fn(&Self, &Actor, f32, f32, ModifierType) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
     fn connect_drag_end<F: Fn(&Self, &Actor, f32, f32, ModifierType) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_drag_motion<F: Fn(&Self, &Actor, f32, f32) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_drag_motion<F: Fn(&Self, &Actor, f32, f32) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
     fn connect_drag_progress<F: Fn(&Self, &Actor, f32, f32) -> bool + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_drag_area_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_drag_area_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_drag_area_set_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_drag_area_set_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_drag_axis_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_drag_axis_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_drag_handle_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_drag_handle_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_x_drag_threshold_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_x_drag_threshold_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_y_drag_threshold_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_y_drag_threshold_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 }

@@ -1,6 +1,5 @@
-use super::{Actor, ActorBox, AllocationFlags, Container, LayoutMeta};
+use super::{Actor, ActorBox, AllocationFlags, Container, HandlerId, LayoutMeta};
 use crate::prelude::*;
-use glib::signal::SignalHandlerId;
 use std::fmt;
 
 #[derive(Debug, Clone)]
@@ -199,7 +198,7 @@ pub trait LayoutManagerExt: 'static {
     /// can be controlled or changed using parameters should emit the
     /// ::layout-changed signal whenever one of the parameters changes,
     /// by using `LayoutManagerExt::layout_changed`.
-    fn connect_layout_changed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_layout_changed<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<LayoutManager>> LayoutManagerExt for O {
@@ -359,7 +358,7 @@ impl<O: Is<LayoutManager>> LayoutManagerExt for O {
         unimplemented!()
     }
 
-    fn connect_layout_changed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_layout_changed<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 }

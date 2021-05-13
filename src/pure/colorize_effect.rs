@@ -1,5 +1,5 @@
+use super::HandlerId;
 use crate::{Color, RgbaColor};
-use glib::signal::SignalHandlerId;
 use std::fmt;
 
 // * SECTION:clutter-colorize-effect
@@ -66,7 +66,7 @@ impl ColorizeEffect {
     pub fn connect_property_tint_notify<F: Fn(&ColorizeEffect) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 }

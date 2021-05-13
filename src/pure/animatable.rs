@@ -40,6 +40,13 @@ pub struct Animatable {
 }
 
 impl Object for Animatable {}
+impl Is<Animatable> for Animatable {}
+
+impl AsRef<Animatable> for Animatable {
+    fn as_ref(&self) -> &Animatable {
+        self
+    }
+}
 
 /// Trait containing all `Animatable` methods.
 ///

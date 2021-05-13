@@ -1,6 +1,7 @@
 use super::PaintNode;
 use std::fmt;
 
+#[derive(Default)]
 pub struct ClipNode {
     inner: PaintNode,
 }
@@ -17,12 +18,6 @@ impl ClipNode {
         Self{
             inner: Default::default()
         }
-    }
-}
-
-impl Default for ClipNode {
-    fn default() -> Self {
-        Self::new()
     }
 }
 

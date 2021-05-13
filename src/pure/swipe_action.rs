@@ -1,11 +1,22 @@
-use super::{Actor, SwipeDirection};
+use super::{Actor, HandlerId, SwipeDirection};
 use crate::prelude::*;
-use glib::signal::SignalHandlerId;
 use std::fmt;
 
+// * SECTION:clutter-swipe-action
+// * @Title: ClutterSwipeAction
+// * @Short_Description: Action for swipe gestures
+// *
+// * #ClutterSwipeAction is a sub-class of #ClutterGestureAction that implements
+// * the logic for recognizing swipe gestures.
 // @extends GestureAction, Action, ActorMeta
-#[derive(Debug, Clone)]
-pub struct SwipeAction {}
+#[derive(Default, Debug, Clone)]
+pub struct SwipeAction {
+    h_direction: SwipeDirection,
+    v_direction: SwipeDirection,
+
+    distance_x: f32,
+    distance_y: f32,
+}
 
 impl SwipeAction {
     /// Creates a new `SwipeAction` instance
@@ -14,8 +25,7 @@ impl SwipeAction {
     ///
     /// the newly created `SwipeAction`
     pub fn new() -> SwipeAction {
-        // unsafe { Action::from_glib_none(ffi::clutter_swipe_action_new()).unsafe_cast() }
-        unimplemented!()
+        Default::default()
     }
 }
 
@@ -25,12 +35,6 @@ impl Is<SwipeAction> for SwipeAction {}
 impl AsRef<SwipeAction> for SwipeAction {
     fn as_ref(&self) -> &SwipeAction {
         self
-    }
-}
-
-impl Default for SwipeAction {
-    fn default() -> Self {
-        Self::new()
     }
 }
 
@@ -54,14 +58,14 @@ pub trait SwipeActionExt: 'static {
     fn connect_swipe<F: Fn(&Self, &Actor, SwipeDirection) -> bool + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 }
 
 impl<O: Is<SwipeAction>> SwipeActionExt for O {
     fn connect_swipe<F: Fn(&Self, &Actor, SwipeDirection) -> bool + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 }

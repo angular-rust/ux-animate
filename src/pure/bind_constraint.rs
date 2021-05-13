@@ -1,6 +1,5 @@
-use super::{Actor, BindCoordinate};
+use super::{Actor, BindCoordinate, HandlerId};
 use crate::prelude::*;
-use glib::signal::SignalHandlerId;
 use std::fmt;
 
 // * SECTION:clutter-bind-constraint
@@ -143,21 +142,21 @@ impl BindConstraint {
     pub fn connect_property_coordinate_notify<F: Fn(&BindConstraint) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
     pub fn connect_property_offset_notify<F: Fn(&BindConstraint) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
     pub fn connect_property_source_notify<F: Fn(&BindConstraint) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 }

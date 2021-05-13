@@ -28,6 +28,15 @@ impl KeyframeTransition {
     }
 }
 
+impl Object for KeyframeTransition {}
+impl Is<KeyframeTransition> for KeyframeTransition {}
+
+impl AsRef<KeyframeTransition> for KeyframeTransition {
+    fn as_ref(&self) -> &KeyframeTransition {
+        self
+    }
+}
+
 /// Trait containing all `KeyframeTransition` methods.
 ///
 /// # Implementors
@@ -101,8 +110,6 @@ pub trait KeyframeTransitionExt: 'static {
     ///  key frame
     fn set_values(&self, values: &[&glib::Value]);
 }
-
-impl Object for KeyframeTransition {}
 
 impl<O: Is<KeyframeTransition>> KeyframeTransitionExt for O {
     fn clear(&self) {

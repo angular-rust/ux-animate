@@ -388,7 +388,7 @@ impl fmt::Display for ContentGravity {
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 pub enum DragAxis {
     /// No constraint
-    AxisNone,
+    None,
     /// Set a constraint on the X axis
     XAxis,
     /// Set a constraint on the Y axis
@@ -401,11 +401,17 @@ impl fmt::Display for DragAxis {
             f,
             "DragAxis::{}",
             match *self {
-                DragAxis::AxisNone => "AxisNone",
+                DragAxis::None => "None",
                 DragAxis::XAxis => "XAxis",
                 DragAxis::YAxis => "YAxis",
             }
         )
+    }
+}
+
+impl Default for DragAxis {
+    fn default() -> Self {
+        Self::None
     }
 }
 
@@ -459,6 +465,12 @@ pub enum EventType {
     /// Marks the end of the `EventType` enumeration;
     ///  added in 1.10
     EventLast,
+}
+
+impl Default for EventType {
+    fn default() -> Self {
+        Self::Nothing
+    }
 }
 
 impl fmt::Display for EventType {
@@ -533,6 +545,12 @@ pub enum GestureTriggerEdge {
     /// the gesture must begin immediately and that it must be cancelled
     /// once the drag exceed the configured threshold.
     Before,
+}
+
+impl Default for GestureTriggerEdge {
+    fn default() -> Self {
+        Self::None
+    }
 }
 
 impl fmt::Display for GestureTriggerEdge {
@@ -786,6 +804,12 @@ pub enum Orientation {
     Vertical,
 }
 
+impl Default for Orientation {
+    fn default() -> Self {
+        Self::Vertical        
+    }
+}
+
 impl fmt::Display for Orientation {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
@@ -804,7 +828,7 @@ impl fmt::Display for Orientation {
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 pub enum PanAxis {
     /// No constraint
-    AxisNone,
+    None,
     /// Set a constraint on the X axis
     XAxis,
     /// Set a constraint on the Y axis
@@ -814,13 +838,19 @@ pub enum PanAxis {
     AxisAuto,
 }
 
+impl Default for PanAxis {
+    fn default() -> Self {
+        Self::None
+    }
+}
+
 impl fmt::Display for PanAxis {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
             f,
             "PanAxis::{}",
             match *self {
-                PanAxis::AxisNone => "AxisNone",
+                PanAxis::None => "AxisNone",
                 PanAxis::XAxis => "XAxis",
                 PanAxis::YAxis => "YAxis",
                 PanAxis::AxisAuto => "AxisAuto",

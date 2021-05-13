@@ -9,6 +9,7 @@ use std::fmt;
 // *
 // * #BlurEffect is available since  1.4
 // @extends OffscreenEffect, Effect, ActorMeta,
+#[derive(Default)]
 pub struct BlurEffect {
     // parent_instance: OffscreenEffect,
 
@@ -38,12 +39,6 @@ impl BlurEffect {
             tex_height: 0,
             pipeline: None,
         }
-    }
-}
-
-impl Default for BlurEffect {
-    fn default() -> Self {
-        Self::new()
     }
 }
 

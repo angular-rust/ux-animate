@@ -9,7 +9,7 @@ use std::fmt;
 // *
 
 // It should be Trait
-#[derive(Debug, Clone)]
+#[derive(Default, Debug, Clone)]
 pub struct Action {
     inner: ActorMeta,
 }

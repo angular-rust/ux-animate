@@ -1,5 +1,6 @@
 bitflags! {
     pub struct ActorFlags: u32 {
+        const NONE = 0;
         const MAPPED = 2;
         const REALIZED = 4;
         const REACTIVE = 8;
@@ -8,11 +9,23 @@ bitflags! {
     }
 }
 
+impl Default for ActorFlags {
+    fn default() -> Self {
+        Self::NONE
+    }
+}
+
 bitflags! {
     pub struct AllocationFlags: u32 {
-        const ALLOCATION_NONE = 0;
+        const NONE = 0;
         const ABSOLUTE_ORIGIN_CHANGED = 2;
         const DELEGATE_LAYOUT = 4;
+    }
+}
+
+impl Default for AllocationFlags {
+    fn default() -> Self {
+        Self::NONE
     }
 }
 
@@ -26,9 +39,22 @@ bitflags! {
     }
 }
 
+impl Default for ContentRepeat {
+    fn default() -> Self {
+        Self::NONE
+    }
+}
+
 bitflags! {
     pub struct EffectPaintFlags: u32 {
+        const NONE = 0;
         const ACTOR_DIRTY = 1;
+    }
+}
+
+impl Default for EffectPaintFlags {
+    fn default() -> Self {
+        Self::NONE
     }
 }
 
@@ -36,6 +62,12 @@ bitflags! {
     pub struct EventFlags: u32 {
         const NONE = 0;
         const FLAG_SYNTHETIC = 1;
+    }
+}
+
+impl Default for EventFlags {
+    fn default() -> Self {
+        Self::NONE
     }
 }
 
@@ -56,8 +88,15 @@ bitflags! {
     }
 }
 
+impl Default for FeatureFlags {
+    fn default() -> Self {
+        Self::NONE
+    }
+}
+
 bitflags! {
     pub struct ModifierType: u32 {
+        const NONE = 0;
         const SHIFT_MASK = 1;
         const LOCK_MASK = 2;
         const CONTROL_MASK = 4;
@@ -93,18 +132,38 @@ bitflags! {
     }
 }
 
+impl Default for ModifierType {
+    fn default() -> Self {
+        Self::NONE
+    }
+}
+
 bitflags! {
     pub struct OffscreenRedirect: u32 {
+        const NONE = 0;
         const AUTOMATIC_FOR_OPACITY = 1;
         const ALWAYS = 2;
     }
 }
 
+impl Default for OffscreenRedirect {
+    fn default() -> Self {
+        Self::NONE
+    }
+}
+
 bitflags! {
     pub struct RepaintFlags: u32 {
+        const NONE = 0;
         const PRE_PAINT = 1;
         const POST_PAINT = 2;
         const QUEUE_REDRAW_ON_ADD = 4;
+    }
+}
+
+impl Default for RepaintFlags {
+    fn default() -> Self {
+        Self::NONE
     }
 }
 
@@ -113,6 +172,12 @@ bitflags! {
         const NONE = 0;
         const HORIZONTAL = 1;
         const VERTICAL = 2;
+    }
+}
+
+impl Default for ScrollFinishFlags {
+    fn default() -> Self {
+        Self::NONE
     }
 }
 
@@ -125,19 +190,39 @@ bitflags! {
     }
 }
 
+impl Default for ScrollMode {
+    fn default() -> Self {
+        Self::NONE
+    }
+}
+
 bitflags! {
     pub struct StageState: u32 {
+        const NONE = 0;
         const FULLSCREEN = 2;
         const OFFSCREEN = 4;
         const ACTIVATED = 8;
     }
 }
 
+impl Default for StageState {
+    fn default() -> Self {
+        Self::NONE
+    }
+}
+
 bitflags! {
     pub struct SwipeDirection: u32 {
+        const NONE = 0;
         const UP = 1;
         const DOWN = 2;
         const LEFT = 4;
         const RIGHT = 8;
+    }
+}
+
+impl Default for SwipeDirection {
+    fn default() -> Self {
+        Self::NONE
     }
 }

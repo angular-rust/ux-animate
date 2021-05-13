@@ -1,9 +1,8 @@
 use super::{
-    Actor, Backend, DeviceManager, Event, EventSequence, InputAxis, InputDeviceType, InputMode,
-    ModifierType, Stage,
+    Actor, Backend, DeviceManager, Event, EventSequence, HandlerId, InputAxis, InputDeviceType,
+    InputMode, ModifierType, Stage,
 };
 use crate::prelude::*;
-use glib::signal::SignalHandlerId;
 use std::fmt;
 
 #[derive(Debug, Clone)]
@@ -457,14 +456,11 @@ impl InputDevice {
     pub fn connect_property_enabled_notify<F: Fn(&InputDevice) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
-    pub fn connect_property_n_axes_notify<F: Fn(&InputDevice) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    pub fn connect_property_n_axes_notify<F: Fn(&InputDevice) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 }

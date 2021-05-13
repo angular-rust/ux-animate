@@ -1,12 +1,11 @@
-use super::ScrollMode;
+use super::{HandlerId, ScrollMode};
 use crate::prelude::*;
 use crate::{Point, Rect};
-use glib::signal::SignalHandlerId;
 use std::fmt;
 
 // TODO: implements atk::ImplementorIface, Scriptable, @implements Animatable, Container
 // @extends Actor
-#[derive(Debug, Clone)]
+#[derive(Default, Debug, Clone)]
 pub struct ScrollActor {}
 
 impl ScrollActor {
@@ -28,12 +27,6 @@ impl Is<ScrollActor> for ScrollActor {}
 impl AsRef<ScrollActor> for ScrollActor {
     fn as_ref(&self) -> &ScrollActor {
         self
-    }
-}
-
-impl Default for ScrollActor {
-    fn default() -> Self {
-        Self::new()
     }
 }
 
@@ -71,7 +64,7 @@ pub trait ScrollActorExt: 'static {
     /// a `ScrollMode`
     fn set_scroll_mode(&self, mode: ScrollMode);
 
-    fn connect_property_scroll_mode_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_scroll_mode_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<ScrollActor>> ScrollActorExt for O {
@@ -114,7 +107,7 @@ impl<O: Is<ScrollActor>> ScrollActorExt for O {
         unimplemented!()
     }
 
-    fn connect_property_scroll_mode_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_scroll_mode_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 }

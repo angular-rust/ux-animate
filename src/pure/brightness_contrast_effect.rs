@@ -1,4 +1,4 @@
-use glib::signal::SignalHandlerId;
+use super::HandlerId;
 use std::fmt;
 
 // * @short_description: Increase/decrease brightness and/or contrast of actor.
@@ -9,6 +9,7 @@ use std::fmt;
 // *
 // * #BrightnessContrastEffect is available since  1.10
 // @extends OffscreenEffect, Effect, ActorMeta
+#[derive(Default)]
 pub struct BrightnessContrastEffect {
     // OffscreenEffect parent_instance;
 
@@ -123,21 +124,15 @@ impl BrightnessContrastEffect {
     pub fn connect_property_brightness_notify<F: Fn(&BrightnessContrastEffect) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
     pub fn connect_property_contrast_notify<F: Fn(&BrightnessContrastEffect) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
-    }
-}
-
-impl Default for BrightnessContrastEffect {
-    fn default() -> Self {
-        Self::new()
     }
 }
 

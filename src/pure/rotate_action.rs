@@ -1,10 +1,9 @@
-use super::Actor;
+use super::{Actor, HandlerId};
 use crate::prelude::*;
-use glib::signal::SignalHandlerId;
 use std::fmt;
 
 // @extends GestureAction, Action, ActorMeta
-#[derive(Debug, Clone)]
+#[derive(Default, Debug, Clone)]
 pub struct RotateAction {}
 
 impl RotateAction {
@@ -28,12 +27,6 @@ impl AsRef<RotateAction> for RotateAction {
     }
 }
 
-impl Default for RotateAction {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
 /// Trait containing all `RotateAction` methods.
 ///
 /// # Implementors
@@ -53,11 +46,11 @@ pub trait RotateActionExt: 'static {
     ///
     /// `true` if the rotation should continue, and `false` if
     ///  the rotation should be cancelled.
-    fn connect_rotate<F: Fn(&Self, &Actor, f64) -> bool + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_rotate<F: Fn(&Self, &Actor, f64) -> bool + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<RotateAction>> RotateActionExt for O {
-    fn connect_rotate<F: Fn(&Self, &Actor, f64) -> bool + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_rotate<F: Fn(&Self, &Actor, f64) -> bool + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 }

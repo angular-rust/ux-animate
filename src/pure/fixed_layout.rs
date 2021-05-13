@@ -1,6 +1,7 @@
 use std::fmt;
 
 // @extends LayoutManager
+#[derive(Default)]
 pub struct FixedLayout {
 }
 
@@ -13,12 +14,6 @@ impl FixedLayout {
     pub fn new() -> FixedLayout {
         // unsafe { LayoutManager::from_glib_none(ffi::clutter_fixed_layout_new()).unsafe_cast() }
         unimplemented!()
-    }
-}
-
-impl Default for FixedLayout {
-    fn default() -> Self {
-        Self::new()
     }
 }
 

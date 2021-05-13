@@ -125,6 +125,15 @@ pub struct PaintNode {
     props: RefCell<PaintNodeProps>
 }
 
+impl Object for PaintNode {}
+impl Is<PaintNode> for PaintNode {}
+
+impl AsRef<PaintNode> for PaintNode {
+    fn as_ref(&self) -> &PaintNode {
+        self
+    }
+}
+
 /// Trait containing all `PaintNode` methods.
 ///
 /// # Implementors
@@ -166,8 +175,6 @@ pub trait PaintNodeExt: 'static {
     /// a string annotating the `self`
     fn set_name(&self, name: &str);
 }
-
-impl Object for PaintNode {}
 
 impl<O: Is<PaintNode>> PaintNodeExt for O {
     fn add_child<P: Is<PaintNode>>(&self, child: &P) {

@@ -1,6 +1,5 @@
-use super::{Container, Orientation};
+use super::{Container, HandlerId, Orientation};
 use crate::prelude::*;
-use glib::signal::SignalHandlerId;
 use std::fmt;
 
 // * @short_description: A layout manager arranging children on a single line
@@ -21,7 +20,7 @@ use std::fmt;
 // * It is possible to control the spacing between children of a
 // * #BoxLayout by using clutter_box_layout_set_spacing().
 // @extends LayoutManager,
-#[derive(Debug, Clone)]
+#[derive(Default, Debug, Clone)]
 pub struct BoxLayout {
     container: Option<Container>,
 
@@ -54,12 +53,6 @@ impl Is<BoxLayout> for BoxLayout {}
 impl AsRef<BoxLayout> for BoxLayout {
     fn as_ref(&self) -> &BoxLayout {
         self
-    }
-}
-
-impl Default for BoxLayout {
-    fn default() -> Self {
-        Self::new()
     }
 }
 
@@ -122,13 +115,13 @@ pub trait BoxLayoutExt: 'static {
     /// the spacing between children of the layout, in pixels
     fn set_spacing(&self, spacing: u32);
 
-    fn connect_property_homogeneous_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_homogeneous_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_orientation_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_orientation_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_pack_start_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_pack_start_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_spacing_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_spacing_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<BoxLayout>> BoxLayoutExt for O {
@@ -168,19 +161,19 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
         unimplemented!()
     }
 
-    fn connect_property_homogeneous_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_homogeneous_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_orientation_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_orientation_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_pack_start_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_pack_start_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_spacing_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_spacing_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 }

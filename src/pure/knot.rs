@@ -1,4 +1,11 @@
-#[derive(Debug, Clone)]
+// * ClutterKnot:
+// * @x: X coordinate of the knot
+// * @y: Y coordinate of the knot
+// *
+// * Point in a path behaviour.
+// *
+// * Since: 0.2
+#[derive(Debug, Clone, PartialOrd, Ord)]
 pub struct Knot {
     x: i32,
     y: i32,

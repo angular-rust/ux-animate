@@ -5,14 +5,21 @@ use std::fmt;
 pub struct Media{
 }
 
+impl Object for Media {}
+impl Is<Media> for Media {}
+
+impl AsRef<Media> for Media {
+    fn as_ref(&self) -> &Media {
+        self
+    }
+}
+
 /// Trait containing all `Media` methods.
 ///
 /// # Implementors
 ///
 /// [`Media`](struct.Media.html)
 pub trait MediaExt: 'static {}
-
-impl Object for Media {}
 
 impl<O: Is<Media>> MediaExt for O {}
 

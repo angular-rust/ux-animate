@@ -1,5 +1,5 @@
+use super::HandlerId;
 use crate::prelude::*;
-use glib::signal::SignalHandlerId;
 use std::fmt;
 
 // TODO: , @implements Scriptable
@@ -29,6 +29,15 @@ impl Interval {
     //pub fn register_progress_func<P: Fn(&glib::Value, &glib::Value, f64, &glib::Value) -> bool + 'static>(value_type: glib::types::Type, func: P) {
     //    unsafe { TODO: call clutter_sys:clutter_interval_register_progress_func() }
     //}
+}
+
+impl Object for Interval {}
+impl Is<Interval> for Interval {}
+
+impl AsRef<Interval> for Interval {
+    fn as_ref(&self) -> &Interval {
+        self
+    }
 }
 
 /// Trait containing all `Interval` methods.
@@ -161,12 +170,10 @@ pub trait IntervalExt: 'static {
     // /// The initial value of the interval.
     // fn get_property_initial(&self) -> Option<glib::Value>;
 
-    fn connect_property_final_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_final_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_initial_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_initial_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
-
-impl Object for Interval {}
 
 impl<O: Is<Interval>> IntervalExt for O {
     fn clone(&self) -> Option<Interval> {
@@ -334,11 +341,11 @@ impl<O: Is<Interval>> IntervalExt for O {
     //     }
     // }
 
-    fn connect_property_final_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_final_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_initial_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_initial_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 }

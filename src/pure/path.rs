@@ -1,9 +1,8 @@
-use super::{Knot, PathNode};
+use super::{HandlerId, Knot, PathNode};
 use crate::prelude::*;
-use glib::signal::SignalHandlerId;
 use std::fmt;
 
-#[derive(Debug, Clone)]
+#[derive(Default, Debug, Clone)]
 pub struct Path {}
 
 impl Path {
@@ -36,12 +35,6 @@ impl Is<Path> for Path {}
 impl AsRef<Path> for Path {
     fn as_ref(&self) -> &Path {
         self
-    }
-}
-
-impl Default for Path {
-    fn default() -> Self {
-        Self::new()
     }
 }
 
@@ -267,9 +260,9 @@ pub trait PathExt: 'static {
     // /// a Cairo context
     // fn to_cairo_path(&self, cr: &mut cairo::Context);
 
-    fn connect_property_description_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_description_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_length_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_length_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<Path>> PathExt for O {
@@ -493,11 +486,11 @@ impl<O: Is<Path>> PathExt for O {
     //     }
     // }
 
-    fn connect_property_description_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_description_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_length_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_length_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 }

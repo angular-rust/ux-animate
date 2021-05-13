@@ -1,16 +1,9 @@
-// use glib::{
-//     signal::{connect_raw, SignalHandlerId},
-
-// };
+// use super::HandlerId;
 // use std::boxed::Box as Box_;
 // use std::{fmt, mem::transmute, ptr};
 
-// glib_wrapper! {
-//     pub struct Script(Object<ffi::Script, ffi::ScriptClass, ScriptClass>);
-
-//     match fn {
-//         get_type => || ffi::clutter_script_get_type(),
-//     }
+// #[derive(Default)]
+// pub struct Script {
 // }
 
 // impl Script {
@@ -26,12 +19,6 @@
 //     ///  `gobject::ObjectExt::unref` when done.
 //     pub fn new() -> Script {
 //         unsafe { from_glib_full(ffi::clutter_script_new()) }
-//     }
-// }
-
-// impl Default for Script {
-//     fn default() -> Self {
-//         Self::new()
 //     }
 // }
 
@@ -179,15 +166,15 @@
 //     /// file name is stored inside the `Script:filename` property.
 //     fn get_property_filename_set(&self) -> bool;
 
-//     fn connect_property_filename_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+//     fn connect_property_filename_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
 //     fn connect_property_filename_set_notify<F: Fn(&Self) + 'static>(&self, f: F)
-//         -> SignalHandlerId;
+//         -> HandlerId;
 
 //     fn connect_property_translation_domain_notify<F: Fn(&Self) + 'static>(
 //         &self,
 //         f: F,
-//     ) -> SignalHandlerId;
+//     ) -> HandlerId;
 // }
 
 // impl<O: Is<Script>> ScriptExt for O {
@@ -357,7 +344,7 @@
 //         }
 //     }
 
-//     fn connect_property_filename_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+//     fn connect_property_filename_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
 //         unsafe extern "C" fn notify_filename_trampoline<P, F: Fn(&P) + 'static>(
 //             this: *mut ffi::Script,
 //             _param_spec: glib_sys::gpointer,
@@ -384,7 +371,7 @@
 //     fn connect_property_filename_set_notify<F: Fn(&Self) + 'static>(
 //         &self,
 //         f: F,
-//     ) -> SignalHandlerId {
+//     ) -> HandlerId {
 //         unsafe extern "C" fn notify_filename_set_trampoline<P, F: Fn(&P) + 'static>(
 //             this: *mut ffi::Script,
 //             _param_spec: glib_sys::gpointer,
@@ -411,7 +398,7 @@
 //     fn connect_property_translation_domain_notify<F: Fn(&Self) + 'static>(
 //         &self,
 //         f: F,
-//     ) -> SignalHandlerId {
+//     ) -> HandlerId {
 //         unsafe extern "C" fn notify_translation_domain_trampoline<P, F: Fn(&P) + 'static>(
 //             this: *mut ffi::Script,
 //             _param_spec: glib_sys::gpointer,

@@ -1,5 +1,18 @@
-#[derive(Debug, PartialOrd, Ord)] // Hash
+use super::{Knot, PathNodeType};
+// * ClutterPathNode:
+// * @type: the node's type
+// * @points: the coordinates of the node
+// *
+// * Represents a single node of a #ClutterPath.
+// *
+// * Some of the coordinates in @points may be unused for some node
+// * types. %CLUTTER_PATH_MOVE_TO and %CLUTTER_PATH_LINE_TO use only one
+// * pair of coordinates, %CLUTTER_PATH_CURVE_TO uses all three and
+// * %CLUTTER_PATH_CLOSE uses none.
+#[derive(Debug, PartialOrd)] // Hash
 pub struct PathNode {
+    kind: PathNodeType,
+    points: [Knot; 3],
 }
 
 impl PathNode {

@@ -4,7 +4,7 @@ use std::fmt;
 
 // TODO: @implements Scriptable
 // @extends Transition, Timeline
-#[derive(Debug, Clone)]
+#[derive(Default, Debug, Clone)]
 pub struct TransitionGroup {}
 
 impl TransitionGroup {
@@ -27,12 +27,6 @@ impl Is<TransitionGroup> for TransitionGroup {}
 impl AsRef<TransitionGroup> for TransitionGroup {
     fn as_ref(&self) -> &TransitionGroup {
         self
-    }
-}
-
-impl Default for TransitionGroup {
-    fn default() -> Self {
-        Self::new()
     }
 }
 

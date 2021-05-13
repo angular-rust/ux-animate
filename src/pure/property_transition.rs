@@ -1,5 +1,5 @@
+use super::HandlerId;
 use crate::prelude::*;
-use glib::signal::SignalHandlerId;
 use std::fmt;
 
 // TODO: @implements Scriptable
@@ -57,10 +57,7 @@ pub trait PropertyTransitionExt: 'static {
     /// a property name
     fn set_property_name(&self, property_name: Option<&str>);
 
-    fn connect_property_property_name_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_property_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<PropertyTransition>> PropertyTransitionExt for O {
@@ -83,10 +80,7 @@ impl<O: Is<PropertyTransition>> PropertyTransitionExt for O {
         unimplemented!()
     }
 
-    fn connect_property_property_name_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_property_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 }

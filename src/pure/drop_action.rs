@@ -1,7 +1,16 @@
-use super::Actor;
+use super::{Actor, HandlerId};
 use crate::prelude::*;
-use glib::signal::SignalHandlerId;
 use std::fmt;
+
+// typedef struct _DropTarget {
+//     ClutterActor *stage;
+
+//     gulong capture_id;
+
+//     GHashTable *actions;
+
+//     ClutterDropAction *last_action;
+//   } DropTarget;
 
 // * SECTION:clutter-drop-action
 // * @Title: DropAction
@@ -35,7 +44,7 @@ use std::fmt;
 // * See [drop-action.c](https://git.gnome.org/browse/clutter/tree/examples/drop-action.c?h=clutter-1.18)
 // * for an example of how to use #DropAction.
 // @extends Action, ActorMeta
-#[derive(Debug, Clone)]
+#[derive(Default, Debug, Clone)]
 pub struct DropAction {
     actor: Option<Actor>,
     stage: Option<Actor>,
@@ -52,18 +61,18 @@ impl DropAction {
     ///
     /// the newly created `DropAction`
     pub fn new() -> DropAction {
-        // unsafe { Action::from_glib_none(ffi::clutter_drop_action_new()).unsafe_cast() }
-        unimplemented!()
-    }
-}
-
-impl Default for DropAction {
-    fn default() -> Self {
-        Self::new()
+        Default::default()
     }
 }
 
 impl Object for DropAction {}
+impl Is<DropAction> for DropAction {}
+
+impl AsRef<DropAction> for DropAction {
+    fn as_ref(&self) -> &DropAction {
+        self
+    }
+}
 
 /// Trait containing all `DropAction` methods.
 ///
@@ -88,10 +97,8 @@ pub trait DropActionExt: 'static {
     /// # Returns
     ///
     /// `true` if the drop is accepted, and `false` otherwise
-    fn connect_can_drop<F: Fn(&Self, &Actor, f32, f32) -> bool + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_can_drop<F: Fn(&Self, &Actor, f32, f32) -> bool + 'static>(&self, f: F)
+        -> HandlerId;
 
     /// The ::drop signal is emitted when the dragged actor is dropped
     /// on `actor`. This signal is only emitted if at least an handler of
@@ -102,7 +109,7 @@ pub trait DropActionExt: 'static {
     /// the X coordinate (in stage space) of the drop event
     /// ## `event_y`
     /// the Y coordinate (in stage space) of the drop event
-    fn connect_drop<F: Fn(&Self, &Actor, f32, f32) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_drop<F: Fn(&Self, &Actor, f32, f32) + 'static>(&self, f: F) -> HandlerId;
 
     /// The ::drop-cancel signal is emitted when the drop is refused
     /// by an emission of the `DropAction::can-drop` signal.
@@ -115,48 +122,42 @@ pub trait DropActionExt: 'static {
     /// the X coordinate (in stage space) of the drop event
     /// ## `event_y`
     /// the Y coordinate (in stage space) of the drop event
-    fn connect_drop_cancel<F: Fn(&Self, &Actor, f32, f32) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_drop_cancel<F: Fn(&Self, &Actor, f32, f32) + 'static>(&self, f: F) -> HandlerId;
 
     /// The ::over-in signal is emitted when the dragged actor crosses
     /// into `actor`.
     /// ## `actor`
     /// the `Actor` attached to the `action`
-    fn connect_over_in<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_over_in<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> HandlerId;
 
     /// The ::over-out signal is emitted when the dragged actor crosses
     /// outside `actor`.
     /// ## `actor`
     /// the `Actor` attached to the `action`
-    fn connect_over_out<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_over_out<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<DropAction>> DropActionExt for O {
     fn connect_can_drop<F: Fn(&Self, &Actor, f32, f32) -> bool + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_drop<F: Fn(&Self, &Actor, f32, f32) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_drop<F: Fn(&Self, &Actor, f32, f32) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_drop_cancel<F: Fn(&Self, &Actor, f32, f32) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_drop_cancel<F: Fn(&Self, &Actor, f32, f32) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_over_in<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_over_in<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_over_out<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_over_out<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 }

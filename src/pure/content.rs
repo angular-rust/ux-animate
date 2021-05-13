@@ -1,6 +1,5 @@
-use super::Actor;
+use super::{Actor, HandlerId};
 use crate::prelude::*;
-use glib::signal::SignalHandlerId;
 use std::fmt;
 
 // * SECTION:clutter-content
@@ -72,13 +71,13 @@ pub trait ContentExt: 'static {
     /// assigned to a `Actor`.
     /// ## `actor`
     /// a `Actor`
-    fn connect_attached<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_attached<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> HandlerId;
 
     /// This signal is emitted each time a `Content` implementation is
     /// removed from a `Actor`.
     /// ## `actor`
     /// a `Actor`
-    fn connect_detached<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_detached<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<Content>> ContentExt for O {
@@ -90,11 +89,11 @@ impl<O: Is<Content>> ContentExt for O {
         unimplemented!()
     }
 
-    fn connect_attached<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_attached<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_detached<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_detached<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 }

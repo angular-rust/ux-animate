@@ -1,8 +1,8 @@
+use super::HandlerId;
 use crate::prelude::*;
-use glib::signal::SignalHandlerId;
 use std::fmt;
 
-#[derive(Debug, Clone)]
+#[derive(Default, Debug, Clone)]
 pub struct TextBuffer {}
 
 impl TextBuffer {
@@ -33,12 +33,6 @@ impl Is<TextBuffer> for TextBuffer {}
 impl AsRef<TextBuffer> for TextBuffer {
     fn as_ref(&self) -> &TextBuffer {
         self
-    }
-}
-
-impl Default for TextBuffer {
-    fn default() -> Self {
-        Self::new()
     }
 }
 
@@ -170,7 +164,7 @@ pub trait TextBufferExt: 'static {
     /// the position the text was deleted at.
     /// ## `n_chars`
     /// The number of characters that were deleted.
-    fn connect_deleted_text<F: Fn(&Self, u32, u32) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_deleted_text<F: Fn(&Self, u32, u32) + 'static>(&self, f: F) -> HandlerId;
 
     /// This signal is emitted after text is inserted into the buffer.
     /// ## `position`
@@ -179,16 +173,13 @@ pub trait TextBufferExt: 'static {
     /// The text that was inserted.
     /// ## `n_chars`
     /// The number of characters that were inserted.
-    fn connect_inserted_text<F: Fn(&Self, u32, &str, u32) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_inserted_text<F: Fn(&Self, u32, &str, u32) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_length_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_length_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_max_length_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_max_length_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_text_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_text_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<TextBuffer>> TextBufferExt for O {
@@ -276,26 +267,23 @@ impl<O: Is<TextBuffer>> TextBufferExt for O {
         unimplemented!()
     }
 
-    fn connect_deleted_text<F: Fn(&Self, u32, u32) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_deleted_text<F: Fn(&Self, u32, u32) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_inserted_text<F: Fn(&Self, u32, &str, u32) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_inserted_text<F: Fn(&Self, u32, &str, u32) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_length_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_length_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_max_length_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_max_length_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_text_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_text_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 }
