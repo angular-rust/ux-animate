@@ -1,4 +1,4 @@
-use crate::{Action, Actor, ActorMeta, DragAxis, ModifierType, InternalRect};
+use crate::{Action, Actor, ActorMeta, DragAxis, InternalRect, ModifierType};
 use glib::{
     object as gobject,
     object::{Cast, IsA},

@@ -32,7 +32,9 @@
 > For now, these are also the Rust bindings for the Clutter library. But we plan to implement it in pure Rust for more performance, control and new features.
 	We implemented the Clutter library bindings inside the project and almost immediately took advantage of our [UX-Primitives](https://github.com/angular-rust/ux-primitives) library and implemented the Canvas abstraction to work with HTML5 Canvas and Cairo.
 
-**Angular Rust** is a high productivity, `platform-agnostic` frontend framework for the [Rust language](https://www.rust-lang.org/). It now supports desktop and web development. Angular Rust currently uses GTK for desktop development and WebAssembly for web development. We are planning to add support for mobile development.
+**Angular Rust** is a high productivity, `platform-agnostic` frontend framework for the [Rust language](https://www.rust-lang.org/). It now supports desktop and web development. Angular Rust currently uses Clutter for desktop development and WebAssembly for web development. We are planning to add support for mobile development.
+
+![Angular Rust structure](https://dudochkin-victor.github.io/assets/angular-rust/structure.svg)
 
 ![Angular Rust structure](https://dudochkin-victor.github.io/assets/angular-rust/structure.svg)
 

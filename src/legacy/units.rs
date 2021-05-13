@@ -37,7 +37,7 @@ impl Units {
     /// # Returns
     ///
     /// the value in pixels
-    pub fn to_pixels(&mut self) -> f32 {
+    pub fn in_pixels(&mut self) -> f32 {
         unsafe { ffi::clutter_units_to_pixels(self.to_glib_none_mut().0) }
     }
 

@@ -1,3 +1,12 @@
+#![allow(
+    clippy::too_many_arguments,
+    clippy::let_and_return,
+    clippy::from_over_into,
+    clippy::upper_case_acronyms,
+    clippy::new_ret_no_self,
+    clippy::wrong_self_convention
+)]
+
 use crate::prelude;
 
 mod action;
@@ -309,8 +318,8 @@ pub(crate) use self::point::InternalPoint;
 mod rect;
 pub(crate) use self::rect::InternalRect;
 
-mod size;
-pub(crate) use self::size::InternalSize;
+// mod size;
+// pub(crate) use self::size::InternalSize;
 
 mod state_key;
 pub use self::state_key::StateKey;
@@ -432,11 +441,37 @@ pub mod traits {
     pub use super::ZoomActionExt;
 }
 
-impl prelude::Object for Actor {}
-impl prelude::Is<Actor> for Actor {}
+pub use glib::timeout_add_local as interval;
+
+impl prelude::Object for ActorCanvas {}
+impl prelude::Is<ActorCanvas> for ActorCanvas {}
 
 impl prelude::Object for Action {}
 impl prelude::Is<Action> for Action {}
+
+impl prelude::Object for ActorMeta {}
+impl prelude::Is<ActorMeta> for ActorMeta {}
+
+impl prelude::Object for Actor {}
+impl prelude::Is<Actor> for Actor {}
+
+impl prelude::Object for BoxLayout {}
+impl prelude::Is<BoxLayout> for BoxLayout {}
+
+impl prelude::Object for Constraint {}
+impl prelude::Is<Constraint> for Constraint {}
+
+impl prelude::Object for Content {}
+impl prelude::Is<Content> for Content {}
+
+impl prelude::Object for Effect {}
+impl prelude::Is<Effect> for Effect {}
+
+impl prelude::Object for Image {}
+impl prelude::Is<Image> for Image {}
+
+impl prelude::Object for LayoutManager {}
+impl prelude::Is<LayoutManager> for LayoutManager {}
 
 impl prelude::Object for Model {}
 impl prelude::Is<Model> for Model {}
@@ -444,14 +479,9 @@ impl prelude::Is<Model> for Model {}
 impl prelude::Object for OffscreenEffect {}
 impl prelude::Is<OffscreenEffect> for OffscreenEffect {}
 
-impl prelude::Object for Effect {}
-impl prelude::Is<Effect> for Effect {}
+impl prelude::Object for Text {}
+impl prelude::Is<Text> for Text {}
+impl prelude::Is<Actor> for Text {}
 
-impl prelude::Object for ActorMeta {}
-impl prelude::Is<ActorMeta> for ActorMeta {}
-
-impl prelude::Object for BoxLayout {}
-impl prelude::Is<BoxLayout> for BoxLayout {}
-
-impl prelude::Object for ActorCanvas {}
-impl prelude::Is<ActorCanvas> for ActorCanvas {}
+impl prelude::Object for Transition {}
+impl prelude::Is<Transition> for Transition {}

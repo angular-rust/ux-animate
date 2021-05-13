@@ -130,7 +130,10 @@ impl<O: IsA<ZoomAction>> ZoomActionExt for O {
         &self,
         f: F,
     ) -> SignalHandlerId {
-        unsafe extern "C" fn zoom_trampoline<P, F: Fn(&P, &Actor, &InternalPoint, f64) -> bool + 'static>(
+        unsafe extern "C" fn zoom_trampoline<
+            P,
+            F: Fn(&P, &Actor, &InternalPoint, f64) -> bool + 'static,
+        >(
             this: *mut ffi::ClutterZoomAction,
             actor: *mut ffi::ClutterActor,
             focal_point: *mut ffi::ClutterPoint,

@@ -5,8 +5,8 @@ use glib::{
     translate::*,
 };
 use std::boxed::Box as Box_;
-use std::{fmt, mem, mem::transmute};
-
+use std::{fmt, mem::transmute};
+// mem
 glib_wrapper! {
     pub struct Container(Interface<ffi::ClutterContainer>);
 

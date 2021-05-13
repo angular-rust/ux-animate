@@ -54,7 +54,16 @@ impl ColorizeEffect {
     /// Sets the tint to be used when colorizing
     /// ## `tint`
     /// the color to be used
-    pub fn set_tint(&self, tint: &InternalColor) {
+    pub fn set_tint(&self, tint: Color) {
+        let tint = {
+            let RgbaColor {
+                red,
+                green,
+                blue,
+                alpha,
+            } = tint.into();
+            InternalColor::new(red, green, blue, alpha)
+        };
         unsafe {
             ffi::clutter_colorize_effect_set_tint(self.to_glib_none().0, tint.to_glib_none().0);
         }

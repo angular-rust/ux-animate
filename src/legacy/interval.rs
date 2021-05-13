@@ -3,10 +3,10 @@ use glib::{
     object::{Cast, IsA},
     signal::{connect_raw, SignalHandlerId},
     translate::*,
-    StaticType, Value,
 };
 use std::boxed::Box as Box_;
 use std::{fmt, mem::transmute};
+// StaticType, Value,
 // use Scriptable;
 
 // TODO: , @implements Scriptable

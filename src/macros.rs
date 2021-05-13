@@ -1,6 +1,6 @@
-use glib::translate::*;
-use libc::c_void;
-use std::{fmt, mem, ptr};
+// use glib::translate::*;
+// use libc::c_void;
+// use std::{fmt, mem, ptr};
 
 macro_rules! event_wrapper {
     ($name:ident, $ffi_name:ident) => {
@@ -75,8 +75,6 @@ macro_rules! event_wrapper {
         }
     };
 }
-
-
 
 macro_rules! event_subtype {
     ($name:ident, $($ty:path)|+) => {

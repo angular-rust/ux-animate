@@ -1,14 +1,16 @@
 #![allow(unused_macros)]
 
 use glib::translate::*;
-use libc::c_void;
-use std::{fmt, mem, ptr};
+// use libc::c_void;
+use std::fmt;
+// , mem, ptr
 
 // use AxisUse;
-use crate::{EventSequence, EventType, InputDevice, ModifierType};
+use crate::{EventSequence, EventType, InputDevice};
+// ModifierType
 
 glib_wrapper! {
-    /// A generic Clutter event.
+    /// A generic UX Animate event.
     #[derive(PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct Event(Boxed<ffi::ClutterEvent>);
 
@@ -366,7 +368,6 @@ pub trait FromEvent: Sized {
     fn is(ev: &Event) -> bool;
     fn from(ev: Event) -> Result<Self, Event>;
 }
-
 
 impl FromEvent for Event {
     #[inline]

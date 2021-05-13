@@ -1,5 +1,7 @@
 // Scriptable
-use crate::{Actor, Animatable, InternalColor, Container, InternalRect, TextBuffer};
+use crate::{
+    Actor, Animatable, Color, Container, InternalColor, InternalRect, RgbaColor, TextBuffer,
+};
 use glib::{
     object as gobject,
     object::{Cast, IsA, ObjectExt},
@@ -47,7 +49,17 @@ impl Text {
     /// # Returns
     ///
     /// the newly created `Text` actor
-    pub fn new_full(font_name: &str, text: &str, color: &InternalColor) -> Text {
+    pub fn new_full(font_name: &str, text: &str, color: Color) -> Text {
+        let color = {
+            let RgbaColor {
+                red,
+                green,
+                blue,
+                alpha,
+            } = color.into();
+            InternalColor::new(red, green, blue, alpha)
+        };
+
         unsafe {
             Actor::from_glib_none(ffi::clutter_text_new_full(
                 font_name.to_glib_none().0,
@@ -463,7 +475,7 @@ pub trait TextExt: 'static {
     /// by `ActorExt::get_paint_opacity`.
     /// ## `color`
     /// a `Color`
-    fn set_color(&self, color: &InternalColor);
+    fn set_color(&self, color: Color);
 
     /// Sets the color of the cursor of a `Text` actor.
     ///
@@ -471,7 +483,7 @@ pub trait TextExt: 'static {
     /// text color.
     /// ## `color`
     /// the color of the cursor, or `None` to unset it
-    fn set_cursor_color(&self, color: Option<&InternalColor>);
+    fn set_cursor_color(&self, color: Option<Color>);
 
     /// Sets the cursor of a `Text` actor at `position`.
     ///
@@ -647,7 +659,7 @@ pub trait TextExt: 'static {
     /// selection color, which then falls back to cursor, and then text color.
     /// ## `color`
     /// the selected text color, or `None` to unset it
-    fn set_selected_text_color(&self, color: Option<&InternalColor>);
+    fn set_selected_text_color(&self, color: Option<Color>);
 
     /// Selects the region of text between `start_pos` and `end_pos`.
     ///
@@ -674,7 +686,7 @@ pub trait TextExt: 'static {
     /// the same as the text color.
     /// ## `color`
     /// the color of the selection, or `None` to unset it
-    fn set_selection_color(&self, color: Option<&InternalColor>);
+    fn set_selection_color(&self, color: Option<Color>);
 
     /// Sets whether a `Text` actor should be in single line mode
     /// or not. Only editable `Text`<!-- -->s can be in single line
@@ -1173,13 +1185,35 @@ impl<O: IsA<Text>> TextExt for O {
         }
     }
 
-    fn set_color(&self, color: &InternalColor) {
+    fn set_color(&self, value: Color) {
+        let color = {
+            let RgbaColor {
+                red,
+                green,
+                blue,
+                alpha,
+            } = value.into();
+            InternalColor::new(red, green, blue, alpha)
+        };
+
         unsafe {
             ffi::clutter_text_set_color(self.as_ref().to_glib_none().0, color.to_glib_none().0);
         }
     }
 
-    fn set_cursor_color(&self, color: Option<&InternalColor>) {
+    fn set_cursor_color(&self, color: Option<Color>) {
+        let color = match color {
+            Some(value) => {
+                let RgbaColor {
+                    red,
+                    green,
+                    blue,
+                    alpha,
+                } = value.into();
+                Some(InternalColor::new(red, green, blue, alpha))
+            }
+            None => None,
+        };
         unsafe {
             ffi::clutter_text_set_cursor_color(
                 self.as_ref().to_glib_none().0,
@@ -1309,7 +1343,19 @@ impl<O: IsA<Text>> TextExt for O {
         }
     }
 
-    fn set_selected_text_color(&self, color: Option<&InternalColor>) {
+    fn set_selected_text_color(&self, color: Option<Color>) {
+        let color = match color {
+            Some(value) => {
+                let RgbaColor {
+                    red,
+                    green,
+                    blue,
+                    alpha,
+                } = value.into();
+                Some(InternalColor::new(red, green, blue, alpha))
+            }
+            None => None,
+        };
         unsafe {
             ffi::clutter_text_set_selected_text_color(
                 self.as_ref().to_glib_none().0,
@@ -1330,7 +1376,19 @@ impl<O: IsA<Text>> TextExt for O {
         }
     }
 
-    fn set_selection_color(&self, color: Option<&InternalColor>) {
+    fn set_selection_color(&self, color: Option<Color>) {
+        let color = match color {
+            Some(value) => {
+                let RgbaColor {
+                    red,
+                    green,
+                    blue,
+                    alpha,
+                } = value.into();
+                Some(InternalColor::new(red, green, blue, alpha))
+            }
+            None => None,
+        };
         unsafe {
             ffi::clutter_text_set_selection_color(
                 self.as_ref().to_glib_none().0,

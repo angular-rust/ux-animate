@@ -1,22 +1,12 @@
-#![allow(unused_imports)]
 #![allow(deprecated)]
 #![cfg_attr(feature = "cargo-clippy", allow(clippy::cast_ptr_alignment))]
 #![cfg_attr(feature = "cargo-clippy", allow(clippy::trivially_copy_pass_by_ref))]
-#![allow(
-    clippy::too_many_arguments,
-    clippy::let_and_return,
-    clippy::from_over_into,
-    clippy::upper_case_acronyms,
-    clippy::new_ret_no_self,
-    clippy::wrong_self_convention
-)]
-
 
 #[macro_use]
 extern crate log;
 
-mod backend;
-pub use backend::*;
+mod canvas;
+pub use canvas::*;
 
 pub mod easing;
 
@@ -26,9 +16,12 @@ pub mod motion;
 
 pub mod physics;
 
-pub mod runtime;
+mod runtime;
+pub use runtime::*;
 
 pub mod svg;
+
+pub mod path;
 
 pub mod interpolate;
 
@@ -54,6 +47,11 @@ mod macros;
 mod legacy;
 
 #[cfg(not(target_arch = "wasm32"))]
+#[cfg_attr(feature = "cargo-clippy", allow(clippy::type_complexity))]
+#[cfg_attr(feature = "cargo-clippy", allow(clippy::unreadable_literal))]
+mod pure;
+
+#[cfg(not(target_arch = "wasm32"))]
 pub mod prelude;
 
 #[cfg(not(target_arch = "wasm32"))]
@@ -62,6 +60,7 @@ pub use legacy::*;
 #[cfg(not(target_arch = "wasm32"))]
 pub use self::rt::{init, quit, run, set_initialized};
 
+pub use primitives::colorspace::{Color, RgbColor, RgbaColor};
 pub use primitives::*;
 
 #[cfg(test)]

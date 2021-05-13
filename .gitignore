@@ -10,3 +10,8 @@ Cargo.lock
 **/*.rs.bk
 
 /refs
+/examples
+**/*.h
+**/*.c
+**/*.rc
+**/*.cur
