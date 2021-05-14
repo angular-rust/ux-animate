@@ -1,18 +1,18 @@
-use super::{Actor, AllocationFlags, ActorBox, Event, Fog, Perspective, PickMode, StageWindow, HandlerId};
+use super::{Actor, ActorBox, AllocationFlags, Event, Fog, HandlerId, Perspective, PickMode};
 use crate::prelude::*;
-use std::{fmt, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 pub struct Vector4 {
-  x: f32,
-  y: f32,
-  z: f32,
-  w: f32,
+    x: f32,
+    y: f32,
+    z: f32,
+    w: f32,
 }
 
 #[derive(Default, Debug, Clone)]
 struct StageProps {
     // the stage implementation
-    implementation: Option<StageWindow>,
+    // implementation: Option<StageWindow>,
     perspective: Perspective,
     projection: dx::Matrix,
     inverse_projection: dx::Matrix,
@@ -83,7 +83,7 @@ struct StageProps {
 // @extends Group, Actor
 #[derive(Default, Debug)]
 pub struct Stage {
-    props: RefCell<StageProps>
+    props: RefCell<StageProps>,
 }
 
 impl Stage {
@@ -183,7 +183,6 @@ impl Stage {
         //                                     geom.width * window_scale,
         //                                     geom.height * window_scale);
 
-
         // /* FIXME - remove for 2.0 */
         // priv->fog.z_near = 1.0;
         // priv->fog.z_far  = 2.0;
@@ -218,21 +217,21 @@ impl Stage {
         // float width, height;
         // cairo_rectangle_int_t window_size;
         // int scale_factor;
-      
+
         // if priv->impl == NULL {
         //   return;
         // }
-      
+
         // /* our old allocation */
         // clutter_actor_get_allocation_box(self, &alloc);
         // clutter_actor_box_get_size(&alloc, &old_width, &old_height);
-      
+
         // /* the current allocation */
         // clutter_actor_box_get_size(box, &width, &height);
-      
+
         // /* the current Stage implementation size */
         // _clutter_stage_window_get_geometry(priv->impl, &window_size);
-      
+
         // /* if the stage is fixed size (for instance, it's using a EGL framebuffer)
         //  * then we simply ignore any allocation request and override the
         //  * allocation chain - because we cannot forcibly change the size of the
@@ -246,31 +245,31 @@ impl Stage {
         //                   (flags & CLUTTER_ABSOLUTE_ORIGIN_CHANGED)
         //                     ? "changed"
         //                     : "not changed");
-      
+
         //     clutter_actor_set_allocation(self, box,
         //                                   flags | CLUTTER_DELEGATE_LAYOUT);
-      
+
         //     // Ensure the window is sized correctly
         //     if !priv->is_fullscreen {
         //         if priv->min_size_changed {
         //             gfloat min_width, min_height;
         //             gboolean min_width_set, min_height_set;
-      
+
         //             g_object_get(G_OBJECT (self),
         //                           "min-width", &min_width,
         //                           "min-width-set", &min_width_set,
         //                           "min-height", &min_height,
         //                           "min-height-set", &min_height_set,
         //                           NULL);
-      
+
         //             if !min_width_set {
         //               min_width = 1;
         //             }
-                    
+
         //             if !min_height_set {
         //               min_height = 1;
         //             }
-      
+
         //             if width < min_width {
         //               width = min_width;
         //             }
@@ -278,10 +277,10 @@ impl Stage {
         //             if height < min_height {
         //               height = min_height;
         //             }
-      
+
         //             priv->min_size_changed = FALSE;
         //         }
-      
+
         //         if window_size.width != CLUTTER_NEARBYINT (width) ||
         //             window_size.height != CLUTTER_NEARBYINT (height) {
         //             _clutter_stage_window_resize(priv->impl,
@@ -291,13 +290,13 @@ impl Stage {
         //     }
         // } else {
         //     ClutterActorBox override = { 0, };
-      
+
         //     /* override the passed allocation */
         //     override.x1 = 0;
         //     override.y1 = 0;
         //     override.x2 = window_size.width;
         //     override.y2 = window_size.height;
-      
+
         //     CLUTTER_NOTE(LAYOUT,
         //                   "Overriding original allocation of %.2fx%.2f "
         //                   "with %.2fx%.2f (absolute origin %s)",
@@ -306,12 +305,12 @@ impl Stage {
         //                   (flags & CLUTTER_ABSOLUTE_ORIGIN_CHANGED)
         //                     ? "changed"
         //                     : "not changed");
-      
+
         //     /* and store the overridden allocation */
         //     clutter_actor_set_allocation(self, &override,
         //                                   flags | CLUTTER_DELEGATE_LAYOUT);
         //   }
-      
+
         // /* XXX: Until Cogl becomes fully responsible for backend windows
         //  * Clutter need to manually keep it informed of the current window
         //  * size. We do this after the allocation above so that the stage
@@ -319,29 +318,29 @@ impl Stage {
         //  * allocation.
         //  */
         // _clutter_stage_window_get_geometry(priv->impl, &window_size);
-      
+
         // scale_factor = _clutter_stage_window_get_scale_factor(priv->impl);
-      
+
         // window_size.width *= scale_factor;
         // window_size.height *= scale_factor;
-      
+
         // cogl_onscreen_clutter_backend_set_size(window_size.width,
         //                                         window_size.height);
-      
+
         // /* reset the viewport if the allocation effectively changed */
         // clutter_actor_get_allocation_box(self, &alloc);
         // clutter_actor_box_get_size(&alloc, &new_width, &new_height);
-      
+
         // if CLUTTER_NEARBYINT (old_width) != CLUTTER_NEARBYINT (new_width) ||
         //     CLUTTER_NEARBYINT (old_height) != CLUTTER_NEARBYINT (new_height) {
         //     int real_width = CLUTTER_NEARBYINT(new_width);
         //     int real_height = CLUTTER_NEARBYINT(new_height);
-      
+
         //     _clutter_stage_set_viewport(CLUTTER_STAGE (self),
         //                                  0, 0,
         //                                  real_width,
         //                                  real_height);
-      
+
         //     /* Note: we don't assume that set_viewport will queue a full redraw
         //      * since it may bail-out early if something preemptively set the
         //      * viewport before the stage was really allocated its new size.
@@ -712,8 +711,7 @@ pub trait StageExt: 'static {
     /// backends that use a static frame buffer.
     /// ## `event`
     /// a `Event` of type `EventType::Delete`
-    fn connect_delete_event<F: Fn(&Self, &Event) -> bool + 'static>(&self, f: F)
-        -> HandlerId;
+    fn connect_delete_event<F: Fn(&Self, &Event) -> bool + 'static>(&self, f: F) -> HandlerId;
 
     /// The ::fullscreen signal is emitted when the stage is made fullscreen.
     fn connect_fullscreen<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
@@ -722,25 +720,15 @@ pub trait StageExt: 'static {
     /// state.
     fn connect_unfullscreen<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_accept_focus_notify<F: Fn(&Self) + 'static>(&self, f: F)
-        -> HandlerId;
+    fn connect_property_accept_focus_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_cursor_visible_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> HandlerId;
+    fn connect_property_cursor_visible_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_fullscreen_set_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> HandlerId;
+    fn connect_property_fullscreen_set_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
     fn connect_property_key_focus_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_no_clear_hint_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> HandlerId;
+    fn connect_property_no_clear_hint_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
     fn connect_property_perspective_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
@@ -748,10 +736,7 @@ pub trait StageExt: 'static {
 
     fn connect_property_use_alpha_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_user_resizable_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> HandlerId;
+    fn connect_property_user_resizable_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<Stage>> StageExt for O {
@@ -1022,11 +1007,13 @@ impl<O: Is<Stage>> StageExt for O {
     }
 
     fn set_user_resizable(&self, resizable: bool) {
-        // unsafe {
-        //     ffi::clutter_stage_set_user_resizable(
-        //         self.as_ref().to_glib_none().0,
-        //         resizable.to_glib(),
-        //     );
+        let stage = self.as_ref();
+        let props = stage.props.borrow_mut();
+        // match props.implementation {
+        //     Some(implementation) => {
+        //         implementation.set_user_resizable(resizable)
+        //     }
+        //     None => {}
         // }
         unimplemented!()
     }
@@ -1093,10 +1080,7 @@ impl<O: Is<Stage>> StageExt for O {
         unimplemented!()
     }
 
-    fn connect_delete_event<F: Fn(&Self, &Event) -> bool + 'static>(
-        &self,
-        f: F,
-    ) -> HandlerId {
+    fn connect_delete_event<F: Fn(&Self, &Event) -> bool + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
@@ -1108,24 +1092,15 @@ impl<O: Is<Stage>> StageExt for O {
         unimplemented!()
     }
 
-    fn connect_property_accept_focus_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> HandlerId {
+    fn connect_property_accept_focus_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_cursor_visible_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> HandlerId {
+    fn connect_property_cursor_visible_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_fullscreen_set_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> HandlerId {
+    fn connect_property_fullscreen_set_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
@@ -1133,10 +1108,7 @@ impl<O: Is<Stage>> StageExt for O {
         unimplemented!()
     }
 
-    fn connect_property_no_clear_hint_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> HandlerId {
+    fn connect_property_no_clear_hint_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
@@ -1152,10 +1124,7 @@ impl<O: Is<Stage>> StageExt for O {
         unimplemented!()
     }
 
-    fn connect_property_user_resizable_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> HandlerId {
+    fn connect_property_user_resizable_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 }

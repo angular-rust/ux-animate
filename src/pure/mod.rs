@@ -242,9 +242,6 @@ pub use self::perspective::{Perspective, Fog};
 mod pipeline_node;
 pub use self::pipeline_node::PipelineNode;
 
-mod platform;
-pub(crate) use self::platform::*;
-
 mod property_transition;
 pub use self::property_transition::{PropertyTransition, PropertyTransitionExt};
 
