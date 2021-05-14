@@ -189,6 +189,12 @@ pub enum AnimationMode {
     AnimationLast,
 }
 
+impl Default for AnimationMode {
+    fn default() -> Self {
+        Self::Linear
+    }
+}
+
 impl fmt::Display for AnimationMode {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
@@ -1341,6 +1347,12 @@ pub enum StepMode {
     End,
 }
 
+impl Default for StepMode {
+    fn default() -> Self {
+        Self::Start
+    }
+}
+
 impl fmt::Display for StepMode {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
@@ -1415,6 +1427,12 @@ pub enum TimelineDirection {
     Forward,
     /// backward direction for a timeline
     Backward,
+}
+
+impl Default for TimelineDirection {
+    fn default() -> Self {
+        Self::Forward
+    }
 }
 
 impl fmt::Display for TimelineDirection {

@@ -1,4 +1,4 @@
-use super::{Actor, EventSequence, HandlerId, LongPressState, ModifierType};
+use super::{Action, Actor, EventSequence, HandlerId, LongPressState, ModifierType};
 use crate::prelude::*;
 use std::fmt;
 
@@ -109,6 +109,15 @@ impl Is<ClickAction> for ClickAction {}
 impl AsRef<ClickAction> for ClickAction {
     fn as_ref(&self) -> &ClickAction {
         self
+    }
+}
+
+impl Is<Action> for ClickAction {}
+
+impl AsRef<Action> for ClickAction {
+    fn as_ref(&self) -> &Action {
+        // self
+        unimplemented!()
     }
 }
 

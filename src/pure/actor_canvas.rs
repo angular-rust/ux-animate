@@ -1,5 +1,5 @@
-use super::{Content, HandlerId};
-use crate::prelude::*;
+use super::{Actor, Content, HandlerId};
+use crate::{Canvas, prelude::*};
 use std::fmt;
 // use cairo::Context;
 
@@ -120,7 +120,7 @@ pub trait ActorCanvasExt: 'static {
     ///
     /// this function returns `true` if the size change
     ///  caused a content invalidation, and `false` otherwise
-    fn set_size(&self, width: u32, height: u32) -> bool;
+    fn set_content_size(&self, width: u32, height: u32) -> bool;
 
     /// The height of the canvas.
     fn get_property_height(&self) -> u32;
@@ -158,7 +158,7 @@ pub trait ActorCanvasExt: 'static {
     ///
     /// `true` if the signal emission should stop, and
     ///  `false` otherwise
-    fn connect_draw<F: Fn(&Self, &cairo::Context, u32, u32) -> bool + 'static>(
+    fn connect_draw<F: Fn(&Self, &Canvas, u32, u32) -> bool + 'static>(
         &self,
         f: F,
     ) -> HandlerId;
@@ -170,6 +170,24 @@ pub trait ActorCanvasExt: 'static {
     fn connect_property_scale_factor_set_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
     fn connect_property_width_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
+}
+
+impl ContentExt for ActorCanvas {
+    fn get_preferred_size(&self) -> Option<(f32, f32)> {
+        unimplemented!()
+    }
+
+    fn invalidate(&self) {
+        unimplemented!()
+    }
+
+    fn connect_attached<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> HandlerId {
+        unimplemented!()
+    }
+
+    fn connect_detached<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> HandlerId {
+        unimplemented!()
+    }
 }
 
 impl<O: Is<ActorCanvas>> ActorCanvasExt for O {
@@ -202,7 +220,7 @@ impl<O: Is<ActorCanvas>> ActorCanvasExt for O {
         unimplemented!()
     }
 
-    fn set_size(&self, width: u32, height: u32) -> bool {
+    fn set_content_size(&self, width: u32, height: u32) -> bool {
         // let canvas = self.as_ref();
         // let mut width_changed = false;
         // let mut height_changed = false;
@@ -249,7 +267,7 @@ impl<O: Is<ActorCanvas>> ActorCanvasExt for O {
         unimplemented!()
     }
 
-    fn connect_draw<F: Fn(&Self, &cairo::Context, u32, u32) -> bool + 'static>(
+    fn connect_draw<F: Fn(&Self, &Canvas, u32, u32) -> bool + 'static>(
         &self,
         f: F,
     ) -> HandlerId {

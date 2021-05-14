@@ -196,7 +196,7 @@ impl BindingPool {
     //     modifiers: ModifierType,
     //     callback: P,
     // ) {
-    //     let callback_data: Box_<P> = Box_::new(callback);
+    //     let callback_data: Box<P> = Box::new(callback);
     //     unsafe extern "C" fn callback_func<
     //         P: Fn(&glib::Object, &str, u32, &ModifierType) -> bool + 'static,
     //     >(
@@ -219,10 +219,10 @@ impl BindingPool {
     //     >(
     //         data: glib_sys::gpointer,
     //     ) {
-    //         let _callback: Box_<P> = Box_::from_raw(data as *mut _);
+    //         let _callback: Box<P> = Box::from_raw(data as *mut _);
     //     }
     //     let destroy_call6 = Some(notify_func::<P> as _);
-    //     let super_callback0: Box_<P> = callback_data;
+    //     let super_callback0: Box<P> = callback_data;
     //     unsafe {
     //         ffi::clutter_binding_pool_install_action(
     //             self.to_glib_none().0,
@@ -230,7 +230,7 @@ impl BindingPool {
     //             key_val,
     //             modifiers.to_glib(),
     //             callback,
-    //             Box_::into_raw(super_callback0) as *mut _,
+    //             Box::into_raw(super_callback0) as *mut _,
     //             destroy_call6,
     //         );
     //     }
@@ -292,7 +292,7 @@ impl BindingPool {
     //     modifiers: ModifierType,
     //     callback: P,
     // ) {
-    //     let callback_data: Box_<P> = Box_::new(callback);
+    //     let callback_data: Box<P> = Box::new(callback);
     //     unsafe extern "C" fn callback_func<
     //         P: Fn(&glib::Object, &str, u32, &ModifierType) -> bool + 'static,
     //     >(
@@ -315,17 +315,17 @@ impl BindingPool {
     //     >(
     //         data: glib_sys::gpointer,
     //     ) {
-    //         let _callback: Box_<P> = Box_::from_raw(data as *mut _);
+    //         let _callback: Box<P> = Box::from_raw(data as *mut _);
     //     }
     //     let destroy_call5 = Some(notify_func::<P> as _);
-    //     let super_callback0: Box_<P> = callback_data;
+    //     let super_callback0: Box<P> = callback_data;
     //     unsafe {
     //         ffi::clutter_binding_pool_override_action(
     //             self.to_glib_none().0,
     //             key_val,
     //             modifiers.to_glib(),
     //             callback,
-    //             Box_::into_raw(super_callback0) as *mut _,
+    //             Box::into_raw(super_callback0) as *mut _,
     //             destroy_call5,
     //         );
     //     }

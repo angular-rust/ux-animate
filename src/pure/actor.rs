@@ -3268,7 +3268,7 @@ impl<O: Is<Actor>> ActorExt for O {
     //     model: Option<&P>,
     //     create_child_func: Q,
     // ) {
-    //     // let create_child_func_data: Box_<Q> = Box_::new(create_child_func);
+    //     // let create_child_func_data: Box<Q> = Box::new(create_child_func);
     //     // unsafe extern "C" fn create_child_func_func<
     //     //     P: Is<gio::ListModel>,
     //     //     Q: Fn(&glib::Object) -> Actor + 'static,
@@ -3288,16 +3288,16 @@ impl<O: Is<Actor>> ActorExt for O {
     //     // >(
     //     //     data: glib_sys::gpointer,
     //     // ) {
-    //     //     let _callback: Box_<Q> = Box_::from_raw(data as *mut _);
+    //     //     let _callback: Box<Q> = Box::from_raw(data as *mut _);
     //     // }
     //     // let destroy_call4 = Some(notify_func::<P, Q> as _);
-    //     // let super_callback0: Box_<Q> = create_child_func_data;
+    //     // let super_callback0: Box<Q> = create_child_func_data;
     //     // unsafe {
     //     //     ffi::clutter_actor_bind_model(
     //     //         self.as_ref().to_glib_none().0,
     //     //         model.map(|p| p.as_ref()).to_glib_none().0,
     //     //         create_child_func,
-    //     //         Box_::into_raw(super_callback0) as *mut _,
+    //     //         Box::into_raw(super_callback0) as *mut _,
     //     //         destroy_call4,
     //     //     );
     //     // }

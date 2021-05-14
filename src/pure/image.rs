@@ -1,4 +1,4 @@
-use super::Content;
+use super::{Actor, Content, HandlerId};
 use crate::prelude::*;
 use std::fmt;
 
@@ -70,6 +70,24 @@ pub trait ImageExt: 'static {
     ) -> Result<(), glib::Error>;
 
     //fn set_data(&self, data: &[u8], pixel_format: dx::pure::PixelFormat, width: u32, height: u32, row_stride: u32) -> Result<(), glib::Error>;
+}
+
+impl ContentExt for Image {
+    fn get_preferred_size(&self) -> Option<(f32, f32)> {
+        unimplemented!()
+    }
+
+    fn invalidate(&self) {
+        unimplemented!()
+    }
+
+    fn connect_attached<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> HandlerId {
+        unimplemented!()
+    }
+
+    fn connect_detached<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> HandlerId {
+        unimplemented!()
+    }
 }
 
 impl<O: Is<Image>> ImageExt for O {

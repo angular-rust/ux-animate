@@ -1,12 +1,139 @@
-use super::{AnimationMode, StepMode, TimelineDirection, HandlerId};
+use super::{AnimationMode, HandlerId, StepMode, TimelineDirection};
 use crate::prelude::*;
 use crate::Point;
-use std::boxed::Box as Box_;
-use std::fmt;
+use std::{fmt, cell::RefCell};
 
+#[derive(Default, Debug, Clone)]
+struct TimelineProps {
+    direction: TimelineDirection,
+
+    delay_id: u32,
+
+    // The total length in milliseconds of this timeline
+    duration: u32,
+    delay: u32,
+
+    // The current amount of elapsed time
+    elapsed_time: i64,
+
+    // The elapsed time since the last frame was fired
+    msecs_delta: i64,
+
+    // GHashTable *markers_by_name;
+
+    // Time we last advanced the elapsed time and showed a frame
+    last_frame_time: i64,
+
+    // How many times the timeline should repeat
+    repeat_count: i32,
+
+    // The number of times the timeline has repeated
+    current_repeat: i32,
+
+    // progress_func: ProgressFunc
+    // gpointer progress_data;
+    // GDestroyNotify progress_notify;
+    progress_mode: AnimationMode,
+
+    // step() parameters
+    n_steps: i32,
+    step_mode: StepMode,
+
+    // cubic-bezier() parameters
+    // ClutterPoint cb_1;
+    // ClutterPoint cb_2;
+    is_playing: bool,
+
+    // If we've just started playing and haven't yet gotten
+    // a tick from the master clock
+    waiting_first_tick: bool,
+    auto_reverse: bool,
+}
+
+pub struct TimelineMarker {
+    name: Option<String>,
+    // GQuark quark;
+
+    // union {
+    //   guint msecs;
+    //   gdouble progress;
+    // } data;
+    is_relative: bool,
+}
+// * SECTION:clutter-timeline
+// * @short_description: A class for time-based events
+// * @see_also: #ClutterAnimation, #ClutterAnimator, #ClutterState
+// *
+// * #ClutterTimeline is a base class for managing time-based event that cause
+// * Clutter to redraw a stage, such as animations.
+// *
+// * Each #ClutterTimeline instance has a duration: once a timeline has been
+// * started, using clutter_timeline_start(), it will emit a signal that can
+// * be used to update the state of the actors.
+// *
+// * It is important to note that #ClutterTimeline is not a generic API for
+// * calling closures after an interval; each Timeline is tied into the master
+// * clock used to drive the frame cycle. If you need to schedule a closure
+// * after an interval, see clutter_threads_add_timeout() instead.
+// *
+// * Users of #ClutterTimeline should connect to the #ClutterTimeline::new-frame
+// * signal, which is emitted each time a timeline is advanced during the maste
+// * clock iteration. The #ClutterTimeline::new-frame signal provides the time
+// * elapsed since the beginning of the timeline, in milliseconds. A normalized
+// * progress value can be obtained by calling clutter_timeline_get_progress().
+// * By using clutter_timeline_get_delta() it is possible to obtain the wallclock
+// * time elapsed since the last emission of the #ClutterTimeline::new-frame
+// * signal.
+// *
+// * Initial state can be set up by using the #ClutterTimeline::started signal,
+// * while final state can be set up by using the #ClutterTimeline::stopped
+// * signal. The #ClutterTimeline guarantees the emission of at least a single
+// * #ClutterTimeline::new-frame signal, as well as the emission of the
+// * #ClutterTimeline::completed signal every time the #ClutterTimeline reaches
+// * its #ClutterTimeline:duration.
+// *
+// * It is possible to connect to specific points in the timeline progress by
+// * adding markers using clutter_timeline_add_marker_at_time() and connecting
+// * to the #ClutterTimeline::marker-reached signal.
+// *
+// * Timelines can be made to loop once they reach the end of their duration, by
+// * using clutter_timeline_set_repeat_count(); a looping timeline will still
+// * emit the #ClutterTimeline::completed signal once it reaches the end of its
+// * duration at each repeat. If you want to be notified of the end of the last
+// * repeat, use the #ClutterTimeline::stopped signal.
+// *
+// * Timelines have a #ClutterTimeline:direction: the default direction is
+// * %CLUTTER_TIMELINE_FORWARD, and goes from 0 to the duration; it is possible
+// * to change the direction to %CLUTTER_TIMELINE_BACKWARD, and have the timeline
+// * go from the duration to 0. The direction can be automatically reversed
+// * when reaching completion by using the #ClutterTimeline:auto-reverse property.
+// *
+// * Timelines are used in the Clutter animation framework by classes like
+// * #ClutterAnimation, #ClutterAnimator, and #ClutterState.
+// *
+// * ## Defining Timelines in ClutterScript
+// *
+// * A #ClutterTimeline can be described in #ClutterScript like any
+// * other object. Additionally, it is possible to define markers directly
+// * inside the JSON definition by using the `markers` JSON object member,
+// * such as:
+// *
+// * |[
+// {
+//  "type" : "ClutterTimeline",
+//  "duration" : 1000,
+//  "markers" : [
+//    { "name" : "quarter", "time" : 250 },
+//    { "name" : "half-time", "time" : 500 },
+//    { "name" : "three-quarters", "time" : 750 }
+//  ]
+// }
+// * ]|
 // TODO: @implements Scriptable
 #[derive(Default, Debug, Clone)]
-pub struct Timeline {}
+pub struct Timeline {
+    props: RefCell<TimelineProps>
+}
 
 impl Timeline {
     /// Creates a new `Timeline` with a duration of `msecs`.
@@ -354,7 +481,7 @@ pub trait TimelineExt: 'static {
     /// ## `notify`
     /// a function to be called when the progress function is removed
     ///  or the timeline is disposed
-    fn set_progress_func(&self, func: Option<Box_<dyn Fn(&Timeline, f64, f64) -> f64 + 'static>>);
+    fn set_progress_func(&self, func: Option<Box<dyn Fn(&Timeline, f64, f64) -> f64 + 'static>>);
 
     /// Sets the progress function using a value from the `AnimationMode`
     /// enumeration. The `mode` cannot be `AnimationMode::CustomMode` or bigger than
@@ -463,8 +590,7 @@ pub trait TimelineExt: 'static {
     ///  timeline.
     fn connect_stopped<F: Fn(&Self, bool) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_auto_reverse_notify<F: Fn(&Self) + 'static>(&self, f: F)
-        -> HandlerId;
+    fn connect_property_auto_reverse_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
     fn connect_property_delay_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
@@ -472,13 +598,9 @@ pub trait TimelineExt: 'static {
 
     fn connect_property_duration_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_progress_mode_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> HandlerId;
+    fn connect_property_progress_mode_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_repeat_count_notify<F: Fn(&Self) + 'static>(&self, f: F)
-        -> HandlerId;
+    fn connect_property_repeat_count_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<Timeline>> TimelineExt for O {
@@ -729,9 +851,9 @@ impl<O: Is<Timeline>> TimelineExt for O {
         unimplemented!()
     }
 
-    fn set_progress_func(&self, func: Option<Box_<dyn Fn(&Timeline, f64, f64) -> f64 + 'static>>) {
-        // let func_data: Box_<Option<Box_<dyn Fn(&Timeline, f64, f64) -> f64 + 'static>>> =
-        //     Box_::new(func);
+    fn set_progress_func(&self, func: Option<Box<dyn Fn(&Timeline, f64, f64) -> f64 + 'static>>) {
+        // let func_data: Box<Option<Box<dyn Fn(&Timeline, f64, f64) -> f64 + 'static>>> =
+        //     Box::new(func);
         // unsafe extern "C" fn func_func(
         //     timeline: *mut ffi::Timeline,
         //     elapsed: libc::c_double,
@@ -739,7 +861,7 @@ impl<O: Is<Timeline>> TimelineExt for O {
         //     user_data: glib_sys::gpointer,
         // ) -> libc::c_double {
         //     let timeline = from_glib_borrow(timeline);
-        //     let callback: &Option<Box_<dyn Fn(&Timeline, f64, f64) -> f64 + 'static>> =
+        //     let callback: &Option<Box<dyn Fn(&Timeline, f64, f64) -> f64 + 'static>> =
         //         &*(user_data as *mut _);
         //     let res = if let Some(ref callback) = *callback {
         //         callback(&timeline, elapsed, total)
@@ -754,17 +876,17 @@ impl<O: Is<Timeline>> TimelineExt for O {
         //     None
         // };
         // unsafe extern "C" fn notify_func(data: glib_sys::gpointer) {
-        //     let _callback: Box_<Option<Box_<dyn Fn(&Timeline, f64, f64) -> f64 + 'static>>> =
-        //         Box_::from_raw(data as *mut _);
+        //     let _callback: Box<Option<Box<dyn Fn(&Timeline, f64, f64) -> f64 + 'static>>> =
+        //         Box::from_raw(data as *mut _);
         // }
         // let destroy_call3 = Some(notify_func as _);
-        // let super_callback0: Box_<Option<Box_<dyn Fn(&Timeline, f64, f64) -> f64 + 'static>>> =
+        // let super_callback0: Box<Option<Box<dyn Fn(&Timeline, f64, f64) -> f64 + 'static>>> =
         //     func_data;
         // unsafe {
         //     ffi::clutter_timeline_set_progress_func(
         //         self.as_ref().to_glib_none().0,
         //         func,
-        //         Box_::into_raw(super_callback0) as *mut _,
+        //         Box::into_raw(super_callback0) as *mut _,
         //         destroy_call3,
         //     );
         // }
@@ -772,10 +894,9 @@ impl<O: Is<Timeline>> TimelineExt for O {
     }
 
     fn set_progress_mode(&self, mode: AnimationMode) {
-        // unsafe {
-        //     ffi::clutter_timeline_set_progress_mode(self.as_ref().to_glib_none().0, mode.to_glib());
-        // }
-        unimplemented!()
+        let timeline = self.as_ref();
+        let mut props = timeline.props.borrow_mut();
+        props.progress_mode = mode;
     }
 
     fn set_repeat_count(&self, count: i32) {
@@ -838,10 +959,7 @@ impl<O: Is<Timeline>> TimelineExt for O {
         unimplemented!()
     }
 
-    fn connect_property_auto_reverse_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> HandlerId {
+    fn connect_property_auto_reverse_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
@@ -857,17 +975,11 @@ impl<O: Is<Timeline>> TimelineExt for O {
         unimplemented!()
     }
 
-    fn connect_property_progress_mode_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> HandlerId {
+    fn connect_property_progress_mode_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 
-    fn connect_property_repeat_count_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> HandlerId {
+    fn connect_property_repeat_count_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()
     }
 }
