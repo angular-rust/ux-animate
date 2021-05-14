@@ -14,9 +14,9 @@ struct StageProps {
     // the stage implementation
     implementation: Option<StageWindow>,
     perspective: Perspective,
-    projection: dx::pure::Matrix,
-    inverse_projection: dx::pure::Matrix,
-    view: dx::pure::Matrix,
+    projection: dx::Matrix,
+    inverse_projection: dx::Matrix,
+    view: dx::Matrix,
     viewport: [f32; 4],
 
     fog: Fog,
@@ -32,7 +32,7 @@ struct StageProps {
     // current_clip_planes: [Plane; 4],
     pending_queue_redraws: Option<Vec<String>>,
 
-    active_framebuffer: Option<dx::pure::Framebuffer>,
+    active_framebuffer: Option<dx::Framebuffer>,
 
     sync_delay: i32,
 

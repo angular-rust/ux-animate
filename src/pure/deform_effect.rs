@@ -27,14 +27,14 @@ use std::fmt;
 // * deformation algorithm.
 // @extends OffscreenEffect, Effect, ActorMeta,
 pub struct DeformEffect {
-    back_pipeline: Option<dx::pure::Pipeline>,
+    back_pipeline: Option<dx::Pipeline>,
 
     x_tiles: i32,
     y_tiles: i32,
 
-    buffer: Option<dx::pure::AttributeBuffer>,
-    primitive: Option<dx::pure::Primitive>,
-    lines_primitive: Option<dx::pure::Primitive>,
+    buffer: Option<dx::AttributeBuffer>,
+    primitive: Option<dx::Primitive>,
+    lines_primitive: Option<dx::Primitive>,
     n_vertices: i32,
     allocation_id: u64,
 

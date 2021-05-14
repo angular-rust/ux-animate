@@ -23,16 +23,17 @@ use std::fmt;
 // * See [canvas.c](https://git.gnome.org/browse/clutter/tree/examples/canvas.c?h=clutter-1.18)
 // * for an example of how to use #Canvas.
 // @implements Content
+#[derive(Debug)]
 pub struct ActorCanvas {
     cr: cairo::Context,
 
     width: u32,
     height: u32,
 
-    texture: dx::pure::Texture,
+    texture: dx::Texture,
     dirty: bool,
 
-    buffer: dx::pure::Bitmap,
+    buffer: dx::Bitmap,
 
     scale_factor: u32,
     scale_factor_set: bool,

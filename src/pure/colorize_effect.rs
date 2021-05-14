@@ -21,7 +21,7 @@ pub struct ColorizeEffect {
     tex_width: i32,
     tex_height: i32,
 
-    pipeline: Option<dx::pure::Pipeline>,
+    pipeline: Option<dx::Pipeline>,
 }
 
 impl ColorizeEffect {

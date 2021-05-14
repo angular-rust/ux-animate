@@ -21,7 +21,7 @@ pub struct BlurEffect {
     tex_width: u32,
     tex_height: u32,
 
-    pipeline: Option<dx::pure::Pipeline>,
+    pipeline: Option<dx::Pipeline>,
 }
 
 impl BlurEffect {

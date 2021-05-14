@@ -2,13 +2,13 @@ use super::{HandlerId, MainContext, Settings};
 use std::{cell::RefCell, fmt};
 
 struct BackendProps {
-    dx_renderer: Option<dx::pure::Renderer>,
-    dx_display: Option<dx::pure::Display>,
-    dx_context: Option<dx::pure::Context>,
+    dx_renderer: Option<dx::Renderer>,
+    dx_display: Option<dx::Display>,
+    dx_context: Option<dx::Context>,
     // dx_source: GSource
-    dummy_onscreen: Option<dx::pure::Onscreen>,
+    dummy_onscreen: Option<dx::Onscreen>,
 
-    // device_manager: Option<dx::pure::DeviceManager>,
+    // device_manager: Option<dx::DeviceManager>,
     font_options: Option<cairo::FontOptions>,
 
     font_name: Option<String>,
@@ -45,7 +45,7 @@ impl Backend {
     // * explicitly create a CoglContext.
     // *
     // * Return value: (transfer none): The #CoglContext associated with @backend.
-    pub fn get_context(&self) -> Option<dx::pure::Context> {
+    pub fn get_context(&self) -> Option<dx::Context> {
         let props = self.props.borrow();
         props.dx_context.clone()
     }
@@ -123,7 +123,7 @@ impl Backend {
         true
     }
 
-    fn do_real_create_context(&self, driver_id: dx::pure::Driver) -> bool {
+    fn do_real_create_context(&self, driver_id: dx::Driver) -> bool {
         // fn error() -> bool {
         //     if backend.dx_display.is_some() {
         //         dx_object_unref(backend.dx_display);

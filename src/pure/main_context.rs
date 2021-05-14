@@ -245,26 +245,26 @@ fn feature_init(backend: &Option<Backend>) -> bool {
     return true;
 }
 
-fn features_from_cogl(dx_flags: dx::pure::FeatureFlags) -> FeatureFlags {
+fn features_from_cogl(dx_flags: dx::FeatureFlags) -> FeatureFlags {
     let mut clutter_flags: FeatureFlags = FeatureFlags::NONE;
 
-    if (dx_flags & dx::pure::FeatureFlags::TEXTURE_NPOT).bits() != 0 {
+    if (dx_flags & dx::FeatureFlags::TEXTURE_NPOT).bits() != 0 {
         clutter_flags |= FeatureFlags::TEXTURE_NPOT;
     }
 
-    if (dx_flags & dx::pure::FeatureFlags::TEXTURE_YUV).bits() != 0 {
+    if (dx_flags & dx::FeatureFlags::TEXTURE_YUV).bits() != 0 {
         clutter_flags |= FeatureFlags::TEXTURE_YUV;
     }
 
-    if (dx_flags & dx::pure::FeatureFlags::TEXTURE_READ_PIXELS).bits() != 0 {
+    if (dx_flags & dx::FeatureFlags::TEXTURE_READ_PIXELS).bits() != 0 {
         clutter_flags |= FeatureFlags::TEXTURE_READ_PIXELS;
     }
 
-    if (dx_flags & dx::pure::FeatureFlags::SHADERS_GLSL).bits() != 0 {
+    if (dx_flags & dx::FeatureFlags::SHADERS_GLSL).bits() != 0 {
         clutter_flags |= FeatureFlags::SHADERS_GLSL;
     }
 
-    if (dx_flags & dx::pure::FeatureFlags::OFFSCREEN).bits() != 0 {
+    if (dx_flags & dx::FeatureFlags::OFFSCREEN).bits() != 0 {
         clutter_flags |= FeatureFlags::OFFSCREEN;
     }
 

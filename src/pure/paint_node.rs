@@ -26,8 +26,8 @@ pub const PAINT_OP_INIT: PaintOperation = PaintOperation {
 pub enum PaintOpCode {
     Invalid,
     TexRect([f32; 8]),
-    Path(dx::pure::Path),
-    Primitive(dx::pure::Primitive),
+    Path(dx::Path),
+    Primitive(dx::Primitive),
 }
 
 pub struct PaintOperation {
@@ -46,14 +46,14 @@ pub struct LayerNode {
 
     pub viewport: cairo::Rectangle,
 
-    pub projection: dx::pure::Matrix,
+    pub projection: dx::Matrix,
 
     pub fbo_width: f32,
     pub fbo_height: f32,
 
-    pub state: Option<dx::pure::Pipeline>,
-    pub offscreen: Option<dx::pure::Framebuffer>,
-    pub texture: Option<dx::pure::Texture>,
+    pub state: Option<dx::Pipeline>,
+    pub offscreen: Option<dx::Framebuffer>,
+    pub texture: Option<dx::Texture>,
 
     pub opacity: u8,
 }
@@ -61,29 +61,29 @@ pub struct LayerNode {
 pub struct RootNode {
     pub parent_instance: PaintNode,
 
-    pub framebuffer: Option<dx::pure::Framebuffer>,
+    pub framebuffer: Option<dx::Framebuffer>,
 
-    pub clear_flags: dx::pure::BufferBit,
-    pub clear_color: dx::pure::Color,
+    pub clear_flags: dx::BufferBit,
+    pub clear_color: dx::Color,
 }
 
 pub struct TransformNode {
     pub parent_instance: PaintNode,
 
-    pub modelview: dx::pure::Matrix,
+    pub modelview: dx::Matrix,
 }
 
 struct DummyNode {
     pub parent_instance: PaintNode,
 
     pub actor: Option<Actor>,
-    pub framebuffer: Option<dx::pure::Framebuffer>,
+    pub framebuffer: Option<dx::Framebuffer>,
 }
 
 pub struct PipelineNode {
     pub parent_instance: PaintNode,
 
-    pub pipeline: Option<dx::pure::Pipeline>,
+    pub pipeline: Option<dx::Pipeline>,
 }
 
 pub struct ColorNode {
@@ -98,7 +98,7 @@ pub struct TextNode {
     pub parent_instance: PaintNode,
 
     pub layout: Option<pango::Layout>,
-    pub color: dx::pure::Color,
+    pub color: dx::Color,
 }
 
 #[derive(Default)]

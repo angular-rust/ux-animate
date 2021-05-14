@@ -29,7 +29,7 @@ impl TextureNode {
     ///
     /// the newly created `PaintNode`.
     ///  Use `PaintNodeExt::unref` when done
-    pub fn new<P: Is<dx::pure::Texture>>(
+    pub fn new<P: Is<dx::Texture>>(
         texture: &P,
         color: Option<Color>,
         min_filter: ScalingFilter,

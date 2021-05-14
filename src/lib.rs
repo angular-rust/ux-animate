@@ -25,9 +25,9 @@ pub mod path;
 
 pub mod interpolate;
 
-#[cfg(not(target_arch = "wasm32"))]
-#[macro_use]
-extern crate glib;
+// #[cfg(not(target_arch = "wasm32"))]
+// #[macro_use]
+// extern crate glib;
 
 #[cfg(not(target_arch = "wasm32"))]
 #[macro_use]
@@ -38,15 +38,6 @@ extern crate bitflags;
 mod rt;
 
 #[cfg(not(target_arch = "wasm32"))]
-#[macro_use]
-mod macros;
-
-#[cfg(not(target_arch = "wasm32"))]
-#[cfg_attr(feature = "cargo-clippy", allow(clippy::type_complexity))]
-#[cfg_attr(feature = "cargo-clippy", allow(clippy::unreadable_literal))]
-mod legacy;
-
-#[cfg(not(target_arch = "wasm32"))]
 #[cfg_attr(feature = "cargo-clippy", allow(clippy::type_complexity))]
 #[cfg_attr(feature = "cargo-clippy", allow(clippy::unreadable_literal))]
 mod pure;
@@ -55,7 +46,7 @@ mod pure;
 pub mod prelude;
 
 #[cfg(not(target_arch = "wasm32"))]
-pub use legacy::*;
+pub use pure::*;
 
 #[cfg(not(target_arch = "wasm32"))]
 pub use self::rt::{init, quit, run, set_initialized};

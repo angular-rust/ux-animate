@@ -63,7 +63,7 @@ pub trait ImageExt: 'static {
     fn set_bytes(
         &self,
         data: &glib::Bytes,
-        pixel_format: dx::pure::PixelFormat,
+        pixel_format: dx::PixelFormat,
         width: u32,
         height: u32,
         row_stride: u32,
@@ -80,7 +80,7 @@ impl<O: Is<Image>> ImageExt for O {
     fn set_bytes(
         &self,
         data: &glib::Bytes,
-        pixel_format: dx::pure::PixelFormat,
+        pixel_format: dx::PixelFormat,
         width: u32,
         height: u32,
         row_stride: u32,

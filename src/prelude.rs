@@ -14,4 +14,4 @@ pub use crate::lottie::LottieBuilderExt;
 pub use crate::AdvancedShapesExt;
 
 #[cfg(not(target_arch = "wasm32"))]
-pub use crate::legacy::traits::*;
+pub use crate::pure::traits::*;
