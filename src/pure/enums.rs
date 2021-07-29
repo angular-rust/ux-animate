@@ -367,6 +367,12 @@ pub enum ContentGravity {
     ResizeAspect,
 }
 
+impl Default for ContentGravity {
+    fn default() -> Self {
+        Self::TopLeft
+    }
+}
+
 impl fmt::Display for ContentGravity {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
@@ -951,6 +957,12 @@ pub enum RequestMode {
     ContentSize,
 }
 
+impl Default for RequestMode {
+    fn default() -> Self {
+        Self::HeightForWidth
+    }
+}
+
 impl fmt::Display for RequestMode {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
@@ -1022,6 +1034,12 @@ pub enum ScalingFilter {
     ///  mipmap generation; this filter linearly interpolates on every axis,
     ///  as well as between mipmap levels.
     Trilinear,
+}
+
+impl Default for ScalingFilter {
+    fn default() -> Self {
+        Self::Linear
+    }
 }
 
 impl fmt::Display for ScalingFilter {
@@ -1376,6 +1394,12 @@ pub enum TextDirection {
     Ltr,
     /// Use right-to-left text direction
     Rtl,
+}
+
+impl Default for TextDirection {
+    fn default() -> Self {
+        Self::Default
+    }
 }
 
 impl fmt::Display for TextDirection {

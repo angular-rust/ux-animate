@@ -159,14 +159,14 @@ pub trait TextExt: 'static {
     /// `true` if the actor is activatable
     fn get_activatable(&self) -> bool;
 
-    /// Gets the attribute list that was set on the `Text` actor
-    /// `TextExt::set_attributes`, if any.
-    ///
-    /// # Returns
-    ///
-    /// the attribute list, or `None` if none was set. The
-    ///  returned value is owned by the `Text` and should not be unreferenced.
-    fn get_attributes(&self) -> Option<pango::AttrList>;
+    // /// Gets the attribute list that was set on the `Text` actor
+    // /// `TextExt::set_attributes`, if any.
+    // ///
+    // /// # Returns
+    // ///
+    // /// the attribute list, or `None` if none was set. The
+    // ///  returned value is owned by the `Text` and should not be unreferenced.
+    // fn get_attributes(&self) -> Option<pango::AttrList>;
 
     /// Get the `TextBuffer` object which holds the text for
     /// this widget.
@@ -238,21 +238,21 @@ pub trait TextExt: 'static {
     /// `true` if the actor is editable
     fn get_editable(&self) -> bool;
 
-    /// Returns the ellipsizing position of a `Text` actor, as
-    /// set by `TextExt::set_ellipsize`.
-    ///
-    /// # Returns
-    ///
-    /// `pango::EllipsizeMode`
-    fn get_ellipsize(&self) -> pango::EllipsizeMode;
+    // /// Returns the ellipsizing position of a `Text` actor, as
+    // /// set by `TextExt::set_ellipsize`.
+    // ///
+    // /// # Returns
+    // ///
+    // /// `pango::EllipsizeMode`
+    // fn get_ellipsize(&self) -> pango::EllipsizeMode;
 
-    /// Retrieves the `pango::FontDescription` used by `self`
-    ///
-    /// # Returns
-    ///
-    /// a `pango::FontDescription`. The returned value is owned
-    ///  by the `Text` actor and it should not be modified or freed
-    fn get_font_description(&self) -> Option<pango::FontDescription>;
+    // /// Retrieves the `pango::FontDescription` used by `self`
+    // ///
+    // /// # Returns
+    // ///
+    // /// a `pango::FontDescription`. The returned value is owned
+    // ///  by the `Text` actor and it should not be modified or freed
+    // fn get_font_description(&self) -> Option<pango::FontDescription>;
 
     /// Retrieves the font name as set by `TextExt::set_font_name`.
     ///
@@ -271,13 +271,13 @@ pub trait TextExt: 'static {
     /// `true` if the text should be justified
     fn get_justify(&self) -> bool;
 
-    /// Retrieves the current `pango::Layout` used by a `Text` actor.
-    ///
-    /// # Returns
-    ///
-    /// a `pango::Layout`. The returned object is owned by
-    ///  the `Text` actor and should not be modified or freed
-    fn get_layout(&self) -> Option<pango::Layout>;
+    // /// Retrieves the current `pango::Layout` used by a `Text` actor.
+    // ///
+    // /// # Returns
+    // ///
+    // /// a `pango::Layout`. The returned object is owned by
+    // ///  the `Text` actor and should not be modified or freed
+    // fn get_layout(&self) -> Option<pango::Layout>;
 
     /// Obtains the coordinates where the `Text` will draw the `pango::Layout`
     /// representing the text.
@@ -287,13 +287,13 @@ pub trait TextExt: 'static {
     /// location to store Y offset of layout, or `None`
     fn get_layout_offsets(&self) -> (i32, i32);
 
-    /// Retrieves the alignment of a `Text`, as set by
-    /// `TextExt::set_line_alignment`.
-    ///
-    /// # Returns
-    ///
-    /// a `pango::Alignment`
-    fn get_line_alignment(&self) -> pango::Alignment;
+    // /// Retrieves the alignment of a `Text`, as set by
+    // /// `TextExt::set_line_alignment`.
+    // ///
+    // /// # Returns
+    // ///
+    // /// a `pango::Alignment`
+    // fn get_line_alignment(&self) -> pango::Alignment;
 
     /// Retrieves the value set using `TextExt::set_line_wrap`.
     ///
@@ -303,14 +303,14 @@ pub trait TextExt: 'static {
     ///  its contents
     fn get_line_wrap(&self) -> bool;
 
-    /// Retrieves the line wrap mode used by the `Text` actor.
-    ///
-    /// See text_set_line_wrap_mode ().
-    ///
-    /// # Returns
-    ///
-    /// the wrap mode used by the `Text`
-    fn get_line_wrap_mode(&self) -> pango::WrapMode;
+    // /// Retrieves the line wrap mode used by the `Text` actor.
+    // ///
+    // /// See text_set_line_wrap_mode ().
+    // ///
+    // /// # Returns
+    // ///
+    // /// the wrap mode used by the `Text`
+    // fn get_line_wrap_mode(&self) -> pango::WrapMode;
 
     /// Gets the maximum length of text that can be set into a text actor.
     ///
@@ -447,14 +447,14 @@ pub trait TextExt: 'static {
     /// whether the `Text` actor should be activatable
     fn set_activatable(&self, activatable: bool);
 
-    /// Sets the attributes list that are going to be applied to the
-    /// `Text` contents.
-    ///
-    /// The `Text` actor will take a reference on the `pango::AttrList`
-    /// passed to this function.
-    /// ## `attrs`
-    /// a `pango::AttrList` or `None` to unset the attributes
-    fn set_attributes(&self, attrs: Option<&pango::AttrList>);
+    // /// Sets the attributes list that are going to be applied to the
+    // /// `Text` contents.
+    // ///
+    // /// The `Text` actor will take a reference on the `pango::AttrList`
+    // /// passed to this function.
+    // /// ## `attrs`
+    // /// a `pango::AttrList` or `None` to unset the attributes
+    // fn set_attributes(&self, attrs: Option<&pango::AttrList>);
 
     /// Set the `TextBuffer` object which holds the text for
     /// this widget.
@@ -518,21 +518,21 @@ pub trait TextExt: 'static {
     /// whether the `Text` should be editable
     fn set_editable(&self, editable: bool);
 
-    /// Sets the mode used to ellipsize (add an ellipsis: "...") to the
-    /// text if there is not enough space to render the entire contents
-    /// of a `Text` actor
-    /// ## `mode`
-    /// a `pango::EllipsizeMode`
-    fn set_ellipsize(&self, mode: pango::EllipsizeMode);
+    // /// Sets the mode used to ellipsize (add an ellipsis: "...") to the
+    // /// text if there is not enough space to render the entire contents
+    // /// of a `Text` actor
+    // /// ## `mode`
+    // /// a `pango::EllipsizeMode`
+    // fn set_ellipsize(&self, mode: pango::EllipsizeMode);
 
-    /// Sets `font_desc` as the font description for a `Text`
-    ///
-    /// The `pango::FontDescription` is copied by the `Text` actor
-    /// so you can safely call `pango::FontDescription::free` on it after
-    /// calling this function.
-    /// ## `font_desc`
-    /// a `pango::FontDescription`
-    fn set_font_description(&self, font_desc: &mut pango::FontDescription);
+    // /// Sets `font_desc` as the font description for a `Text`
+    // ///
+    // /// The `pango::FontDescription` is copied by the `Text` actor
+    // /// so you can safely call `pango::FontDescription::free` on it after
+    // /// calling this function.
+    // /// ## `font_desc`
+    // /// a `pango::FontDescription`
+    // fn set_font_description(&self, font_desc: &mut pango::FontDescription);
 
     /// Sets the font used by a `Text`. The `font_name` string
     /// must either be `None`, which means that the font name from the
@@ -562,15 +562,15 @@ pub trait TextExt: 'static {
     /// whether the text should be justified
     fn set_justify(&self, justify: bool);
 
-    /// Sets the way that the lines of a wrapped label are aligned with
-    /// respect to each other. This does not affect the overall alignment
-    /// of the label within its allocated or specified width.
-    ///
-    /// To align a `Text` actor you should add it to a container
-    /// that supports alignment, or use the anchor point.
-    /// ## `alignment`
-    /// A `pango::Alignment`
-    fn set_line_alignment(&self, alignment: pango::Alignment);
+    // /// Sets the way that the lines of a wrapped label are aligned with
+    // /// respect to each other. This does not affect the overall alignment
+    // /// of the label within its allocated or specified width.
+    // ///
+    // /// To align a `Text` actor you should add it to a container
+    // /// that supports alignment, or use the anchor point.
+    // /// ## `alignment`
+    // /// A `pango::Alignment`
+    // fn set_line_alignment(&self, alignment: pango::Alignment);
 
     /// Sets whether the contents of a `Text` actor should wrap,
     /// if they don't fit the size assigned to the actor.
@@ -578,12 +578,12 @@ pub trait TextExt: 'static {
     /// whether the contents should wrap
     fn set_line_wrap(&self, line_wrap: bool);
 
-    /// If line wrapping is enabled (see `TextExt::set_line_wrap`) this
-    /// function controls how the line wrapping is performed. The default is
-    /// `pango::WrapMode::Word` which means wrap on word boundaries.
-    /// ## `wrap_mode`
-    /// the line wrapping mode
-    fn set_line_wrap_mode(&self, wrap_mode: pango::WrapMode);
+    // /// If line wrapping is enabled (see `TextExt::set_line_wrap`) this
+    // /// function controls how the line wrapping is performed. The default is
+    // /// `pango::WrapMode::Word` which means wrap on word boundaries.
+    // /// ## `wrap_mode`
+    // /// the line wrapping mode
+    // fn set_line_wrap_mode(&self, wrap_mode: pango::WrapMode);
 
     /// Sets `markup` as the contents of a `Text`.
     ///
@@ -618,27 +618,27 @@ pub trait TextExt: 'static {
     /// a Unicode character, or 0 to unset the password character
     fn set_password_char(&self, wc: char);
 
-    /// Sets, or unsets, the pre-edit string. This function is useful
-    /// for input methods to display a string (with eventual specific
-    /// Pango attributes) before it is entered inside the `Text`
-    /// buffer.
-    ///
-    /// The preedit string and attributes are ignored if the `Text`
-    /// actor is not editable.
-    ///
-    /// This function should not be used by applications
-    /// ## `preedit_str`
-    /// the pre-edit string, or `None` to unset it
-    /// ## `preedit_attrs`
-    /// the pre-edit string attributes
-    /// ## `cursor_pos`
-    /// the cursor position for the pre-edit string
-    fn set_preedit_string(
-        &self,
-        preedit_str: Option<&str>,
-        preedit_attrs: Option<&pango::AttrList>,
-        cursor_pos: u32,
-    );
+    // /// Sets, or unsets, the pre-edit string. This function is useful
+    // /// for input methods to display a string (with eventual specific
+    // /// Pango attributes) before it is entered inside the `Text`
+    // /// buffer.
+    // ///
+    // /// The preedit string and attributes are ignored if the `Text`
+    // /// actor is not editable.
+    // ///
+    // /// This function should not be used by applications
+    // /// ## `preedit_str`
+    // /// the pre-edit string, or `None` to unset it
+    // /// ## `preedit_attrs`
+    // /// the pre-edit string attributes
+    // /// ## `cursor_pos`
+    // /// the cursor position for the pre-edit string
+    // fn set_preedit_string(
+    //     &self,
+    //     preedit_str: Option<&str>,
+    //     preedit_attrs: Option<&pango::AttrList>,
+    //     cursor_pos: u32,
+    // );
 
     /// Sets whether a `Text` actor should be selectable.
     ///
@@ -864,14 +864,14 @@ impl<O: Is<Text>> TextExt for O {
         unimplemented!()
     }
 
-    fn get_attributes(&self) -> Option<pango::AttrList> {
-        // unsafe {
-        //     from_glib_none(ffi::clutter_text_get_attributes(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
-    }
+    // fn get_attributes(&self) -> Option<pango::AttrList> {
+    //     // unsafe {
+    //     //     from_glib_none(ffi::clutter_text_get_attributes(
+    //     //         self.as_ref().to_glib_none().0,
+    //     //     ))
+    //     // }
+    //     unimplemented!()
+    // }
 
     fn get_buffer(&self) -> Option<TextBuffer> {
         // unsafe { from_glib_none(ffi::clutter_text_get_buffer(self.as_ref().to_glib_none().0)) }
@@ -950,23 +950,23 @@ impl<O: Is<Text>> TextExt for O {
         unimplemented!()
     }
 
-    fn get_ellipsize(&self) -> pango::EllipsizeMode {
-        // unsafe {
-        //     from_glib(ffi::clutter_text_get_ellipsize(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
-    }
+    // fn get_ellipsize(&self) -> pango::EllipsizeMode {
+    //     // unsafe {
+    //     //     from_glib(ffi::clutter_text_get_ellipsize(
+    //     //         self.as_ref().to_glib_none().0,
+    //     //     ))
+    //     // }
+    //     unimplemented!()
+    // }
 
-    fn get_font_description(&self) -> Option<pango::FontDescription> {
-        // unsafe {
-        //     from_glib_full(ffi::clutter_text_get_font_description(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
-    }
+    // fn get_font_description(&self) -> Option<pango::FontDescription> {
+    //     // unsafe {
+    //     //     from_glib_full(ffi::clutter_text_get_font_description(
+    //     //         self.as_ref().to_glib_none().0,
+    //     //     ))
+    //     // }
+    //     unimplemented!()
+    // }
 
     fn get_font_name(&self) -> Option<String> {
         // unsafe {
@@ -986,10 +986,10 @@ impl<O: Is<Text>> TextExt for O {
         unimplemented!()
     }
 
-    fn get_layout(&self) -> Option<pango::Layout> {
-        // unsafe { from_glib_none(ffi::clutter_text_get_layout(self.as_ref().to_glib_none().0)) }
-        unimplemented!()
-    }
+    // fn get_layout(&self) -> Option<pango::Layout> {
+    //     // unsafe { from_glib_none(ffi::clutter_text_get_layout(self.as_ref().to_glib_none().0)) }
+    //     unimplemented!()
+    // }
 
     fn get_layout_offsets(&self) -> (i32, i32) {
         // unsafe {
@@ -1007,14 +1007,14 @@ impl<O: Is<Text>> TextExt for O {
         unimplemented!()
     }
 
-    fn get_line_alignment(&self) -> pango::Alignment {
-        // unsafe {
-        //     from_glib(ffi::clutter_text_get_line_alignment(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
-    }
+    // fn get_line_alignment(&self) -> pango::Alignment {
+    //     // unsafe {
+    //     //     from_glib(ffi::clutter_text_get_line_alignment(
+    //     //         self.as_ref().to_glib_none().0,
+    //     //     ))
+    //     // }
+    //     unimplemented!()
+    // }
 
     fn get_line_wrap(&self) -> bool {
         // unsafe {
@@ -1025,14 +1025,14 @@ impl<O: Is<Text>> TextExt for O {
         unimplemented!()
     }
 
-    fn get_line_wrap_mode(&self) -> pango::WrapMode {
-        // unsafe {
-        //     from_glib(ffi::clutter_text_get_line_wrap_mode(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
-    }
+    // fn get_line_wrap_mode(&self) -> pango::WrapMode {
+    //     // unsafe {
+    //     //     from_glib(ffi::clutter_text_get_line_wrap_mode(
+    //     //         self.as_ref().to_glib_none().0,
+    //     //     ))
+    //     // }
+    //     unimplemented!()
+    // }
 
     fn get_max_length(&self) -> i32 {
         // unsafe { ffi::clutter_text_get_max_length(self.as_ref().to_glib_none().0) }
@@ -1170,15 +1170,15 @@ impl<O: Is<Text>> TextExt for O {
         unimplemented!()
     }
 
-    fn set_attributes(&self, attrs: Option<&pango::AttrList>) {
-        // unsafe {
-        //     ffi::clutter_text_set_attributes(
-        //         self.as_ref().to_glib_none().0,
-        //         attrs.to_glib_none().0,
-        //     );
-        // }
-        unimplemented!()
-    }
+    // fn set_attributes(&self, attrs: Option<&pango::AttrList>) {
+    //     // unsafe {
+    //     //     ffi::clutter_text_set_attributes(
+    //     //         self.as_ref().to_glib_none().0,
+    //     //         attrs.to_glib_none().0,
+    //     //     );
+    //     // }
+    //     unimplemented!()
+    // }
 
     fn set_buffer<P: Is<TextBuffer>>(&self, buffer: &P) {
         // unsafe {
@@ -1260,22 +1260,22 @@ impl<O: Is<Text>> TextExt for O {
         unimplemented!()
     }
 
-    fn set_ellipsize(&self, mode: pango::EllipsizeMode) {
-        // unsafe {
-        //     ffi::clutter_text_set_ellipsize(self.as_ref().to_glib_none().0, mode.to_glib());
-        // }
-        unimplemented!()
-    }
+    // fn set_ellipsize(&self, mode: pango::EllipsizeMode) {
+    //     // unsafe {
+    //     //     ffi::clutter_text_set_ellipsize(self.as_ref().to_glib_none().0, mode.to_glib());
+    //     // }
+    //     unimplemented!()
+    // }
 
-    fn set_font_description(&self, font_desc: &mut pango::FontDescription) {
-        // unsafe {
-        //     ffi::clutter_text_set_font_description(
-        //         self.as_ref().to_glib_none().0,
-        //         font_desc.to_glib_none_mut().0,
-        //     );
-        // }
-        unimplemented!()
-    }
+    // fn set_font_description(&self, font_desc: &mut pango::FontDescription) {
+    //     // unsafe {
+    //     //     ffi::clutter_text_set_font_description(
+    //     //         self.as_ref().to_glib_none().0,
+    //     //         font_desc.to_glib_none_mut().0,
+    //     //     );
+    //     // }
+    //     unimplemented!()
+    // }
 
     fn set_font_name(&self, font_name: Option<&str>) {
         // unsafe {
@@ -1294,15 +1294,15 @@ impl<O: Is<Text>> TextExt for O {
         unimplemented!()
     }
 
-    fn set_line_alignment(&self, alignment: pango::Alignment) {
-        // unsafe {
-        //     ffi::clutter_text_set_line_alignment(
-        //         self.as_ref().to_glib_none().0,
-        //         alignment.to_glib(),
-        //     );
-        // }
-        unimplemented!()
-    }
+    // fn set_line_alignment(&self, alignment: pango::Alignment) {
+    //     // unsafe {
+    //     //     ffi::clutter_text_set_line_alignment(
+    //     //         self.as_ref().to_glib_none().0,
+    //     //         alignment.to_glib(),
+    //     //     );
+    //     // }
+    //     unimplemented!()
+    // }
 
     fn set_line_wrap(&self, line_wrap: bool) {
         // unsafe {
@@ -1311,15 +1311,15 @@ impl<O: Is<Text>> TextExt for O {
         unimplemented!()
     }
 
-    fn set_line_wrap_mode(&self, wrap_mode: pango::WrapMode) {
-        // unsafe {
-        //     ffi::clutter_text_set_line_wrap_mode(
-        //         self.as_ref().to_glib_none().0,
-        //         wrap_mode.to_glib(),
-        //     );
-        // }
-        unimplemented!()
-    }
+    // fn set_line_wrap_mode(&self, wrap_mode: pango::WrapMode) {
+    //     // unsafe {
+    //     //     ffi::clutter_text_set_line_wrap_mode(
+    //     //         self.as_ref().to_glib_none().0,
+    //     //         wrap_mode.to_glib(),
+    //     //     );
+    //     // }
+    //     unimplemented!()
+    // }
 
     fn set_markup(&self, markup: Option<&str>) {
         // unsafe {
@@ -1342,22 +1342,22 @@ impl<O: Is<Text>> TextExt for O {
         unimplemented!()
     }
 
-    fn set_preedit_string(
-        &self,
-        preedit_str: Option<&str>,
-        preedit_attrs: Option<&pango::AttrList>,
-        cursor_pos: u32,
-    ) {
-        // unsafe {
-        //     ffi::clutter_text_set_preedit_string(
-        //         self.as_ref().to_glib_none().0,
-        //         preedit_str.to_glib_none().0,
-        //         preedit_attrs.to_glib_none().0,
-        //         cursor_pos,
-        //     );
-        // }
-        unimplemented!()
-    }
+    // fn set_preedit_string(
+    //     &self,
+    //     preedit_str: Option<&str>,
+    //     preedit_attrs: Option<&pango::AttrList>,
+    //     cursor_pos: u32,
+    // ) {
+    //     // unsafe {
+    //     //     ffi::clutter_text_set_preedit_string(
+    //     //         self.as_ref().to_glib_none().0,
+    //     //         preedit_str.to_glib_none().0,
+    //     //         preedit_attrs.to_glib_none().0,
+    //     //         cursor_pos,
+    //     //     );
+    //     // }
+    //     unimplemented!()
+    // }
 
     fn set_selectable(&self, selectable: bool) {
         // unsafe {

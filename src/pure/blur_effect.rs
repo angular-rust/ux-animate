@@ -1,13 +1,13 @@
 use super::Actor;
 use std::fmt;
 
-// * @short_description: A blur effect
-// * @see_also: #Effect, #OffscreenEffect
-// *
-// * #BlurEffect is a sub-class of #Effect that allows blurring a
-// * actor and its contents.
-// *
-// * #BlurEffect is available since  1.4
+// @short_description: A blur effect
+// @see_also: #Effect, #OffscreenEffect
+//
+// #BlurEffect is a sub-class of #Effect that allows blurring a
+// actor and its contents.
+//
+// #BlurEffect is available since  1.4
 // @extends OffscreenEffect, Effect, ActorMeta,
 #[derive(Default)]
 pub struct BlurEffect {
@@ -21,7 +21,7 @@ pub struct BlurEffect {
     tex_width: u32,
     tex_height: u32,
 
-    pipeline: Option<dx::Pipeline>,
+    pipeline: Option<dx::core::Pipeline>,
 }
 
 impl BlurEffect {

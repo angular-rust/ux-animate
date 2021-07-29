@@ -1,34 +1,34 @@
 use super::{Actor, EventFlags, EventSequence, EventType, InputDevice, ModifierType, Stage};
 
-// * TouchEvent:
-// * @type: event type
-// * @time: event time
-// * @flags: event flags
-// * @stage: event source stage
-// * @source: event source actor (unused)
-// * @x: the X coordinate of the pointer, relative to the stage
-// * @y: the Y coordinate of the pointer, relative to the stage
-// * @sequence: the event sequence that this event belongs to
-// * @modifier_state: (type ModifierType): a bit-mask representing the state
-// *   of modifier keys (e.g. Control, Shift, and Alt) and the pointer
-// *   buttons. See #ModifierType
-// * @axes: reserved
-// * @device: the device that originated the event. If you want the physical
-// * device the event originated from, use clutter_event_get_source_device()
-// *
-// * Used for touch events.
-// *
-// * The @type field will be one of %CLUTTER_TOUCH_BEGIN, %CLUTTER_TOUCH_END,
-// * %CLUTTER_TOUCH_UPDATE, or %CLUTTER_TOUCH_CANCEL.
-// *
-// * Touch events are grouped into sequences; each touch sequence will begin
-// * with a %CLUTTER_TOUCH_BEGIN event, progress with %CLUTTER_TOUCH_UPDATE
-// * events, and end either with a %CLUTTER_TOUCH_END event or with a
-// * %CLUTTER_TOUCH_CANCEL event.
-// *
-// * With multi-touch capable devices there can be multiple event sequence
-// * running at the same time.
-// *
+// TouchEvent:
+// @type: event type
+// @time: event time
+// @flags: event flags
+// @stage: event source stage
+// @source: event source actor (unused)
+// @x: the X coordinate of the pointer, relative to the stage
+// @y: the Y coordinate of the pointer, relative to the stage
+// @sequence: the event sequence that this event belongs to
+// @modifier_state: (type ModifierType): a bit-mask representing the state
+//   of modifier keys (e.g. Control, Shift, and Alt) and the pointer
+//   buttons. See #ModifierType
+// @axes: reserved
+// @device: the device that originated the event. If you want the physical
+// device the event originated from, use clutter_event_get_source_device()
+//
+// Used for touch events.
+//
+// The @type field will be one of %CLUTTER_TOUCH_BEGIN, %CLUTTER_TOUCH_END,
+// %CLUTTER_TOUCH_UPDATE, or %CLUTTER_TOUCH_CANCEL.
+//
+// Touch events are grouped into sequences; each touch sequence will begin
+// with a %CLUTTER_TOUCH_BEGIN event, progress with %CLUTTER_TOUCH_UPDATE
+// events, and end either with a %CLUTTER_TOUCH_END event or with a
+// %CLUTTER_TOUCH_CANCEL event.
+//
+// With multi-touch capable devices there can be multiple event sequence
+// running at the same time.
+//
 pub struct TouchEvent {
     kind: EventType,
     time: u32,

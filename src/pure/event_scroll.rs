@@ -3,23 +3,23 @@ use super::{
     ScrollSource, Stage,
 };
 
-// * ScrollEvent:
-// * @type: event type
-// * @time: event time
-// * @flags: event flags
-// * @stage: event source stage
-// * @source: event source actor
-// * @x: event X coordinate
-// * @y: event Y coordinate
-// * @direction: direction of the scrolling
-// * @modifier_state: button modifiers
-// * @axes: reserved for future use
-// * @device: the device that originated the event. If you want the physical
-// * device the event originated from, use clutter_event_get_source_device()
-// * @scroll_source: the source of scroll events. This field is available since 1.26
-// * @finish_flags: the axes that were stopped in this event. This field is available since 1.26
-// *
-// * Scroll wheel (or similar device) event
+// ScrollEvent:
+// @type: event type
+// @time: event time
+// @flags: event flags
+// @stage: event source stage
+// @source: event source actor
+// @x: event X coordinate
+// @y: event Y coordinate
+// @direction: direction of the scrolling
+// @modifier_state: button modifiers
+// @axes: reserved for future use
+// @device: the device that originated the event. If you want the physical
+// device the event originated from, use clutter_event_get_source_device()
+// @scroll_source: the source of scroll events. This field is available since 1.26
+// @finish_flags: the axes that were stopped in this event. This field is available since 1.26
+//
+// Scroll wheel (or similar device) event
 pub struct ScrollEvent {
     kind: EventType,
     time: u32,

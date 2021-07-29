@@ -2,14 +2,14 @@ use super::{HandlerId, MainContext, Settings};
 use std::{cell::RefCell, fmt};
 
 struct BackendProps {
-    dx_renderer: Option<dx::Renderer>,
-    dx_display: Option<dx::Display>,
-    dx_context: Option<dx::Context>,
+    dx_renderer: Option<dx::core::Renderer>,
+    dx_display: Option<dx::core::Display>,
+    dx_context: Option<dx::core::Context>,
     // dx_source: GSource
-    dummy_onscreen: Option<dx::Onscreen>,
+    dummy_onscreen: Option<dx::core::Onscreen>,
 
     // device_manager: Option<dx::DeviceManager>,
-    font_options: Option<cairo::FontOptions>,
+    // font_options: Option<cairo::FontOptions>,
 
     font_name: Option<String>,
 
@@ -17,37 +17,39 @@ struct BackendProps {
     units_serial: i32,
     // event_translators: Vec<>
 }
-// * @short_description: Backend abstraction
-// *
-// *  can be compiled against different backends. Each backend
-// * has to implement a set of functions, in order to be used by .
-// *
-// * #Backend is the base class abstracting the various implementation;
-// * it provides a basic API to query the backend for generic information
-// * and settings.
+// @short_description: Backend abstraction
+//
+//  can be compiled against different backends. Each backend
+// has to implement a set of functions, in order to be used by .
+//
+// #Backend is the base class abstracting the various implementation;
+// it provides a basic API to query the backend for generic information
+// and settings.
 pub struct Backend {
     props: RefCell<BackendProps>,
 }
 
 impl Backend {
-    // * clutter_backend_get_dx_context:
-    // * @backend: a #Backend
-    // *
-    // * Retrieves the #CoglContext associated with the given clutter
-    // * @backend. A #CoglContext is required when using some of the
-    // * experimental 2.0 Cogl API.
-    // *
-    // * Since CoglContext is itself experimental API this API should
-    // * be considered experimental too.
-    // *
-    // * This API is not yet supported on OSX because OSX still
-    // * uses the stub Cogl winsys and the  backend doesn't
-    // * explicitly create a CoglContext.
-    // *
-    // * Return value: (transfer none): The #CoglContext associated with @backend.
-    pub fn get_context(&self) -> Option<dx::Context> {
+    // clutter_backend_get_dx_context:
+    // @backend: a #Backend
+    //
+    // Retrieves the #CoglContext associated with the given clutter
+    // @backend. A #CoglContext is required when using some of the
+    // experimental 2.0 Cogl API.
+    //
+    // Since CoglContext is itself experimental API this API should
+    // be considered experimental too.
+    //
+    // This API is not yet supported on OSX because OSX still
+    // uses the stub Cogl winsys and the  backend doesn't
+    // explicitly create a CoglContext.
+    //
+    // Return value: (transfer none): The #CoglContext associated with @backend.
+    // TODO: should use singleton
+    pub fn get_context(&self) -> Option<dx::core::Context> {
         let props = self.props.borrow();
-        props.dx_context.clone()
+        // props.dx_context.clone()
+        unimplemented!()
     }
 
     pub fn create_context(&self) -> bool {
@@ -123,7 +125,7 @@ impl Backend {
         true
     }
 
-    fn do_real_create_context(&self, driver_id: dx::Driver) -> bool {
+    fn do_real_create_context(&self, driver_id: dx::core::Driver) -> bool {
         // fn error() -> bool {
         //     if backend.dx_display.is_some() {
         //         dx_object_unref(backend.dx_display);
@@ -307,29 +309,29 @@ impl Backend {
         }
     }
 
-    /// Retrieves the font options for `self`.
-    ///
-    /// # Returns
-    ///
-    /// the font options of the `Backend`.
-    ///  The returned `cairo::FontOptions` is owned by the backend and should
-    ///  not be modified or freed
-    pub fn get_font_options(&self) -> cairo::FontOptions {
-        let mut props = self.props.borrow_mut();
-        match &props.font_options {
-            Some(font_options) => font_options.clone(),
-            None => {
-                let mut font_options = cairo::FontOptions::new();
-                font_options.set_hint_style(cairo::HintStyle::None);
-                font_options.set_subpixel_order(cairo::SubpixelOrder::Default);
-                font_options.set_antialias(cairo::Antialias::Default);
+    // /// Retrieves the font options for `self`.
+    // ///
+    // /// # Returns
+    // ///
+    // /// the font options of the `Backend`.
+    // ///  The returned `cairo::FontOptions` is owned by the backend and should
+    // ///  not be modified or freed
+    // pub fn get_font_options(&self) -> cairo::FontOptions {
+    //     let mut props = self.props.borrow_mut();
+    //     match &props.font_options {
+    //         Some(font_options) => font_options.clone(),
+    //         None => {
+    //             let mut font_options = cairo::FontOptions::new();
+    //             font_options.set_hint_style(cairo::HintStyle::None);
+    //             font_options.set_subpixel_order(cairo::SubpixelOrder::Default);
+    //             font_options.set_antialias(cairo::Antialias::Default);
 
-                props.font_options = Some(font_options.clone());
+    //             props.font_options = Some(font_options.clone());
 
-                font_options
-            }
-        }
-    }
+    //             font_options
+    //         }
+    //     }
+    // }
 
     /// Gets the resolution for font handling on the screen.
     ///
@@ -356,25 +358,25 @@ impl Backend {
         resolution / 1024.0
     }
 
-    /// Sets the new font options for `self`. The `Backend` will
-    /// copy the `cairo::FontOptions`.
-    ///
-    /// If `options` is `None`, the first following call to
-    /// `Backend::get_font_options` will return the default font
-    /// options for `self`.
-    ///
-    /// This function is intended for actors creating a Pango layout
-    /// using the PangoCairo API.
-    /// ## `options`
-    /// Cairo font options for the backend, or `None`
-    pub fn set_font_options(&self, options: Option<cairo::FontOptions>) {
-        let mut props = self.props.borrow_mut();
+    // /// Sets the new font options for `self`. The `Backend` will
+    // /// copy the `cairo::FontOptions`.
+    // ///
+    // /// If `options` is `None`, the first following call to
+    // /// `Backend::get_font_options` will return the default font
+    // /// options for `self`.
+    // ///
+    // /// This function is intended for actors creating a Pango layout
+    // /// using the PangoCairo API.
+    // /// ## `options`
+    // /// Cairo font options for the backend, or `None`
+    // pub fn set_font_options(&self, options: Option<cairo::FontOptions>) {
+    //     let mut props = self.props.borrow_mut();
 
-        if props.font_options != options {
-            props.font_options = options;
-            // g_signal_emit (backend, backend_signals[FONT_CHANGED], 0);
-        }
-    }
+    //     if props.font_options != options {
+    //         props.font_options = options;
+    //         // g_signal_emit (backend, backend_signals[FONT_CHANGED], 0);
+    //     }
+    // }
 
     /// The ::font-changed signal is emitted each time the font options
     /// have been changed through `Settings`.

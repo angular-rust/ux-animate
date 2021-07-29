@@ -7,16 +7,16 @@ mod webimpl;
 #[cfg(target_arch = "wasm32")]
 pub use webimpl::*;
 
-#[cfg(not(target_arch = "wasm32"))]
-mod cairoimpl;
-#[cfg(not(target_arch = "wasm32"))]
-pub use cairoimpl::*;
+// #[cfg(not(target_arch = "wasm32"))]
+// mod cairoimpl;
+// #[cfg(not(target_arch = "wasm32"))]
+// pub use cairoimpl::*;
 
-mod rough;
-pub use rough::*;
+// mod rough;
+// pub use rough::*;
 
 pub trait AdvancedShapesExt {
-    // /**
+    //*
     //  * Create a rectangle
     //  * Optional with rounded corners if radius is set
     //  * @param x position on the x axis in pixel
@@ -27,7 +27,7 @@ pub trait AdvancedShapesExt {
     //  * @return rectangle item instance
     //  */
     fn round_rect(&self, x: f64, y: f64, width: f64, height: f64, radius: f64);
-    // /**
+    //*
     //  * Create a symmetric polygon
     //  * @param x Position on x-axis in pixel
     //  * @param y Position on y-axis in pixel
@@ -36,7 +36,7 @@ pub trait AdvancedShapesExt {
     //  * @return polygon item instance
     //  */
     fn polygon(&self, x: f64, y: f64, radius: f64, n: usize);
-    // /**
+    //*
     //  * Create a path
     //  * @param x start of the path at position x in pixel
     //  * @param y start of the path at position y in pixel

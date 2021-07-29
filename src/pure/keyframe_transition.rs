@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 use super::AnimationMode;
 use crate::prelude::*;
 use std::fmt;
@@ -46,20 +47,20 @@ pub trait KeyframeTransitionExt: 'static {
     /// Removes all key frames from `self`.
     fn clear(&self);
 
-    /// Retrieves the details of the key frame at `index_` inside `self`.
-    ///
-    /// The `self` must already have key frames set, and `index_` must be
-    /// smaller than the number of key frames.
-    /// ## `index_`
-    /// the index of the key frame
-    /// ## `key`
-    /// return location for the key, or `None`
-    /// ## `mode`
-    /// return location for the easing mode, or `None`
-    /// ## `value`
-    /// a `gobject::Value` initialized with the type of
-    ///  the values
-    fn get_key_frame(&self, index_: u32) -> (f64, AnimationMode, glib::Value);
+    // /// Retrieves the details of the key frame at `index_` inside `self`.
+    // ///
+    // /// The `self` must already have key frames set, and `index_` must be
+    // /// smaller than the number of key frames.
+    // /// ## `index_`
+    // /// the index of the key frame
+    // /// ## `key`
+    // /// return location for the key, or `None`
+    // /// ## `mode`
+    // /// return location for the easing mode, or `None`
+    // /// ## `value`
+    // /// a `gobject::Value` initialized with the type of
+    // ///  the values
+    // fn get_key_frame(&self, index_: u32) -> (f64, AnimationMode, glib::Value);
 
     /// Retrieves the number of key frames inside `self`.
     ///
@@ -70,19 +71,19 @@ pub trait KeyframeTransitionExt: 'static {
 
     //fn set(&self, gtype: glib::types::Type, n_key_frames: u32, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs);
 
-    /// Sets the details of the key frame at `index_` inside `self`.
-    ///
-    /// The `self` must already have a key frame at `index_`, and `index_`
-    /// must be smaller than the number of key frames inside `self`.
-    /// ## `index_`
-    /// the index of the key frame
-    /// ## `key`
-    /// the key of the key frame
-    /// ## `mode`
-    /// the easing mode of the key frame
-    /// ## `value`
-    /// a `gobject::Value` containing the value of the key frame
-    fn set_key_frame(&self, index_: u32, key: f64, mode: AnimationMode, value: &glib::Value);
+    // /// Sets the details of the key frame at `index_` inside `self`.
+    // ///
+    // /// The `self` must already have a key frame at `index_`, and `index_`
+    // /// must be smaller than the number of key frames inside `self`.
+    // /// ## `index_`
+    // /// the index of the key frame
+    // /// ## `key`
+    // /// the key of the key frame
+    // /// ## `mode`
+    // /// the easing mode of the key frame
+    // /// ## `value`
+    // /// a `gobject::Value` containing the value of the key frame
+    // fn set_key_frame(&self, index_: u32, key: f64, mode: AnimationMode, value: &glib::Value);
 
     /// Sets the keys for each key frame inside `self`.
     ///
@@ -98,17 +99,17 @@ pub trait KeyframeTransitionExt: 'static {
 
     //fn set_modes(&self, modes: /*Unimplemented*/&CArray TypeId { ns_id: 1, id: 28 });
 
-    /// Sets the values for each key frame inside `self`.
-    ///
-    /// If `self` does not hold any key frame, `n_values` key frames will
-    /// be created; if `self` already has key frames, `values` must have
-    /// at least as many elements as the number of key frames.
-    /// ## `n_values`
-    /// the number of values
-    /// ## `values`
-    /// an array of values, one for each
-    ///  key frame
-    fn set_values(&self, values: &[&glib::Value]);
+    // /// Sets the values for each key frame inside `self`.
+    // ///
+    // /// If `self` does not hold any key frame, `n_values` key frames will
+    // /// be created; if `self` already has key frames, `values` must have
+    // /// at least as many elements as the number of key frames.
+    // /// ## `n_values`
+    // /// the number of values
+    // /// ## `values`
+    // /// an array of values, one for each
+    // ///  key frame
+    // fn set_values(&self, values: &[&glib::Value]);
 }
 
 impl<O: Is<KeyframeTransition>> KeyframeTransitionExt for O {
@@ -119,24 +120,24 @@ impl<O: Is<KeyframeTransition>> KeyframeTransitionExt for O {
         unimplemented!()
     }
 
-    fn get_key_frame(&self, index_: u32) -> (f64, AnimationMode, glib::Value) {
-        // unsafe {
-        //     let mut key = mem::MaybeUninit::uninit();
-        //     let mut mode = mem::MaybeUninit::uninit();
-        //     let mut value = glib::Value::uninitialized();
-        //     ffi::clutter_keyframe_transition_get_key_frame(
-        //         self.as_ref().to_glib_none().0,
-        //         index_,
-        //         key.as_mut_ptr(),
-        //         mode.as_mut_ptr(),
-        //         value.to_glib_none_mut().0,
-        //     );
-        //     let key = key.assume_init();
-        //     let mode = mode.assume_init();
-        //     (key, from_glib(mode), value)
-        // }
-        unimplemented!()
-    }
+    // fn get_key_frame(&self, index_: u32) -> (f64, AnimationMode, glib::Value) {
+    //     // unsafe {
+    //     //     let mut key = mem::MaybeUninit::uninit();
+    //     //     let mut mode = mem::MaybeUninit::uninit();
+    //     //     let mut value = glib::Value::uninitialized();
+    //     //     ffi::clutter_keyframe_transition_get_key_frame(
+    //     //         self.as_ref().to_glib_none().0,
+    //     //         index_,
+    //     //         key.as_mut_ptr(),
+    //     //         mode.as_mut_ptr(),
+    //     //         value.to_glib_none_mut().0,
+    //     //     );
+    //     //     let key = key.assume_init();
+    //     //     let mode = mode.assume_init();
+    //     //     (key, from_glib(mode), value)
+    //     // }
+    //     unimplemented!()
+    // }
 
     fn get_n_key_frames(&self) -> u32 {
         // unsafe { ffi::clutter_keyframe_transition_get_n_key_frames(self.as_ref().to_glib_none().0) }
@@ -147,18 +148,18 @@ impl<O: Is<KeyframeTransition>> KeyframeTransitionExt for O {
     //    unsafe { TODO: call clutter_sys:clutter_keyframe_transition_set() }
     //}
 
-    fn set_key_frame(&self, index_: u32, key: f64, mode: AnimationMode, value: &glib::Value) {
-        // unsafe {
-        //     ffi::clutter_keyframe_transition_set_key_frame(
-        //         self.as_ref().to_glib_none().0,
-        //         index_,
-        //         key,
-        //         mode.to_glib(),
-        //         value.to_glib_none().0,
-        //     );
-        // }
-        unimplemented!()
-    }
+    // fn set_key_frame(&self, index_: u32, key: f64, mode: AnimationMode, value: &glib::Value) {
+    //     // unsafe {
+    //     //     ffi::clutter_keyframe_transition_set_key_frame(
+    //     //         self.as_ref().to_glib_none().0,
+    //     //         index_,
+    //     //         key,
+    //     //         mode.to_glib(),
+    //     //         value.to_glib_none().0,
+    //     //     );
+    //     // }
+    //     unimplemented!()
+    // }
 
     fn set_key_frames(&self, key_frames: &[f64]) {
         // let n_key_frames = key_frames.len() as u32;
@@ -176,17 +177,17 @@ impl<O: Is<KeyframeTransition>> KeyframeTransitionExt for O {
     //    unsafe { TODO: call clutter_sys:clutter_keyframe_transition_set_modes() }
     //}
 
-    fn set_values(&self, values: &[&glib::Value]) {
-        // let n_values = values.len() as u32;
-        // unsafe {
-        //     ffi::clutter_keyframe_transition_set_values(
-        //         self.as_ref().to_glib_none().0,
-        //         n_values,
-        //         values.to_glib_none().0,
-        //     );
-        // }
-        unimplemented!()
-    }
+    // fn set_values(&self, values: &[&glib::Value]) {
+    //     // let n_values = values.len() as u32;
+    //     // unsafe {
+    //     //     ffi::clutter_keyframe_transition_set_values(
+    //     //         self.as_ref().to_glib_none().0,
+    //     //         n_values,
+    //     //         values.to_glib_none().0,
+    //     //     );
+    //     // }
+    //     unimplemented!()
+    // }
 }
 
 impl fmt::Display for KeyframeTransition {

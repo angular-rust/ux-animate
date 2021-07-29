@@ -1,7 +1,7 @@
 use crate::prelude::*;
 use super::{Actor, ActorBox, Vertex};
 
-#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Clone)]
+#[derive(Default, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Clone)]
 pub struct PaintVolume{
 }
 

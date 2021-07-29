@@ -3,42 +3,42 @@ use crate::prelude::*;
 use crate::Rect;
 use std::fmt;
 
-// * @Title: DragAction
-// * @Short_Description: Action enabling dragging on actors
-// *
-// * #DragAction is a sub-class of #Action that implements
-// * all the necessary logic for dragging actors.
-// *
-// * The simplest usage of #DragAction consists in adding it to
-// * a #Actor and setting it as reactive; for instance, the following
-// * code:
-// *
-// * |[<!-- language="C" -->
-// *   clutter_actor_add_action (actor, clutter_drag_action_new ());
-// *   clutter_actor_set_reactive (actor, TRUE);
-// * ]|
-// *
-// * will automatically result in the actor moving to follow the pointer
-// * whenever the pointer's button is pressed over the actor and moved
-// * across the stage.
-// *
-// * The #DragAction will signal the begin and the end of a dragging
-// * through the #DragAction::drag-begin and #DragAction::drag-end
-// * signals, respectively. Each pointer motion during a drag will also result
-// * in the #DragAction::drag-motion signal to be emitted.
-// *
-// * It is also possible to set another #Actor as the dragged actor
-// * by calling clutter_drag_action_set_drag_handle() from within a handle
-// * of the #DragAction::drag-begin signal. The drag handle must be
-// * parented and exist between the emission of #DragAction::drag-begin
-// * and #DragAction::drag-end.
-// *
-// * The [drag-action example](https://git.gnome.org/browse/clutter/tree/examples/drag-action.c?h=clutter-1.18)
-// * allows dragging the rectangle around the stage using a #DragAction.
-// * When pressing the `Shift` key the actor that is being dragged will be a
-// * separate rectangle, and when the drag ends, the original rectangle will be
-// * animated to the final drop coordinates.
-// *
+// @Title: DragAction
+// @Short_Description: Action enabling dragging on actors
+//
+// #DragAction is a sub-class of #Action that implements
+// all the necessary logic for dragging actors.
+//
+// The simplest usage of #DragAction consists in adding it to
+// a #Actor and setting it as reactive; for instance, the following
+// code:
+//
+// |[<!-- language="C" -->
+//   clutter_actor_add_action (actor, clutter_drag_action_new ());
+//   clutter_actor_set_reactive (actor, TRUE);
+// ]|
+//
+// will automatically result in the actor moving to follow the pointer
+// whenever the pointer's button is pressed over the actor and moved
+// across the stage.
+//
+// The #DragAction will signal the begin and the end of a dragging
+// through the #DragAction::drag-begin and #DragAction::drag-end
+// signals, respectively. Each pointer motion during a drag will also result
+// in the #DragAction::drag-motion signal to be emitted.
+//
+// It is also possible to set another #Actor as the dragged actor
+// by calling clutter_drag_action_set_drag_handle() from within a handle
+// of the #DragAction::drag-begin signal. The drag handle must be
+// parented and exist between the emission of #DragAction::drag-begin
+// and #DragAction::drag-end.
+//
+// The [drag-action example](https://git.gnome.org/browse/clutter/tree/examples/drag-action.c?h=clutter-1.18)
+// allows dragging the rectangle around the stage using a #DragAction.
+// When pressing the `Shift` key the actor that is being dragged will be a
+// separate rectangle, and when the drag ends, the original rectangle will be
+// animated to the final drop coordinates.
+//
 // @extends Action, ActorMeta,
 #[derive(Default)]
 pub struct DragAction {

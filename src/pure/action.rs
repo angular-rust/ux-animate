@@ -2,11 +2,11 @@ use crate::prelude::*;
 use super::ActorMeta;
 use std::fmt;
 
-// * Action:
-// *
-// * The #Action structure contains only private data and
-// * should be accessed using the provided API.
-// *
+// Action:
+//
+// The #Action structure contains only private data and
+// should be accessed using the provided API.
+//
 
 // It should be Trait
 #[derive(Default, Debug, Clone)]

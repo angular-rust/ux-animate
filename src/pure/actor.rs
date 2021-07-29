@@ -7,11 +7,765 @@ use super::{
 };
 use crate::prelude::*;
 use crate::{Color, Rect};
-use std::fmt;
+use std::{
+    cell::RefCell,
+    fmt,
+    rc::{Rc, Weak},
+};
 
+// SECTION:clutter-actor
+// @short_description: The basic element of the scene graph
+//
+// The ClutterActor class is the basic element of the scene graph in Clutter,
+// and it encapsulates the position, size, and transformations of a node in
+// the graph.
+//
+// ## Actor transformations ## {#clutter-actor-transformations}
+//
+// Each actor can be transformed using methods like clutter_actor_set_scale()
+// or clutter_actor_set_rotation(). The order in which the transformations are
+// applied is decided by Clutter and it is the following:
+//
+//  1. translation by the origin of the #ClutterActor:allocation property
+//  2. translation by the actor's #ClutterActor:z-position property
+//  3. translation by the actor's #ClutterActor:pivot-point property
+//  4. scaling by the #ClutterActor:scale-x and #ClutterActor:scale-y factors
+//  5. rotation around the #ClutterActor:rotation-angle-x and #ClutterActor:rotation-center-x
+//  6. rotation around the #ClutterActor:rotation-angle-y and #ClutterActor:rotation-center-y
+//  7. rotation around the #ClutterActor:rotation-angle-z and #ClutterActor:rotation-center-z
+//  8. negative translation by the #ClutterActor:anchor-x and #ClutterActor:anchor-y point.
+//  9. negative translation by the actor's #ClutterActor:pivot-point
+//
+// ## Modifying an actor's geometry ## {#clutter-actor-geometry}
+//
+// Each actor has a bounding box, called #ClutterActor:allocation
+// which is either set by its parent or explicitly through the
+// clutter_actor_set_position() and clutter_actor_set_size() methods.
+// Each actor also has an implicit preferred size.
+//
+// An actor’s preferred size can be defined by any subclass by
+// overriding the #ClutterActorClass.get_preferred_width() and the
+// #ClutterActorClass.get_preferred_height() virtual functions, or it can
+// be explicitly set by using clutter_actor_set_width() and
+// clutter_actor_set_height().
+//
+// An actor’s position can be set explicitly by using
+// clutter_actor_set_x() and clutter_actor_set_y(); the coordinates are
+// relative to the origin of the actor’s parent.
+//
+// ## Managing actor children ## {#clutter-actor-children}
+//
+// Each actor can have multiple children, by calling
+// clutter_actor_add_child() to add a new child actor, and
+// clutter_actor_remove_child() to remove an existing child. #ClutterActor
+// will hold a reference on each child actor, which will be released when
+// the child is removed from its parent, or destroyed using
+// clutter_actor_destroy().
+//
+// |[<!-- language="C" -->
+//  ClutterActor *actor = clutter_actor_new ();
+//
+//  // set the bounding box of the actor
+//  clutter_actor_set_position (actor, 0, 0);
+//  clutter_actor_set_size (actor, 480, 640);
+//
+//  // set the background color of the actor
+//  clutter_actor_set_background_color (actor, CLUTTER_COLOR_Orange);
+//
+//  // set the bounding box of the child, relative to the parent
+//  ClutterActor *child = clutter_actor_new ();
+//  clutter_actor_set_position (child, 20, 20);
+//  clutter_actor_set_size (child, 80, 240);
+//
+//  // set the background color of the child
+//  clutter_actor_set_background_color (child, CLUTTER_COLOR_Blue);
+//
+//  // add the child to the actor
+//  clutter_actor_add_child (actor, child);
+// ]|
+//
+// Children can be inserted at a given index, or above and below
+// another child actor. The order of insertion determines the order of the
+// children when iterating over them. Iterating over children is performed
+// by using clutter_actor_get_first_child(), clutter_actor_get_previous_sibling(),
+// clutter_actor_get_next_sibling(), and clutter_actor_get_last_child(). It is
+// also possible to retrieve a list of children by using
+// clutter_actor_get_children(), as well as retrieving a specific child at a
+// given index by using clutter_actor_get_child_at_index().
+//
+// If you need to track additions of children to a #ClutterActor, use
+// the #ClutterContainer::actor-added signal; similarly, to track removals
+// of children from a ClutterActor, use the #ClutterContainer::actor-removed
+// signal.
+//
+// See [basic-actor.c](https://git.gnome.org/browse/clutter/tree/examples/basic-actor.c?h=clutter-1.18).
+//
+// ## Painting an actor ## {#clutter-actor-painting}
+//
+// There are three ways to paint an actor:
+//
+//  - set a delegate #ClutterContent as the value for the #ClutterActor:content property of the actor
+//  - subclass #ClutterActor and override the #ClutterActorClass.paint_node() virtual function
+//  - subclass #ClutterActor and override the #ClutterActorClass.paint() virtual function.
+//
+// A #ClutterContent is a delegate object that takes over the painting
+// operations of one, or more actors. The #ClutterContent painting will
+// be performed on top of the #ClutterActor:background-color of the actor,
+// and before calling the actor's own implementation of the
+// #ClutterActorClass.paint_node() virtual function.
+//
+// |[<!-- language="C" -->
+// ClutterActor *actor = clutter_actor_new ();
+//
+// // set the bounding box
+// clutter_actor_set_position (actor, 50, 50);
+// clutter_actor_set_size (actor, 100, 100);
+//
+// // set the content; the image_content variable is set elsewhere
+// clutter_actor_set_content (actor, image_content);
+// ]|
+//
+// The #ClutterActorClass.paint_node() virtual function is invoked whenever
+// an actor needs to be painted. The implementation of the virtual function
+// must only paint the contents of the actor itself, and not the contents of
+// its children, if the actor has any.
+//
+// The #ClutterPaintNode passed to the virtual function is the local root of
+// the render tree; any node added to it will be rendered at the correct
+// position, as defined by the actor's #ClutterActor:allocation.
+//
+// |[<!-- language="C" -->
+// static void
+// my_actor_paint_node (ClutterActor     *actor,
+//                      ClutterPaintNode *root)
+// {
+//   ClutterPaintNode *node;
+//   ClutterActorBox box;
+//
+//   // where the content of the actor should be painted
+//   clutter_actor_get_allocation_box (actor, &box);
+//
+//   // the cogl_texture variable is set elsewhere
+//   node = clutter_texture_node_new (cogl_texture, CLUTTER_COLOR_White,
+//                                    CLUTTER_SCALING_FILTER_TRILINEAR,
+//                                    CLUTTER_SCALING_FILTER_LINEAR);
+//
+//   // paint the content of the node using the allocation
+//   clutter_paint_node_add_rectangle (node, &box);
+//
+//   // add the node, and transfer ownership
+//   clutter_paint_node_add_child (root, node);
+//   clutter_paint_node_unref (node);
+// }
+//
+// The #ClutterActorClass.paint() virtual function is invoked when the
+// #ClutterActor::paint signal is emitted, and after the other signal
+// handlers have been invoked. Overriding the paint virtual function
+// gives total control to the paint sequence of the actor itself,
+// including the children of the actor, if any.
+//
+// It is strongly discouraged to override the #ClutterActorClass.paint()
+// virtual function, as well as connecting to the #ClutterActor::paint
+// signal. These hooks into the paint sequence are considered legacy, and
+// will be removed when the Clutter API changes.
+//
+// ## Handling events on an actor ## {#clutter-actor-event-handling}
+//
+// A #ClutterActor can receive and handle input device events, for
+// instance pointer events and key events, as long as its
+// #ClutterActor:reactive property is set to %TRUE.
+//
+// Once an actor has been determined to be the source of an event,
+// Clutter will traverse the scene graph from the top-level actor towards the
+// event source, emitting the #ClutterActor::captured-event signal on each
+// ancestor until it reaches the source; this phase is also called
+// the "capture" phase. If the event propagation was not stopped, the graph
+// is walked backwards, from the source actor to the top-level, and the
+// #ClutterActor::event signal is emitted, alongside eventual event-specific
+// signals like #ClutterActor::button-press-event or #ClutterActor::motion-event;
+// this phase is also called the "bubble" phase.
+//
+// At any point of the signal emission, signal handlers can stop the propagation
+// through the scene graph by returning %CLUTTER_EVENT_STOP; otherwise, they can
+// continue the propagation by returning %CLUTTER_EVENT_PROPAGATE.
+//
+// ## Animation ## {#clutter-actor-animation}
+//
+// Animation is a core concept of modern user interfaces; Clutter provides a
+// complete and powerful animation framework that automatically tweens the
+// actor's state without requiring direct, frame by frame manipulation from
+// your application code. You have two models at your disposal:
+//
+//  - an implicit animation model
+//  - an explicit animation model
+//
+// The implicit animation model of Clutter assumes that all the
+// changes in an actor state should be gradual and asynchronous; Clutter
+// will automatically transition an actor's property change between the
+// current state and the desired one without manual intervention, if the
+// property is defined to be animatable in its documentation.
+//
+// By default, in the 1.0 API series, the transition happens with a duration
+// of zero milliseconds, and the implicit animation is an opt in feature to
+// retain backwards compatibility.
+//
+// Implicit animations depend on the current easing state; in order to use
+// the default easing state for an actor you should call the
+// clutter_actor_save_easing_state() function:
+//
+// |[<!-- language="C" -->
+// // assume that the actor is currently positioned at (100, 100)
+//
+// // store the current easing state and reset the new easing state to
+// // its default values
+// clutter_actor_save_easing_state (actor);
+//
+// // change the actor's position
+// clutter_actor_set_position (actor, 500, 500);
+//
+// // restore the previously saved easing state
+// clutter_actor_restore_easing_state (actor);
+// ]|
+//
+// The example above will trigger an implicit animation of the
+// actor between its current position to a new position.
+//
+// Implicit animations use a default duration of 250 milliseconds,
+// and a default easing mode of %CLUTTER_EASE_OUT_CUBIC, unless you call
+// clutter_actor_set_easing_mode() and clutter_actor_set_easing_duration()
+// after changing the easing state of the actor.
+//
+// It is possible to animate multiple properties of an actor
+// at the same time, and you can animate multiple actors at the same
+// time as well, for instance:
+//
+// |[<!-- language="C" -->
+// clutter_actor_save_easing_state (actor);
+//
+// // animate the actor's opacity and depth
+// clutter_actor_set_opacity (actor, 0);
+// clutter_actor_set_depth (actor, -100);
+//
+// clutter_actor_restore_easing_state (actor);
+//
+// clutter_actor_save_easing_state (another_actor);
+//
+// // animate another actor's opacity
+// clutter_actor_set_opacity (another_actor, 255);
+// clutter_actor_set_depth (another_actor, 100);
+//
+// clutter_actor_restore_easing_state (another_actor);
+// ]|
+//
+// Changing the easing state will affect all the following property
+// transitions, but will not affect existing transitions.
+//
+// It is important to note that if you modify the state on an
+// animatable property while a transition is in flight, the transition's
+// final value will be updated, as well as its duration and progress
+// mode by using the current easing state; for instance, in the following
+// example:
+//
+// |[<!-- language="C" -->
+// clutter_actor_save_easing_state (actor);
+// clutter_actor_set_easing_duration (actor, 1000);
+// clutter_actor_set_x (actor, 200);
+// clutter_actor_restore_easing_state (actor);
+//
+// clutter_actor_save_easing_state (actor);
+// clutter_actor_set_easing_duration (actor, 500);
+// clutter_actor_set_x (actor, 100);
+// clutter_actor_restore_easing_state (actor);
+// ]|
+//
+// the first call to clutter_actor_set_x() will begin a transition
+// of the #ClutterActor:x property from the current value to the value of
+// 200 over a duration of one second; the second call to clutter_actor_set_x()
+// will change the transition's final value to 100 and the duration to 500
+// milliseconds.
+//
+// It is possible to receive a notification of the completion of an
+// implicit transition by using the #ClutterActor::transition-stopped
+// signal, decorated with the name of the property. In case you want to
+// know when all the currently in flight transitions are complete, use
+// the #ClutterActor::transitions-completed signal instead.
+//
+// It is possible to retrieve the #ClutterTransition used by the
+// animatable properties by using clutter_actor_get_transition() and using
+// the property name as the transition name.
+//
+// The explicit animation model supported by Clutter requires that
+// you create a #ClutterTransition object, and optionally set the initial
+// and final values. The transition will not start unless you add it to the
+// #ClutterActor.
+//
+// |[<!-- language="C" -->
+// ClutterTransition *transition;
+//
+// transition = clutter_property_transition_new ("opacity");
+// clutter_timeline_set_duration (CLUTTER_TIMELINE (transition), 3000);
+// clutter_timeline_set_repeat_count (CLUTTER_TIMELINE (transition), 2);
+// clutter_timeline_set_auto_reverse (CLUTTER_TIMELINE (transition), TRUE);
+// clutter_transition_set_from (transition, G_TYPE_UINT, 255);
+// clutter_transition_set_to (transition, G_TYPE_UINT, 0);
+//
+// clutter_actor_add_transition (actor, "animate-opacity", transition);
+// ]|
+//
+// The example above will animate the #ClutterActor:opacity property
+// of an actor between fully opaque and fully transparent, and back, over
+// a span of 3 seconds. The animation does not begin until it is added to
+// the actor.
+//
+// The explicit animation API applies to all #GObject properties,
+// as well as the custom properties defined through the #ClutterAnimatable
+// interface, regardless of whether they are defined as implicitly
+// animatable or not.
+//
+// The explicit animation API should also be used when using custom
+// animatable properties for #ClutterAction, #ClutterConstraint, and
+// #ClutterEffect instances associated to an actor; see the section on
+// custom animatable properties below for an example.
+//
+// Finally, explicit animations are useful for creating animations
+// that run continuously, for instance:
+//
+// |[<!-- language="C" -->
+// // this animation will pulse the actor's opacity continuously
+// ClutterTransition *transition;
+// ClutterInterval *interval;
+//
+// transition = clutter_property_transition_new ("opacity");
+//
+// // we want to animate the opacity between 0 and 255
+// clutter_transition_set_from (transition, G_TYPE_UINT, 0);
+// clutter_transition_set_to (transition, G_TYPE_UINT, 255);
+//
+// // over a one second duration, running an infinite amount of times
+// clutter_timeline_set_duration (CLUTTER_TIMELINE (transition), 1000);
+// clutter_timeline_set_repeat_count (CLUTTER_TIMELINE (transition), -1);
+//
+// // we want to fade in and out, so we need to auto-reverse the transition
+// clutter_timeline_set_auto_reverse (CLUTTER_TIMELINE (transition), TRUE);
+//
+// // and we want to use an easing function that eases both in and out
+// clutter_timeline_set_progress_mode (CLUTTER_TIMELINE (transition),
+//                                     CLUTTER_EASE_IN_OUT_CUBIC);
+//
+// // add the transition to the desired actor to start it
+// clutter_actor_add_transition (actor, "opacityAnimation", transition);
+// ]|
+//
+// ## Implementing an actor ## {#clutter-actor-implementing}
+//
+// Careful consideration should be given when deciding to implement
+// a #ClutterActor sub-class. It is generally recommended to implement a
+// sub-class of #ClutterActor only for actors that should be used as leaf
+// nodes of a scene graph.
+//
+// If your actor should be painted in a custom way, you should
+// override the #ClutterActor::paint signal class handler. You can either
+// opt to chain up to the parent class implementation or decide to fully
+// override the default paint implementation; Clutter will set up the
+// transformations and clip regions prior to emitting the #ClutterActor::paint
+// signal.
+//
+// By overriding the #ClutterActorClass.get_preferred_width() and
+// #ClutterActorClass.get_preferred_height() virtual functions it is
+// possible to change or provide the preferred size of an actor; similarly,
+// by overriding the #ClutterActorClass.allocate() virtual function it is
+// possible to control the layout of the children of an actor. Make sure to
+// always chain up to the parent implementation of the
+// #ClutterActorClass.allocate() virtual function.
+//
+// In general, it is strongly encouraged to use delegation and composition
+// instead of direct subclassing.
+//
+// ## ClutterActor custom properties for ClutterScript ## {#clutter-actor-custom-script}
+//
+// #ClutterActor defines a custom "rotation" property which allows a short-hand
+// description of the rotations to be applied to an actor.
+//
+// The syntax of the "rotation" property is the following:
+//
+// |[
+// "rotation" : [ { "<axis>" : [ <angle>, [ <center-point> ] ] } ]
+// ]|
+//
+// where:
+//
+//  - axis is the name of an enumeration value of type #ClutterRotateAxis
+//  - angle is a floating point value representing the rotation angle on the given axis in degrees
+//  - center-point is an optional array, and if present it must contain the center of rotation as described by two coordinates:
+//    - Y and Z for "x-axis"
+//    - X and Z for "y-axis"
+//    - X and Y for "z-axis".
+//
+// #ClutterActor also defines a scriptable "margin" property which follows the CSS "margin" shorthand.
+//
+// |[
+//   // 4 values
+//   "margin" : [ top, right, bottom, left ]
+//   // 3 values
+//   "margin" : [ top, left/right, bottom ]
+//   // 2 values
+//   "margin" : [ top/bottom, left/right ]
+//   // 1 value
+//   "margin" : [ top/right/bottom/left ]
+// ]|
+//
+// #ClutterActor will also parse every positional and dimensional
+// property defined as a string through clutter_units_from_string(); you
+// should read the documentation for the #ClutterUnits parser format for
+// the valid units and syntax.
+//
+// ## Custom animatable properties
+//
+// #ClutterActor allows accessing properties of #ClutterAction,
+// #ClutterEffect, and #ClutterConstraint instances associated to an actor
+// instance for animation purposes.
+//
+// In order to access a specific #ClutterAction or a #ClutterConstraint
+// property it is necessary to set the #ClutterActorMeta:name property on the
+// given action or constraint.
+//
+// The property can be accessed using the following syntax:
+//
+// |[
+//   @<section>.<meta-name>.<property-name>
+// ]|
+//
+//  - the initial `@` is mandatory
+//  - the `section` fragment can be one between "actions", "constraints" and "effects"
+//  - the `meta-name` fragment is the name of the action, effect, or constraint, as
+//    specified by the #ClutterActorMeta:name property of #ClutterActorMeta
+//  - the `property-name` fragment is the name of the action, effect, or constraint
+//    property to be animated.
+//
+// The example below animates a #ClutterBindConstraint applied to an actor
+// using an explicit transition. The `rect` actor has a binding constraint
+// on the `origin` actor, and in its initial state is overlapping the actor
+// to which is bound to.
+//
+// |[<!-- language="C" -->
+// constraint = clutter_bind_constraint_new (origin, CLUTTER_BIND_X, 0.0);
+// clutter_actor_meta_set_name (CLUTTER_ACTOR_META (constraint), "bind-x");
+// clutter_actor_add_constraint (rect, constraint);
+//
+// constraint = clutter_bind_constraint_new (origin, CLUTTER_BIND_Y, 0.0);
+// clutter_actor_meta_set_name (CLUTTER_ACTOR_META (constraint), "bind-y");
+// clutter_actor_add_constraint (rect, constraint);
+//
+// clutter_actor_set_reactive (origin, TRUE);
+//
+// g_signal_connect (origin, "button-press-event",
+//                   G_CALLBACK (on_button_press),
+//                   rect);
+// ]|
+//
+// On button press, the rectangle "slides" from behind the actor to
+// which is bound to, using the #ClutterBindConstraint:offset property to
+// achieve the effect:
+//
+// |[<!-- language="C" -->
+// gboolean
+// on_button_press (ClutterActor *origin,
+//                  ClutterEvent *event,
+//                  ClutterActor *rect)
+// {
+//   ClutterTransition *transition;
+//
+//   // the offset that we want to apply; this will make the actor
+//   // slide in from behind the origin and rest at the right of
+//   // the origin, plus a padding value
+//   float new_offset = clutter_actor_get_width (origin) + h_padding;
+//
+//   // the property we wish to animate; the "@constraints" section
+//   // tells Clutter to check inside the constraints associated
+//   // with the actor; the "bind-x" section is the name of the
+//   // constraint; and the "offset" is the name of the property
+//   // on the constraint
+//   const char *prop = "@constraints.bind-x.offset";
+//
+//   // create a new transition for the given property
+//   transition = clutter_property_transition_new (prop);
+//
+//   // set the easing mode and duration
+//   clutter_timeline_set_progress_mode (CLUTTER_TIMELINE (transition),
+//                                       CLUTTER_EASE_OUT_CUBIC);
+//   clutter_timeline_set_duration (CLUTTER_TIMELINE (transition), 500);
+//
+//   // create the interval with the initial and final values
+//   clutter_transition_set_from (transition, G_TYPE_FLOAT, 0.f);
+//   clutter_transition_set_to (transition, G_TYPE_FLOAT, new_offset);
+//
+//   // add the transition to the actor; this causes the animation
+//   // to start. the name "offsetAnimation" can be used to retrieve
+//   // the transition later
+//   clutter_actor_add_transition (rect, "offsetAnimation", transition);
+//
+//   // we handled the event
+//   return CLUTTER_EVENT_STOP;
+// }
+// ]|
+
+/* Internal enum used to control mapped state update.  This is a hint
+ * which indicates when to do something other than just enforce
+ * invariants.
+ */
+pub enum MapStateChange {
+    // just enforce invariants.
+    Check,
+    // force unrealize, ignoring invariants,
+    // used when about to unparent.
+    MakeUnrealized,
+    // set mapped, error if invariants not met;
+    // used to set mapped on toplevels.
+    Mapped,
+    // set unmapped, even if parent is mapped,
+    // used just before unmapping parent.
+    MakeUnmapped,
+}
+
+#[derive(Default, Debug, Clone)]
+struct ActorProps {
+    request_mode: RequestMode,
+
+    // our cached size requests for different width / height
+
+    // SizeRequest width_requests[N_CACHED_SIZE_REQUESTS];
+    // SizeRequest height_requests[N_CACHED_SIZE_REQUESTS];
+
+    // An age of 0 means the entry is not set
+    cached_height_age: i32,
+    cached_width_age: i32,
+
+    // the bounding box of the actor, relative to the parent's allocation
+    allocation: ActorBox,
+    allocation_flags: AllocationFlags,
+
+    // clip, in actor coordinates
+    clip: Rect<f32>,
+
+    // the cached transformation matrix; see apply_transform()
+    transform: Matrix,
+    opacity: u8,
+    opacity_override: i32,
+
+    offscreen_redirect: OffscreenRedirect,
+
+    // This is an internal effect used to implement the
+    // offscreen-redirect property
+    flatten_effect: Option<Effect>,
+
+    // scene graph
+    parent: Weak<RefCell<Actor>>,
+    // ClutterActor *prev_sibling;
+    // ClutterActor *next_sibling;
+    // ClutterActor *first_child;
+    // ClutterActor *last_child;
+    siblings: Vec<Rc<RefCell<Actor>>>,
+    children: Vec<Rc<RefCell<Actor>>>,
+    n_children: i32,
+
+    // tracks whenever the children of an actor are changed; the
+    // age is incremented by 1 whenever an actor is added or
+    // removed. the age is not incremented when the first or the
+    // last child pointers are changed, or when grandchildren of
+    // an actor are changed.
+    age: i32,
+
+    // a non-unique name, used for debugging
+    name: Option<String>,
+
+    // per-stage unique id, used for picking
+    pick_id: i32,
+
+    // a back-pointer to the Pango context that we can use
+    // to create pre-configured PangoLayout
+    // pango_context: Option<pango::Context>,
+
+    // the text direction configured for this child - either by
+    // application code, or by the actor's parent
+    text_direction: TextDirection,
+
+    // a counter used to toggle the CLUTTER_INTERNAL_CHILD flag
+    internal_child: i32,
+
+    // meta classes
+    actions: Vec<Action>,         // ClutterMetaGroup
+    constraints: Vec<Constraint>, // ClutterMetaGroup
+    effects: Vec<Effect>,         // ClutterMetaGroup
+
+    // delegate object used to allocate the children of this actor
+    layout_manager: Option<LayoutManager>,
+
+    // delegate object used to paint the contents of this actor
+    content: Option<Content>,
+
+    content_box: ActorBox,
+    content_gravity: ContentGravity,
+    min_filter: ScalingFilter,
+    mag_filter: ScalingFilter,
+    content_repeat: ContentRepeat,
+
+    // used when painting, to update the paint volume
+    current_effect: Option<Effect>,
+
+    // This is used to store an effect which needs to be redrawn. A
+    // redraw can be queued to start from a particular effect. This is
+    // used by parametrised effects that can cache an image of the
+    // actor. If a parameter of the effect changes then it only needs to
+    // redraw the cached image, not the actual actor. The pointer is
+    // only valid if is_dirty == TRUE. If the pointer is NULL then the
+    // whole actor is dirty.
+    effect_to_redraw: Option<Effect>,
+
+    // This is used when painting effects to implement the
+    // clutter_actor_continue_paint() function. It points to the node in
+    // the list of effects that is next in the chain
+
+    // const GList *next_effect_to_paint;
+    paint_volume: PaintVolume,
+
+    // NB: This volume isn't relative to this actor, it is in eye
+    // coordinates so that it can remain valid after the actor changes.
+    last_paint_volume: PaintVolume,
+
+    // ClutterStageQueueRedrawEntry *queue_redraw_entry;
+    bg_color: Color,
+
+    // a set of clones of the actor
+    // GHashTable *clones;
+
+    // whether the actor is inside a cloned branch; this
+    // value is propagated to all the actor's children
+    in_cloned_branch: u64,
+
+    // GListModel *child_model;
+    // ClutterActorCreateChildFunc create_child_func;
+    // gpointer create_child_data;
+    // GDestroyNotify create_child_notify;
+
+    // bitfields: KEEP AT THE END
+
+    // fixed position and sizes
+    position_set: bool,
+    min_width_set: bool,
+    min_height_set: bool,
+    natural_width_set: bool,
+    natural_height_set: bool,
+    // cached request is invalid (implies allocation is too)
+    needs_width_request: bool,
+    // cached request is invalid (implies allocation is too)
+    needs_height_request: bool,
+    // cached allocation is invalid (request has changed, probably)
+    needs_allocation: bool,
+    show_on_set_parent: bool,
+    has_clip: bool,
+    clip_to_allocation: bool,
+    enable_model_view_transform: bool,
+    enable_paint_unmapped: bool,
+    has_pointer: bool,
+    propagated_one_redraw: bool,
+    paint_volume_valid: bool,
+    last_paint_volume_valid: bool,
+    in_clone_paint: bool,
+    transform_valid: bool,
+    // This is TRUE if anything has queued a redraw since we were last
+    // painted. In this case effect_to_redraw will point to an effect
+    // the redraw was queued from or it will be NULL if the redraw was
+    // queued without an effect.
+    is_dirty: bool,
+    bg_color_set: bool,
+    content_box_valid: bool,
+    x_expand_set: bool,
+    y_expand_set: bool,
+    needs_compute_expand: bool,
+    needs_x_expand: bool,
+    needs_y_expand: bool,
+}
+//  * CLUTTER_ACTOR_IS_MAPPED:
+//  * @a: a #ClutterActor
+//  *
+//  * Evaluates to %TRUE if the %CLUTTER_ACTOR_MAPPED flag is set.
+//  *
+//  * The mapped state is set when the actor is visible and all its parents up
+//  * to a top-level (e.g. a #ClutterStage) are visible, realized, and mapped.
+//  *
+//  * This check can be used to see if an actor is going to be painted, as only
+//  * actors with the %CLUTTER_ACTOR_MAPPED flag set are going to be painted.
+//  *
+//  * The %CLUTTER_ACTOR_MAPPED flag is managed by Clutter itself, and it should
+//  * not be checked directly; instead, the recommended usage is to connect a
+//  * handler on the #GObject::notify signal for the #ClutterActor:mapped
+//  * property of #ClutterActor, and check the presence of
+//  * the %CLUTTER_ACTOR_MAPPED flag on state changes.
+//  *
+//  * It is also important to note that Clutter may delay the changes of
+//  * the %CLUTTER_ACTOR_MAPPED flag on top-levels due to backend-specific
+//  * limitations, or during the reparenting of an actor, to optimize
+//  * unnecessary (and potentially expensive) state changes.
+//  *
+//  * Since: 0.2
+//  *
+//  * Deprecated: 1.24: Use clutter_actor_is_mapped() or the #ClutterActor:mapped
+//  *   property instead of this macro.
+//  *
+//  * CLUTTER_ACTOR_IS_REALIZED:
+//  * @a: a #ClutterActor
+//  *
+//  * Evaluates to %TRUE if the %CLUTTER_ACTOR_REALIZED flag is set.
+//  *
+//  * The realized state has an actor-dependant interpretation. If an
+//  * actor wants to delay allocating resources until it is attached to a
+//  * stage, it may use the realize state to do so. However it is
+//  * perfectly acceptable for an actor to allocate Cogl resources before
+//  * being realized because there is only one drawing context used by Clutter
+//  * so any resources will work on any stage.  If an actor is mapped it
+//  * must also be realized, but an actor can be realized and unmapped
+//  * (this is so hiding an actor temporarily doesn't do an expensive
+//  * unrealize/realize).
+//  *
+//  * To be realized an actor must be inside a stage, and all its parents
+//  * must be realized.
+//  *
+//  * Since: 0.2
+//  *
+//  * Deprecated: 1.24: Use clutter_actor_is_realized() or the #ClutterActor:realized
+//  *   property instead of this macro.
+//  *
+//  * CLUTTER_ACTOR_IS_VISIBLE:
+//  * @a: a #ClutterActor
+//  *
+//  * Evaluates to %TRUE if the actor has been shown, %FALSE if it's hidden.
+//  * Equivalent to the ClutterActor::visible object property.
+//  *
+//  * Note that an actor is only painted onscreen if it's mapped, which
+//  * means it's visible, and all its parents are visible, and one of the
+//  * parents is a toplevel stage; see also %CLUTTER_ACTOR_IS_MAPPED.
+//  *
+//  * Since: 0.2
+//  *
+//  * Deprecated: 1.24: Use clutter_actor_is_visible() or the #ClutterActor:visible
+//  *   property instead of this macro.
+//  *
+//  * CLUTTER_ACTOR_IS_REACTIVE:
+//  * @a: a #ClutterActor
+//  *
+//  * Evaluates to %TRUE if the %CLUTTER_ACTOR_REACTIVE flag is set.
+//  *
+//  * Only reactive actors will receive event-related signals.
+//  *
+//  * Since: 0.6
+//  *
+//  * Deprecated: 1.24: Use clutter_actor_get_reactive() or the
+//  *   #ClutterActor:reactive property instead of this macro.
 // @implements Animatable, Container
 #[derive(Default, Debug, Clone)]
-pub struct Actor {}
+pub struct Actor {
+    props: RefCell<ActorProps>,
+}
 
 impl Actor {
     /// Creates a new `Actor`.
@@ -23,8 +777,7 @@ impl Actor {
     ///
     /// the newly created `Actor`
     pub fn new() -> Actor {
-        // unsafe { from_glib_none(ffi::clutter_actor_new()) }
-        unimplemented!()
+        Default::default()
     }
 }
 
@@ -245,9 +998,7 @@ pub trait ActorExt: 'static {
     ///                                           &min_height,
     ///                                           &natural_height);
     ///       height = CLAMP (natural_height, min_height, available_height);
-    ///     }
-    ///   else if (request_mode == REQUEST_WIDTH_FOR_HEIGHT)
-    ///     {
+    ///     } else if (request_mode == REQUEST_WIDTH_FOR_HEIGHT) {
     ///       actor_get_preferred_height (self, available_width,
     ///                                           &min_height,
     ///                                           &natural_height);
@@ -409,7 +1160,7 @@ pub trait ActorExt: 'static {
     /// the newly created `pango::Context`.
     ///  Use `gobject::ObjectExt::unref` on the returned value to deallocate its
     ///  resources
-    fn create_pango_context(&self) -> Option<pango::Context>;
+    // fn create_pango_context(&self) -> Option<pango::Context>;
 
     /// Creates a new `pango::Layout` from the same `pango::Context` used
     /// by the `Actor`. The `pango::Layout` is already configured
@@ -427,7 +1178,7 @@ pub trait ActorExt: 'static {
     ///
     /// the newly created `pango::Layout`.
     ///  Use `gobject::ObjectExt::unref` when done
-    fn create_pango_layout(&self, text: Option<&str>) -> Option<pango::Layout>;
+    // fn create_pango_layout(&self, text: Option<&str>) -> Option<pango::Layout>;
 
     /// Destroys an actor. When an actor is destroyed, it will break any
     /// references it holds to other objects. If the actor is inside a
@@ -717,7 +1468,7 @@ pub trait ActorExt: 'static {
     /// # Returns
     ///
     /// a pointer to a `Actor`, or `None`
-    fn get_first_child(&self) -> Option<Actor>;
+    fn get_first_child(&self) -> Option<Rc<RefCell<Actor>>>;
 
     /// Checks whether an actor has a fixed position set (and will thus be
     /// unaffected by any layout manager).
@@ -942,7 +1693,7 @@ pub trait ActorExt: 'static {
     /// the `pango::Context` for a `Actor`.
     ///  The returned `pango::Context` is owned by the actor and should not be
     ///  unreferenced by the application code
-    fn get_pango_context(&self) -> Option<pango::Context>;
+    // fn get_pango_context(&self) -> Option<pango::Context>;
 
     /// Retrieves the parent of `self`.
     ///
@@ -1626,7 +2377,7 @@ pub trait ActorExt: 'static {
     /// `ActorExt::queue_redraw`.
     /// ## `clip`
     /// a rectangular clip region, or `None`
-    fn queue_redraw_with_clip(&self, clip: Option<&cairo::RectangleInt>);
+    // fn queue_redraw_with_clip(&self, clip: Option<&cairo::RectangleInt>);
 
     /// Indicates that the actor's size request or other layout-affecting
     /// properties may have changed. This function is used inside `Actor`
@@ -3346,24 +4097,24 @@ impl<O: Is<Actor>> ActorExt for O {
         unimplemented!()
     }
 
-    fn create_pango_context(&self) -> Option<pango::Context> {
-        // unsafe {
-        //     from_glib_full(ffi::clutter_actor_create_pango_context(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
-    }
+    // fn create_pango_context(&self) -> Option<pango::Context> {
+    //     // unsafe {
+    //     //     from_glib_full(ffi::clutter_actor_create_pango_context(
+    //     //         self.as_ref().to_glib_none().0,
+    //     //     ))
+    //     // }
+    //     unimplemented!()
+    // }
 
-    fn create_pango_layout(&self, text: Option<&str>) -> Option<pango::Layout> {
-        // unsafe {
-        //     from_glib_full(ffi::clutter_actor_create_pango_layout(
-        //         self.as_ref().to_glib_none().0,
-        //         text.to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
-    }
+    // fn create_pango_layout(&self, text: Option<&str>) -> Option<pango::Layout> {
+    //     // unsafe {
+    //     //     from_glib_full(ffi::clutter_actor_create_pango_layout(
+    //     //         self.as_ref().to_glib_none().0,
+    //     //         text.to_glib_none().0,
+    //     //     ))
+    //     // }
+    //     unimplemented!()
+    // }
 
     fn destroy(&self) {
         // unsafe {
@@ -3414,15 +4165,35 @@ impl<O: Is<Actor>> ActorExt for O {
     }
 
     fn get_allocation_box(&self) -> ActorBox {
-        // unsafe {
-        //     let mut box_ = ActorBox::uninitialized();
-        //     ffi::clutter_actor_get_allocation_box(
-        //         self.as_ref().to_glib_none().0,
-        //         box_.to_glib_none_mut().0,
-        //     );
-        //     box_
+        let actor = self.as_ref();
+        let props = actor.props.borrow();
+
+        // XXX - if needs_allocation=TRUE, we can either 1) g_return_if_fail,
+        // which limits calling get_allocation to inside paint() basically; or
+        // we can 2) force a layout, which could be expensive if someone calls
+        // get_allocation somewhere silly; or we can 3) just return the latest
+        // value, allowing it to be out-of-date, and assume people know what
+        // they are doing.
+        //
+        // The least-surprises approach that keeps existing code working is
+        // likely to be 2). People can end up doing some inefficient things,
+        // though, and in general code that requires 2) is probably broken.
+
+        // this implements 2)
+
+        // if props.needs_allocation  {
+        //     Actor *stage = _clutter_actor_get_stage_internal (self);
+
+        //     // do not queue a relayout on an unparented actor */
+        //     if stage {
+        //         _clutter_stage_maybe_relayout (stage);
+        //     }
         // }
-        unimplemented!()
+
+        // commenting out the code above and just keeping this assigment
+        // implements 3)
+
+        props.allocation
     }
 
     //fn get_allocation_vertices<P: Is<Actor>>(&self, ancestor: Option<&P>, verts: /*Unimplemented*/FixedArray TypeId { ns_id: 1, id: 16 }; 4) {
@@ -3430,15 +4201,10 @@ impl<O: Is<Actor>> ActorExt for O {
     //}
 
     fn get_background_color(&self) -> Color {
-        // unsafe {
-        //     let mut color = Color::uninitialized();
-        //     ffi::clutter_actor_get_background_color(
-        //         self.as_ref().to_glib_none().0,
-        //         color.to_glib_none_mut().0,
-        //     );
-        //     color
-        // }
-        unimplemented!()
+        let actor = self.as_ref();
+        let props = actor.props.borrow();
+
+        props.bg_color
     }
 
     fn get_child_at_index(&self, index_: i32) -> Option<Actor> {
@@ -3473,37 +4239,27 @@ impl<O: Is<Actor>> ActorExt for O {
     }
 
     fn get_clip(&self) -> (f32, f32, f32, f32) {
-        // unsafe {
-        //     let mut xoff = mem::MaybeUninit::uninit();
-        //     let mut yoff = mem::MaybeUninit::uninit();
-        //     let mut width = mem::MaybeUninit::uninit();
-        //     let mut height = mem::MaybeUninit::uninit();
-        //     ffi::clutter_actor_get_clip(
-        //         self.as_ref().to_glib_none().0,
-        //         xoff.as_mut_ptr(),
-        //         yoff.as_mut_ptr(),
-        //         width.as_mut_ptr(),
-        //         height.as_mut_ptr(),
-        //     );
-        //     let xoff = xoff.assume_init();
-        //     let yoff = yoff.assume_init();
-        //     let width = width.assume_init();
-        //     let height = height.assume_init();
-        //     (xoff, yoff, width, height)
-        // }
-        unimplemented!()
+        let actor = self.as_ref();
+        let props = actor.props.borrow();
+        let clip = &props.clip;
+
+        let xoff = clip.origin.x;
+        let yoff = clip.origin.y;
+        let width = clip.size.width;
+        let height = clip.size.height;
+        (xoff, yoff, width, height)
     }
 
     fn get_clip_to_allocation(&self) -> bool {
-        // unsafe {
-        //     from_glib(ffi::clutter_actor_get_clip_to_allocation(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let actor = self.as_ref();
+        let props = actor.props.borrow();
+        props.clip_to_allocation
     }
 
     fn get_constraint(&self, name: &str) -> Option<Constraint> {
+        let actor = self.as_ref();
+        let props = actor.props.borrow();
+
         // unsafe {
         //     from_glib_none(ffi::clutter_actor_get_constraint(
         //         self.as_ref().to_glib_none().0,
@@ -3514,67 +4270,206 @@ impl<O: Is<Actor>> ActorExt for O {
     }
 
     fn get_constraints(&self) -> Vec<Constraint> {
-        // unsafe {
-        //     FromGlibPtrContainer::from_glib_container(ffi::clutter_actor_get_constraints(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let actor = self.as_ref();
+        let props = actor.props.borrow();
+        props.constraints.clone()
     }
 
     fn get_content(&self) -> Option<Content> {
-        // unsafe {
-        //     from_glib_none(ffi::clutter_actor_get_content(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
+        let actor = self.as_ref();
+        let props = actor.props.borrow();
+        // props.content
         unimplemented!()
     }
 
     fn get_content_box(&self) -> ActorBox {
-        // unsafe {
-        //     let mut box_ = ActorBox::uninitialized();
-        //     ffi::clutter_actor_get_content_box(
-        //         self.as_ref().to_glib_none().0,
-        //         box_.to_glib_none_mut().0,
-        //     );
-        //     box_
+        // ClutterActorPrivate *priv;
+        // gfloat content_w, content_h;
+        // gfloat alloc_w, alloc_h;
+
+        // g_return_if_fail (CLUTTER_IS_ACTOR (self));
+        // g_return_if_fail (box != NULL);
+
+        // priv = self->priv;
+
+        // box->x1 = 0.f;
+        // box->y1 = 0.f;
+        // box->x2 = priv->allocation.x2 - priv->allocation.x1;
+        // box->y2 = priv->allocation.y2 - priv->allocation.y1;
+
+        // if (priv->content_box_valid) {
+        //     *box = priv->content_box;
+        //     return;
+        // }
+
+        // no need to do any more work */
+        // if (priv->content_gravity == CLUTTER_CONTENT_GRAVITY_RESIZE_FILL)
+        //     return;
+
+        // if (priv->content == NULL)
+        //     return;
+
+        // if the content does not have a preferred size then there is
+        // no point in computing the content box
+        //
+        // if (!clutter_content_get_preferred_size (priv->content,
+        //                                         &content_w,
+        //                                         &content_h))
+        //     return;
+
+        // alloc_w = box->x2;
+        // alloc_h = box->y2;
+
+        // switch (priv->content_gravity) {
+        // case CLUTTER_CONTENT_GRAVITY_TOP_LEFT:
+        //     box->x2 = box->x1 + MIN (content_w, alloc_w);
+        //     box->y2 = box->y1 + MIN (content_h, alloc_h);
+        //     break;
+
+        // case CLUTTER_CONTENT_GRAVITY_TOP:
+        //     if (alloc_w > content_w)
+        //         {
+        //         box->x1 += ceilf ((alloc_w - content_w) / 2.0);
+        //         box->x2 = box->x1 + content_w;
+        //         }
+        //     box->y2 = box->y1 + MIN (content_h, alloc_h);
+        //     break;
+
+        // case CLUTTER_CONTENT_GRAVITY_TOP_RIGHT:
+        //     if (alloc_w > content_w)
+        //         {
+        //         box->x1 += (alloc_w - content_w);
+        //         box->x2 = box->x1 + content_w;
+        //         }
+        //     box->y2 = box->y1 + MIN (content_h, alloc_h);
+        //     break;
+
+        // case CLUTTER_CONTENT_GRAVITY_LEFT:
+        //     box->x2 = box->x1 + MIN (content_w, alloc_w);
+        //     if (alloc_h > content_h)
+        //         {
+        //         box->y1 += ceilf ((alloc_h - content_h) / 2.0);
+        //         box->y2 = box->y1 + content_h;
+        //         }
+        //     break;
+
+        // case CLUTTER_CONTENT_GRAVITY_CENTER:
+        //     if (alloc_w > content_w)
+        //         {
+        //         box->x1 += ceilf ((alloc_w - content_w) / 2.0);
+        //         box->x2 = box->x1 + content_w;
+        //         }
+        //     if (alloc_h > content_h)
+        //         {
+        //         box->y1 += ceilf ((alloc_h - content_h) / 2.0);
+        //         box->y2 = box->y1 + content_h;
+        //         }
+        //     break;
+
+        // case CLUTTER_CONTENT_GRAVITY_RIGHT:
+        //     if (alloc_w > content_w)
+        //         {
+        //         box->x1 += (alloc_w - content_w);
+        //         box->x2 = box->x1 + content_w;
+        //         }
+        //     if (alloc_h > content_h)
+        //         {
+        //         box->y1 += ceilf ((alloc_h - content_h) / 2.0);
+        //         box->y2 = box->y1 + content_h;
+        //         }
+        //     break;
+
+        // case CLUTTER_CONTENT_GRAVITY_BOTTOM_LEFT:
+        //     box->x2 = box->x1 + MIN (content_w, alloc_w);
+        //     if (alloc_h > content_h)
+        //         {
+        //         box->y1 += (alloc_h - content_h);
+        //         box->y2 = box->y1 + content_h;
+        //         }
+        //     break;
+
+        // case CLUTTER_CONTENT_GRAVITY_BOTTOM:
+        //     if (alloc_w > content_w)
+        //         {
+        //         box->x1 += ceilf ((alloc_w - content_w) / 2.0);
+        //         box->x2 = box->x1 + content_w;
+        //         }
+        //     if (alloc_h > content_h)
+        //         {
+        //         box->y1 += (alloc_h - content_h);
+        //         box->y2 = box->y1 + content_h;
+        //         }
+        //     break;
+
+        // case CLUTTER_CONTENT_GRAVITY_BOTTOM_RIGHT:
+        //     if (alloc_w > content_w)
+        //         {
+        //         box->x1 += (alloc_w - content_w);
+        //         box->x2 = box->x1 + content_w;
+        //         }
+        //     if (alloc_h > content_h)
+        //         {
+        //         box->y1 += (alloc_h - content_h);
+        //         box->y2 = box->y1 + content_h;
+        //         }
+        //     break;
+
+        // case CLUTTER_CONTENT_GRAVITY_RESIZE_FILL:
+        //     g_assert_not_reached ();
+        //     break;
+
+        // case CLUTTER_CONTENT_GRAVITY_RESIZE_ASPECT:
+        //     {
+        //         double r_c = content_w / content_h;
+
+        //         if ((alloc_w / r_c) > alloc_h)
+        //         {
+        //             box->y1 = 0.f;
+        //             box->y2 = alloc_h;
+
+        //             box->x1 = (alloc_w - (alloc_h * r_c)) / 2.0f;
+        //             box->x2 = box->x1 + (alloc_h * r_c);
+        //         }
+        //         else
+        //         {
+        //             box->x1 = 0.f;
+        //             box->x2 = alloc_w;
+
+        //             box->y1 = (alloc_h - (alloc_w / r_c)) / 2.0f;
+        //             box->y2 = box->y1 + (alloc_w / r_c);
+        //         }
+
+        //         CLUTTER_NOTE (LAYOUT,
+        //                     "r_c: %.3f, r_a: %.3f\t"
+        //                     "a: [%.2fx%.2f], c: [%.2fx%.2f]\t"
+        //                     "b: [%.2f, %.2f, %.2f, %.2f]",
+        //                     r_c, alloc_w / alloc_h,
+        //                     alloc_w, alloc_h,
+        //                     content_w, content_h,
+        //                     box->x1, box->y1, box->x2, box->y2);
+        //     }
+        //     break;
         // }
         unimplemented!()
     }
 
     fn get_content_gravity(&self) -> ContentGravity {
-        // unsafe {
-        //     from_glib(ffi::clutter_actor_get_content_gravity(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let actor = self.as_ref();
+        let props = actor.props.borrow();
+        props.content_gravity
     }
 
     fn get_content_repeat(&self) -> ContentRepeat {
-        // unsafe {
-        //     from_glib(ffi::clutter_actor_get_content_repeat(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let actor = self.as_ref();
+        let props = actor.props.borrow();
+        props.content_repeat
     }
 
     fn get_content_scaling_filters(&self) -> (ScalingFilter, ScalingFilter) {
-        // unsafe {
-        //     let mut min_filter = mem::MaybeUninit::uninit();
-        //     let mut mag_filter = mem::MaybeUninit::uninit();
-        //     ffi::clutter_actor_get_content_scaling_filters(
-        //         self.as_ref().to_glib_none().0,
-        //         min_filter.as_mut_ptr(),
-        //         mag_filter.as_mut_ptr(),
-        //     );
-        //     let min_filter = min_filter.assume_init();
-        //     let mag_filter = mag_filter.assume_init();
-        //     (from_glib(min_filter), from_glib(mag_filter))
-        // }
-        unimplemented!()
+        let actor = self.as_ref();
+        let props = actor.props.borrow();
+
+        (props.min_filter, props.mag_filter)
     }
 
     fn get_default_paint_volume(&self) -> Option<PaintVolume> {
@@ -3587,6 +4482,9 @@ impl<O: Is<Actor>> ActorExt for O {
     }
 
     fn get_easing_delay(&self) -> u32 {
+        let actor = self.as_ref();
+        let props = actor.props.borrow();
+
         // unsafe { ffi::clutter_actor_get_easing_delay(self.as_ref().to_glib_none().0) }
         unimplemented!()
     }
@@ -3616,43 +4514,65 @@ impl<O: Is<Actor>> ActorExt for O {
     }
 
     fn get_effects(&self) -> Vec<Effect> {
-        // unsafe {
-        //     FromGlibPtrContainer::from_glib_container(ffi::clutter_actor_get_effects(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let actor = self.as_ref();
+        let props = actor.props.borrow();
+
+        props.effects.clone()
     }
 
-    fn get_first_child(&self) -> Option<Actor> {
-        // unsafe {
-        //     from_glib_none(ffi::clutter_actor_get_first_child(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+    fn get_first_child(&self) -> Option<Rc<RefCell<Actor>>> {
+        let actor = self.as_ref();
+        let props = actor.props.borrow();
+        match props.children.first() {
+            Some(actor) => {
+                let actor = actor.clone();
+                Some(actor)
+            },
+            None => None,
+        }
     }
 
     fn get_fixed_position_set(&self) -> bool {
-        // unsafe {
-        //     from_glib(ffi::clutter_actor_get_fixed_position_set(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let actor = self.as_ref();
+        let props = actor.props.borrow();
+
+        props.position_set
     }
 
     fn get_flags(&self) -> ActorFlags {
-        // unsafe { from_glib(ffi::clutter_actor_get_flags(self.as_ref().to_glib_none().0)) }
+        let actor = self.as_ref();
+        let props = actor.props.borrow();
+
         unimplemented!()
     }
 
     fn get_height(&self) -> f32 {
-        // unsafe { ffi::clutter_actor_get_height(self.as_ref().to_glib_none().0) }
-        unimplemented!()
+        let actor = self.as_ref();
+        let props = actor.props.borrow();
+
+        if props.needs_allocation {
+            if props.request_mode == RequestMode::HeightForWidth {
+                let (_, natural_width) = self.get_preferred_width(-1.0);
+                let (_, natural_height) = self.get_preferred_height(natural_width);
+
+                return natural_height;
+            } else if props.request_mode == RequestMode::WidthForHeight {
+                let (_, natural_height) = self.get_preferred_height(-1.0);
+
+                return natural_height;
+            } else if props.request_mode == RequestMode::ContentSize && props.content.is_some() {
+                if let Some(content) = &props.content {
+                    if let Some((_, natural_height)) = content.get_preferred_size() { return natural_height }
+                }
+            }
+        }
+
+        props.allocation.y2 - props.allocation.y1
     }
 
     fn get_last_child(&self) -> Option<Actor> {
+        let actor = self.as_ref();
+        let props = actor.props.borrow();
         // unsafe {
         //     from_glib_none(ffi::clutter_actor_get_last_child(
         //         self.as_ref().to_glib_none().0,
@@ -3662,6 +4582,8 @@ impl<O: Is<Actor>> ActorExt for O {
     }
 
     fn get_layout_manager(&self) -> Option<LayoutManager> {
+        let actor = self.as_ref();
+        let props = actor.props.borrow();
         // unsafe {
         //     from_glib_none(ffi::clutter_actor_get_layout_manager(
         //         self.as_ref().to_glib_none().0,
@@ -3671,6 +4593,9 @@ impl<O: Is<Actor>> ActorExt for O {
     }
 
     fn get_margin(&self) -> Margin {
+        let actor = self.as_ref();
+        let props = actor.props.borrow();
+
         // unsafe {
         //     let mut margin = Margin::uninitialized();
         //     ffi::clutter_actor_get_margin(
@@ -3708,8 +4633,10 @@ impl<O: Is<Actor>> ActorExt for O {
     }
 
     fn get_name(&self) -> Option<String> {
-        // unsafe { from_glib_none(ffi::clutter_actor_get_name(self.as_ref().to_glib_none().0)) }
-        unimplemented!()
+        let actor = self.as_ref();
+        let props = actor.props.borrow();
+
+        props.name.clone()
     }
 
     fn get_next_sibling(&self) -> Option<Actor> {
@@ -3722,17 +4649,17 @@ impl<O: Is<Actor>> ActorExt for O {
     }
 
     fn get_offscreen_redirect(&self) -> OffscreenRedirect {
-        // unsafe {
-        //     from_glib(ffi::clutter_actor_get_offscreen_redirect(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let actor = self.as_ref();
+        let props = actor.props.borrow();
+
+        props.offscreen_redirect
     }
 
     fn get_opacity(&self) -> u8 {
-        // unsafe { ffi::clutter_actor_get_opacity(self.as_ref().to_glib_none().0) }
-        unimplemented!()
+        let actor = self.as_ref();
+        let props = actor.props.borrow();
+
+        props.opacity
     }
 
     fn get_paint_box(&self) -> Option<ActorBox> {
@@ -3774,14 +4701,14 @@ impl<O: Is<Actor>> ActorExt for O {
         unimplemented!()
     }
 
-    fn get_pango_context(&self) -> Option<pango::Context> {
-        // unsafe {
-        //     from_glib_none(ffi::clutter_actor_get_pango_context(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
-    }
+    // fn get_pango_context(&self) -> Option<pango::Context> {
+    //     // unsafe {
+    //     //     from_glib_none(ffi::clutter_actor_get_pango_context(
+    //     //         self.as_ref().to_glib_none().0,
+    //     //     ))
+    //     // }
+    //     unimplemented!()
+    // }
 
     fn get_parent(&self) -> Option<Actor> {
         // unsafe {
@@ -3814,19 +4741,7 @@ impl<O: Is<Actor>> ActorExt for O {
     }
 
     fn get_position(&self) -> (f32, f32) {
-        // unsafe {
-        //     let mut x = mem::MaybeUninit::uninit();
-        //     let mut y = mem::MaybeUninit::uninit();
-        //     ffi::clutter_actor_get_position(
-        //         self.as_ref().to_glib_none().0,
-        //         x.as_mut_ptr(),
-        //         y.as_mut_ptr(),
-        //     );
-        //     let x = x.assume_init();
-        //     let y = y.assume_init();
-        //     (x, y)
-        // }
-        unimplemented!()
+        (self.get_x(), self.get_y())
     }
 
     fn get_preferred_height(&self, for_width: f32) -> (f32, f32) {
@@ -3904,12 +4819,10 @@ impl<O: Is<Actor>> ActorExt for O {
     }
 
     fn get_request_mode(&self) -> RequestMode {
-        // unsafe {
-        //     from_glib(ffi::clutter_actor_get_request_mode(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let actor = self.as_ref();
+        let props = actor.props.borrow();
+
+        props.request_mode
     }
 
     fn get_rotation_angle(&self, axis: RotateAxis) -> f64 {
@@ -3941,19 +4854,7 @@ impl<O: Is<Actor>> ActorExt for O {
     }
 
     fn get_size(&self) -> (f32, f32) {
-        // unsafe {
-        //     let mut width = mem::MaybeUninit::uninit();
-        //     let mut height = mem::MaybeUninit::uninit();
-        //     ffi::clutter_actor_get_size(
-        //         self.as_ref().to_glib_none().0,
-        //         width.as_mut_ptr(),
-        //         height.as_mut_ptr(),
-        //     );
-        //     let width = width.assume_init();
-        //     let height = height.assume_init();
-        //     (width, height)
-        // }
-        unimplemented!()
+        (self.get_width(), self.get_height())
     }
 
     fn get_stage(&self) -> Option<Stage> {
@@ -3962,12 +4863,10 @@ impl<O: Is<Actor>> ActorExt for O {
     }
 
     fn get_text_direction(&self) -> TextDirection {
-        // unsafe {
-        //     from_glib(ffi::clutter_actor_get_text_direction(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let actor = self.as_ref();
+        let props = actor.props.borrow();
+
+        props.text_direction
     }
 
     fn get_transform(&self) -> Matrix {
@@ -3996,19 +4895,13 @@ impl<O: Is<Actor>> ActorExt for O {
     }
 
     fn get_transformed_position(&self) -> (f32, f32) {
-        // unsafe {
-        //     let mut x = mem::MaybeUninit::uninit();
-        //     let mut y = mem::MaybeUninit::uninit();
-        //     ffi::clutter_actor_get_transformed_position(
-        //         self.as_ref().to_glib_none().0,
-        //         x.as_mut_ptr(),
-        //         y.as_mut_ptr(),
-        //     );
-        //     let x = x.assume_init();
-        //     let y = y.assume_init();
-        //     (x, y)
-        // }
-        unimplemented!()
+        let actor = self.as_ref();
+        let props = actor.props.borrow();
+
+        let v1 = Vertex::new(0.0, 0.0, 0.0);
+        let v2 = actor.apply_transform_to_point(&v1);
+
+        (v2.x, v2.y)
     }
 
     fn get_transformed_size(&self) -> (f32, f32) {
@@ -4057,8 +4950,26 @@ impl<O: Is<Actor>> ActorExt for O {
     }
 
     fn get_width(&self) -> f32 {
-        // unsafe { ffi::clutter_actor_get_width(self.as_ref().to_glib_none().0) }
-        unimplemented!()
+        let actor = self.as_ref();
+        let props = actor.props.borrow();
+
+        if props.needs_allocation {
+            if props.request_mode == RequestMode::HeightForWidth {
+                let (_, natural_width) = self.get_preferred_width(-1.0);
+                return natural_width;
+            } else if props.request_mode == RequestMode::WidthForHeight {
+                let (_, natural_height) = self.get_preferred_height(-1.0);
+                let (_, natural_width) = self.get_preferred_width(natural_height);
+                return natural_width;
+            } else if props.request_mode == RequestMode::ContentSize {
+                match &props.content {
+                    Some(content) => if let Some((natural_width, _)) = content.get_preferred_size() { return natural_width },
+                    None => {}
+                }
+            }
+        }
+
+        props.allocation.x2 - props.allocation.x1
     }
 
     fn get_x(&self) -> f32 {
@@ -4138,8 +5049,10 @@ impl<O: Is<Actor>> ActorExt for O {
     }
 
     fn has_clip(&self) -> bool {
-        // unsafe { from_glib(ffi::clutter_actor_has_clip(self.as_ref().to_glib_none().0)) }
-        unimplemented!()
+        let actor = self.as_ref();
+        let props = actor.props.borrow();
+
+        props.has_clip
     }
 
     fn has_constraints(&self) -> bool {
@@ -4179,12 +5092,10 @@ impl<O: Is<Actor>> ActorExt for O {
     }
 
     fn has_pointer(&self) -> bool {
-        // unsafe {
-        //     from_glib(ffi::clutter_actor_has_pointer(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let actor = self.as_ref();
+        let props = actor.props.borrow();
+
+        props.has_pointer
     }
 
     fn hide(&self) {
@@ -4228,6 +5139,17 @@ impl<O: Is<Actor>> ActorExt for O {
     }
 
     fn is_in_clone_paint(&self) -> bool {
+        let actor = self.as_ref();
+        let props = actor.props.borrow();
+
+        if props.in_clone_paint {
+            return true;
+        }
+
+        if props.in_cloned_branch == 0 {
+            return false;
+        }
+
         // unsafe {
         //     from_glib(ffi::clutter_actor_is_in_clone_paint(
         //         self.as_ref().to_glib_none().0,
@@ -4311,15 +5233,15 @@ impl<O: Is<Actor>> ActorExt for O {
         unimplemented!()
     }
 
-    fn queue_redraw_with_clip(&self, clip: Option<&cairo::RectangleInt>) {
-        // unsafe {
-        //     ffi::clutter_actor_queue_redraw_with_clip(
-        //         self.as_ref().to_glib_none().0,
-        //         clip.to_glib_none().0,
-        //     );
-        // }
-        unimplemented!()
-    }
+    // fn queue_redraw_with_clip(&self, clip: Option<&cairo::RectangleInt>) {
+    //     // unsafe {
+    //     //     ffi::clutter_actor_queue_redraw_with_clip(
+    //     //         self.as_ref().to_glib_none().0,
+    //     //         clip.to_glib_none().0,
+    //     //     );
+    //     // }
+    //     unimplemented!()
+    // }
 
     fn queue_relayout(&self) {
         // unsafe {

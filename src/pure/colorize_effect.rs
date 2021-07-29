@@ -2,12 +2,12 @@ use super::HandlerId;
 use crate::{Color, RgbaColor};
 use std::fmt;
 
-// * SECTION:clutter-colorize-effect
-// * @short_description: A colorization effect
-// * @see_also: #Effect, #OffscreenEffect
-// *
-// * #ColorizeEffect is a sub-class of #Effect that
-// * colorizes an actor with the given tint.
+// SECTION:clutter-colorize-effect
+// @short_description: A colorization effect
+// @see_also: #Effect, #OffscreenEffect
+//
+// #ColorizeEffect is a sub-class of #Effect that
+// colorizes an actor with the given tint.
 
 // @extends OffscreenEffect, Effect, ActorMeta
 pub struct ColorizeEffect {
@@ -21,7 +21,7 @@ pub struct ColorizeEffect {
     tex_width: i32,
     tex_height: i32,
 
-    pipeline: Option<dx::Pipeline>,
+    pipeline: Option<dx::core::Pipeline>,
 }
 
 impl ColorizeEffect {

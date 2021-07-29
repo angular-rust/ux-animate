@@ -36,7 +36,7 @@ pub trait TextureExt: 'static {
 
     fn set_property_pick_with_alpha(&self, pick_with_alpha: bool);
 
-    fn get_property_pixel_format(&self) -> dx::PixelFormat;
+    fn get_property_pixel_format(&self) -> dx::core::PixelFormat;
 
     fn get_property_repeat_x(&self) -> bool;
 
@@ -154,7 +154,7 @@ impl<O: Is<Texture>> TextureExt for O {
         unimplemented!()
     }
 
-    fn get_property_pixel_format(&self) -> dx::PixelFormat {
+    fn get_property_pixel_format(&self) -> dx::core::PixelFormat {
         // unsafe {
         //     let mut value = Value::from_type(<dx::pure::PixelFormat as StaticType>::static_type());
         //     gobject_sys::g_object_get_property(

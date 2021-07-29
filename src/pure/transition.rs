@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 use super::{Animatable, HandlerId, Interval};
 use crate::prelude::*;
 use std::fmt;
@@ -62,23 +63,23 @@ pub trait TransitionExt: 'static {
 
     //fn set_from(&self, value_type: glib::types::Type, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs);
 
-    /// Sets the initial value of the transition.
-    ///
-    /// This is a convenience function that will either create the
-    /// `Interval` used by `self`, or will update it if
-    /// the `Transition:interval` is already set.
-    ///
-    /// This function will copy the contents of `value`, so it is
-    /// safe to call `gobject::Value::unset` after it returns.
-    ///
-    /// If `self` already has a `Transition:interval` set,
-    /// then `value` must hold the same type, or a transformable type,
-    /// as the interval's `Interval:value-type` property.
-    ///
-    /// This function is meant to be used by language bindings.
-    /// ## `value`
-    /// a `gobject::Value` with the initial value of the transition
-    fn set_from_value(&self, value: &glib::Value);
+    // /// Sets the initial value of the transition.
+    // ///
+    // /// This is a convenience function that will either create the
+    // /// `Interval` used by `self`, or will update it if
+    // /// the `Transition:interval` is already set.
+    // ///
+    // /// This function will copy the contents of `value`, so it is
+    // /// safe to call `gobject::Value::unset` after it returns.
+    // ///
+    // /// If `self` already has a `Transition:interval` set,
+    // /// then `value` must hold the same type, or a transformable type,
+    // /// as the interval's `Interval:value-type` property.
+    // ///
+    // /// This function is meant to be used by language bindings.
+    // /// ## `value`
+    // /// a `gobject::Value` with the initial value of the transition
+    // fn set_from_value(&self, value: &glib::Value);
 
     /// Sets the `Transition:interval` property using `interval`.
     ///
@@ -97,23 +98,23 @@ pub trait TransitionExt: 'static {
 
     //fn set_to(&self, value_type: glib::types::Type, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs);
 
-    /// Sets the final value of the transition.
-    ///
-    /// This is a convenience function that will either create the
-    /// `Interval` used by `self`, or will update it if
-    /// the `Transition:interval` is already set.
-    ///
-    /// This function will copy the contents of `value`, so it is
-    /// safe to call `gobject::Value::unset` after it returns.
-    ///
-    /// If `self` already has a `Transition:interval` set,
-    /// then `value` must hold the same type, or a transformable type,
-    /// as the interval's `Interval:value-type` property.
-    ///
-    /// This function is meant to be used by language bindings.
-    /// ## `value`
-    /// a `gobject::Value` with the final value of the transition
-    fn set_to_value(&self, value: &glib::Value);
+    // /// Sets the final value of the transition.
+    // ///
+    // /// This is a convenience function that will either create the
+    // /// `Interval` used by `self`, or will update it if
+    // /// the `Transition:interval` is already set.
+    // ///
+    // /// This function will copy the contents of `value`, so it is
+    // /// safe to call `gobject::Value::unset` after it returns.
+    // ///
+    // /// If `self` already has a `Transition:interval` set,
+    // /// then `value` must hold the same type, or a transformable type,
+    // /// as the interval's `Interval:value-type` property.
+    // ///
+    // /// This function is meant to be used by language bindings.
+    // /// ## `value`
+    // /// a `gobject::Value` with the final value of the transition
+    // fn set_to_value(&self, value: &glib::Value);
 
     fn connect_property_animatable_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
@@ -165,15 +166,15 @@ impl<O: Is<Transition>> TransitionExt for O {
     //    unsafe { TODO: call clutter_sys:clutter_transition_set_from() }
     //}
 
-    fn set_from_value(&self, value: &glib::Value) {
-        // unsafe {
-        //     ffi::clutter_transition_set_from_value(
-        //         self.as_ref().to_glib_none().0,
-        //         value.to_glib_none().0,
-        //     );
-        // }
-        unimplemented!()
-    }
+    // fn set_from_value(&self, value: &glib::Value) {
+    //     // unsafe {
+    //     //     ffi::clutter_transition_set_from_value(
+    //     //         self.as_ref().to_glib_none().0,
+    //     //         value.to_glib_none().0,
+    //     //     );
+    //     // }
+    //     unimplemented!()
+    // }
 
     fn set_interval<P: Is<Interval>>(&self, interval: Option<&P>) {
         // unsafe {
@@ -199,15 +200,15 @@ impl<O: Is<Transition>> TransitionExt for O {
     //    unsafe { TODO: call clutter_sys:clutter_transition_set_to() }
     //}
 
-    fn set_to_value(&self, value: &glib::Value) {
-        // unsafe {
-        //     ffi::clutter_transition_set_to_value(
-        //         self.as_ref().to_glib_none().0,
-        //         value.to_glib_none().0,
-        //     );
-        // }
-        unimplemented!()
-    }
+    // fn set_to_value(&self, value: &glib::Value) {
+    //     // unsafe {
+    //     //     ffi::clutter_transition_set_to_value(
+    //     //         self.as_ref().to_glib_none().0,
+    //     //         value.to_glib_none().0,
+    //     //     );
+    //     // }
+    //     unimplemented!()
+    // }
 
     fn connect_property_animatable_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()

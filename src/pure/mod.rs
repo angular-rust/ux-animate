@@ -446,4 +446,4 @@ pub mod traits {
     pub use super::ZoomActionExt;
 }
 
-pub use glib::timeout_add_local as interval;
+// pub use glib::timeout_add_local as interval;

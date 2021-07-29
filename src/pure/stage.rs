@@ -9,14 +9,13 @@ pub struct Vector4 {
     w: f32,
 }
 
-#[derive(Default, Debug, Clone)]
+#[derive(Default, Debug)]
 struct StageProps {
-    // the stage implementation
-    // implementation: Option<StageWindow>,
+    framebuffer: dx::core::Framebuffer,
     perspective: Perspective,
-    projection: dx::Matrix,
-    inverse_projection: dx::Matrix,
-    view: dx::Matrix,
+    projection: dx::core::Matrix,
+    inverse_projection: dx::core::Matrix,
+    view: dx::core::Matrix,
     viewport: [f32; 4],
 
     fog: Fog,
@@ -32,7 +31,7 @@ struct StageProps {
     // current_clip_planes: [Plane; 4],
     pending_queue_redraws: Option<Vec<String>>,
 
-    active_framebuffer: Option<dx::Framebuffer>,
+    active_framebuffer: Option<dx::core::Framebuffer>,
 
     sync_delay: i32,
 
@@ -61,24 +60,24 @@ struct StageProps {
     has_custom_perspective: bool,
 }
 
-// * SECTION:clutter-stage
-// * @short_description: Top level visual element to which actors are placed.
-// *
-// * #Stage is a top level 'window' on which child actors are placed
-// * and manipulated.
-// *
-// * Backends might provide support for multiple stages. The support for this
-// * feature can be checked at run-time using the clutter_feature_available()
-// * function and the %CLUTTER_FEATURE_STAGE_MULTIPLE flag. If the backend used
-// * supports multiple stages, new #Stage instances can be created
-// * using clutter_stage_new(). These stages must be managed by the developer
-// * using clutter_actor_destroy(), which will take care of destroying all the
-// * actors contained inside them.
-// *
-// * #Stage is a proxy actor, wrapping the backend-specific
-// * implementation of the windowing system. It is possible to subclass
-// * #Stage, as long as every overridden virtual function chains up to
-// * the parent class corresponding function.
+// SECTION:clutter-stage
+// @short_description: Top level visual element to which actors are placed.
+//
+// #Stage is a top level 'window' on which child actors are placed
+// and manipulated.
+//
+// Backends might provide support for multiple stages. The support for this
+// feature can be checked at run-time using the clutter_feature_available()
+// function and the %CLUTTER_FEATURE_STAGE_MULTIPLE flag. If the backend used
+// supports multiple stages, new #Stage instances can be created
+// using clutter_stage_new(). These stages must be managed by the developer
+// using clutter_actor_destroy(), which will take care of destroying all the
+// actors contained inside them.
+//
+// #Stage is a proxy actor, wrapping the backend-specific
+// implementation of the windowing system. It is possible to subclass
+// #Stage, as long as every overridden virtual function chains up to
+// the parent class corresponding function.
 // TODO: implements atk::ImplementorIface, Scriptable, Animatable, Container
 // @extends Group, Actor
 #[derive(Default, Debug)]
@@ -110,12 +109,13 @@ impl Stage {
     fn init(&self) {
         // cairo_rectangle_int_t geom = { 0, };
         // ClutterStagePrivate *priv;
-        // ClutterStageWindow *impl;
+        // ClutterStageWindow *stagewindow;
         // ClutterBackend *backend;
         // int window_scale = 1;
         // GError *error;
 
-        // /* a stage is a top-level object */
+        // a stage is a top-level object
+        
         // CLUTTER_SET_PRIVATE_FLAGS(self, CLUTTER_IS_TOPLEVEL);
 
         // self->priv = priv = clutter_stage_get_instance_private(self);
@@ -124,12 +124,12 @@ impl Stage {
         // backend = clutter_get_default_backend();
 
         // error = NULL;
-        // impl = _clutter_backend_create_stage(backend, self, &error);
+        // stagewindow = _clutter_backend_create_stage(backend, self, &error);
 
-        // if G_LIKELY(impl != NULL) {
-        //     _clutter_stage_set_window(self, impl);
-        //     _clutter_stage_window_get_geometry(priv->impl, &geom);
-        //     window_scale = _clutter_stage_window_get_scale_factor(priv->impl);
+        // if G_LIKELY(stagewindow != NULL) {
+        //     _clutter_stage_set_window(self, stagewindow);
+        //     _clutter_stage_window_get_geometry(priv->stagewindow, &geom);
+        //     window_scale = _clutter_stage_window_get_scale_factor(priv->stagewindow);
         // } else {
         //     if error != NULL {
         //         g_critical("Unable to create a new stage implementation: %s",
@@ -150,18 +150,18 @@ impl Stage {
         // priv->min_size_changed = FALSE;
         // priv->sync_delay = -1;
 
-        // /* XXX - we need to keep the invariant that calling
-        // * clutter_set_motion_event_enabled() before the stage creation
-        // * will cause motion event delivery to be disabled on any newly
-        // * created stage. this can go away when we break API and remove
-        // * deprecated functions.
-        // */
+        // XXX - we need to keep the invariant that calling
+        // clutter_set_motion_event_enabled() before the stage creation
+        // will cause motion event delivery to be disabled on any newly
+        // created stage. this can go away when we break API and remove
+        // deprecated functions.
+
         // priv->motion_events_enabled = _clutter_context_get_motion_events_enabled();
 
         // clutter_actor_set_background_color(CLUTTER_ACTOR(self),
         //                                     &default_stage_color);
 
-        // priv->perspective.fovy   = 60.0; /* 60 Degrees */
+        // priv->perspective.fovy   = 60.0; // 60 Degrees
         // priv->perspective.aspect = (float) geom.width / (float) geom.height;
         // priv->perspective.z_near = 0.1;
         // priv->perspective.z_far  = 100.0;
@@ -183,7 +183,7 @@ impl Stage {
         //                                     geom.width * window_scale,
         //                                     geom.height * window_scale);
 
-        // /* FIXME - remove for 2.0 */
+        // FIXME - remove for 2.0 */
         // priv->fog.z_near = 1.0;
         // priv->fog.z_far  = 2.0;
 
@@ -218,21 +218,21 @@ impl Stage {
         // cairo_rectangle_int_t window_size;
         // int scale_factor;
 
-        // if priv->impl == NULL {
+        // if priv->stagewindow == NULL {
         //   return;
         // }
 
-        // /* our old allocation */
+        // our old allocation */
         // clutter_actor_get_allocation_box(self, &alloc);
         // clutter_actor_box_get_size(&alloc, &old_width, &old_height);
 
-        // /* the current allocation */
+        // the current allocation */
         // clutter_actor_box_get_size(box, &width, &height);
 
-        // /* the current Stage implementation size */
-        // _clutter_stage_window_get_geometry(priv->impl, &window_size);
+        // the current Stage implementation size */
+        // _clutter_stage_window_get_geometry(priv->stagewindow, &window_size);
 
-        // /* if the stage is fixed size (for instance, it's using a EGL framebuffer)
+        // if the stage is fixed size (for instance, it's using a EGL framebuffer)
         //  * then we simply ignore any allocation request and override the
         //  * allocation chain - because we cannot forcibly change the size of the
         //  * stage window.
@@ -283,7 +283,7 @@ impl Stage {
 
         //         if window_size.width != CLUTTER_NEARBYINT (width) ||
         //             window_size.height != CLUTTER_NEARBYINT (height) {
-        //             _clutter_stage_window_resize(priv->impl,
+        //             _clutter_stage_window_resize(priv->stagewindow,
         //                                           CLUTTER_NEARBYINT (width),
         //                                           CLUTTER_NEARBYINT (height));
         //         }
@@ -311,15 +311,15 @@ impl Stage {
         //                                   flags | CLUTTER_DELEGATE_LAYOUT);
         //   }
 
-        // /* XXX: Until Cogl becomes fully responsible for backend windows
+        // XXX: Until Cogl becomes fully responsible for backend windows
         //  * Clutter need to manually keep it informed of the current window
         //  * size. We do this after the allocation above so that the stage
         //  * window has a chance to update the window size based on the
         //  * allocation.
         //  */
-        // _clutter_stage_window_get_geometry(priv->impl, &window_size);
+        // _clutter_stage_window_get_geometry(priv->stagewindow, &window_size);
 
-        // scale_factor = _clutter_stage_window_get_scale_factor(priv->impl);
+        // scale_factor = _clutter_stage_window_get_scale_factor(priv->stagewindow);
 
         // window_size.width *= scale_factor;
         // window_size.height *= scale_factor;
@@ -327,7 +327,7 @@ impl Stage {
         // cogl_onscreen_clutter_backend_set_size(window_size.width,
         //                                         window_size.height);
 
-        // /* reset the viewport if the allocation effectively changed */
+        // reset the viewport if the allocation effectively changed */
         // clutter_actor_get_allocation_box(self, &alloc);
         // clutter_actor_box_get_size(&alloc, &new_width, &new_height);
 
@@ -347,6 +347,25 @@ impl Stage {
         //      */
         //     queue_full_redraw(CLUTTER_STAGE (self));
         // }
+    }
+
+    /// set_window_size:
+    /// @window: A #Stage
+    /// @width: A width, in pixels
+    /// @height: A height, in pixels
+    ///
+    /// Sets the size of the window, taking into account any window border. This
+    /// corresponds to the window's available area for its child, minus the area
+    /// occupied by the window's toolbar, if it's enabled.
+    ///
+    /// <note><para>
+    /// Setting the window size may involve a request to the underlying windowing
+    /// system, and may not immediately be reflected.
+    /// </para></note>
+    ///
+    pub fn set_window_size(&self, width: i32, height: i32) {
+        let props = self.props.borrow();
+        props.framebuffer.set_window_size(width, height);
     }
 }
 
@@ -475,18 +494,18 @@ pub trait StageExt: 'static {
     ///  `Perspective`
     fn get_perspective(&self) -> Perspective;
 
-    /// Gets the bounds of the current redraw for `self` in stage pixel
-    /// coordinates. E.g., if only a single actor has queued a redraw then
-    /// it may redraw the stage with a clip so that it doesn't have to
-    /// paint every pixel in the stage. This function would then return the
-    /// bounds of that clip. An application can use this information to
-    /// avoid some extra work if it knows that some regions of the stage
-    /// aren't going to be painted. This should only be called while the
-    /// stage is being painted. If there is no current redraw clip then
-    /// this function will set `clip` to the full extents of the stage.
-    /// ## `clip`
-    /// Return location for the clip bounds
-    fn get_redraw_clip_bounds(&self) -> cairo::RectangleInt;
+    // /// Gets the bounds of the current redraw for `self` in stage pixel
+    // /// coordinates. E.g., if only a single actor has queued a redraw then
+    // /// it may redraw the stage with a clip so that it doesn't have to
+    // /// paint every pixel in the stage. This function would then return the
+    // /// bounds of that clip. An application can use this information to
+    // /// avoid some extra work if it knows that some regions of the stage
+    // /// aren't going to be painted. This should only be called while the
+    // /// stage is being painted. If there is no current redraw clip then
+    // /// this function will set `clip` to the full extents of the stage.
+    // /// ## `clip`
+    // /// Return location for the clip bounds
+    // fn get_redraw_clip_bounds(&self) -> cairo::RectangleInt;
 
     /// Retrieves the value set with `StageExt::set_throttle_motion_events`
     ///
@@ -513,12 +532,12 @@ pub trait StageExt: 'static {
     ///  alpha channel of the stage color
     fn get_use_alpha(&self) -> bool;
 
-    /// Retrieves the value set with `StageExt::set_user_resizable`.
+    /// Retrieves the value set with `StageExt::set_resizable`.
     ///
     /// # Returns
     ///
     /// `true` if the stage is resizable by the user.
-    fn get_user_resizable(&self) -> bool;
+    fn get_resizable(&self) -> bool;
 
     /// Makes the cursor invisible on the stage window
     fn hide_cursor(&self);
@@ -671,7 +690,7 @@ pub trait StageExt: 'static {
     /// window manager controls)
     /// ## `resizable`
     /// whether the stage should be user resizable.
-    fn set_user_resizable(&self, resizable: bool);
+    fn set_resizable(&self, resizable: bool);
 
     /// Shows the cursor on the stage window
     fn show_cursor(&self);
@@ -856,17 +875,17 @@ impl<O: Is<Stage>> StageExt for O {
         unimplemented!()
     }
 
-    fn get_redraw_clip_bounds(&self) -> cairo::RectangleInt {
-        // unsafe {
-        //     let mut clip = cairo::RectangleInt::uninitialized();
-        //     ffi::clutter_stage_get_redraw_clip_bounds(
-        //         self.as_ref().to_glib_none().0,
-        //         clip.to_glib_none_mut().0,
-        //     );
-        //     clip
-        // }
-        unimplemented!()
-    }
+    // fn get_redraw_clip_bounds(&self) -> cairo::RectangleInt {
+    //     // unsafe {
+    //     //     let mut clip = cairo::RectangleInt::uninitialized();
+    //     //     ffi::clutter_stage_get_redraw_clip_bounds(
+    //     //         self.as_ref().to_glib_none().0,
+    //     //         clip.to_glib_none_mut().0,
+    //     //     );
+    //     //     clip
+    //     // }
+    //     unimplemented!()
+    // }
 
     fn get_throttle_motion_events(&self) -> bool {
         // unsafe {
@@ -891,7 +910,7 @@ impl<O: Is<Stage>> StageExt for O {
         unimplemented!()
     }
 
-    fn get_user_resizable(&self) -> bool {
+    fn get_resizable(&self) -> bool {
         // unsafe {
         //     from_glib(ffi::clutter_stage_get_user_resizable(
         //         self.as_ref().to_glib_none().0,
@@ -1006,16 +1025,15 @@ impl<O: Is<Stage>> StageExt for O {
         unimplemented!()
     }
 
-    fn set_user_resizable(&self, resizable: bool) {
+    fn set_resizable(&self, resizable: bool) {
         let stage = self.as_ref();
-        let props = stage.props.borrow_mut();
-        // match props.implementation {
-        //     Some(implementation) => {
-        //         implementation.set_user_resizable(resizable)
-        //     }
-        //     None => {}
-        // }
-        unimplemented!()
+        let props = stage.props.borrow();
+
+        let frontend: &dx::core::FramebufferType = props.framebuffer.as_ref();
+        match frontend {
+            dx::core::FramebufferType::OnScreen(onscreen) => onscreen.set_resizable(resizable),
+            dx::core::FramebufferType::OffScreen(offscreen) => {}
+        }
     }
 
     fn show_cursor(&self) {

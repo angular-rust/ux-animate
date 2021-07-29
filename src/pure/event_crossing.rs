@@ -2,20 +2,20 @@ use super::{Actor, EventFlags, EventType, InputDevice, ModifierType, Stage};
 
 // Window, NotifyType, CrossingMode
 
-// * CrossingEvent:
-// * @type: event type
-// * @time: event time
-// * @flags: event flags
-// * @stage: event source stage
-// * @source: event source actor
-// * @x: event X coordinate
-// * @y: event Y coordinate
-// * @related: actor related to the crossing
-// * @device: the device that originated the event. If you want the physical
-// * device the event originated from, use clutter_event_get_source_device()
-// *
-// * Event for the movement of the pointer across different actors
-// *
+// CrossingEvent:
+// @type: event type
+// @time: event time
+// @flags: event flags
+// @stage: event source stage
+// @source: event source actor
+// @x: event X coordinate
+// @y: event Y coordinate
+// @related: actor related to the crossing
+// @device: the device that originated the event. If you want the physical
+// device the event originated from, use clutter_event_get_source_device()
+//
+// Event for the movement of the pointer across different actors
+//
 pub struct CrossingEvent {
     kind: EventType,
     time: u32,

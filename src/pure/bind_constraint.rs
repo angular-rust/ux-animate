@@ -2,61 +2,61 @@ use super::{Actor, BindCoordinate, HandlerId};
 use crate::prelude::*;
 use std::fmt;
 
-// * SECTION:clutter-bind-constraint
-// * @Title: BindConstraint
-// * @Short_Description: A constraint binding the position or size of an actor
-// *
-// * #BindConstraint is a #Constraint that binds the
-// * position or the size of the #Actor to which it is applied
-// * to the the position or the size of another #Actor, or
-// * "source".
-// *
-// * An offset can be applied to the constraint, to avoid overlapping. The offset
-// * can also be animated. For instance, the following code will set up three
-// * actors to be bound to the same origin:
-// *
-// * |[<!-- language="C" -->
-// * // source
-// * rect[0] = clutter_rectangle_new_with_color (&red_color);
-// * clutter_actor_set_position (rect[0], x_pos, y_pos);
-// * clutter_actor_set_size (rect[0], 100, 100);
-// *
-// * // second rectangle
-// * rect[1] = clutter_rectangle_new_with_color (&green_color);
-// * clutter_actor_set_size (rect[1], 100, 100);
-// * clutter_actor_set_opacity (rect[1], 0);
-// *
-// * constraint = clutter_bind_constraint_new (rect[0], CLUTTER_BIND_X, 0.0);
-// * clutter_actor_add_constraint_with_name (rect[1], "green-x", constraint);
-// * constraint = clutter_bind_constraint_new (rect[0], CLUTTER_BIND_Y, 0.0);
-// * clutter_actor_add_constraint_with_name (rect[1], "green-y", constraint);
-// *
-// * // third rectangle
-// * rect[2] = clutter_rectangle_new_with_color (&blue_color);
-// * clutter_actor_set_size (rect[2], 100, 100);
-// * clutter_actor_set_opacity (rect[2], 0);
-// *
-// * constraint = clutter_bind_constraint_new (rect[0], CLUTTER_BIND_X, 0.0);
-// * clutter_actor_add_constraint_with_name (rect[2], "blue-x", constraint);
-// * constraint = clutter_bind_constraint_new (rect[0], CLUTTER_BIND_Y, 0.0);
-// * clutter_actor_add_constraint_with_name (rect[2], "blue-y", constraint);
-// * ]|
-// *
-// * The following code animates the second and third rectangles to "expand"
-// * them horizontally from underneath the first rectangle:
-// *
-// * |[<!-- language="C" -->
-// * clutter_actor_animate (rect[1], CLUTTER_EASE_OUT_CUBIC, 250,
-// *                        "@constraints.green-x.offset", 100.0,
-// *                        "opacity", 255,
-// *                        NULL);
-// * clutter_actor_animate (rect[2], CLUTTER_EASE_OUT_CUBIC, 250,
-// *                        "@constraints.blue-x.offset", 200.0,
-// *                        "opacity", 255,
-// *                        NULL);
-// * ]|
-// *
-// * #BindConstraint is available since  1.4
+// SECTION:clutter-bind-constraint
+// @Title: BindConstraint
+// @Short_Description: A constraint binding the position or size of an actor
+//
+// #BindConstraint is a #Constraint that binds the
+// position or the size of the #Actor to which it is applied
+// to the the position or the size of another #Actor, or
+// "source".
+//
+// An offset can be applied to the constraint, to avoid overlapping. The offset
+// can also be animated. For instance, the following code will set up three
+// actors to be bound to the same origin:
+//
+// |[<!-- language="C" -->
+// // source
+// rect[0] = clutter_rectangle_new_with_color (&red_color);
+// clutter_actor_set_position (rect[0], x_pos, y_pos);
+// clutter_actor_set_size (rect[0], 100, 100);
+//
+// // second rectangle
+// rect[1] = clutter_rectangle_new_with_color (&green_color);
+// clutter_actor_set_size (rect[1], 100, 100);
+// clutter_actor_set_opacity (rect[1], 0);
+//
+// constraint = clutter_bind_constraint_new (rect[0], CLUTTER_BIND_X, 0.0);
+// clutter_actor_add_constraint_with_name (rect[1], "green-x", constraint);
+// constraint = clutter_bind_constraint_new (rect[0], CLUTTER_BIND_Y, 0.0);
+// clutter_actor_add_constraint_with_name (rect[1], "green-y", constraint);
+//
+// // third rectangle
+// rect[2] = clutter_rectangle_new_with_color (&blue_color);
+// clutter_actor_set_size (rect[2], 100, 100);
+// clutter_actor_set_opacity (rect[2], 0);
+//
+// constraint = clutter_bind_constraint_new (rect[0], CLUTTER_BIND_X, 0.0);
+// clutter_actor_add_constraint_with_name (rect[2], "blue-x", constraint);
+// constraint = clutter_bind_constraint_new (rect[0], CLUTTER_BIND_Y, 0.0);
+// clutter_actor_add_constraint_with_name (rect[2], "blue-y", constraint);
+// ]|
+//
+// The following code animates the second and third rectangles to "expand"
+// them horizontally from underneath the first rectangle:
+//
+// |[<!-- language="C" -->
+// clutter_actor_animate (rect[1], CLUTTER_EASE_OUT_CUBIC, 250,
+//                        "@constraints.green-x.offset", 100.0,
+//                        "opacity", 255,
+//                        NULL);
+// clutter_actor_animate (rect[2], CLUTTER_EASE_OUT_CUBIC, 250,
+//                        "@constraints.blue-x.offset", 200.0,
+//                        "opacity", 255,
+//                        NULL);
+// ]|
+//
+// #BindConstraint is available since  1.4
 // @extends Constraint, ActorMeta
 #[derive(Debug, Clone)]
 pub struct BindConstraint {

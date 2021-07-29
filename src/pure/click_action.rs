@@ -2,72 +2,72 @@ use super::{Action, Actor, EventSequence, HandlerId, LongPressState, ModifierTyp
 use crate::prelude::*;
 use std::fmt;
 
-// * SECTION:clutter-click-action
-// * @Title: ClickAction
-// * @Short_Description: Action for clickable actors
-// *
-// * #ClickAction is a sub-class of #Action that implements
-// * the logic for clickable actors, by using the low level events of
-// * #Actor, such as #Actor::button-press-event and
-// * #Actor::button-release-event, to synthesize the high level
-// * #ClickAction::clicked signal.
-// *
-// * To use #ClickAction you just need to apply it to a #Actor
-// * using clutter_actor_add_action() and connect to the
-// * #ClickAction::clicked signal:
-// *
-// * |[
-// *   Action *action = clutter_click_action_new ();
-// *
-// *   clutter_actor_add_action (actor, action);
-// *
-// *   g_signal_connect (action, "clicked", G_CALLBACK (on_clicked), NULL);
-// * ]|
-// *
-// * #ClickAction also supports long press gestures: a long press is
-// * activated if the pointer remains pressed within a certain threshold (as
-// * defined by the #ClickAction:long-press-threshold property) for a
-// * minimum amount of time (as the defined by the
-// * #ClickAction:long-press-duration property).
-// * The #ClickAction::long-press signal is emitted multiple times,
-// * using different #LongPressState values; to handle long presses
-// * you should connect to the #ClickAction::long-press signal and
-// * handle the different states:
-// *
-// * |[
-// *   static gboolean
-// *   on_long_press (ClickAction    *action,
-// *                  Actor          *actor,
-// *                  LongPressState  state)
-// *   {
-// *     switch (state)
-// *       {
-// *       case CLUTTER_LONG_PRESS_QUERY:
-// *         /&ast; return TRUE if the actor should support long press
-// *          &ast; gestures, and FALSE otherwise; this state will be
-// *          &ast; emitted on button presses
-// *          &ast;/
-// *         return TRUE;
-// *
-// *       case CLUTTER_LONG_PRESS_ACTIVATE:
-// *         /&ast; this state is emitted if the minimum duration has
-// *          &ast; been reached without the gesture being cancelled.
-// *          &ast; the return value is not used
-// *          &ast;/
-// *         return TRUE;
-// *
-// *       case CLUTTER_LONG_PRESS_CANCEL:
-// *         /&ast; this state is emitted if the long press was cancelled;
-// *          &ast; for instance, the pointer went outside the actor or the
-// *          &ast; allowed threshold, or the button was released before
-// *          &ast; the minimum duration was reached. the return value is
-// *          &ast; not used
-// *          &ast;/
-// *         return FALSE;
-// *       }
-// *   }
-// * ]|
-// *
+// SECTION:clutter-click-action
+// @Title: ClickAction
+// @Short_Description: Action for clickable actors
+//
+// #ClickAction is a sub-class of #Action that implements
+// the logic for clickable actors, by using the low level events of
+// #Actor, such as #Actor::button-press-event and
+// #Actor::button-release-event, to synthesize the high level
+// #ClickAction::clicked signal.
+//
+// To use #ClickAction you just need to apply it to a #Actor
+// using clutter_actor_add_action() and connect to the
+// #ClickAction::clicked signal:
+//
+// |[
+//   Action *action = clutter_click_action_new ();
+//
+//   clutter_actor_add_action (actor, action);
+//
+//   g_signal_connect (action, "clicked", G_CALLBACK (on_clicked), NULL);
+// ]|
+//
+// #ClickAction also supports long press gestures: a long press is
+// activated if the pointer remains pressed within a certain threshold (as
+// defined by the #ClickAction:long-press-threshold property) for a
+// minimum amount of time (as the defined by the
+// #ClickAction:long-press-duration property).
+// The #ClickAction::long-press signal is emitted multiple times,
+// using different #LongPressState values; to handle long presses
+// you should connect to the #ClickAction::long-press signal and
+// handle the different states:
+//
+// |[
+//   static gboolean
+//   on_long_press (ClickAction    *action,
+//                  Actor          *actor,
+//                  LongPressState  state)
+//   {
+//     switch (state)
+//       {
+//       case CLUTTER_LONG_PRESS_QUERY:
+//         /&ast; return TRUE if the actor should support long press
+//          &ast; gestures, and FALSE otherwise; this state will be
+//          &ast; emitted on button presses
+//          &ast;/
+//         return TRUE;
+//
+//       case CLUTTER_LONG_PRESS_ACTIVATE:
+//         /&ast; this state is emitted if the minimum duration has
+//          &ast; been reached without the gesture being cancelled.
+//          &ast; the return value is not used
+//          &ast;/
+//         return TRUE;
+//
+//       case CLUTTER_LONG_PRESS_CANCEL:
+//         /&ast; this state is emitted if the long press was cancelled;
+//          &ast; for instance, the pointer went outside the actor or the
+//          &ast; allowed threshold, or the button was released before
+//          &ast; the minimum duration was reached. the return value is
+//          &ast; not used
+//          &ast;/
+//         return FALSE;
+//       }
+//   }
+// ]|
+//
 // @extends Action, ActorMeta
 #[derive(Default, Debug, Clone)]
 pub struct ClickAction {

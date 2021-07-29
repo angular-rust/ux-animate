@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 #![allow(clippy::missing_safety_doc)]
 
 use std::cell::Cell;
@@ -66,7 +67,7 @@ pub unsafe fn set_initialized() {
 pub fn init() {
     assert_not_initialized!();
     unsafe {
-        ffi::clutter_init(ptr::null_mut(), ptr::null_mut());
+        // ffi::clutter_init(ptr::null_mut(), ptr::null_mut());
         set_initialized();
     }
 }
@@ -74,14 +75,14 @@ pub fn init() {
 pub fn run() {
     assert_initialized_main_thread!();
     unsafe {
-        ffi::clutter_main();
+        // ffi::clutter_main();
         set_initialized();
     }
 }
 
 pub fn quit() {
     assert_initialized_main_thread!();
-    unsafe {
-        ffi::clutter_main_quit();
-    }
+    // unsafe {
+    //     ffi::clutter_main_quit();
+    // }
 }

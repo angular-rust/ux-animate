@@ -1,19 +1,19 @@
 use super::{Actor, EventFlags, EventType, InputDevice, ModifierType, Stage};
 
-// * MotionEvent:
-// * @type: event type
-// * @time: event time
-// * @flags: event flags
-// * @stage: event source stage
-// * @source: event source actor
-// * @x: event X coordinate
-// * @y: event Y coordinate
-// * @modifier_state: button modifiers
-// * @axes: reserved for future use
-// * @device: the device that originated the event. If you want the physical
-// * device the event originated from, use clutter_event_get_source_device()
-// *
-// * Event for the pointer motion
+// MotionEvent:
+// @type: event type
+// @time: event time
+// @flags: event flags
+// @stage: event source stage
+// @source: event source actor
+// @x: event X coordinate
+// @y: event Y coordinate
+// @modifier_state: button modifiers
+// @axes: reserved for future use
+// @device: the device that originated the event. If you want the physical
+// device the event originated from, use clutter_event_get_source_device()
+//
+// Event for the pointer motion
 pub struct MotionEvent {
     kind: EventType,
     time: u32,

@@ -1,14 +1,14 @@
 use super::{HandlerId, OffscreenEffect};
 use std::fmt;
 
-// * SECTION:clutter-desaturate-effect
-// * @short_description: A desaturation effect
-// * @see_also: #Effect, #OffscreenEffect
-// *
-// * #DesaturateEffect is a sub-class of #Effect that
-// * desaturates the color of an actor and its contents. The strenght
-// * of the desaturation effect is controllable and animatable through
-// * the #DesaturateEffect:factor property.
+// SECTION:clutter-desaturate-effect
+// @short_description: A desaturation effect
+// @see_also: #Effect, #OffscreenEffect
+//
+// #DesaturateEffect is a sub-class of #Effect that
+// desaturates the color of an actor and its contents. The strenght
+// of the desaturation effect is controllable and animatable through
+// the #DesaturateEffect:factor property.
 
 // @extends OffscreenEffect, Effect, ActorMeta
 pub struct DesaturateEffect {
@@ -22,7 +22,7 @@ pub struct DesaturateEffect {
     tex_width: i32,
     tex_height: i32,
 
-    pipeline: Option<dx::Pipeline>,
+    pipeline: Option<dx::core::Pipeline>,
 }
 
 impl DesaturateEffect {

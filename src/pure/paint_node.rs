@@ -2,22 +2,22 @@ use super::{Actor, ActorBox};
 use crate::prelude::*;
 use std::{fmt, cell::RefCell};
 
-// * SECTION:clutter-paint-node
-// * @Title: PaintNode
-// * @Short_Description: Paint objects
-// *
-// * #PaintNode is an element in the render graph.
-// *
-// * The render graph contains all the elements that need to be painted by
-// *  when submitting a frame to the graphics system.
-// *
-// * The render graph is distinct from the scene graph: the scene graph is
-// * composed by actors, which can be visible or invisible; the scene graph
-// * elements also respond to events. The render graph, instead, is only
-// * composed by nodes that will be painted.
-// *
-// * Each #Actor can submit multiple #PaintNode<!-- -->s to
-// * the render graph.
+// SECTION:clutter-paint-node
+// @Title: PaintNode
+// @Short_Description: Paint objects
+//
+// #PaintNode is an element in the render graph.
+//
+// The render graph contains all the elements that need to be painted by
+//  when submitting a frame to the graphics system.
+//
+// The render graph is distinct from the scene graph: the scene graph is
+// composed by actors, which can be visible or invisible; the scene graph
+// elements also respond to events. The render graph, instead, is only
+// composed by nodes that will be painted.
+//
+// Each #Actor can submit multiple #PaintNode<!-- -->s to
+// the render graph.
 
 pub const PAINT_OP_INIT: PaintOperation = PaintOperation {
     opcode: PaintOpCode::Invalid,
@@ -26,8 +26,8 @@ pub const PAINT_OP_INIT: PaintOperation = PaintOperation {
 pub enum PaintOpCode {
     Invalid,
     TexRect([f32; 8]),
-    Path(dx::Path),
-    Primitive(dx::Primitive),
+    Path(dx::core::Path),
+    Primitive(dx::core::Primitive),
 }
 
 pub struct PaintOperation {
@@ -44,15 +44,15 @@ pub struct PaintOperation {
 pub struct LayerNode {
     pub parent_instance: PaintNode,
 
-    pub viewport: cairo::Rectangle,
+    // pub viewport: cairo::Rectangle,
 
-    pub projection: dx::Matrix,
+    pub projection: dx::core::Matrix,
 
     pub fbo_width: f32,
     pub fbo_height: f32,
 
-    pub state: Option<dx::Pipeline>,
-    pub offscreen: Option<dx::Framebuffer>,
+    pub state: Option<dx::core::Pipeline>,
+    pub offscreen: Option<dx::core::Framebuffer>,
     pub texture: Option<dx::Texture>,
 
     pub opacity: u8,
@@ -61,29 +61,29 @@ pub struct LayerNode {
 pub struct RootNode {
     pub parent_instance: PaintNode,
 
-    pub framebuffer: Option<dx::Framebuffer>,
+    pub framebuffer: Option<dx::core::Framebuffer>,
 
-    pub clear_flags: dx::BufferBit,
+    pub clear_flags: dx::core::BufferBit,
     pub clear_color: dx::Color,
 }
 
 pub struct TransformNode {
     pub parent_instance: PaintNode,
 
-    pub modelview: dx::Matrix,
+    pub modelview: dx::core::Matrix,
 }
 
 struct DummyNode {
     pub parent_instance: PaintNode,
 
     pub actor: Option<Actor>,
-    pub framebuffer: Option<dx::Framebuffer>,
+    pub framebuffer: Option<dx::core::Framebuffer>,
 }
 
 pub struct PipelineNode {
     pub parent_instance: PaintNode,
 
-    pub pipeline: Option<dx::Pipeline>,
+    pub pipeline: Option<dx::core::Pipeline>,
 }
 
 pub struct ColorNode {
@@ -97,7 +97,7 @@ struct TextureNode {
 pub struct TextNode {
     pub parent_instance: PaintNode,
 
-    pub layout: Option<pango::Layout>,
+    // pub layout: Option<pango::Layout>,
     pub color: dx::Color,
 }
 

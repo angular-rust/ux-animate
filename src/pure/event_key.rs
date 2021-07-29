@@ -1,19 +1,19 @@
 use super::{Actor, EventFlags, EventType, InputDevice, ModifierType, Stage};
 
-// * KeyEvent:
-// * @type: event type
-// * @time: event time
-// * @flags: event flags
-// * @stage: event source stage
-// * @source: event source actor
-// * @modifier_state: key modifiers
-// * @keyval: raw key value
-// * @hardware_keycode: raw hardware key value
-// * @unicode_value: Unicode representation
-// * @device: the device that originated the event. If you want the physical
-// * device the event originated from, use clutter_event_get_source_device()
-// *
-// * Key event
+// KeyEvent:
+// @type: event type
+// @time: event time
+// @flags: event flags
+// @stage: event source stage
+// @source: event source actor
+// @modifier_state: key modifiers
+// @keyval: raw key value
+// @hardware_keycode: raw hardware key value
+// @unicode_value: Unicode representation
+// @device: the device that originated the event. If you want the physical
+// device the event originated from, use clutter_event_get_source_device()
+//
+// Key event
 pub struct KeyEvent {
     kind: EventType,
     time: u32,

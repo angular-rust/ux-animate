@@ -3,8 +3,10 @@ use crate::{
     lottie::{
         animation::keyframe::BaseKeyframeAnimation, model::KeyPath, value::LottieValueCallback,
     },
-    Canvas, Rect, Size,
+    Rect, Size,
 };
+
+// use crate::Canvas;
 
 use super::BaseLayer;
 

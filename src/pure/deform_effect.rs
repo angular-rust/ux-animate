@@ -2,39 +2,39 @@ use super::HandlerId;
 use crate::prelude::*;
 use std::fmt;
 
-// * SECTION:clutter-deform-effect
-// * @Title: DeformEffect
-// * @Short_Description: A base class for effects deforming the geometry
-// *   of an actor
-// *
-// * #DeformEffect is an abstract class providing all the plumbing
-// * for creating effects that result in the deformation of an actor's
-// * geometry.
-// *
-// * #DeformEffect uses offscreen buffers to render the contents of
-// * a #Actor and then the Cogl vertex buffers API to submit the
-// * geometry to the GPU.
-// *
-// * #DeformEffect is available since  1.4
-// *
-// * ## Implementing DeformEffect
-// *
-// * Sub-classes of #DeformEffect should override the
-// * #DeformEffectClass.deform_vertex() virtual function; this function
-// * is called on every vertex that needs to be deformed by the effect.
-// * Each passed vertex is an in-out parameter that initially contains the
-// * position of the vertex and should be modified according to a specific
-// * deformation algorithm.
+// SECTION:clutter-deform-effect
+// @Title: DeformEffect
+// @Short_Description: A base class for effects deforming the geometry
+//   of an actor
+//
+// #DeformEffect is an abstract class providing all the plumbing
+// for creating effects that result in the deformation of an actor's
+// geometry.
+//
+// #DeformEffect uses offscreen buffers to render the contents of
+// a #Actor and then the Cogl vertex buffers API to submit the
+// geometry to the GPU.
+//
+// #DeformEffect is available since  1.4
+//
+// ## Implementing DeformEffect
+//
+// Sub-classes of #DeformEffect should override the
+// #DeformEffectClass.deform_vertex() virtual function; this function
+// is called on every vertex that needs to be deformed by the effect.
+// Each passed vertex is an in-out parameter that initially contains the
+// position of the vertex and should be modified according to a specific
+// deformation algorithm.
 // @extends OffscreenEffect, Effect, ActorMeta,
 pub struct DeformEffect {
-    back_pipeline: Option<dx::Pipeline>,
+    back_pipeline: Option<dx::core::Pipeline>,
 
     x_tiles: i32,
     y_tiles: i32,
 
-    buffer: Option<dx::AttributeBuffer>,
-    primitive: Option<dx::Primitive>,
-    lines_primitive: Option<dx::Primitive>,
+    buffer: Option<dx::core::AttributeBuffer>,
+    primitive: Option<dx::core::Primitive>,
+    lines_primitive: Option<dx::core::Primitive>,
     n_vertices: i32,
     allocation_id: u64,
 

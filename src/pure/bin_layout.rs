@@ -9,21 +9,21 @@ pub struct BinLayer {
     y_align: BinAlignment,
 }
 
-// * @short_description: A simple layout manager
-// *
-// * #BinLayout is a layout manager which implements the following
-// * policy:
-// *
-// *   - the preferred size is the maximum preferred size
-// *   between all the children of the container using the
-// *   layout;
-// *   - each child is allocated in "layers", on on top
-// *   of the other;
-// *   - for each layer there are horizontal and vertical
-// *   alignment policies.
-// *
-// * The [bin-layout example](https://git.gnome.org/browse/clutter/tree/examples/bin-layout.c?h=clutter-1.18)
-// * shows how to pack actors inside a #BinLayout.
+// @short_description: A simple layout manager
+//
+// #BinLayout is a layout manager which implements the following
+// policy:
+//
+//   - the preferred size is the maximum preferred size
+//   between all the children of the container using the
+//   layout;
+//   - each child is allocated in "layers", on on top
+//   of the other;
+//   - for each layer there are horizontal and vertical
+//   alignment policies.
+//
+// The [bin-layout example](https://git.gnome.org/browse/clutter/tree/examples/bin-layout.c?h=clutter-1.18)
+// shows how to pack actors inside a #BinLayout.
 // @extends LayoutManager
 pub struct BinLayout {
     x_align: BinAlignment,

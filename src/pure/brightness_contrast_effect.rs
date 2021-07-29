@@ -1,13 +1,13 @@
 use super::HandlerId;
 use std::fmt;
 
-// * @short_description: Increase/decrease brightness and/or contrast of actor.
-// * @see_also: #Effect, #OffscreenEffect
-// *
-// * #BrightnessContrastEffect is a sub-class of #Effect that
-// * changes the overall brightness of a #Actor.
-// *
-// * #BrightnessContrastEffect is available since  1.10
+// @short_description: Increase/decrease brightness and/or contrast of actor.
+// @see_also: #Effect, #OffscreenEffect
+//
+// #BrightnessContrastEffect is a sub-class of #Effect that
+// changes the overall brightness of a #Actor.
+//
+// #BrightnessContrastEffect is available since  1.10
 // @extends OffscreenEffect, Effect, ActorMeta
 #[derive(Default)]
 pub struct BrightnessContrastEffect {
@@ -29,7 +29,7 @@ pub struct BrightnessContrastEffect {
     tex_width: i32,
     tex_height: i32,
 
-    pipeline: Option<dx::Pipeline>,
+    pipeline: Option<dx::core::Pipeline>,
 }
 
 impl BrightnessContrastEffect {

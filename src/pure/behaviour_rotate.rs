@@ -2,16 +2,16 @@ use super::{Alpha, HandlerId, RotateAxis, RotateDirection};
 use crate::prelude::*;
 use std::fmt;
 
-// * @short_description: A behaviour controlling rotation
-// *
-// * A #BehaviourRotate rotate actors between a starting and ending
-// * angle on a given axis.
-// *
-// * The #BehaviourRotate is available since version 0.4.
-// *
-// * Deprecated: 1.6: Use the #Actor rotation properties and
-// *   clutter_actor_animate(), or #Animator, or #State
-// *   instead.
+// @short_description: A behaviour controlling rotation
+//
+// A #BehaviourRotate rotate actors between a starting and ending
+// angle on a given axis.
+//
+// The #BehaviourRotate is available since version 0.4.
+//
+// Deprecated: 1.6: Use the #Actor rotation properties and
+//   clutter_actor_animate(), or #Animator, or #State
+//   instead.
 #[derive(Debug, Clone)]
 pub struct BehaviourRotate {
     angle_start: f64,

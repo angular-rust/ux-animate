@@ -1,16 +1,15 @@
 #![allow(clippy::many_single_char_names)]
-#![allow(unused_imports)]
 #![allow(unused_variables)]
 #![allow(dead_code)]
 #![cfg(not(target_arch = "wasm32"))]
 
 use crate::{
-    BaseLine, CanvasContext, Color, Direction, Gradient, GradientType, LineCap, LineJoin,
-    LinearGradient, PatternExtend, Point, RadialGradient, Rect, RgbaColor, Size, TextAlign,
-    TextMetrics, TextStyle, TextWeight,
+    BaseLine, CanvasContext, Color, Direction, FontStyle, FontWeight, Gradient, GradientType,
+    LineCap, LineJoin, LinearGradient, PatternExtend, RadialGradient, RgbaColor, TextAlign,
+    TextMetrics,
 };
-use cairo::{self, FontFace, FontSlant, FontWeight, ImageSurface, Surface, SurfacePattern};
-use std::{any::Any, cell::RefCell};
+// Point, Rect, Size
+use std::cell::RefCell;
 
 #[derive(Debug, Clone)]
 pub struct Pattern {
@@ -23,7 +22,7 @@ impl Pattern {
     pub fn new(extend: PatternExtend, surface: &cairo::Surface) -> Self {
         Self {
             extend,
-            inner: SurfacePattern::create(surface),
+            inner: cairo::SurfacePattern::create(surface),
         }
     }
 }
@@ -197,16 +196,16 @@ impl<'a> CanvasContext for Canvas<'a> {
         unimplemented!()
     }
 
-    fn set_font(&self, family: &str, style: TextStyle, weight: TextWeight, size: f64) {
+    fn set_font(&self, family: &str, style: FontStyle, weight: FontWeight, size: f64) {
         let slant = match style {
-            TextStyle::Italic => FontSlant::Italic,
-            TextStyle::Normal => FontSlant::Normal,
-            TextStyle::Oblique => FontSlant::Oblique,
+            FontStyle::Italic => cairo::FontSlant::Italic,
+            FontStyle::Normal => cairo::FontSlant::Normal,
+            FontStyle::Oblique => cairo::FontSlant::Oblique,
         };
 
         let weight = match weight {
-            TextWeight::Bold => FontWeight::Bold,
-            _ => FontWeight::Normal,
+            FontWeight::Bold => cairo::FontWeight::Bold,
+            _ => cairo::FontWeight::Normal,
         };
 
         self.ctx.select_font_face(family, slant, weight);

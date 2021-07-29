@@ -2,19 +2,19 @@ use super::{Alpha, HandlerId, Knot, RotateAxis, RotateDirection};
 use crate::prelude::*;
 use std::fmt;
 
-// * @Title: BehaviourEllipse
-// * @short_description: A behaviour interpolating position along an ellipse
-// * @Deprecated: 1.6: Use clutter_actor_animate() instead
-// *
-// * #BehaviourEllipse interpolates actors along a path defined by
-// *  an ellipse.
-// *
-// * When applying an ellipse behaviour to an actor, the
-// * behaviour will update the actor's position and depth and set them
-// * to what is dictated by the ellipses initial position.
-// *
-// * Deprecated: 1.6: Use clutter_actor_animate(), #Path and a
-// *   #PathConstraint instead.
+// @Title: BehaviourEllipse
+// @short_description: A behaviour interpolating position along an ellipse
+// @Deprecated: 1.6: Use clutter_actor_animate() instead
+//
+// #BehaviourEllipse interpolates actors along a path defined by
+//  an ellipse.
+//
+// When applying an ellipse behaviour to an actor, the
+// behaviour will update the actor's position and depth and set them
+// to what is dictated by the ellipses initial position.
+//
+// Deprecated: 1.6: Use clutter_actor_animate(), #Path and a
+//   #PathConstraint instead.
 // @implements Scriptable @extends Behaviour
 #[derive(Debug, Clone)]
 pub struct BehaviourEllipse {

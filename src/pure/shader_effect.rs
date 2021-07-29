@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 use super::ShaderType;
 use crate::prelude::*;
 use std::fmt;
@@ -65,21 +66,21 @@ pub trait ShaderEffectExt: 'static {
 
     //fn set_uniform(&self, name: &str, gtype: glib::types::Type, n_values: usize, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs);
 
-    /// Sets `value` as the payload for the uniform `name` inside the shader
-    /// effect
-    ///
-    /// The `glib::Type` of the `value` must be one of: `G_TYPE_INT`, for a single
-    /// integer value; `G_TYPE_FLOAT`, for a single floating point value;
-    /// `TYPE_SHADER_INT`, for an array of integer values;
-    /// `TYPE_SHADER_FLOAT`, for an array of floating point values;
-    /// and `TYPE_SHADER_MATRIX`, for a matrix of floating point
-    /// values. It also accepts `G_TYPE_DOUBLE` for compatibility with other
-    /// languages than C.
-    /// ## `name`
-    /// the name of the uniform to set
-    /// ## `value`
-    /// a `gobject::Value` with the value of the uniform to set
-    fn set_uniform_value(&self, name: &str, value: &glib::Value);
+    // /// Sets `value` as the payload for the uniform `name` inside the shader
+    // /// effect
+    // ///
+    // /// The `glib::Type` of the `value` must be one of: `G_TYPE_INT`, for a single
+    // /// integer value; `G_TYPE_FLOAT`, for a single floating point value;
+    // /// `TYPE_SHADER_INT`, for an array of integer values;
+    // /// `TYPE_SHADER_FLOAT`, for an array of floating point values;
+    // /// and `TYPE_SHADER_MATRIX`, for a matrix of floating point
+    // /// values. It also accepts `G_TYPE_DOUBLE` for compatibility with other
+    // /// languages than C.
+    // /// ## `name`
+    // /// the name of the uniform to set
+    // /// ## `value`
+    // /// a `gobject::Value` with the value of the uniform to set
+    // fn set_uniform_value(&self, name: &str, value: &glib::Value);
 }
 
 impl<O: Is<ShaderEffect>> ShaderEffectExt for O {
@@ -105,16 +106,16 @@ impl<O: Is<ShaderEffect>> ShaderEffectExt for O {
     //    unsafe { TODO: call clutter_sys:clutter_shader_effect_set_uniform() }
     //}
 
-    fn set_uniform_value(&self, name: &str, value: &glib::Value) {
-        // unsafe {
-        //     ffi::clutter_shader_effect_set_uniform_value(
-        //         self.as_ref().to_glib_none().0,
-        //         name.to_glib_none().0,
-        //         value.to_glib_none().0,
-        //     );
-        // }
-        unimplemented!()
-    }
+    // fn set_uniform_value(&self, name: &str, value: &glib::Value) {
+    //     // unsafe {
+    //     //     ffi::clutter_shader_effect_set_uniform_value(
+    //     //         self.as_ref().to_glib_none().0,
+    //     //         name.to_glib_none().0,
+    //     //         value.to_glib_none().0,
+    //     //     );
+    //     // }
+    //     unimplemented!()
+    // }
 }
 
 impl fmt::Display for ShaderEffect {

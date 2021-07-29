@@ -2,12 +2,12 @@ use super::{Actor, HandlerId, SwipeDirection};
 use crate::prelude::*;
 use std::fmt;
 
-// * SECTION:clutter-swipe-action
-// * @Title: ClutterSwipeAction
-// * @Short_Description: Action for swipe gestures
-// *
-// * #ClutterSwipeAction is a sub-class of #ClutterGestureAction that implements
-// * the logic for recognizing swipe gestures.
+// SECTION:clutter-swipe-action
+// @Title: ClutterSwipeAction
+// @Short_Description: Action for swipe gestures
+//
+// #ClutterSwipeAction is a sub-class of #ClutterGestureAction that implements
+// the logic for recognizing swipe gestures.
 // @extends GestureAction, Action, ActorMeta
 #[derive(Default, Debug, Clone)]
 pub struct SwipeAction {

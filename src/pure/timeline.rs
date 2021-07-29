@@ -60,65 +60,65 @@ pub struct TimelineMarker {
     // } data;
     is_relative: bool,
 }
-// * SECTION:clutter-timeline
-// * @short_description: A class for time-based events
-// * @see_also: #ClutterAnimation, #ClutterAnimator, #ClutterState
-// *
-// * #ClutterTimeline is a base class for managing time-based event that cause
-// * Clutter to redraw a stage, such as animations.
-// *
-// * Each #ClutterTimeline instance has a duration: once a timeline has been
-// * started, using clutter_timeline_start(), it will emit a signal that can
-// * be used to update the state of the actors.
-// *
-// * It is important to note that #ClutterTimeline is not a generic API for
-// * calling closures after an interval; each Timeline is tied into the master
-// * clock used to drive the frame cycle. If you need to schedule a closure
-// * after an interval, see clutter_threads_add_timeout() instead.
-// *
-// * Users of #ClutterTimeline should connect to the #ClutterTimeline::new-frame
-// * signal, which is emitted each time a timeline is advanced during the maste
-// * clock iteration. The #ClutterTimeline::new-frame signal provides the time
-// * elapsed since the beginning of the timeline, in milliseconds. A normalized
-// * progress value can be obtained by calling clutter_timeline_get_progress().
-// * By using clutter_timeline_get_delta() it is possible to obtain the wallclock
-// * time elapsed since the last emission of the #ClutterTimeline::new-frame
-// * signal.
-// *
-// * Initial state can be set up by using the #ClutterTimeline::started signal,
-// * while final state can be set up by using the #ClutterTimeline::stopped
-// * signal. The #ClutterTimeline guarantees the emission of at least a single
-// * #ClutterTimeline::new-frame signal, as well as the emission of the
-// * #ClutterTimeline::completed signal every time the #ClutterTimeline reaches
-// * its #ClutterTimeline:duration.
-// *
-// * It is possible to connect to specific points in the timeline progress by
-// * adding markers using clutter_timeline_add_marker_at_time() and connecting
-// * to the #ClutterTimeline::marker-reached signal.
-// *
-// * Timelines can be made to loop once they reach the end of their duration, by
-// * using clutter_timeline_set_repeat_count(); a looping timeline will still
-// * emit the #ClutterTimeline::completed signal once it reaches the end of its
-// * duration at each repeat. If you want to be notified of the end of the last
-// * repeat, use the #ClutterTimeline::stopped signal.
-// *
-// * Timelines have a #ClutterTimeline:direction: the default direction is
-// * %CLUTTER_TIMELINE_FORWARD, and goes from 0 to the duration; it is possible
-// * to change the direction to %CLUTTER_TIMELINE_BACKWARD, and have the timeline
-// * go from the duration to 0. The direction can be automatically reversed
-// * when reaching completion by using the #ClutterTimeline:auto-reverse property.
-// *
-// * Timelines are used in the Clutter animation framework by classes like
-// * #ClutterAnimation, #ClutterAnimator, and #ClutterState.
-// *
-// * ## Defining Timelines in ClutterScript
-// *
-// * A #ClutterTimeline can be described in #ClutterScript like any
-// * other object. Additionally, it is possible to define markers directly
-// * inside the JSON definition by using the `markers` JSON object member,
-// * such as:
-// *
-// * |[
+// SECTION:clutter-timeline
+// @short_description: A class for time-based events
+// @see_also: #ClutterAnimation, #ClutterAnimator, #ClutterState
+//
+// #ClutterTimeline is a base class for managing time-based event that cause
+// Clutter to redraw a stage, such as animations.
+//
+// Each #ClutterTimeline instance has a duration: once a timeline has been
+// started, using clutter_timeline_start(), it will emit a signal that can
+// be used to update the state of the actors.
+//
+// It is important to note that #ClutterTimeline is not a generic API for
+// calling closures after an interval; each Timeline is tied into the master
+// clock used to drive the frame cycle. If you need to schedule a closure
+// after an interval, see clutter_threads_add_timeout() instead.
+//
+// Users of #ClutterTimeline should connect to the #ClutterTimeline::new-frame
+// signal, which is emitted each time a timeline is advanced during the maste
+// clock iteration. The #ClutterTimeline::new-frame signal provides the time
+// elapsed since the beginning of the timeline, in milliseconds. A normalized
+// progress value can be obtained by calling clutter_timeline_get_progress().
+// By using clutter_timeline_get_delta() it is possible to obtain the wallclock
+// time elapsed since the last emission of the #ClutterTimeline::new-frame
+// signal.
+//
+// Initial state can be set up by using the #ClutterTimeline::started signal,
+// while final state can be set up by using the #ClutterTimeline::stopped
+// signal. The #ClutterTimeline guarantees the emission of at least a single
+// #ClutterTimeline::new-frame signal, as well as the emission of the
+// #ClutterTimeline::completed signal every time the #ClutterTimeline reaches
+// its #ClutterTimeline:duration.
+//
+// It is possible to connect to specific points in the timeline progress by
+// adding markers using clutter_timeline_add_marker_at_time() and connecting
+// to the #ClutterTimeline::marker-reached signal.
+//
+// Timelines can be made to loop once they reach the end of their duration, by
+// using clutter_timeline_set_repeat_count(); a looping timeline will still
+// emit the #ClutterTimeline::completed signal once it reaches the end of its
+// duration at each repeat. If you want to be notified of the end of the last
+// repeat, use the #ClutterTimeline::stopped signal.
+//
+// Timelines have a #ClutterTimeline:direction: the default direction is
+// %CLUTTER_TIMELINE_FORWARD, and goes from 0 to the duration; it is possible
+// to change the direction to %CLUTTER_TIMELINE_BACKWARD, and have the timeline
+// go from the duration to 0. The direction can be automatically reversed
+// when reaching completion by using the #ClutterTimeline:auto-reverse property.
+//
+// Timelines are used in the Clutter animation framework by classes like
+// #ClutterAnimation, #ClutterAnimator, and #ClutterState.
+//
+// ## Defining Timelines in ClutterScript
+//
+// A #ClutterTimeline can be described in #ClutterScript like any
+// other object. Additionally, it is possible to define markers directly
+// inside the JSON definition by using the `markers` JSON object member,
+// such as:
+//
+// |[
 // {
 //  "type" : "ClutterTimeline",
 //  "duration" : 1000,
@@ -128,7 +128,7 @@ pub struct TimelineMarker {
 //    { "name" : "three-quarters", "time" : 750 }
 //  ]
 // }
-// * ]|
+// ]|
 // TODO: @implements Scriptable
 #[derive(Default, Debug, Clone)]
 pub struct Timeline {

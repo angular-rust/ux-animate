@@ -1,39 +1,39 @@
 use super::{Actor, Content, HandlerId};
-use crate::{Canvas, prelude::*};
+use crate::prelude::*;
+// use crate::Canvas;
 use std::fmt;
-// use cairo::Context;
 
-// * Canvas:
-// *
-// * The #Canvas structure contains
-// * private data and should only be accessed using the provided
-// * API.
-// * @Title: Canvas
-// * @Short_Description: Content for 2D painting
-// * @See_Also: #Content
-// *
-// * The #Canvas class is a #Content implementation that allows
-// * drawing using the Cairo API on a 2D surface.
-// *
-// * In order to draw on a #Canvas, you should connect a handler to the
-// * #Canvas::draw signal; the signal will receive a #cairo_t context
-// * that can be used to draw. #Canvas will emit the #Canvas::draw
-// * signal when invalidated using clutter_content_invalidate().
-// *
-// * See [canvas.c](https://git.gnome.org/browse/clutter/tree/examples/canvas.c?h=clutter-1.18)
-// * for an example of how to use #Canvas.
+// Canvas:
+//
+// The #Canvas structure contains
+// private data and should only be accessed using the provided
+// API.
+// @Title: Canvas
+// @Short_Description: Content for 2D painting
+// @See_Also: #Content
+//
+// The #Canvas class is a #Content implementation that allows
+// drawing using the Cairo API on a 2D surface.
+//
+// In order to draw on a #Canvas, you should connect a handler to the
+// #Canvas::draw signal; the signal will receive a #cairo_t context
+// that can be used to draw. #Canvas will emit the #Canvas::draw
+// signal when invalidated using clutter_content_invalidate().
+//
+// See [canvas.c](https://git.gnome.org/browse/clutter/tree/examples/canvas.c?h=clutter-1.18)
+// for an example of how to use #Canvas.
 // @implements Content
 #[derive(Debug)]
 pub struct ActorCanvas {
-    cr: cairo::Context,
+    // cr: cairo::Context,
 
     width: u32,
     height: u32,
 
-    texture: dx::Texture,
+    texture: dx::core::Texture,
     dirty: bool,
 
-    buffer: dx::Bitmap,
+    buffer: dx::core::Bitmap,
 
     scale_factor: u32,
     scale_factor_set: bool,
@@ -141,27 +141,27 @@ pub trait ActorCanvasExt: 'static {
     /// The width of the canvas.
     fn set_property_width(&self, width: u32);
 
-    /// The `Canvas::draw` signal is emitted each time a canvas is
-    /// invalidated.
-    ///
-    /// It is safe to connect multiple handlers to this signal: each
-    /// handler invocation will be automatically protected by `cairo_save`
-    /// and `cairo_restore` pairs.
-    /// ## `cr`
-    /// the Cairo context used to draw
-    /// ## `width`
-    /// the width of the `canvas`
-    /// ## `height`
-    /// the height of the `canvas`
-    ///
-    /// # Returns
-    ///
-    /// `true` if the signal emission should stop, and
-    ///  `false` otherwise
-    fn connect_draw<F: Fn(&Self, &Canvas, u32, u32) -> bool + 'static>(
-        &self,
-        f: F,
-    ) -> HandlerId;
+    // /// The `Canvas::draw` signal is emitted each time a canvas is
+    // /// invalidated.
+    // ///
+    // /// It is safe to connect multiple handlers to this signal: each
+    // /// handler invocation will be automatically protected by `cairo_save`
+    // /// and `cairo_restore` pairs.
+    // /// ## `cr`
+    // /// the Cairo context used to draw
+    // /// ## `width`
+    // /// the width of the `canvas`
+    // /// ## `height`
+    // /// the height of the `canvas`
+    // ///
+    // /// # Returns
+    // ///
+    // /// `true` if the signal emission should stop, and
+    // ///  `false` otherwise
+    // fn connect_draw<F: Fn(&Self, &Canvas, u32, u32) -> bool + 'static>(
+    //     &self,
+    //     f: F,
+    // ) -> HandlerId;
 
     fn connect_property_height_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
@@ -267,12 +267,12 @@ impl<O: Is<ActorCanvas>> ActorCanvasExt for O {
         unimplemented!()
     }
 
-    fn connect_draw<F: Fn(&Self, &Canvas, u32, u32) -> bool + 'static>(
-        &self,
-        f: F,
-    ) -> HandlerId {
-        unimplemented!()
-    }
+    // fn connect_draw<F: Fn(&Self, &Canvas, u32, u32) -> bool + 'static>(
+    //     &self,
+    //     f: F,
+    // ) -> HandlerId {
+    //     unimplemented!()
+    // }
 
     fn connect_property_height_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         unimplemented!()

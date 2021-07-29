@@ -2,30 +2,30 @@ use super::{Actor, HandlerId};
 use crate::prelude::*;
 use std::fmt;
 
-// * SECTION:clutter-content
-// * @Title: Content
-// * @Short_Description: Delegate for painting the content of an actor
-// *
-// * #Content is an interface to implement types responsible for
-// * painting the content of a #Actor.
-// *
-// * Multiple actors can use the same #Content instance, in order
-// * to share the resources associated with painting the same content.
-// *
-// * ContentIface:
-// * @get_preferred_size: virtual function; should be overridden by subclasses
-// *   of #Content that have a natural size
-// * @paint_content: virtual function; called each time the content needs to
-// *   paint itself
-// * @attached: virtual function; called each time a #Content is attached
-// *   to a #Actor.
-// * @detached: virtual function; called each time a #Content is detached
-// *   from a #Actor.
-// * @invalidate: virtual function; called each time a #Content state
-// *   is changed.
-// *
-// * The #ContentIface structure contains only
-// * private data.
+// SECTION:clutter-content
+// @Title: Content
+// @Short_Description: Delegate for painting the content of an actor
+//
+// #Content is an interface to implement types responsible for
+// painting the content of a #Actor.
+//
+// Multiple actors can use the same #Content instance, in order
+// to share the resources associated with painting the same content.
+//
+// ContentIface:
+// @get_preferred_size: virtual function; should be overridden by subclasses
+//   of #Content that have a natural size
+// @paint_content: virtual function; called each time the content needs to
+//   paint itself
+// @attached: virtual function; called each time a #Content is attached
+//   to a #Actor.
+// @detached: virtual function; called each time a #Content is detached
+//   from a #Actor.
+// @invalidate: virtual function; called each time a #Content state
+//   is changed.
+//
+// The #ContentIface structure contains only
+// private data.
 #[derive(Debug, Clone)]
 pub struct Content {}
 

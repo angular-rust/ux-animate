@@ -6,29 +6,29 @@ use std::{
     sync::{Arc, Mutex},
 };
 
-// * SECTION:clutter-main
-// * @short_description: Various 'global'  functions.
-// *
-// * Functions to retrieve various global  resources and other utility
-// * functions for mainloops, events and threads
-// *
-// * ## The  Threading Model
-// *
-// *  is *thread-aware*: all operations performed by  are assumed
-// * to be under the Big  Lock, which is created when the threading is
-// * initialized through clutter_init(), and entered when calling user-related
-// * code during event handling and actor drawing.
-// *
-// * The only safe and portable way to use the  API in a multi-threaded
-// * environment is to only access the  API from a thread that did called
-// * clutter_init() and clutter_main().
-// *
-// * The common pattern for using threads with  is to use worker threads
-// * to perform blocking operations and then install idle or timeout sources with
-// * the result when the thread finishes, and update the UI from those callbacks.
-// *
-// * For a working example of how to use a worker thread to update the UI, see
-// * [threads.c](https://git.gnome.org/browse/clutter/tree/examples/threads.c?h=clutter-1.18)
+// SECTION:clutter-main
+// @short_description: Various 'global'  functions.
+//
+// Functions to retrieve various global  resources and other utility
+// functions for mainloops, events and threads
+//
+// ## The  Threading Model
+//
+//  is *thread-aware*: all operations performed by  are assumed
+// to be under the Big  Lock, which is created when the threading is
+// initialized through clutter_init(), and entered when calling user-related
+// code during event handling and actor drawing.
+//
+// The only safe and portable way to use the  API in a multi-threaded
+// environment is to only access the  API from a thread that did called
+// clutter_init() and clutter_main().
+//
+// The common pattern for using threads with  is to use worker threads
+// to perform blocking operations and then install idle or timeout sources with
+// the result when the thread finishes, and update the UI from those callbacks.
+//
+// For a working example of how to use a worker thread to update the UI, see
+// [threads.c](https://git.gnome.org/browse/clutter/tree/examples/threads.c?h=clutter-1.18)
 
 #[derive(Default)]
 pub struct MainContextProps {
@@ -92,9 +92,9 @@ pub struct MainContextProps {
 
 unsafe impl Send for MainContextProps {}
 
-// * MainContext:
-// *
-// * The shared state of 
+// MainContext:
+//
+// The shared state of 
 pub struct MainContext {
     props: Arc<Mutex<MainContextProps>>,
 }
@@ -197,17 +197,17 @@ pub struct Features {
     features_set: bool,
 }
 
-// * SECTION:clutter-feature
-// * @short_description: Run-time detection of  features
-// *
-// * Parts of  depend on the underlying platform, including the
-// * capabilities of the backend used and the OpenGL features exposed through the
-// *  and COGL API.
-// *
-// * It is possible to ask whether  has support for specific features at
-// * run-time.
-// *
-// * See also dx_get_features() and #CoglFeatureFlags
+// SECTION:clutter-feature
+// @short_description: Run-time detection of  features
+//
+// Parts of  depend on the underlying platform, including the
+// capabilities of the backend used and the OpenGL features exposed through the
+//  and COGL API.
+//
+// It is possible to ask whether  has support for specific features at
+// run-time.
+//
+// See also dx_get_features() and #CoglFeatureFlags
 fn feature_init(backend: &Option<Backend>) -> bool {
     // MainContext *context;
 
@@ -242,29 +242,29 @@ fn feature_init(backend: &Option<Backend>) -> bool {
 
     // CLUTTER_NOTE (MISC, "features checked");
 
-    return true;
+    true
 }
 
-fn features_from_cogl(dx_flags: dx::FeatureFlags) -> FeatureFlags {
+fn features_from_cogl(dx_flags: dx::core::FeatureFlags) -> FeatureFlags {
     let mut clutter_flags: FeatureFlags = FeatureFlags::NONE;
 
-    if (dx_flags & dx::FeatureFlags::TEXTURE_NPOT).bits() != 0 {
+    if (dx_flags & dx::core::FeatureFlags::TEXTURE_NPOT).bits() != 0 {
         clutter_flags |= FeatureFlags::TEXTURE_NPOT;
     }
 
-    if (dx_flags & dx::FeatureFlags::TEXTURE_YUV).bits() != 0 {
+    if (dx_flags & dx::core::FeatureFlags::TEXTURE_YUV).bits() != 0 {
         clutter_flags |= FeatureFlags::TEXTURE_YUV;
     }
 
-    if (dx_flags & dx::FeatureFlags::TEXTURE_READ_PIXELS).bits() != 0 {
+    if (dx_flags & dx::core::FeatureFlags::TEXTURE_READ_PIXELS).bits() != 0 {
         clutter_flags |= FeatureFlags::TEXTURE_READ_PIXELS;
     }
 
-    if (dx_flags & dx::FeatureFlags::SHADERS_GLSL).bits() != 0 {
+    if (dx_flags & dx::core::FeatureFlags::SHADERS_GLSL).bits() != 0 {
         clutter_flags |= FeatureFlags::SHADERS_GLSL;
     }
 
-    if (dx_flags & dx::FeatureFlags::OFFSCREEN).bits() != 0 {
+    if (dx_flags & dx::core::FeatureFlags::OFFSCREEN).bits() != 0 {
         clutter_flags |= FeatureFlags::OFFSCREEN;
     }
 
@@ -335,30 +335,30 @@ fn init_real(props: &mut MainContextProps) -> InitError {
     InitError::Sucess
 }
 
-// * clutter_init:
-// * @argc: (inout): The number of arguments in @argv
-// * @argv: (array length=argc) (inout) (allow-none): A pointer to an array
-// *   of arguments.
-// *
-// * Initialises everything needed to operate with  and parses some
-// * standard command line options; @argc and @argv are adjusted accordingly
-// * so your own code will never see those standard arguments.
-// *
-// * It is safe to call this function multiple times.
-// *
-// * This function will not abort in case of errors during
-// * initialization; clutter_init() will print out the error message on
-// * stderr, and will return an error code. It is up to the application
-// * code to handle this case. If you need to display the error message
-// * yourself, you can use clutter_init_with_args(), which takes a #GError
-// * pointer.
-// *
-// * If this function fails, and returns an error code, any subsequent
-// *  API will have undefined behaviour - including segmentation
-// * faults and assertion failures. Make sure to handle the returned
-// * #InitError enumeration value.
-// *
-// * Return value: a #InitError value
+// clutter_init:
+// @argc: (inout): The number of arguments in @argv
+// @argv: (array length=argc) (inout) (allow-none): A pointer to an array
+//   of arguments.
+//
+// Initialises everything needed to operate with  and parses some
+// standard command line options; @argc and @argv are adjusted accordingly
+// so your own code will never see those standard arguments.
+//
+// It is safe to call this function multiple times.
+//
+// This function will not abort in case of errors during
+// initialization; clutter_init() will print out the error message on
+// stderr, and will return an error code. It is up to the application
+// code to handle this case. If you need to display the error message
+// yourself, you can use clutter_init_with_args(), which takes a #GError
+// pointer.
+//
+// If this function fails, and returns an error code, any subsequent
+//  API will have undefined behaviour - including segmentation
+// faults and assertion failures. Make sure to handle the returned
+// #InitError enumeration value.
+//
+// Return value: a #InitError value
 pub fn animate_init() {
     base_init();
     let ctx = MainContext::global();
@@ -418,15 +418,15 @@ pub enum CullResult {
     ResultPartial,
 }
 
-// * InitError:
-// * @CLUTTER_INIT_SUCCESS: Initialisation successful
-// * @CLUTTER_INIT_ERROR_UNKNOWN: Unknown error
-// * @CLUTTER_INIT_ERROR_THREADS: Thread initialisation failed
-// * @CLUTTER_INIT_ERROR_BACKEND: Backend initialisation failed
-// * @CLUTTER_INIT_ERROR_INTERNAL: Internal error
-// *
-// * Error conditions returned by clutter_init() and clutter_init_with_args().
-// *
+// InitError:
+// @CLUTTER_INIT_SUCCESS: Initialisation successful
+// @CLUTTER_INIT_ERROR_UNKNOWN: Unknown error
+// @CLUTTER_INIT_ERROR_THREADS: Thread initialisation failed
+// @CLUTTER_INIT_ERROR_BACKEND: Backend initialisation failed
+// @CLUTTER_INIT_ERROR_INTERNAL: Internal error
+//
+// Error conditions returned by clutter_init() and clutter_init_with_args().
+//
 pub enum InitError {
     Sucess = 1,
     Unknown = 0,

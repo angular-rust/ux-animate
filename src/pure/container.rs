@@ -1,59 +1,60 @@
+#![allow(unused_imports)]
 use super::{Actor, ChildMeta, HandlerId};
 use crate::prelude::*;
 use std::fmt;
 
-// * SECTION:clutter-container
-// * @short_description: An interface for container actors
-// *
-// * #Container is an interface implemented by #Actor, and
-// * it provides some common API for notifying when a child actor is added
-// * or removed, as well as the infrastructure for accessing child properties
-// * through #ChildMeta.
-// *
-// * Until  1.10, the #Container interface was also the public
-// * API for implementing container actors; this part of the interface has
-// * been deprecated: #Container has a default implementation which
-// * defers to #Actor the child addition and removal, as well as the
-// * iteration. See the documentation of #ContainerIface for the list
-// * of virtual functions that should be overridden.
+// SECTION:clutter-container
+// @short_description: An interface for container actors
+//
+// #Container is an interface implemented by #Actor, and
+// it provides some common API for notifying when a child actor is added
+// or removed, as well as the infrastructure for accessing child properties
+// through #ChildMeta.
+//
+// Until  1.10, the #Container interface was also the public
+// API for implementing container actors; this part of the interface has
+// been deprecated: #Container has a default implementation which
+// defers to #Actor the child addition and removal, as well as the
+// iteration. See the documentation of #ContainerIface for the list
+// of virtual functions that should be overridden.
 
-// * ContainerIface:
-// * @add: virtual function for adding an actor to the container. This virtual
-// *   function is deprecated, and it should not be overridden.
-// * @remove: virtual function for removing an actor from the container. This
-// *   virtual function is deprecated, and it should not be overridden.
-// * @foreach: virtual function for iterating over the container's children.
-// *   This virtual function is deprecated, and it should not be overridden.
-// * @foreach_with_internals: virtual functions for iterating over the
-// *   container's children, both added using the #Container API
-// *   and internal children. The implementation of this virtual function
-// *   is required only if the #Container implementation has
-// *   internal children. This virtual function is deprecated, and it should
-// *   not be overridden.
-// * @raise: virtual function for raising a child. This virtual function is
-// *   deprecated and it should not be overridden.
-// * @lower: virtual function for lowering a child. This virtual function is
-// *   deprecated and it should not be overridden.
-// * @sort_depth_order: virtual function for sorting the children of a
-// *   container depending on their depth. This virtual function is deprecated
-// *   and it should not be overridden.
-// * @child_meta_type: The GType used for storing auxiliary information about
-// *   each of the containers children.
-// * @create_child_meta: virtual function that gets called for each added
-// *   child, the function should instantiate an object of type
-// *   #ContainerIface::child_meta_type, set the container and actor
-// *   fields in the instance and add the record to a data structure for
-// *   subsequent access for #ContainerIface::get_child_meta
-// * @destroy_child_meta: virtual function that gets called when a child is
-// *   removed; it shuld release all resources held by the record
-// * @get_child_meta: return the record for a container child
-// * @actor_added: class handler for #Container::actor-added
-// * @actor_removed: class handler for #Container::actor-removed
-// * @child_notify: class handler for #Container::child-notify
-// *
-// * Base interface for container actors. The @add, @remove and @foreach
-// * virtual functions must be provided by any implementation; the other
-// * virtual functions are optional.
+// ContainerIface:
+// @add: virtual function for adding an actor to the container. This virtual
+//   function is deprecated, and it should not be overridden.
+// @remove: virtual function for removing an actor from the container. This
+//   virtual function is deprecated, and it should not be overridden.
+// @foreach: virtual function for iterating over the container's children.
+//   This virtual function is deprecated, and it should not be overridden.
+// @foreach_with_internals: virtual functions for iterating over the
+//   container's children, both added using the #Container API
+//   and internal children. The implementation of this virtual function
+//   is required only if the #Container implementation has
+//   internal children. This virtual function is deprecated, and it should
+//   not be overridden.
+// @raise: virtual function for raising a child. This virtual function is
+//   deprecated and it should not be overridden.
+// @lower: virtual function for lowering a child. This virtual function is
+//   deprecated and it should not be overridden.
+// @sort_depth_order: virtual function for sorting the children of a
+//   container depending on their depth. This virtual function is deprecated
+//   and it should not be overridden.
+// @child_meta_type: The GType used for storing auxiliary information about
+//   each of the containers children.
+// @create_child_meta: virtual function that gets called for each added
+//   child, the function should instantiate an object of type
+//   #ContainerIface::child_meta_type, set the container and actor
+//   fields in the instance and add the record to a data structure for
+//   subsequent access for #ContainerIface::get_child_meta
+// @destroy_child_meta: virtual function that gets called when a child is
+//   removed; it shuld release all resources held by the record
+// @get_child_meta: return the record for a container child
+// @actor_added: class handler for #Container::actor-added
+// @actor_removed: class handler for #Container::actor-removed
+// @child_notify: class handler for #Container::child-notify
+//
+// Base interface for container actors. The @add, @remove and @foreach
+// virtual functions must be provided by any implementation; the other
+// virtual functions are optional.
 
 #[derive(Debug, Clone)]
 pub struct Container {}
@@ -123,20 +124,20 @@ impl AsRef<Container> for Container {
 pub trait ContainerExt: 'static {
     //fn child_get<P: Is<Actor>>(&self, actor: &P, first_prop: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs);
 
-    /// Gets a container specific property of a child of `self`, In general,
-    /// a copy is made of the property contents and the caller is responsible for
-    /// freeing the memory by calling `gobject::Value::unset`.
-    ///
-    /// Note that `Container::child_set_property` is really intended for
-    /// language bindings, `Container::child_set` is much more convenient
-    /// for C programming.
-    /// ## `child`
-    /// a `Actor` that is a child of `self`.
-    /// ## `property`
-    /// the name of the property to set.
-    /// ## `value`
-    /// the value.
-    fn child_get_property<P: Is<Actor>>(&self, child: &P, property: &str, value: &mut glib::Value);
+    // /// Gets a container specific property of a child of `self`, In general,
+    // /// a copy is made of the property contents and the caller is responsible for
+    // /// freeing the memory by calling `gobject::Value::unset`.
+    // ///
+    // /// Note that `Container::child_set_property` is really intended for
+    // /// language bindings, `Container::child_set` is much more convenient
+    // /// for C programming.
+    // /// ## `child`
+    // /// a `Actor` that is a child of `self`.
+    // /// ## `property`
+    // /// the name of the property to set.
+    // /// ## `value`
+    // /// the value.
+    // fn child_get_property<P: Is<Actor>>(&self, child: &P, property: &str, value: &mut glib::Value);
 
     /// Calls the `ContainerIface.child_notify`() virtual function
     /// of `Container`. The default implementation will emit the
@@ -149,14 +150,14 @@ pub trait ContainerExt: 'static {
 
     //fn child_set<P: Is<Actor>>(&self, actor: &P, first_prop: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs);
 
-    /// Sets a container-specific property on a child of `self`.
-    /// ## `child`
-    /// a `Actor` that is a child of `self`.
-    /// ## `property`
-    /// the name of the property to set.
-    /// ## `value`
-    /// the value.
-    fn child_set_property<P: Is<Actor>>(&self, child: &P, property: &str, value: &glib::Value);
+    // /// Sets a container-specific property on a child of `self`.
+    // /// ## `child`
+    // /// a `Actor` that is a child of `self`.
+    // /// ## `property`
+    // /// the name of the property to set.
+    // /// ## `value`
+    // /// the value.
+    // fn child_set_property<P: Is<Actor>>(&self, child: &P, property: &str, value: &glib::Value);
 
     /// Creates the `ChildMeta` wrapping `actor` inside the
     /// `self`, if the `ContainerIface::child_meta_type`
@@ -218,17 +219,17 @@ pub trait ContainerExt: 'static {
     /// the child that has been removed from `container`
     fn connect_actor_removed<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> HandlerId;
 
-    /// The ::child-notify signal is emitted each time a property is
-    /// being set through the `Container::child_set` and
-    /// `Container::child_set_property` calls.
-    /// ## `actor`
-    /// the child that has had a property set
-    /// ## `pspec`
-    /// the `gobject::ParamSpec` of the property set
-    fn connect_child_notify<F: Fn(&Self, &Actor, &glib::ParamSpec) + 'static>(
-        &self,
-        f: F,
-    ) -> HandlerId;
+    // /// The ::child-notify signal is emitted each time a property is
+    // /// being set through the `Container::child_set` and
+    // /// `Container::child_set_property` calls.
+    // /// ## `actor`
+    // /// the child that has had a property set
+    // /// ## `pspec`
+    // /// the `gobject::ParamSpec` of the property set
+    // fn connect_child_notify<F: Fn(&Self, &Actor, &glib::ParamSpec) + 'static>(
+    //     &self,
+    //     f: F,
+    // ) -> HandlerId;
 }
 
 impl<O: Is<Container>> ContainerExt for O {
@@ -236,9 +237,9 @@ impl<O: Is<Container>> ContainerExt for O {
     //    unimplemented!()
     //}
 
-    fn child_get_property<P: Is<Actor>>(&self, child: &P, property: &str, value: &mut glib::Value) {
-        unimplemented!()
-    }
+    // fn child_get_property<P: Is<Actor>>(&self, child: &P, property: &str, value: &mut glib::Value) {
+    //     unimplemented!()
+    // }
 
     // fn child_notify<P: Is<Actor>, Q: Is<glib::ParamSpec>>(&self, child: &P, pspec: &Q) {
     //     unimplemented!()
@@ -248,9 +249,9 @@ impl<O: Is<Container>> ContainerExt for O {
     //    unimplemented!()
     //}
 
-    fn child_set_property<P: Is<Actor>>(&self, child: &P, property: &str, value: &glib::Value) {
-        unimplemented!()
-    }
+    // fn child_set_property<P: Is<Actor>>(&self, child: &P, property: &str, value: &glib::Value) {
+    //     unimplemented!()
+    // }
 
     fn create_child_meta<P: Is<Actor>>(&self, actor: &P) {
         unimplemented!()
@@ -276,12 +277,12 @@ impl<O: Is<Container>> ContainerExt for O {
         unimplemented!()
     }
 
-    fn connect_child_notify<F: Fn(&Self, &Actor, &glib::ParamSpec) + 'static>(
-        &self,
-        f: F,
-    ) -> HandlerId {
-        unimplemented!()
-    }
+    // fn connect_child_notify<F: Fn(&Self, &Actor, &glib::ParamSpec) + 'static>(
+    //     &self,
+    //     f: F,
+    // ) -> HandlerId {
+    //     unimplemented!()
+    // }
 }
 
 impl fmt::Display for Container {

@@ -1,25 +1,25 @@
 use super::{Actor, EventFlags, EventType, InputDevice, ModifierType, Stage};
-// * ButtonEvent:
-// * @type: event type
-// * @time: event time
-// * @flags: event flags
-// * @stage: event source stage
-// * @source: event source actor
-// * @x: event X coordinate, relative to the stage
-// * @y: event Y coordinate, relative to the stage
-// * @modifier_state: button modifiers
-// * @button: event button
-// * @click_count: number of button presses within the default time
-// *   and radius
-// * @axes: reserved for future use
-// * @device: the device that originated the event. If you want the physical
-// * device the event originated from, use clutter_event_get_source_device()
-// *
-// * Button event.
-// *
-// * The event coordinates are relative to the stage that received the
-// * event, and can be transformed into actor-relative coordinates by
-// * using clutter_actor_transform_stage_point().
+// ButtonEvent:
+// @type: event type
+// @time: event time
+// @flags: event flags
+// @stage: event source stage
+// @source: event source actor
+// @x: event X coordinate, relative to the stage
+// @y: event Y coordinate, relative to the stage
+// @modifier_state: button modifiers
+// @button: event button
+// @click_count: number of button presses within the default time
+//   and radius
+// @axes: reserved for future use
+// @device: the device that originated the event. If you want the physical
+// device the event originated from, use clutter_event_get_source_device()
+//
+// Button event.
+//
+// The event coordinates are relative to the stage that received the
+// event, and can be transformed into actor-relative coordinates by
+// using clutter_actor_transform_stage_point().
 pub struct ButtonEvent {
     kind: EventType,
     time: u32,

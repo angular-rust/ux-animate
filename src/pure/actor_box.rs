@@ -1,21 +1,21 @@
 use super::Vertex;
 
-// * ActorBox:
-// * @x1: X coordinate of the top left corner
-// * @y1: Y coordinate of the top left corner
-// * @x2: X coordinate of the bottom right corner
-// * @y2: Y coordinate of the bottom right corner
-// *
-// * Bounding box of an actor. The coordinates of the top left and right bottom
-// * corners of an actor. The coordinates of the two points are expressed in
-// * pixels with sub-pixel precision
-#[derive(Debug, PartialOrd)] // Hash
+// ActorBox:
+// @x1: X coordinate of the top left corner
+// @y1: Y coordinate of the top left corner
+// @x2: X coordinate of the bottom right corner
+// @y2: Y coordinate of the bottom right corner
+//
+// Bounding box of an actor. The coordinates of the top left and right bottom
+// corners of an actor. The coordinates of the two points are expressed in
+// pixels with sub-pixel precision
+#[derive(Default, Debug, PartialOrd, Clone, Copy)] // Hash
 pub struct ActorBox {
-    x1: f32,
-    y1: f32,
+    pub x1: f32,
+    pub y1: f32,
 
-    x2: f32,
-    y2: f32,
+    pub x2: f32,
+    pub y2: f32,
 }
 
 impl ActorBox {
@@ -75,8 +75,7 @@ impl ActorBox {
     ///
     /// `true` if the passed `ActorBox` are equal
     fn equal(&self, other: &ActorBox) -> bool {
-        use std::f32::EPSILON;
-        let error_margin = EPSILON;
+        let error_margin = std::f32::EPSILON;
         (self.x1 - other.x1).abs() < error_margin && (self.y1 - other.y1).abs() < error_margin &&
         (self.x2 - other.x2).abs() < error_margin && (self.y2 - other.y2).abs() < error_margin
     }

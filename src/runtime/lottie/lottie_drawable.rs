@@ -1,4 +1,5 @@
-use crate::{Canvas, Pattern, Rect, Size};
+use crate::{Rect, Size};
+// use crate::{Canvas, Pattern};
 // use dx::Matrix; // not available in wasm
 // use crate::Image; // not available in wasm
 use primitives::CanvasContext;
@@ -92,7 +93,7 @@ impl LottieDrawable {
 
     // )))
     // should add `fit` and `alignment`
-    pub fn draw(&self, canvas: Canvas, rect: Rect<f64>) {
-        unimplemented!()
-    }
+    // pub fn draw(&self, canvas: Canvas, rect: Rect<f64>) {
+    //     unimplemented!()
+    // }
 }

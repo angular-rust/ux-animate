@@ -1,6 +1,9 @@
 #![allow(deprecated)]
+#![allow(unused_imports)]
 #![cfg_attr(feature = "cargo-clippy", allow(clippy::cast_ptr_alignment))]
 #![cfg_attr(feature = "cargo-clippy", allow(clippy::trivially_copy_pass_by_ref))]
+
+#![doc(html_logo_url = "https://dudochkin-victor.github.io/assets/ux-animate/logo.svg")]
 
 #[macro_use]
 extern crate log;

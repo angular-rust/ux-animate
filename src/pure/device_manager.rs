@@ -2,16 +2,16 @@ use super::{Backend, HandlerId, InputDevice, InputDeviceType};
 use crate::prelude::*;
 use std::fmt;
 
-// * SECTION:clutter-device-manager
-// * @short_description: Maintains the list of input devices
-// *
-// * #DeviceManager is a singleton object, owned by , which
-// * maintains the list of #InputDevice<!-- -->s.
-// *
-// * Depending on the backend used by  it is possible to use the
-// * #DeviceManager::device-added and
-// * #DeviceManager::device-removed to monitor addition and removal
-// * of devices.
+// SECTION:clutter-device-manager
+// @short_description: Maintains the list of input devices
+//
+// #DeviceManager is a singleton object, owned by , which
+// maintains the list of #InputDevice<!-- -->s.
+//
+// Depending on the backend used by  it is possible to use the
+// #DeviceManager::device-added and
+// #DeviceManager::device-removed to monitor addition and removal
+// of devices.
 pub struct DeviceManager {
     // back-pointer to the backend
     backend: Option<Backend>,

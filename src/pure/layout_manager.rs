@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 use super::{Actor, ActorBox, AllocationFlags, Container, HandlerId, LayoutMeta};
 use crate::prelude::*;
 use std::fmt;
@@ -39,60 +40,60 @@ pub trait LayoutManagerExt: 'static {
 
     //fn child_get<P: Is<Container>, Q: Is<Actor>>(&self, container: &P, actor: &Q, first_property: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs);
 
-    /// Gets a property on the `LayoutMeta` created by `self` and
-    /// attached to a child of `container`
-    ///
-    /// The `gobject::Value` must already be initialized to the type of the property
-    /// and has to be unset with `gobject::Value::unset` after extracting the real
-    /// value out of it
-    /// ## `container`
-    /// a `Container` using `self`
-    /// ## `actor`
-    /// a `Actor` child of `container`
-    /// ## `property_name`
-    /// the name of the property to get
-    /// ## `value`
-    /// a `gobject::Value` with the value of the property to get
-    fn child_get_property<P: Is<Container>, Q: Is<Actor>>(
-        &self,
-        container: &P,
-        actor: &Q,
-        property_name: &str,
-        value: &mut glib::Value,
-    );
+    // /// Gets a property on the `LayoutMeta` created by `self` and
+    // /// attached to a child of `container`
+    // ///
+    // /// The `gobject::Value` must already be initialized to the type of the property
+    // /// and has to be unset with `gobject::Value::unset` after extracting the real
+    // /// value out of it
+    // /// ## `container`
+    // /// a `Container` using `self`
+    // /// ## `actor`
+    // /// a `Actor` child of `container`
+    // /// ## `property_name`
+    // /// the name of the property to get
+    // /// ## `value`
+    // /// a `gobject::Value` with the value of the property to get
+    // fn child_get_property<P: Is<Container>, Q: Is<Actor>>(
+    //     &self,
+    //     container: &P,
+    //     actor: &Q,
+    //     property_name: &str,
+    //     value: &mut glib::Value,
+    // );
 
     //fn child_set<P: Is<Container>, Q: Is<Actor>>(&self, container: &P, actor: &Q, first_property: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs);
 
-    /// Sets a property on the `LayoutMeta` created by `self` and
-    /// attached to a child of `container`
-    /// ## `container`
-    /// a `Container` using `self`
-    /// ## `actor`
-    /// a `Actor` child of `container`
-    /// ## `property_name`
-    /// the name of the property to set
-    /// ## `value`
-    /// a `gobject::Value` with the value of the property to set
-    fn child_set_property<P: Is<Container>, Q: Is<Actor>>(
-        &self,
-        container: &P,
-        actor: &Q,
-        property_name: &str,
-        value: &glib::Value,
-    );
+    // /// Sets a property on the `LayoutMeta` created by `self` and
+    // /// attached to a child of `container`
+    // /// ## `container`
+    // /// a `Container` using `self`
+    // /// ## `actor`
+    // /// a `Actor` child of `container`
+    // /// ## `property_name`
+    // /// the name of the property to set
+    // /// ## `value`
+    // /// a `gobject::Value` with the value of the property to set
+    // fn child_set_property<P: Is<Container>, Q: Is<Actor>>(
+    //     &self,
+    //     container: &P,
+    //     actor: &Q,
+    //     property_name: &str,
+    //     value: &glib::Value,
+    // );
 
-    /// Retrieves the `gobject::ParamSpec` for the layout property `name` inside
-    /// the `LayoutMeta` sub-class used by `self`
-    /// ## `name`
-    /// the name of the property
-    ///
-    /// # Returns
-    ///
-    /// a `gobject::ParamSpec` describing the property,
-    ///  or `None` if no property with that name exists. The returned
-    ///  `gobject::ParamSpec` is owned by the layout manager and should not be
-    ///  modified or freed
-    fn find_child_property(&self, name: &str) -> Option<glib::ParamSpec>;
+    // /// Retrieves the `gobject::ParamSpec` for the layout property `name` inside
+    // /// the `LayoutMeta` sub-class used by `self`
+    // /// ## `name`
+    // /// the name of the property
+    // ///
+    // /// # Returns
+    // ///
+    // /// a `gobject::ParamSpec` describing the property,
+    // ///  or `None` if no property with that name exists. The returned
+    // ///  `gobject::ParamSpec` is owned by the layout manager and should not be
+    // ///  modified or freed
+    // fn find_child_property(&self, name: &str) -> Option<glib::ParamSpec>;
 
     /// Retrieves the `LayoutMeta` that the layout `self` associated
     /// to the `actor` child of `container`, eventually by creating one if the
@@ -152,18 +153,18 @@ pub trait LayoutManagerExt: 'static {
     /// `LayoutManager` class
     fn layout_changed(&self);
 
-    /// Retrieves all the `gobject::ParamSpec`<!-- -->s for the layout properties
-    /// stored inside the `LayoutMeta` sub-class used by `self`
-    /// ## `n_pspecs`
-    /// return location for the number of returned
-    ///  `gobject::ParamSpec`<!-- -->s
-    ///
-    /// # Returns
-    ///
-    /// the newly-allocated,
-    ///  `None`-terminated array of `gobject::ParamSpec`<!-- -->s. Use `g_free` to free the
-    ///  resources allocated for the array
-    fn list_child_properties(&self) -> Vec<glib::ParamSpec>;
+    // /// Retrieves all the `gobject::ParamSpec`<!-- -->s for the layout properties
+    // /// stored inside the `LayoutMeta` sub-class used by `self`
+    // /// ## `n_pspecs`
+    // /// return location for the number of returned
+    // ///  `gobject::ParamSpec`<!-- -->s
+    // ///
+    // /// # Returns
+    // ///
+    // /// the newly-allocated,
+    // ///  `None`-terminated array of `gobject::ParamSpec`<!-- -->s. Use `g_free` to free the
+    // ///  resources allocated for the array
+    // fn list_child_properties(&self) -> Vec<glib::ParamSpec>;
 
     /// If the `LayoutManager` sub-class allows it, allow
     /// adding a weak reference of the `container` using `self`
@@ -223,57 +224,57 @@ impl<O: Is<LayoutManager>> LayoutManagerExt for O {
     //    unsafe { TODO: call clutter_sys:clutter_layout_manager_child_get() }
     //}
 
-    fn child_get_property<P: Is<Container>, Q: Is<Actor>>(
-        &self,
-        container: &P,
-        actor: &Q,
-        property_name: &str,
-        value: &mut glib::Value,
-    ) {
-        // unsafe {
-        //     ffi::clutter_layout_manager_child_get_property(
-        //         self.as_ref().to_glib_none().0,
-        //         container.as_ref().to_glib_none().0,
-        //         actor.as_ref().to_glib_none().0,
-        //         property_name.to_glib_none().0,
-        //         value.to_glib_none_mut().0,
-        //     );
-        // }
-        unimplemented!()
-    }
+    // fn child_get_property<P: Is<Container>, Q: Is<Actor>>(
+    //     &self,
+    //     container: &P,
+    //     actor: &Q,
+    //     property_name: &str,
+    //     value: &mut glib::Value,
+    // ) {
+    //     // unsafe {
+    //     //     ffi::clutter_layout_manager_child_get_property(
+    //     //         self.as_ref().to_glib_none().0,
+    //     //         container.as_ref().to_glib_none().0,
+    //     //         actor.as_ref().to_glib_none().0,
+    //     //         property_name.to_glib_none().0,
+    //     //         value.to_glib_none_mut().0,
+    //     //     );
+    //     // }
+    //     unimplemented!()
+    // }
 
     //fn child_set<P: Is<Container>, Q: Is<Actor>>(&self, container: &P, actor: &Q, first_property: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) {
     //    unsafe { TODO: call clutter_sys:clutter_layout_manager_child_set() }
     //}
 
-    fn child_set_property<P: Is<Container>, Q: Is<Actor>>(
-        &self,
-        container: &P,
-        actor: &Q,
-        property_name: &str,
-        value: &glib::Value,
-    ) {
-        // unsafe {
-        //     ffi::clutter_layout_manager_child_set_property(
-        //         self.as_ref().to_glib_none().0,
-        //         container.as_ref().to_glib_none().0,
-        //         actor.as_ref().to_glib_none().0,
-        //         property_name.to_glib_none().0,
-        //         value.to_glib_none().0,
-        //     );
-        // }
-        unimplemented!()
-    }
+    // fn child_set_property<P: Is<Container>, Q: Is<Actor>>(
+    //     &self,
+    //     container: &P,
+    //     actor: &Q,
+    //     property_name: &str,
+    //     value: &glib::Value,
+    // ) {
+    //     // unsafe {
+    //     //     ffi::clutter_layout_manager_child_set_property(
+    //     //         self.as_ref().to_glib_none().0,
+    //     //         container.as_ref().to_glib_none().0,
+    //     //         actor.as_ref().to_glib_none().0,
+    //     //         property_name.to_glib_none().0,
+    //     //         value.to_glib_none().0,
+    //     //     );
+    //     // }
+    //     unimplemented!()
+    // }
 
-    fn find_child_property(&self, name: &str) -> Option<glib::ParamSpec> {
-        // unsafe {
-        //     from_glib_none(ffi::clutter_layout_manager_find_child_property(
-        //         self.as_ref().to_glib_none().0,
-        //         name.to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
-    }
+    // fn find_child_property(&self, name: &str) -> Option<glib::ParamSpec> {
+    //     // unsafe {
+    //     //     from_glib_none(ffi::clutter_layout_manager_find_child_property(
+    //     //         self.as_ref().to_glib_none().0,
+    //     //         name.to_glib_none().0,
+    //     //     ))
+    //     // }
+    //     unimplemented!()
+    // }
 
     fn get_child_meta<P: Is<Container>, Q: Is<Actor>>(
         &self,
@@ -333,20 +334,20 @@ impl<O: Is<LayoutManager>> LayoutManagerExt for O {
         unimplemented!()
     }
 
-    fn list_child_properties(&self) -> Vec<glib::ParamSpec> {
-        // unsafe {
-        //     let mut n_pspecs = mem::MaybeUninit::uninit();
-        //     let ret = FromGlibContainer::from_glib_full_num(
-        //         ffi::clutter_layout_manager_list_child_properties(
-        //             self.as_ref().to_glib_none().0,
-        //             n_pspecs.as_mut_ptr(),
-        //         ),
-        //         n_pspecs.assume_init() as usize,
-        //     );
-        //     ret
-        // }
-        unimplemented!()
-    }
+    // fn list_child_properties(&self) -> Vec<glib::ParamSpec> {
+    //     // unsafe {
+    //     //     let mut n_pspecs = mem::MaybeUninit::uninit();
+    //     //     let ret = FromGlibContainer::from_glib_full_num(
+    //     //         ffi::clutter_layout_manager_list_child_properties(
+    //     //             self.as_ref().to_glib_none().0,
+    //     //             n_pspecs.as_mut_ptr(),
+    //     //         ),
+    //     //         n_pspecs.assume_init() as usize,
+    //     //     );
+    //     //     ret
+    //     // }
+    //     unimplemented!()
+    // }
 
     fn set_container<P: Is<Container>>(&self, container: Option<&P>) {
         // unsafe {

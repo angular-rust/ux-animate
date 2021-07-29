@@ -4,7 +4,7 @@ use std::cell::RefCell;
 use super::{Drawable, OpSet, OpSetType, OpType, RoughConfig, RoughGenerator, RoughOptions};
 use crate::{
     BaseLine, CanvasContext, Color, Direction, Gradient, LineCap, LineJoin, Pattern, Point,
-    TextAlign, TextMetrics, TextStyle, TextWeight,
+    TextAlign, TextMetrics, FontStyle, FontWeight,
 };
 
 // GradientType, LinearGradient, PatternExtend, RadialGradient, RgbaColor,
@@ -202,7 +202,7 @@ where
         self.ctx.get_font()
     }
 
-    fn set_font(&self, family: &str, style: TextStyle, weight: TextWeight, size: f64) {
+    fn set_font(&self, family: &str, style: FontStyle, weight: FontWeight, size: f64) {
         self.ctx.set_font(family, style, weight, size);
     }
 

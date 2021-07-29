@@ -1,13 +1,13 @@
 use super::{Actor, EventFlags, EventType, ModifierType, Stage};
 
-// * AnyEvent:
-// * @type: event type
-// * @time: event time
-// * @flags: event flags
-// * @source: event source actor
-// *
-// * Common members for a #Event
-// *
+// AnyEvent:
+// @type: event type
+// @time: event time
+// @flags: event flags
+// @source: event source actor
+//
+// Common members for a #Event
+//
 pub struct AnyEvent {
     kind: EventType,
     time: u32,

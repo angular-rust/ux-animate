@@ -2,23 +2,23 @@ use super::{Container, HandlerId, Orientation};
 use crate::prelude::*;
 use std::fmt;
 
-// * @short_description: A layout manager arranging children on a single line
-// *
-// * The #BoxLayout is a #LayoutManager implementing the
-// * following layout policy:
-// *
-// *  - all children are arranged on a single line
-// *  - the axis used is controlled by the #BoxLayout:orientation property
-// *  - the order of the packing is determined by the #BoxLayout:pack-start boolean property
-// *  - each child will be allocated to its natural size or, if #Actor:x-expand or
-// *  #Actor:y-expand are set, the available size
-// *  - honours the #Actor's #Actor:x-align and #Actor:y-align properties
-// *  to fill the available size
-// *  - if the #BoxLayout:homogeneous boolean propert is set, then all widgets will
-// *  get the same size, ignoring expand settings and the preferred sizes
-// *
-// * It is possible to control the spacing between children of a
-// * #BoxLayout by using clutter_box_layout_set_spacing().
+// @short_description: A layout manager arranging children on a single line
+//
+// The #BoxLayout is a #LayoutManager implementing the
+// following layout policy:
+//
+//  - all children are arranged on a single line
+//  - the axis used is controlled by the #BoxLayout:orientation property
+//  - the order of the packing is determined by the #BoxLayout:pack-start boolean property
+//  - each child will be allocated to its natural size or, if #Actor:x-expand or
+//  #Actor:y-expand are set, the available size
+//  - honours the #Actor's #Actor:x-align and #Actor:y-align properties
+//  to fill the available size
+//  - if the #BoxLayout:homogeneous boolean propert is set, then all widgets will
+//  get the same size, ignoring expand settings and the preferred sizes
+//
+// It is possible to control the spacing between children of a
+// #BoxLayout by using clutter_box_layout_set_spacing().
 // @extends LayoutManager,
 #[derive(Default, Debug, Clone)]
 pub struct BoxLayout {

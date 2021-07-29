@@ -29,24 +29,24 @@ impl Default for PinState {
     }
 }
 
-// * SECTION:clutter-pan-action
-// * @Title: ClutterPanAction
-// * @Short_Description: Action for pan gestures
-// *
-// * #ClutterPanAction is a sub-class of #ClutterGestureAction that implements
-// * the logic for recognizing pan gestures.
-// *
-// * The simplest usage of #ClutterPanAction consists in adding it to
-// * a #ClutterActor with a child and setting it as reactive; for instance,
-// * the following code:
-// *
-// * |[
-// *   clutter_actor_add_action (actor, clutter_pan_action_new ());
-// *   clutter_actor_set_reactive (actor, TRUE);
-// * ]|
-// *
-// * will automatically result in the actor children to be moved
-// * when dragging.
+// SECTION:clutter-pan-action
+// @Title: ClutterPanAction
+// @Short_Description: Action for pan gestures
+//
+// #ClutterPanAction is a sub-class of #ClutterGestureAction that implements
+// the logic for recognizing pan gestures.
+//
+// The simplest usage of #ClutterPanAction consists in adding it to
+// a #ClutterActor with a child and setting it as reactive; for instance,
+// the following code:
+//
+// |[
+//   clutter_actor_add_action (actor, clutter_pan_action_new ());
+//   clutter_actor_set_reactive (actor, TRUE);
+// ]|
+//
+// will automatically result in the actor children to be moved
+// when dragging.
 // @extends GestureAction, Action, ActorMeta
 #[derive(Default, Debug, Clone)]
 pub struct PanAction {

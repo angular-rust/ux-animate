@@ -3,22 +3,22 @@ use super::{
     TouchpadGesturePhase,
 };
 
-// * TouchpadSwipeEvent
-// * @type: event type
-// * @time: event time
-// * @flags: event flags
-// * @stage: event source stage
-// * @source: event source actor (unused)
-// * @phase: the current phase of the gesture
-// * @n_fingers: the number of fingers triggering the swipe
-// * @x: the X coordinate of the pointer, relative to the stage
-// * @y: the Y coordinate of the pointer, relative to the stage
-// * @dx: movement delta of the pinch focal point in the X axis
-// * @dy: movement delta of the pinch focal point in the Y axis
-// *
-// * Used for touchpad swipe gesture events. The current state of the
-// * gesture will be determined by the @phase field.
-// *
+// TouchpadSwipeEvent
+// @type: event type
+// @time: event time
+// @flags: event flags
+// @stage: event source stage
+// @source: event source actor (unused)
+// @phase: the current phase of the gesture
+// @n_fingers: the number of fingers triggering the swipe
+// @x: the X coordinate of the pointer, relative to the stage
+// @y: the Y coordinate of the pointer, relative to the stage
+// @dx: movement delta of the pinch focal point in the X axis
+// @dy: movement delta of the pinch focal point in the Y axis
+//
+// Used for touchpad swipe gesture events. The current state of the
+// gesture will be determined by the @phase field.
+//
 pub struct TouchpadSwipeEvent {
     kind: EventType,
     time: u32,

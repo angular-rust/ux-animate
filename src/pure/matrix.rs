@@ -1,4 +1,4 @@
-#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Default, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Clone)]
 pub struct Matrix {}
 
 impl Matrix {
