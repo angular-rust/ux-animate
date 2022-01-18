@@ -11,7 +11,7 @@ use super::{Actor, EventFlags, EventType, InputDevice, ModifierType, Stage};
 // @hardware_keycode: raw hardware key value
 // @unicode_value: Unicode representation
 // @device: the device that originated the event. If you want the physical
-// device the event originated from, use clutter_event_get_source_device()
+// device the event originated from, use event_get_source_device()
 //
 // Key event
 pub struct KeyEvent {
@@ -30,11 +30,11 @@ pub struct KeyEvent {
 
 impl KeyEvent {
     pub fn get_time(&self) -> u32 {
-        unimplemented!()
+        self.time
     }
 
     pub fn get_state(&self) -> ModifierType {
-        unimplemented!()
+        self.modifier_state
     }
 
     pub fn get_keyval(&self) -> u32 {

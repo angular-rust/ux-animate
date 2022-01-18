@@ -33,7 +33,7 @@ impl PaintVolume {
     ///
     /// the depth, in units of `self`'s local coordinate system.
     pub fn get_depth(&self) -> f32 {
-        // unsafe { ffi::clutter_paint_volume_get_depth(self.to_glib_none().0) }
+        // unsafe { ffi::paint_volume_get_depth(self.to_glib_none().0) }
         unimplemented!()
     }
 
@@ -64,7 +64,7 @@ impl PaintVolume {
     ///
     /// the height, in units of `self`'s local coordinate system.
     pub fn get_height(&self) -> f32 {
-        // unsafe { ffi::clutter_paint_volume_get_height(self.to_glib_none().0) }
+        // unsafe { ffi::paint_volume_get_height(self.to_glib_none().0) }
         unimplemented!()
     }
 
@@ -74,7 +74,7 @@ impl PaintVolume {
     pub fn get_origin(&self) -> Vertex {
         // unsafe {
         //     let mut vertex = Vertex::uninitialized();
-        //     ffi::clutter_paint_volume_get_origin(
+        //     ffi::paint_volume_get_origin(
         //         self.to_glib_none().0,
         //         vertex.to_glib_none_mut().0,
         //     );
@@ -110,7 +110,7 @@ impl PaintVolume {
     ///
     /// the width, in units of `self`'s local coordinate system.
     pub fn get_width(&self) -> f32 {
-        // unsafe { ffi::clutter_paint_volume_get_width(self.to_glib_none().0) }
+        // unsafe { ffi::paint_volume_get_width(self.to_glib_none().0) }
         unimplemented!()
     }
 
@@ -120,7 +120,7 @@ impl PaintVolume {
     /// the depth of the paint volume, in pixels
     pub fn set_depth(&mut self, depth: f32) {
         // unsafe {
-        //     ffi::clutter_paint_volume_set_depth(self.to_glib_none_mut().0, depth);
+        //     ffi::paint_volume_set_depth(self.to_glib_none_mut().0, depth);
         // }
         unimplemented!()
     }
@@ -151,7 +151,7 @@ impl PaintVolume {
     ///  otherwise
     pub fn set_from_allocation<P: Is<Actor>>(&mut self, actor: &P) -> bool {
         // unsafe {
-        //     from_glib(ffi::clutter_paint_volume_set_from_allocation(
+        //     from_glib(ffi::paint_volume_set_from_allocation(
         //         self.to_glib_none_mut().0,
         //         actor.as_ref().to_glib_none().0,
         //     ))
@@ -165,7 +165,7 @@ impl PaintVolume {
     /// the height of the paint volume, in pixels
     pub fn set_height(&mut self, height: f32) {
         // unsafe {
-        //     ffi::clutter_paint_volume_set_height(self.to_glib_none_mut().0, height);
+        //     ffi::paint_volume_set_height(self.to_glib_none_mut().0, height);
         // }
         unimplemented!()
     }
@@ -180,7 +180,7 @@ impl PaintVolume {
     /// a `Vertex`
     pub fn set_origin(&mut self, origin: &Vertex) {
         // unsafe {
-        //     ffi::clutter_paint_volume_set_origin(
+        //     ffi::paint_volume_set_origin(
         //         self.to_glib_none_mut().0,
         //         origin.to_glib_none().0,
         //     );
@@ -194,7 +194,7 @@ impl PaintVolume {
     /// the width of the paint volume, in pixels
     pub fn set_width(&mut self, width: f32) {
         // unsafe {
-        //     ffi::clutter_paint_volume_set_width(self.to_glib_none_mut().0, width);
+        //     ffi::paint_volume_set_width(self.to_glib_none_mut().0, width);
         // }
         unimplemented!()
     }
@@ -207,7 +207,7 @@ impl PaintVolume {
     /// A second `PaintVolume` to union with `self`
     pub fn union(&mut self, another_pv: &PaintVolume) {
         // unsafe {
-        //     ffi::clutter_paint_volume_union(self.to_glib_none_mut().0, another_pv.to_glib_none().0);
+        //     ffi::paint_volume_union(self.to_glib_none_mut().0, another_pv.to_glib_none().0);
         // }
         unimplemented!()
     }
@@ -220,7 +220,7 @@ impl PaintVolume {
     /// a `ActorBox` to union to `self`
     pub fn union_box(&mut self, box_: &ActorBox) {
         // unsafe {
-        //     ffi::clutter_paint_volume_union_box(self.to_glib_none_mut().0, box_.to_glib_none().0);
+        //     ffi::paint_volume_union_box(self.to_glib_none_mut().0, box_.to_glib_none().0);
         // }
         unimplemented!()
     }

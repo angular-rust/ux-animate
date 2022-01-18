@@ -1,5 +1,6 @@
-use crate::{Color};
 use std::fmt;
+
+use crate::foundation::colorspace::Color;
 
 // @extends PaintNode
 pub struct TextNode {
@@ -35,7 +36,7 @@ impl TextNode {
     //     //     None => None,
     //     // };
     //     // unsafe {
-    //     //     PaintNode::from_glib_full(ffi::clutter_text_node_new(
+    //     //     PaintNode::from_glib_full(ffi::text_node_new(
     //     //         layout.to_glib_none().0,
     //     //         color.to_glib_none().0,
     //     //     ))

@@ -19,7 +19,7 @@ impl PageTurnEffect {
     /// the newly created `PageTurnEffect`
     pub fn new(period: f64, angle: f64, radius: f32) -> PageTurnEffect {
         // unsafe {
-        //     Effect::from_glib_none(ffi::clutter_page_turn_effect_new(period, angle, radius))
+        //     Effect::from_glib_none(ffi::page_turn_effect_new(period, angle, radius))
         //         .unsafe_cast()
         // }
         unimplemented!()
@@ -31,7 +31,7 @@ impl PageTurnEffect {
     ///
     /// the angle of the page curling
     pub fn get_angle(&self) -> f64 {
-        // unsafe { ffi::clutter_page_turn_effect_get_angle(self.to_glib_none().0) }
+        // unsafe { ffi::page_turn_effect_get_angle(self.to_glib_none().0) }
         unimplemented!()
     }
 
@@ -41,7 +41,7 @@ impl PageTurnEffect {
     ///
     /// the period of the page curling
     pub fn get_period(&self) -> f64 {
-        // unsafe { ffi::clutter_page_turn_effect_get_period(self.to_glib_none().0) }
+        // unsafe { ffi::page_turn_effect_get_period(self.to_glib_none().0) }
         unimplemented!()
     }
 
@@ -51,7 +51,7 @@ impl PageTurnEffect {
     ///
     /// the radius of the page curling
     pub fn get_radius(&self) -> f32 {
-        // unsafe { ffi::clutter_page_turn_effect_get_radius(self.to_glib_none().0) }
+        // unsafe { ffi::page_turn_effect_get_radius(self.to_glib_none().0) }
         unimplemented!()
     }
 
@@ -60,7 +60,7 @@ impl PageTurnEffect {
     /// the angle of the page curl, in degrees
     pub fn set_angle(&self, angle: f64) {
         // unsafe {
-        //     ffi::clutter_page_turn_effect_set_angle(self.to_glib_none().0, angle);
+        //     ffi::page_turn_effect_set_angle(self.to_glib_none().0, angle);
         // }
         unimplemented!()
     }
@@ -71,7 +71,7 @@ impl PageTurnEffect {
     /// the period of the page curl, between 0.0 and 1.0
     pub fn set_period(&self, period: f64) {
         // unsafe {
-        //     ffi::clutter_page_turn_effect_set_period(self.to_glib_none().0, period);
+        //     ffi::page_turn_effect_set_period(self.to_glib_none().0, period);
         // }
         unimplemented!()
     }
@@ -81,7 +81,7 @@ impl PageTurnEffect {
     /// the radius of the page curling, in pixels
     pub fn set_radius(&self, radius: f32) {
         // unsafe {
-        //     ffi::clutter_page_turn_effect_set_radius(self.to_glib_none().0, radius);
+        //     ffi::page_turn_effect_set_radius(self.to_glib_none().0, radius);
         // }
         unimplemented!()
     }

@@ -36,8 +36,7 @@ pub struct TouchpadSwipeEvent {
 
 impl TouchpadSwipeEvent {
     pub fn get_time(&self) -> u32 {
-        // self.as_ref().time
-        unimplemented!()
+        self.time
     }
 
     pub fn get_state(&self) -> ModifierType {

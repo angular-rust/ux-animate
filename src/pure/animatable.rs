@@ -29,12 +29,13 @@ use std::fmt;
 //
 // If a #Animatable is animated by a #Animation
 // instance, the #Animation will call
-// clutter_animatable_interpolate_property() passing the name of the
+// animatable_interpolate_property() passing the name of the
 // currently animated property; the values interval; and the progress factor.
 // The #Animatable implementation should return the computed value for
 // the animated
 // property.
 
+// Animatable ------------- IS INTERFACE ----------------
 #[derive(Debug, Clone)]
 pub struct Animatable {
 

@@ -1,7 +1,10 @@
-use super::{Actor, HandlerId, ZoomAxis};
-use crate::prelude::*;
-use crate::Point;
 use std::fmt;
+
+use crate::prelude::*;
+
+use crate::foundation::Point;
+
+use super::{Actor, HandlerId, ZoomAxis};
 
 // @extends GestureAction, Action, ActorMeta
 #[derive(Default, Debug, Clone)]
@@ -14,7 +17,7 @@ impl ZoomAction {
     ///
     /// the newly created `ZoomAction`
     pub fn new() -> ZoomAction {
-        // unsafe { Action::from_glib_none(ffi::clutter_zoom_action_new()).unsafe_cast() }
+        // unsafe { Action::from_glib_none(ffi::zoom_action_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -88,7 +91,7 @@ impl<O: Is<ZoomAction>> ZoomActionExt for O {
     fn get_focal_point(&self) -> Point<f32> {
         // unsafe {
         //     let mut point = Point::uninitialized();
-        //     ffi::clutter_zoom_action_get_focal_point(
+        //     ffi::zoom_action_get_focal_point(
         //         self.as_ref().to_glib_none().0,
         //         point.to_glib_none_mut().0,
         //     );
@@ -100,7 +103,7 @@ impl<O: Is<ZoomAction>> ZoomActionExt for O {
     fn get_transformed_focal_point(&self) -> Point<f32> {
         // unsafe {
         //     let mut point = Point::uninitialized();
-        //     ffi::clutter_zoom_action_get_transformed_focal_point(
+        //     ffi::zoom_action_get_transformed_focal_point(
         //         self.as_ref().to_glib_none().0,
         //         point.to_glib_none_mut().0,
         //     );
@@ -111,7 +114,7 @@ impl<O: Is<ZoomAction>> ZoomActionExt for O {
 
     fn get_zoom_axis(&self) -> ZoomAxis {
         // unsafe {
-        //     from_glib(ffi::clutter_zoom_action_get_zoom_axis(
+        //     from_glib(ffi::zoom_action_get_zoom_axis(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -120,7 +123,7 @@ impl<O: Is<ZoomAction>> ZoomActionExt for O {
 
     fn set_zoom_axis(&self, axis: ZoomAxis) {
         // unsafe {
-        //     ffi::clutter_zoom_action_set_zoom_axis(self.as_ref().to_glib_none().0, axis.to_glib());
+        //     ffi::zoom_action_set_zoom_axis(self.as_ref().to_glib_none().0, axis.to_glib());
         // }
         unimplemented!()
     }

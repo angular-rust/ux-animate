@@ -22,7 +22,7 @@ pub struct BinLayer {
 //   - for each layer there are horizontal and vertical
 //   alignment policies.
 //
-// The [bin-layout example](https://git.gnome.org/browse/clutter/tree/examples/bin-layout.c?h=clutter-1.18)
+// The [bin-layout example](https://git.gnome.org/browse/clutter/tree/examples/bin-layout.c?h=1.18)
 // shows how to pack actors inside a #BinLayout.
 // @extends LayoutManager
 pub struct BinLayout {

@@ -1,16 +1,18 @@
-use super::{HandlerId, MainContext, Settings};
 use std::{cell::RefCell, fmt};
 
+use dx::platform::core::{Context, Display, Driver, Onscreen, Renderer};
+
+use super::{HandlerId, MainContext, Settings};
+
 struct BackendProps {
-    dx_renderer: Option<dx::core::Renderer>,
-    dx_display: Option<dx::core::Display>,
-    dx_context: Option<dx::core::Context>,
+    dx_renderer: Option<Renderer>,
+    dx_display: Option<Display>,
+    dx_context: Option<Context>,
     // dx_source: GSource
-    dummy_onscreen: Option<dx::core::Onscreen>,
+    dummy_onscreen: Option<Onscreen>,
 
     // device_manager: Option<dx::DeviceManager>,
     // font_options: Option<cairo::FontOptions>,
-
     font_name: Option<String>,
 
     units_per_em: f32,
@@ -30,7 +32,7 @@ pub struct Backend {
 }
 
 impl Backend {
-    // clutter_backend_get_dx_context:
+    // backend_get_dx_context:
     // @backend: a #Backend
     //
     // Retrieves the #CoglContext associated with the given clutter
@@ -46,7 +48,7 @@ impl Backend {
     //
     // Return value: (transfer none): The #CoglContext associated with @backend.
     // TODO: should use singleton
-    pub fn get_context(&self) -> Option<dx::core::Context> {
+    pub fn get_context(&self) -> Option<Context> {
         let props = self.props.borrow();
         // props.dx_context.clone()
         unimplemented!()
@@ -64,12 +66,12 @@ impl Backend {
         // }
 
         // if allowed_drivers == NULL {
-        //   allowed_drivers = CLUTTER_DRIVERS;
+        //   allowed_drivers = DRIVERS;
         // }
 
         // allow_any = strstr(allowed_drivers, "*") != NULL;
 
-        // drivers_list = g_getenv("CLUTTER_DRIVER");
+        // drivers_list = g_getenv("DRIVER");
         // if drivers_list == NULL {
         //   drivers_list = allowed_drivers;
         // }
@@ -90,14 +92,14 @@ impl Backend {
         //             (is_any && strstr(allowed_drivers, all_known_drivers[j].driver_name)) ||
         //             g_str_equal(all_known_drivers[j].driver_name, driver_name)
         //         {
-        //             CLUTTER_NOTE (BACKEND, "Checking for the %s driver", all_known_drivers[j].driver_desc);
+        //             NOTE (BACKEND, "Checking for the %s driver", all_known_drivers[j].driver_desc);
 
-        //             if (clutter_backend_do_real_create_context(backend, all_known_drivers[j].driver_id, &internal_error))
+        //             if (backend_do_real_create_context(backend, all_known_drivers[j].driver_id, &internal_error))
         //               break;
 
         //             if (internal_error)
         //               {
-        //                 CLUTTER_NOTE(BACKEND, "Unable to use the %s driver: %s",
+        //                 NOTE(BACKEND, "Unable to use the %s driver: %s",
         //                               all_known_drivers[j].driver_desc,
         //                               internal_error.message);
         //                 g_clear_error(&internal_error);
@@ -112,8 +114,8 @@ impl Backend {
         //     if internal_error != NULL {
         //       g_propagate_error(error, internal_error);
         //     } else {
-        //       g_set_error_literal(error, CLUTTER_INIT_ERROR,
-        //                            CLUTTER_INIT_ERROR_BACKEND,
+        //       g_set_error_literal(error, INIT_ERROR,
+        //                            INIT_ERROR_BACKEND,
         //                           _("Unable to initialize the  backend: no available drivers found."));
         //     }
         //     return false;
@@ -125,7 +127,7 @@ impl Backend {
         true
     }
 
-    fn do_real_create_context(&self, driver_id: dx::core::Driver) -> bool {
+    fn do_real_create_context(&self, driver_id: Driver) -> bool {
         // fn error() -> bool {
         //     if backend.dx_display.is_some() {
         //         dx_object_unref(backend.dx_display);
@@ -148,7 +150,7 @@ impl Backend {
         // CoglSwapChain *swap_chain;
         // GError *internal_error;
 
-        // klass = CLUTTER_BACKEND_GET_CLASS(backend);
+        // klass = BACKEND_GET_CLASS(backend);
 
         // swap_chain = NULL;
         // internal_error = NULL;
@@ -240,67 +242,67 @@ impl Backend {
     pub fn init_events(&self) {
         // let mut input_backend: Option<String> = None;
 
-        // input_backend = g_getenv("CLUTTER_INPUT_BACKEND");
+        // input_backend = g_getenv("INPUT_BACKEND");
         // if input_backend.is_some() {
         //   input_backend = g_intern_string(input_backend);
         // }
 
         #[cfg(target_os = "macos")]
-        if clutter_check_windowing_backend(CLUTTER_WINDOWING_OSX)
-            && (input_backend.is_some() || input_backend == I_(CLUTTER_INPUT_OSX))
+        if check_windowing_backend(WINDOWING_OSX)
+            && (input_backend.is_some() || input_backend == I_(INPUT_OSX))
         {
-            _clutter_backend_osx_events_init(backend);
+            _backend_osx_events_init(backend);
         }
 
         #[cfg(target_os = "windows")]
-        if clutter_check_windowing_backend(CLUTTER_WINDOWING_WIN32)
-            && (input_backend.is_some() || input_backend == I_(CLUTTER_INPUT_WIN32))
+        if check_windowing_backend(WINDOWING_WIN32)
+            && (input_backend.is_some() || input_backend == I_(INPUT_WIN32))
         {
-            _clutter_backend_win32_events_init(backend);
+            _backend_win32_events_init(backend);
         }
 
         if cfg!(target_os = "linux") {
             #[cfg(feature = "x11")]
-            if clutter_check_windowing_backend(CLUTTER_WINDOWING_X11)
-                && (input_backend.is_some() || input_backend == I_(CLUTTER_INPUT_X11))
+            if check_windowing_backend(WINDOWING_X11)
+                && (input_backend.is_some() || input_backend == I_(INPUT_X11))
             {
-                _clutter_backend_x11_events_init(backend);
+                _backend_x11_events_init(backend);
             }
 
             #[cfg(feature = "gdk")]
-            if clutter_check_windowing_backend(CLUTTER_WINDOWING_GDK)
-                && (input_backend.is_some() || input_backend == I_(CLUTTER_INPUT_GDK))
+            if check_windowing_backend(WINDOWING_GDK)
+                && (input_backend.is_some() || input_backend == I_(INPUT_GDK))
             {
-                _clutter_backend_gdk_events_init(backend);
+                _backend_gdk_events_init(backend);
             }
 
             #[cfg(feature = "evdev")]
             // Evdev can be used regardless of the windowing system
-            if input_backend.is_some() && strcmp(input_backend, CLUTTER_INPUT_EVDEV) == 0 {
-                _clutter_events_evdev_init(backend);
+            if input_backend.is_some() && strcmp(input_backend, INPUT_EVDEV) == 0 {
+                _events_evdev_init(backend);
             }
 
             #[cfg(feature = "egl")]
             // but we do want to always use it for EGL native
-            if clutter_check_windowing_backend(CLUTTER_WINDOWING_EGL) {
-                _clutter_events_evdev_init(backend);
+            if check_windowing_backend(WINDOWING_EGL) {
+                _events_evdev_init(backend);
             }
 
             #[cfg(feature = "tslib")]
             // Tslib can be used regardless of the windowing system
-            if input_backend.is_some() && strcmp(input_backend, CLUTTER_INPUT_TSLIB) == 0 {
-                _clutter_events_tslib_init(backend);
+            if input_backend.is_some() && strcmp(input_backend, INPUT_TSLIB) == 0 {
+                _events_tslib_init(backend);
             }
 
             #[cfg(feature = "wayland")]
-            if clutter_check_windowing_backend(CLUTTER_WINDOWING_WAYLAND)
-                && (input_backend.is_some() || input_backend == I_(CLUTTER_INPUT_WAYLAND))
+            if check_windowing_backend(WINDOWING_WAYLAND)
+                && (input_backend.is_some() || input_backend == I_(INPUT_WAYLAND))
             {
-                _clutter_events_wayland_init(backend);
+                _events_wayland_init(backend);
             }
 
             // if input_backend.is_some() {
-            //     if input_backend != I_(CLUTTER_INPUT_NULL) {
+            //     if input_backend != I_(INPUT_NULL) {
             //         error!("Unrecognized input backend '%s'", input_backend);
             //     }
             // } else {

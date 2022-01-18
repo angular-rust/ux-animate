@@ -5,11 +5,18 @@ use std::fmt;
 
 // TODO: , @implements Scriptable
 #[derive(Debug, Clone)]
-pub struct Interval {}
+pub struct Interval {
+    value_type: bool, //GType,
+    values: bool, //GValue,
+}
+
+// Gtypes
+// INT, INT64, UINT, UINT64, CHAR, UCHAR, FLOAT, DOUBLE, BOOLEAN, BOXED 
+
 
 impl Interval {
     //pub fn new(gtype: glib::types::Type, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> Interval {
-    //    unsafe { TODO: call clutter_sys:clutter_interval_new() }
+    //    unsafe { TODO: call sys:interval_new() }
     //}
 
     // pub fn with_values(
@@ -18,7 +25,7 @@ impl Interval {
     //     final_: Option<&glib::Value>,
     // ) -> Interval {
     //     // unsafe {
-    //     //     from_glib_none(ffi::clutter_interval_new_with_values(
+    //     //     from_glib_none(ffi::interval_new_with_values(
     //     //         gtype.to_glib(),
     //     //         initial.to_glib_none().0,
     //     //         final_.to_glib_none().0,
@@ -28,7 +35,7 @@ impl Interval {
     // }
 
     //pub fn register_progress_func<P: Fn(&glib::Value, &glib::Value, f64, &glib::Value) -> bool + 'static>(value_type: glib::types::Type, func: P) {
-    //    unsafe { TODO: call clutter_sys:clutter_interval_register_progress_func() }
+    //    unsafe { TODO: call sys:interval_register_progress_func() }
     //}
 }
 
@@ -178,13 +185,13 @@ pub trait IntervalExt: 'static {
 
 impl<O: Is<Interval>> IntervalExt for O {
     fn clone(&self) -> Option<Interval> {
-        // unsafe { from_glib_full(ffi::clutter_interval_clone(self.as_ref().to_glib_none().0)) }
+        // unsafe { from_glib_full(ffi::interval_clone(self.as_ref().to_glib_none().0)) }
         unimplemented!()
     }
 
     // fn compute(&self, factor: f64) -> Option<glib::Value> {
     //     // unsafe {
-    //     //     from_glib_none(ffi::clutter_interval_compute(
+    //     //     from_glib_none(ffi::interval_compute(
     //     //         self.as_ref().to_glib_none().0,
     //     //         factor,
     //     //     ))
@@ -195,7 +202,7 @@ impl<O: Is<Interval>> IntervalExt for O {
     // fn compute_value(&self, factor: f64) -> Option<glib::Value> {
     //     // unsafe {
     //     //     let mut value = glib::Value::uninitialized();
-    //     //     let ret = from_glib(ffi::clutter_interval_compute_value(
+    //     //     let ret = from_glib(ffi::interval_compute_value(
     //     //         self.as_ref().to_glib_none().0,
     //     //         factor,
     //     //         value.to_glib_none_mut().0,
@@ -212,7 +219,7 @@ impl<O: Is<Interval>> IntervalExt for O {
     // fn get_final_value(&self) -> glib::Value {
     //     // unsafe {
     //     //     let mut value = glib::Value::uninitialized();
-    //     //     ffi::clutter_interval_get_final_value(
+    //     //     ffi::interval_get_final_value(
     //     //         self.as_ref().to_glib_none().0,
     //     //         value.to_glib_none_mut().0,
     //     //     );
@@ -224,7 +231,7 @@ impl<O: Is<Interval>> IntervalExt for O {
     // fn get_initial_value(&self) -> glib::Value {
     //     // unsafe {
     //     //     let mut value = glib::Value::uninitialized();
-    //     //     ffi::clutter_interval_get_initial_value(
+    //     //     ffi::interval_get_initial_value(
     //     //         self.as_ref().to_glib_none().0,
     //     //         value.to_glib_none_mut().0,
     //     //     );
@@ -234,12 +241,12 @@ impl<O: Is<Interval>> IntervalExt for O {
     // }
 
     //fn get_interval(&self, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) {
-    //    unsafe { TODO: call clutter_sys:clutter_interval_get_interval() }
+    //    unsafe { TODO: call sys:interval_get_interval() }
     //}
 
     // fn get_value_type(&self) -> glib::types::Type {
     //     // unsafe {
-    //     //     from_glib(ffi::clutter_interval_get_value_type(
+    //     //     from_glib(ffi::interval_get_value_type(
     //     //         self.as_ref().to_glib_none().0,
     //     //     ))
     //     // }
@@ -248,7 +255,7 @@ impl<O: Is<Interval>> IntervalExt for O {
 
     fn is_valid(&self) -> bool {
         // unsafe {
-        //     from_glib(ffi::clutter_interval_is_valid(
+        //     from_glib(ffi::interval_is_valid(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -257,7 +264,7 @@ impl<O: Is<Interval>> IntervalExt for O {
 
     // fn peek_final_value(&self) -> Option<glib::Value> {
     //     // unsafe {
-    //     //     from_glib_none(ffi::clutter_interval_peek_final_value(
+    //     //     from_glib_none(ffi::interval_peek_final_value(
     //     //         self.as_ref().to_glib_none().0,
     //     //     ))
     //     // }
@@ -266,7 +273,7 @@ impl<O: Is<Interval>> IntervalExt for O {
 
     // fn peek_initial_value(&self) -> Option<glib::Value> {
     //     // unsafe {
-    //     //     from_glib_none(ffi::clutter_interval_peek_initial_value(
+    //     //     from_glib_none(ffi::interval_peek_initial_value(
     //     //         self.as_ref().to_glib_none().0,
     //     //     ))
     //     // }
@@ -274,12 +281,12 @@ impl<O: Is<Interval>> IntervalExt for O {
     // }
 
     //fn set_final(&self, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) {
-    //    unsafe { TODO: call clutter_sys:clutter_interval_set_final() }
+    //    unsafe { TODO: call sys:interval_set_final() }
     //}
 
     // fn set_final_value(&self, value: &glib::Value) {
     //     // unsafe {
-    //     //     ffi::clutter_interval_set_final_value(
+    //     //     ffi::interval_set_final_value(
     //     //         self.as_ref().to_glib_none().0,
     //     //         value.to_glib_none().0,
     //     //     );
@@ -288,12 +295,12 @@ impl<O: Is<Interval>> IntervalExt for O {
     // }
 
     //fn set_initial(&self, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) {
-    //    unsafe { TODO: call clutter_sys:clutter_interval_set_initial() }
+    //    unsafe { TODO: call sys:interval_set_initial() }
     //}
 
     // fn set_initial_value(&self, value: &glib::Value) {
     //     // unsafe {
-    //     //     ffi::clutter_interval_set_initial_value(
+    //     //     ffi::interval_set_initial_value(
     //     //         self.as_ref().to_glib_none().0,
     //     //         value.to_glib_none().0,
     //     //     );
@@ -302,12 +309,12 @@ impl<O: Is<Interval>> IntervalExt for O {
     // }
 
     //fn set_interval(&self, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) {
-    //    unsafe { TODO: call clutter_sys:clutter_interval_set_interval() }
+    //    unsafe { TODO: call sys:interval_set_interval() }
     //}
 
     // fn validate<P: Is<glib::ParamSpec>>(&self, pspec: &P) -> bool {
     //     unsafe {
-    //         from_glib(ffi::clutter_interval_validate(
+    //         from_glib(ffi::interval_validate(
     //             self.as_ref().to_glib_none().0,
     //             pspec.as_ref().to_glib_none().0,
     //         ))

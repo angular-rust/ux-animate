@@ -2,7 +2,6 @@ use super::{Actor, HandlerId};
 use crate::prelude::*;
 use std::fmt;
 
-// SECTION:clutter-content
 // @Title: Content
 // @Short_Description: Delegate for painting the content of an actor
 //
@@ -27,7 +26,10 @@ use std::fmt;
 // The #ContentIface structure contains only
 // private data.
 #[derive(Debug, Clone)]
-pub struct Content {}
+pub struct Content {
+    pub width: u32,
+    pub height: u32,
+}
 
 impl Object for Content {}
 impl Is<Content> for Content {}
@@ -65,7 +67,7 @@ pub trait ContentExt: 'static {
     /// This function should be called by `Content` implementations when
     /// they change the way a the content should be painted regardless of the
     /// actor state.
-    fn invalidate(&self);
+    fn invalidate(&self) {}
 
     /// This signal is emitted each time a `Content` implementation is
     /// assigned to a `Actor`.
@@ -82,11 +84,8 @@ pub trait ContentExt: 'static {
 
 impl<O: Is<Content>> ContentExt for O {
     fn get_preferred_size(&self) -> Option<(f32, f32)> {
-        unimplemented!()
-    }
-
-    fn invalidate(&self) {
-        unimplemented!()
+        let content = self.as_ref();
+        Some((content.width as f32, content.height as f32))
     }
 
     fn connect_attached<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> HandlerId {

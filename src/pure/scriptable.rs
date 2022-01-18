@@ -5,7 +5,7 @@
 //     pub struct Scriptable(Interface<ffi::Scriptable>);
 
 //     match fn {
-//         get_type => || ffi::clutter_scriptable_get_type(),
+//         get_type => || ffi::scriptable_get_type(),
 //     }
 // }
 
@@ -71,7 +71,7 @@
 // impl<O: Is<Scriptable>> ScriptableExt for O {
 //     // fn get_id(&self) -> Option<GString> {
 //     //     unsafe {
-//     //         from_glib_none(ffi::clutter_scriptable_get_id(
+//     //         from_glib_none(ffi::scriptable_get_id(
 //     //             self.as_ref().to_glib_none().0,
 //     //         ))
 //     //     }
@@ -85,7 +85,7 @@
 //     //     node: &json::Node,
 //     // ) -> bool {
 //     //     unsafe {
-//     //         from_glib(ffi::clutter_scriptable_parse_custom_node(
+//     //         from_glib(ffi::scriptable_parse_custom_node(
 //     //             self.as_ref().to_glib_none().0,
 //     //             script.as_ref().to_glib_none().0,
 //     //             value.to_glib_none_mut().0,
@@ -97,7 +97,7 @@
 
 //     fn set_custom_property<P: Is<Script>>(&self, script: &P, name: &str, value: &glib::Value) {
 //         unsafe {
-//             ffi::clutter_scriptable_set_custom_property(
+//             ffi::scriptable_set_custom_property(
 //                 self.as_ref().to_glib_none().0,
 //                 script.as_ref().to_glib_none().0,
 //                 name.to_glib_none().0,
@@ -108,7 +108,7 @@
 
 //     fn set_id(&self, id_: &str) {
 //         unsafe {
-//             ffi::clutter_scriptable_set_id(self.as_ref().to_glib_none().0, id_.to_glib_none().0);
+//             ffi::scriptable_set_id(self.as_ref().to_glib_none().0, id_.to_glib_none().0);
 //         }
 //     }
 // }

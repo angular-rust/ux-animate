@@ -27,57 +27,57 @@ struct BindingEntry {
 // inside their class initialization function and then install actions
 // like this:
 //
-// |[<!-- language="C" -->
+// ```
 // static void
 // foo_class_init (FooClass *klass)
 // {
 //   BindingPool *binding_pool;
 //
-//   binding_pool = clutter_binding_pool_get_for_class (klass);
+//   binding_pool = binding_pool_get_for_class (klass);
 //
-//   clutter_binding_pool_install_action (binding_pool, "move-up",
-//                                        CLUTTER_Up, 0,
+//   binding_pool_install_action (binding_pool, "move-up",
+//                                        Up, 0,
 //                                        G_CALLBACK (foo_action_move_up),
 //                                        NULL, NULL);
-//   clutter_binding_pool_install_action (binding_pool, "move-up",
-//                                        CLUTTER_KP_Up, 0,
+//   binding_pool_install_action (binding_pool, "move-up",
+//                                        KP_Up, 0,
 //                                        G_CALLBACK (foo_action_move_up),
 //                                        NULL, NULL);
 // }
-// ]|
+// ```
 //
 // The callback has a signature of:
 //
-// |[<!-- language="C" -->
+// ```
 //    gboolean (* callback) (GObject             *instance,
 //                           const gchar         *action_name,
 //                           guint                key_val,
 //                           ModifierType  modifiers,
 //                           gpointer             user_data);
-// ]|
+// ```
 //
 // The actor should then override the #Actor::key-press-event and
-// use clutter_binding_pool_activate() to match a #KeyEvent structure
+// use binding_pool_activate() to match a #KeyEvent structure
 // to one of the actions:
 //
-// |[<!-- language="C" -->
+// ```
 //   BindingPool *pool;
 //
 //   // retrieve the binding pool for the type of the actor
-//   pool = clutter_binding_pool_find (G_OBJECT_TYPE_NAME (actor));
+//   pool = binding_pool_find (G_OBJECT_TYPE_NAME (actor));
 //
 //   // activate any callback matching the key symbol and modifiers
 //   // mask of the key event. the returned value can be directly
 //   // used to signal that the actor has handled the event.
-//   return clutter_binding_pool_activate (pool,
+//   return binding_pool_activate (pool,
 //                                         key_event->keyval,
 //                                         key_event->modifier_state,
 //                                         G_OBJECT (actor));
-// ]|
+// ```
 //
-// The clutter_binding_pool_activate() function will return %FALSE if
+// The binding_pool_activate() function will return %FALSE if
 // no action for the given key binding was found, if the action was
-// blocked (using clutter_binding_pool_block_action()) or if the
+// blocked (using binding_pool_block_action()) or if the
 // key binding handler returned %FALSE.
 pub struct BindingPool {
     // GObject parent_instance;
@@ -225,7 +225,7 @@ impl BindingPool {
     //     let destroy_call6 = Some(notify_func::<P> as _);
     //     let super_callback0: Box<P> = callback_data;
     //     unsafe {
-    //         ffi::clutter_binding_pool_install_action(
+    //         ffi::binding_pool_install_action(
     //             self.to_glib_none().0,
     //             action_name.to_glib_none().0,
     //             key_val,
@@ -321,7 +321,7 @@ impl BindingPool {
     //     let destroy_call5 = Some(notify_func::<P> as _);
     //     let super_callback0: Box<P> = callback_data;
     //     unsafe {
-    //         ffi::clutter_binding_pool_override_action(
+    //         ffi::binding_pool_override_action(
     //             self.to_glib_none().0,
     //             key_val,
     //             modifiers.to_glib(),
@@ -390,7 +390,7 @@ impl BindingPool {
     }
 
     //pub fn get_for_class(klass: /*Unimplemented*/Option<Fundamental: Pointer>) -> Option<BindingPool> {
-    //    unsafe { TODO: call clutter_sys:clutter_binding_pool_get_for_class() }
+    //    unsafe { TODO: call sys:binding_pool_get_for_class() }
     //}
 }
 

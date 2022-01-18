@@ -13,7 +13,7 @@ impl RotateAction {
     ///
     /// the newly created `RotateAction`
     pub fn new() -> RotateAction {
-        // unsafe { Action::from_glib_none(ffi::clutter_rotate_action_new()).unsafe_cast() }
+        // unsafe { Action::from_glib_none(ffi::rotate_action_new()).unsafe_cast() }
         unimplemented!()
     }
 }

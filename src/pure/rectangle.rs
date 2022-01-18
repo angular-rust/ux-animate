@@ -1,7 +1,10 @@
-use super::HandlerId;
-use crate::prelude::*;
-use crate::Color;
 use std::fmt;
+
+use crate::prelude::*;
+
+use crate::foundation::colorspace::Color;
+
+use super::HandlerId;
 
 // TODO: implements atk::ImplementorIface, Scriptable
 // @extends Actor,

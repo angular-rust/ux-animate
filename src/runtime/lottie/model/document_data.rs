@@ -1,5 +1,5 @@
 #![allow(clippy::clippy::too_many_arguments)]
-use crate::Color;
+use crate::foundation::colorspace::Color;
 
 #[derive(PartialEq)]
 pub enum Justification {

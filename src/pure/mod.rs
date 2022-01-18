@@ -26,8 +26,9 @@ pub use self::actor_meta::{ActorMeta, ActorMetaExt};
 mod align_constraint;
 pub use self::align_constraint::AlignConstraint;
 
-mod alpha;
-pub use self::alpha::Alpha;
+// deprecated
+// mod alpha;
+// pub use self::alpha::Alpha;
 
 mod animatable;
 pub use self::animatable::{Animatable, AnimatableExt};
@@ -38,11 +39,12 @@ pub use self::backend::Backend;
 mod behaviour;
 pub use self::behaviour::Behaviour;
 
-mod behaviour_ellipse;
-pub use self::behaviour_ellipse::{BehaviourEllipse, BehaviourEllipseExt};
+// deprecated
+// mod behaviour_ellipse;
+// pub use self::behaviour_ellipse::{BehaviourEllipse, BehaviourEllipseExt};
 
-mod behaviour_rotate;
-pub use self::behaviour_rotate::{BehaviourRotate, BehaviourRotateExt};
+// mod behaviour_rotate;
+// pub use self::behaviour_rotate::{BehaviourRotate, BehaviourRotateExt};
 
 mod bin_layout;
 pub use self::bin_layout::BinLayout;
@@ -400,8 +402,8 @@ pub mod traits {
     pub use super::ActorExt;
     pub use super::ActorMetaExt;
     pub use super::AnimatableExt;
-    pub use super::BehaviourEllipseExt;
-    pub use super::BehaviourRotateExt;
+    // pub use super::BehaviourEllipseExt;
+    // pub use super::BehaviourRotateExt;
     pub use super::BoxLayoutExt;
     pub use super::ChildMetaExt;
     pub use super::ClickActionExt;

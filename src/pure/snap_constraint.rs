@@ -28,7 +28,7 @@ impl SnapConstraint {
         offset: f32,
     ) -> SnapConstraint {
         // unsafe {
-        //     Constraint::from_glib_none(ffi::clutter_snap_constraint_new(
+        //     Constraint::from_glib_none(ffi::snap_constraint_new(
         //         source.map(|p| p.as_ref()).to_glib_none().0,
         //         from_edge.to_glib(),
         //         to_edge.to_glib(),
@@ -48,7 +48,7 @@ impl SnapConstraint {
         // unsafe {
         //     let mut from_edge = mem::MaybeUninit::uninit();
         //     let mut to_edge = mem::MaybeUninit::uninit();
-        //     ffi::clutter_snap_constraint_get_edges(
+        //     ffi::snap_constraint_get_edges(
         //         self.to_glib_none().0,
         //         from_edge.as_mut_ptr(),
         //         to_edge.as_mut_ptr(),
@@ -66,7 +66,7 @@ impl SnapConstraint {
     ///
     /// the offset, in pixels
     pub fn get_offset(&self) -> f32 {
-        // unsafe { ffi::clutter_snap_constraint_get_offset(self.to_glib_none().0) }
+        // unsafe { ffi::snap_constraint_get_offset(self.to_glib_none().0) }
         unimplemented!()
     }
 
@@ -77,7 +77,7 @@ impl SnapConstraint {
     /// a pointer to the source actor
     pub fn get_source(&self) -> Option<Actor> {
         // unsafe {
-        //     from_glib_none(ffi::clutter_snap_constraint_get_source(
+        //     from_glib_none(ffi::snap_constraint_get_source(
         //         self.to_glib_none().0,
         //     ))
         // }
@@ -95,7 +95,7 @@ impl SnapConstraint {
     /// the edge on the source
     pub fn set_edges(&self, from_edge: SnapEdge, to_edge: SnapEdge) {
         // unsafe {
-        //     ffi::clutter_snap_constraint_set_edges(
+        //     ffi::snap_constraint_set_edges(
         //         self.to_glib_none().0,
         //         from_edge.to_glib(),
         //         to_edge.to_glib(),
@@ -109,7 +109,7 @@ impl SnapConstraint {
     /// the offset to apply, in pixels
     pub fn set_offset(&self, offset: f32) {
         // unsafe {
-        //     ffi::clutter_snap_constraint_set_offset(self.to_glib_none().0, offset);
+        //     ffi::snap_constraint_set_offset(self.to_glib_none().0, offset);
         // }
         unimplemented!()
     }
@@ -119,7 +119,7 @@ impl SnapConstraint {
     /// a `Actor`, or `None` to unset the source
     pub fn set_source<P: Is<Actor>>(&self, source: Option<&P>) {
         // unsafe {
-        //     ffi::clutter_snap_constraint_set_source(
+        //     ffi::snap_constraint_set_source(
         //         self.to_glib_none().0,
         //         source.map(|p| p.as_ref()).to_glib_none().0,
         //     );

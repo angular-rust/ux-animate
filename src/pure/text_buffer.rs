@@ -12,14 +12,14 @@ impl TextBuffer {
     ///
     /// A new TextBuffer object.
     pub fn new() -> TextBuffer {
-        // unsafe { from_glib_full(ffi::clutter_text_buffer_new()) }
+        // unsafe { from_glib_full(ffi::text_buffer_new()) }
         unimplemented!()
     }
 
     // pub fn with_text(text: Option<&str>) -> TextBuffer {
     //     let text_len = text.len() as isize;
     //     unsafe {
-    //         from_glib_full(ffi::clutter_text_buffer_new_with_text(
+    //         from_glib_full(ffi::text_buffer_new_with_text(
     //             text.to_glib_none().0,
     //             text_len,
     //         ))
@@ -185,14 +185,14 @@ pub trait TextBufferExt: 'static {
 impl<O: Is<TextBuffer>> TextBufferExt for O {
     fn delete_text(&self, position: u32, n_chars: i32) -> u32 {
         // unsafe {
-        //     ffi::clutter_text_buffer_delete_text(self.as_ref().to_glib_none().0, position, n_chars)
+        //     ffi::text_buffer_delete_text(self.as_ref().to_glib_none().0, position, n_chars)
         // }
         unimplemented!()
     }
 
     fn emit_deleted_text(&self, position: u32, n_chars: u32) {
         // unsafe {
-        //     ffi::clutter_text_buffer_emit_deleted_text(
+        //     ffi::text_buffer_emit_deleted_text(
         //         self.as_ref().to_glib_none().0,
         //         position,
         //         n_chars,
@@ -203,7 +203,7 @@ impl<O: Is<TextBuffer>> TextBufferExt for O {
 
     fn emit_inserted_text(&self, position: u32, chars: &str, n_chars: u32) {
         // unsafe {
-        //     ffi::clutter_text_buffer_emit_inserted_text(
+        //     ffi::text_buffer_emit_inserted_text(
         //         self.as_ref().to_glib_none().0,
         //         position,
         //         chars.to_glib_none().0,
@@ -214,23 +214,23 @@ impl<O: Is<TextBuffer>> TextBufferExt for O {
     }
 
     fn get_bytes(&self) -> usize {
-        // unsafe { ffi::clutter_text_buffer_get_bytes(self.as_ref().to_glib_none().0) }
+        // unsafe { ffi::text_buffer_get_bytes(self.as_ref().to_glib_none().0) }
         unimplemented!()
     }
 
     fn get_length(&self) -> u32 {
-        // unsafe { ffi::clutter_text_buffer_get_length(self.as_ref().to_glib_none().0) }
+        // unsafe { ffi::text_buffer_get_length(self.as_ref().to_glib_none().0) }
         unimplemented!()
     }
 
     fn get_max_length(&self) -> i32 {
-        // unsafe { ffi::clutter_text_buffer_get_max_length(self.as_ref().to_glib_none().0) }
+        // unsafe { ffi::text_buffer_get_max_length(self.as_ref().to_glib_none().0) }
         unimplemented!()
     }
 
     fn get_text(&self) -> Option<String> {
         // unsafe {
-        //     from_glib_none(ffi::clutter_text_buffer_get_text(
+        //     from_glib_none(ffi::text_buffer_get_text(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -239,7 +239,7 @@ impl<O: Is<TextBuffer>> TextBufferExt for O {
 
     fn insert_text(&self, position: u32, chars: &str, n_chars: i32) -> u32 {
         // unsafe {
-        //     ffi::clutter_text_buffer_insert_text(
+        //     ffi::text_buffer_insert_text(
         //         self.as_ref().to_glib_none().0,
         //         position,
         //         chars.to_glib_none().0,
@@ -251,14 +251,14 @@ impl<O: Is<TextBuffer>> TextBufferExt for O {
 
     fn set_max_length(&self, max_length: i32) {
         // unsafe {
-        //     ffi::clutter_text_buffer_set_max_length(self.as_ref().to_glib_none().0, max_length);
+        //     ffi::text_buffer_set_max_length(self.as_ref().to_glib_none().0, max_length);
         // }
         unimplemented!()
     }
 
     fn set_text(&self, chars: &str, n_chars: i32) {
         // unsafe {
-        //     ffi::clutter_text_buffer_set_text(
+        //     ffi::text_buffer_set_text(
         //         self.as_ref().to_glib_none().0,
         //         chars.to_glib_none().0,
         //         n_chars,

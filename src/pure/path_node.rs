@@ -1,14 +1,14 @@
 use super::{Knot, PathNodeType};
-// ClutterPathNode:
+// PathNode:
 // @type: the node's type
 // @points: the coordinates of the node
 //
-// Represents a single node of a #ClutterPath.
+// Represents a single node of a #Path.
 //
 // Some of the coordinates in @points may be unused for some node
-// types. %CLUTTER_PATH_MOVE_TO and %CLUTTER_PATH_LINE_TO use only one
-// pair of coordinates, %CLUTTER_PATH_CURVE_TO uses all three and
-// %CLUTTER_PATH_CLOSE uses none.
+// types. %PATH_MOVE_TO and %PATH_LINE_TO use only one
+// pair of coordinates, %PATH_CURVE_TO uses all three and
+// %PATH_CLOSE uses none.
 #[derive(Debug, PartialOrd)] // Hash
 pub struct PathNode {
     kind: PathNodeType,
@@ -26,7 +26,7 @@ impl PathNode {
     /// `true` if the nodes are the same.
     fn equal(&self, node_b: &PathNode) -> bool {
         // unsafe {
-        //     from_glib(ffi::clutter_path_node_equal(
+        //     from_glib(ffi::path_node_equal(
         //         self.to_glib_none().0,
         //         node_b.to_glib_none().0,
         //     ))

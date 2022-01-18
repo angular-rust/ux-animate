@@ -24,18 +24,18 @@ impl Event {
     /// Creates a new event.
     pub fn new(type_: EventType) -> Event {
         // assert_initialized_main_thread!();
-        // unsafe { from_glib_none(ffi::clutter_event_new(type_.to_glib())) }
+        // unsafe { from_glib_none(ffi::event_new(type_.to_glib())) }
         unimplemented!()
     }
 
     pub fn get() -> Option<Event> {
         // assert_initialized_main_thread!();
-        // unsafe { from_glib_none(ffi::clutter_event_get()) }
+        // unsafe { from_glib_none(ffi::event_get()) }
         unimplemented!()
     }
 
     pub fn put(&self) {
-        // unsafe { ffi::clutter_event_put(self.to_glib_none().0) }
+        // unsafe { ffi::event_put(self.to_glib_none().0) }
         unimplemented!()
     }
 
@@ -69,7 +69,7 @@ impl Event {
     //         let boxed: Box<F> = Box::new(handler);
     //         let ptr: *mut c_void = Box::into_raw(boxed) as *mut _;
     //         unsafe {
-    //             ffi::clutter_event_handler_set(
+    //             ffi::event_handler_set(
     //                 Some(event_handler_trampoline::<F>),
     //                 ptr,
     //                 Some(event_handler_destroy::<F>),
@@ -98,7 +98,7 @@ impl Event {
     // pub fn get_button(&self) -> Option<u32> {
     //     let mut button = 0u32;
     //     if unsafe {
-    //         from_glib(ffi::clutter_event_get_button(
+    //         from_glib(ffi::event_get_button(
     //             self.to_glib_none().0,
     //             &mut button,
     //         ))
@@ -112,7 +112,7 @@ impl Event {
     // pub fn get_click_count(&self) -> Option<u32> {
     //     let mut click_count = 0u32;
     //     if unsafe {
-    //         from_glib(ffi::clutter_event_get_click_count(
+    //         from_glib(ffi::event_get_click_count(
     //             self.to_glib_none().0,
     //             &mut click_count,
     //         ))
@@ -127,7 +127,7 @@ impl Event {
     //     let mut x_win = 0_f32;
     //     let mut y_win = 0_f32;
     //     if unsafe {
-    //         from_glib(ffi::clutter_event_get_coords(
+    //         from_glib(ffi::event_get_coords(
     //             self.to_glib_none().0,
     //             &mut x_win,
     //             &mut y_win,
@@ -142,7 +142,7 @@ impl Event {
     // pub fn get_keycode(&self) -> Option<u16> {
     //     let mut keycode = 0u16;
     //     if unsafe {
-    //         from_glib(ffi::clutter_event_get_keycode(
+    //         from_glib(ffi::event_get_keycode(
     //             self.to_glib_none().0,
     //             &mut keycode,
     //         ))
@@ -156,7 +156,7 @@ impl Event {
     // pub fn get_keyval(&self) -> Option<u32> {
     //     let mut keyval = 0u32;
     //     if unsafe {
-    //         from_glib(ffi::clutter_event_get_keyval(
+    //         from_glib(ffi::event_get_keyval(
     //             self.to_glib_none().0,
     //             &mut keyval,
     //         ))
@@ -171,7 +171,7 @@ impl Event {
     //     let mut x_root = 0_f32;
     //     let mut y_root = 0_f32;
     //     if unsafe {
-    //         from_glib(ffi::clutter_event_get_coords(
+    //         from_glib(ffi::event_get_coords(
     //             self.to_glib_none().0,
     //             &mut x_root,
     //             &mut y_root,
@@ -186,7 +186,7 @@ impl Event {
     // pub fn get_scroll_direction(&self) -> Option<ScrollDirection> {
     //     unsafe {
     //         let mut direction = mem::MaybeUninit::uninit();
-    //         if from_glib(ffi::clutter_event_get_scroll_direction(
+    //         if from_glib(ffi::event_get_scroll_direction(
     //             self.to_glib_none().0,
     //             direction.as_mut_ptr(),
     //         )) {
@@ -201,7 +201,7 @@ impl Event {
     //     let mut delta_x = 0_f64;
     //     let mut delta_y = 0_f64;
     //     if unsafe {
-    //         from_glib(ffi::clutter_event_get_scroll_delta(
+    //         from_glib(ffi::event_get_scroll_delta(
     //             self.to_glib_none().0,
     //             &mut delta_x,
     //             &mut delta_y,
@@ -224,7 +224,7 @@ impl Event {
     // pub fn get_state(&self) -> Option<ModifierType> {
     //     unsafe {
     //         let mut state = mem::MaybeUninit::uninit();
-    //         if from_glib(ffi::clutter_event_get_scroll_direction(
+    //         if from_glib(ffi::event_get_scroll_direction(
     //             self.to_glib_none().0,
     //             state.as_mut_ptr(),
     //         )) {
@@ -236,39 +236,39 @@ impl Event {
     // }
 
     pub fn get_time(&self) -> u32 {
-        // unsafe { ffi::clutter_event_get_time(self.to_glib_none().0) }
+        // unsafe { ffi::event_get_time(self.to_glib_none().0) }
         unimplemented!()
     }
 
     /// Returns the associated `Window` if applicable.
     // pub fn get_window(&self) -> Option<Window> {
-    //     unsafe { from_glib_none(ffi::clutter_event_get_window(self.to_glib_none().0)) }
+    //     unsafe { from_glib_none(ffi::event_get_window(self.to_glib_none().0)) }
     // }
 
     pub fn get_event_sequence(&self) -> Option<EventSequence> {
-        // unsafe { from_glib_none(ffi::clutter_event_get_event_sequence(self.to_glib_none().0)) }
+        // unsafe { from_glib_none(ffi::event_get_event_sequence(self.to_glib_none().0)) }
         unimplemented!()
     }
 
     // pub fn triggers_context_menu(&self) -> bool {
     //     unsafe {
-    //         from_glib(ffi::clutter_event_triggers_context_menu(
+    //         from_glib(ffi::event_triggers_context_menu(
     //             self.to_glib_none().0,
     //         ))
     //     }
     // }
 
     // pub fn get_seat(&self) -> Option<Seat> {
-    //     unsafe { from_glib_none(ffi::clutter_event_get_seat(self.to_glib_none().0)) }
+    //     unsafe { from_glib_none(ffi::event_get_seat(self.to_glib_none().0)) }
     // }
 
     // pub fn get_scancode(&mut self) -> i32 {
-    //     unsafe { ffi::clutter_event_get_scancode(self.to_glib_none_mut().0) }
+    //     unsafe { ffi::event_get_scancode(self.to_glib_none_mut().0) }
     // }
 
     // pub fn get_pointer_emulated(&mut self) -> bool {
     //     unsafe {
-    //         from_glib(ffi::clutter_event_is_pointer_emulated(
+    //         from_glib(ffi::event_is_pointer_emulated(
     //             self.to_glib_none_mut().0,
     //         ))
     //     }
@@ -281,40 +281,40 @@ impl Event {
     // }
 
     // pub fn get_screen(&self) -> Option<Screen> {
-    //     unsafe { from_glib_none(ffi::clutter_event_get_screen(self.to_glib_none().0)) }
+    //     unsafe { from_glib_none(ffi::event_get_screen(self.to_glib_none().0)) }
     // }
 
     pub fn set_device(&mut self, device: Option<&InputDevice>) {
-        // unsafe { ffi::clutter_event_set_device(self.to_glib_none_mut().0, device.to_glib_none().0) }
+        // unsafe { ffi::event_set_device(self.to_glib_none_mut().0, device.to_glib_none().0) }
         unimplemented!()
     }
 
     pub fn get_device(&self) -> Option<InputDevice> {
-        // unsafe { from_glib_none(ffi::clutter_event_get_device(self.to_glib_none().0)) }
+        // unsafe { from_glib_none(ffi::event_get_device(self.to_glib_none().0)) }
         unimplemented!()
     }
 
     pub fn set_source_device(&mut self, device: Option<&InputDevice>) {
         // unsafe {
-        //     ffi::clutter_event_set_source_device(self.to_glib_none_mut().0, device.to_glib_none().0)
+        //     ffi::event_set_source_device(self.to_glib_none_mut().0, device.to_glib_none().0)
         // }
         unimplemented!()
     }
 
     pub fn get_source_device(&self) -> Option<InputDevice> {
-        // unsafe { from_glib_none(ffi::clutter_event_get_source_device(self.to_glib_none().0)) }
+        // unsafe { from_glib_none(ffi::event_get_source_device(self.to_glib_none().0)) }
         unimplemented!()
     }
 
     // pub fn set_device_tool(&mut self, device: Option<&DeviceTool>) {
     //     unsafe {
-    //         ffi::clutter_event_set_device_tool(self.to_glib_none_mut().0, device.to_glib_none().0)
+    //         ffi::event_set_device_tool(self.to_glib_none_mut().0, device.to_glib_none().0)
     //     }
     // }
 
     // pub fn get_device_tool(&self) -> Option<DeviceTool> {
     //     unsafe {
-    //         from_glib_none(ffi::clutter_event_get_device_tool(
+    //         from_glib_none(ffi::event_get_device_tool(
     //             self.to_glib_none().0,
     //         ))
     //     }

@@ -16,7 +16,7 @@ impl FlowLayout {
     /// the newly created `FlowLayout`
     pub fn new(orientation: FlowOrientation) -> FlowLayout {
         // unsafe {
-        //     LayoutManager::from_glib_none(ffi::clutter_flow_layout_new(orientation.to_glib()))
+        //     LayoutManager::from_glib_none(ffi::flow_layout_new(orientation.to_glib()))
         //         .unsafe_cast()
         // }
         unimplemented!()
@@ -182,7 +182,7 @@ pub trait FlowLayoutExt: 'static {
 
 impl<O: Is<FlowLayout>> FlowLayoutExt for O {
     fn get_column_spacing(&self) -> f32 {
-        // unsafe { ffi::clutter_flow_layout_get_column_spacing(self.as_ref().to_glib_none().0) }
+        // unsafe { ffi::flow_layout_get_column_spacing(self.as_ref().to_glib_none().0) }
         unimplemented!()
     }
 
@@ -190,7 +190,7 @@ impl<O: Is<FlowLayout>> FlowLayoutExt for O {
         // unsafe {
         //     let mut min_width = mem::MaybeUninit::uninit();
         //     let mut max_width = mem::MaybeUninit::uninit();
-        //     ffi::clutter_flow_layout_get_column_width(
+        //     ffi::flow_layout_get_column_width(
         //         self.as_ref().to_glib_none().0,
         //         min_width.as_mut_ptr(),
         //         max_width.as_mut_ptr(),
@@ -204,7 +204,7 @@ impl<O: Is<FlowLayout>> FlowLayoutExt for O {
 
     fn get_homogeneous(&self) -> bool {
         // unsafe {
-        //     from_glib(ffi::clutter_flow_layout_get_homogeneous(
+        //     from_glib(ffi::flow_layout_get_homogeneous(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -213,7 +213,7 @@ impl<O: Is<FlowLayout>> FlowLayoutExt for O {
 
     fn get_orientation(&self) -> FlowOrientation {
         // unsafe {
-        //     from_glib(ffi::clutter_flow_layout_get_orientation(
+        //     from_glib(ffi::flow_layout_get_orientation(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -224,7 +224,7 @@ impl<O: Is<FlowLayout>> FlowLayoutExt for O {
         // unsafe {
         //     let mut min_height = mem::MaybeUninit::uninit();
         //     let mut max_height = mem::MaybeUninit::uninit();
-        //     ffi::clutter_flow_layout_get_row_height(
+        //     ffi::flow_layout_get_row_height(
         //         self.as_ref().to_glib_none().0,
         //         min_height.as_mut_ptr(),
         //         max_height.as_mut_ptr(),
@@ -237,13 +237,13 @@ impl<O: Is<FlowLayout>> FlowLayoutExt for O {
     }
 
     fn get_row_spacing(&self) -> f32 {
-        // unsafe { ffi::clutter_flow_layout_get_row_spacing(self.as_ref().to_glib_none().0) }
+        // unsafe { ffi::flow_layout_get_row_spacing(self.as_ref().to_glib_none().0) }
         unimplemented!()
     }
 
     fn get_snap_to_grid(&self) -> bool {
         // unsafe {
-        //     from_glib(ffi::clutter_flow_layout_get_snap_to_grid(
+        //     from_glib(ffi::flow_layout_get_snap_to_grid(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -252,14 +252,14 @@ impl<O: Is<FlowLayout>> FlowLayoutExt for O {
 
     fn set_column_spacing(&self, spacing: f32) {
         // unsafe {
-        //     ffi::clutter_flow_layout_set_column_spacing(self.as_ref().to_glib_none().0, spacing);
+        //     ffi::flow_layout_set_column_spacing(self.as_ref().to_glib_none().0, spacing);
         // }
         unimplemented!()
     }
 
     fn set_column_width(&self, min_width: f32, max_width: f32) {
         // unsafe {
-        //     ffi::clutter_flow_layout_set_column_width(
+        //     ffi::flow_layout_set_column_width(
         //         self.as_ref().to_glib_none().0,
         //         min_width,
         //         max_width,
@@ -270,7 +270,7 @@ impl<O: Is<FlowLayout>> FlowLayoutExt for O {
 
     fn set_homogeneous(&self, homogeneous: bool) {
         // unsafe {
-        //     ffi::clutter_flow_layout_set_homogeneous(
+        //     ffi::flow_layout_set_homogeneous(
         //         self.as_ref().to_glib_none().0,
         //         homogeneous.to_glib(),
         //     );
@@ -280,7 +280,7 @@ impl<O: Is<FlowLayout>> FlowLayoutExt for O {
 
     fn set_orientation(&self, orientation: FlowOrientation) {
         // unsafe {
-        //     ffi::clutter_flow_layout_set_orientation(
+        //     ffi::flow_layout_set_orientation(
         //         self.as_ref().to_glib_none().0,
         //         orientation.to_glib(),
         //     );
@@ -290,7 +290,7 @@ impl<O: Is<FlowLayout>> FlowLayoutExt for O {
 
     fn set_row_height(&self, min_height: f32, max_height: f32) {
         // unsafe {
-        //     ffi::clutter_flow_layout_set_row_height(
+        //     ffi::flow_layout_set_row_height(
         //         self.as_ref().to_glib_none().0,
         //         min_height,
         //         max_height,
@@ -301,13 +301,13 @@ impl<O: Is<FlowLayout>> FlowLayoutExt for O {
 
     fn set_row_spacing(&self, spacing: f32) {
         // unsafe {
-        //     ffi::clutter_flow_layout_set_row_spacing(self.as_ref().to_glib_none().0, spacing);
+        //     ffi::flow_layout_set_row_spacing(self.as_ref().to_glib_none().0, spacing);
         // }
     }
 
     fn set_snap_to_grid(&self, snap_to_grid: bool) {
         // unsafe {
-        //     ffi::clutter_flow_layout_set_snap_to_grid(
+        //     ffi::flow_layout_set_snap_to_grid(
         //         self.as_ref().to_glib_none().0,
         //         snap_to_grid.to_glib(),
         //     );

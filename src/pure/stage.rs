@@ -1,6 +1,10 @@
-use super::{Actor, ActorBox, AllocationFlags, Event, Fog, HandlerId, Perspective, PickMode};
-use crate::prelude::*;
 use std::{cell::RefCell, fmt};
+
+use dx::platform::core::{Framebuffer, Matrix, FramebufferType};
+
+use crate::{Group, prelude::*};
+
+use super::{Actor, ActorBox, AllocationFlags, Event, Fog, HandlerId, Perspective, PickMode};
 
 pub struct Vector4 {
     x: f32,
@@ -11,11 +15,11 @@ pub struct Vector4 {
 
 #[derive(Default, Debug)]
 struct StageProps {
-    framebuffer: dx::core::Framebuffer,
+    framebuffer: Framebuffer,
     perspective: Perspective,
-    projection: dx::core::Matrix,
-    inverse_projection: dx::core::Matrix,
-    view: dx::core::Matrix,
+    projection: Matrix,
+    inverse_projection: Matrix,
+    view: Matrix,
     viewport: [f32; 4],
 
     fog: Fog,
@@ -31,7 +35,7 @@ struct StageProps {
     // current_clip_planes: [Plane; 4],
     pending_queue_redraws: Option<Vec<String>>,
 
-    active_framebuffer: Option<dx::core::Framebuffer>,
+    active_framebuffer: Option<Framebuffer>,
 
     sync_delay: i32,
 
@@ -60,18 +64,17 @@ struct StageProps {
     has_custom_perspective: bool,
 }
 
-// SECTION:clutter-stage
 // @short_description: Top level visual element to which actors are placed.
 //
 // #Stage is a top level 'window' on which child actors are placed
 // and manipulated.
 //
 // Backends might provide support for multiple stages. The support for this
-// feature can be checked at run-time using the clutter_feature_available()
-// function and the %CLUTTER_FEATURE_STAGE_MULTIPLE flag. If the backend used
+// feature can be checked at run-time using the feature_available()
+// function and the %FEATURE_STAGE_MULTIPLE flag. If the backend used
 // supports multiple stages, new #Stage instances can be created
-// using clutter_stage_new(). These stages must be managed by the developer
-// using clutter_actor_destroy(), which will take care of destroying all the
+// using stage_new(). These stages must be managed by the developer
+// using actor_destroy(), which will take care of destroying all the
 // actors contained inside them.
 //
 // #Stage is a proxy actor, wrapping the backend-specific
@@ -108,28 +111,28 @@ impl Stage {
 
     fn init(&self) {
         // cairo_rectangle_int_t geom = { 0, };
-        // ClutterStagePrivate *priv;
-        // ClutterStageWindow *stagewindow;
-        // ClutterBackend *backend;
+        // StagePrivate *priv;
+        // StageWindow *stagewindow;
+        // Backend *backend;
         // int window_scale = 1;
         // GError *error;
 
         // a stage is a top-level object
         
-        // CLUTTER_SET_PRIVATE_FLAGS(self, CLUTTER_IS_TOPLEVEL);
+        // SET_PRIVATE_FLAGS(self, IS_TOPLEVEL);
 
-        // self->priv = priv = clutter_stage_get_instance_private(self);
+        // self->priv = priv = stage_get_instance_private(self);
 
-        // CLUTTER_NOTE (BACKEND, "Creating stage from the default backend");
-        // backend = clutter_get_default_backend();
+        // NOTE (BACKEND, "Creating stage from the default backend");
+        // backend = get_default_backend();
 
         // error = NULL;
-        // stagewindow = _clutter_backend_create_stage(backend, self, &error);
+        // stagewindow = _backend_create_stage(backend, self, &error);
 
         // if G_LIKELY(stagewindow != NULL) {
-        //     _clutter_stage_set_window(self, stagewindow);
-        //     _clutter_stage_window_get_geometry(priv->stagewindow, &geom);
-        //     window_scale = _clutter_stage_window_get_scale_factor(priv->stagewindow);
+        //     _stage_set_window(self, stagewindow);
+        //     _stage_window_get_geometry(priv->stagewindow, &geom);
+        //     window_scale = _stage_window_get_scale_factor(priv->stagewindow);
         // } else {
         //     if error != NULL {
         //         g_critical("Unable to create a new stage implementation: %s",
@@ -151,14 +154,14 @@ impl Stage {
         // priv->sync_delay = -1;
 
         // XXX - we need to keep the invariant that calling
-        // clutter_set_motion_event_enabled() before the stage creation
+        // set_motion_event_enabled() before the stage creation
         // will cause motion event delivery to be disabled on any newly
         // created stage. this can go away when we break API and remove
         // deprecated functions.
 
-        // priv->motion_events_enabled = _clutter_context_get_motion_events_enabled();
+        // priv->motion_events_enabled = _context_get_motion_events_enabled();
 
-        // clutter_actor_set_background_color(CLUTTER_ACTOR(self),
+        // actor_set_background_color(ACTOR(self),
         //                                     &default_stage_color);
 
         // priv->perspective.fovy   = 60.0; // 60 Degrees
@@ -189,29 +192,29 @@ impl Stage {
 
         // priv->relayout_pending = TRUE;
 
-        // clutter_actor_set_reactive(CLUTTER_ACTOR(self), TRUE);
-        // clutter_stage_set_title(self, g_get_prgname ());
-        // clutter_stage_set_key_focus(self, NULL);
+        // actor_set_reactive(ACTOR(self), TRUE);
+        // stage_set_title(self, g_get_prgname ());
+        // stage_set_key_focus(self, NULL);
 
         // g_signal_connect(self, "notify::min-width",
-        //                     G_CALLBACK(clutter_stage_notify_min_size), NULL);
+        //                     G_CALLBACK(stage_notify_min_size), NULL);
         // g_signal_connect(self, "notify::min-height",
-        //                     G_CALLBACK(clutter_stage_notify_min_size), NULL);
+        //                     G_CALLBACK(stage_notify_min_size), NULL);
 
-        // _clutter_stage_set_viewport(self,
+        // _stage_set_viewport(self,
         //                             0, 0,
         //                             geom.width,
         //                             geom.height);
 
         // priv->paint_volume_stack =
-        //     g_array_new(FALSE, FALSE, sizeof (ClutterPaintVolume));
+        //     g_array_new(FALSE, FALSE, sizeof (PaintVolume));
 
-        // priv->pick_id_pool = _clutter_id_pool_new(256);
+        // priv->pick_id_pool = _id_pool_new(256);
     }
 
     fn allocate(&self, box_: ActorBox, flags: AllocationFlags) {
-        // ClutterStagePrivate *priv = CLUTTER_STAGE(self)->priv;
-        // ClutterActorBox alloc = CLUTTER_ACTOR_BOX_INIT_ZERO;
+        // StagePrivate *priv = STAGE(self)->priv;
+        // ActorBox alloc = ACTOR_BOX_INIT_ZERO;
         // float old_width, old_height;
         // float new_width, new_height;
         // float width, height;
@@ -223,31 +226,31 @@ impl Stage {
         // }
 
         // our old allocation */
-        // clutter_actor_get_allocation_box(self, &alloc);
-        // clutter_actor_box_get_size(&alloc, &old_width, &old_height);
+        // actor_get_allocation_box(self, &alloc);
+        // actor_box_get_size(&alloc, &old_width, &old_height);
 
         // the current allocation */
-        // clutter_actor_box_get_size(box, &width, &height);
+        // actor_box_get_size(box, &width, &height);
 
         // the current Stage implementation size */
-        // _clutter_stage_window_get_geometry(priv->stagewindow, &window_size);
+        // _stage_window_get_geometry(priv->stagewindow, &window_size);
 
         // if the stage is fixed size (for instance, it's using a EGL framebuffer)
         //  * then we simply ignore any allocation request and override the
         //  * allocation chain - because we cannot forcibly change the size of the
         //  * stage window.
         //  */
-        // if (!clutter_feature_available(CLUTTER_FEATURE_STAGE_STATIC))
+        // if (!feature_available(FEATURE_STAGE_STATIC))
         //   {
-        //     CLUTTER_NOTE (LAYOUT,
+        //     NOTE (LAYOUT,
         //                   "Following allocation to %.2fx%.2f (absolute origin %s)",
         //                   width, height,
-        //                   (flags & CLUTTER_ABSOLUTE_ORIGIN_CHANGED)
+        //                   (flags & ABSOLUTE_ORIGIN_CHANGED)
         //                     ? "changed"
         //                     : "not changed");
 
-        //     clutter_actor_set_allocation(self, box,
-        //                                   flags | CLUTTER_DELEGATE_LAYOUT);
+        //     actor_set_allocation(self, box,
+        //                                   flags | DELEGATE_LAYOUT);
 
         //     // Ensure the window is sized correctly
         //     if !priv->is_fullscreen {
@@ -281,15 +284,15 @@ impl Stage {
         //             priv->min_size_changed = FALSE;
         //         }
 
-        //         if window_size.width != CLUTTER_NEARBYINT (width) ||
-        //             window_size.height != CLUTTER_NEARBYINT (height) {
-        //             _clutter_stage_window_resize(priv->stagewindow,
-        //                                           CLUTTER_NEARBYINT (width),
-        //                                           CLUTTER_NEARBYINT (height));
+        //         if window_size.width != NEARBYINT (width) ||
+        //             window_size.height != NEARBYINT (height) {
+        //             _stage_window_resize(priv->stagewindow,
+        //                                           NEARBYINT (width),
+        //                                           NEARBYINT (height));
         //         }
         //     }
         // } else {
-        //     ClutterActorBox override = { 0, };
+        //     ActorBox override = { 0, };
 
         //     /* override the passed allocation */
         //     override.x1 = 0;
@@ -297,46 +300,46 @@ impl Stage {
         //     override.x2 = window_size.width;
         //     override.y2 = window_size.height;
 
-        //     CLUTTER_NOTE(LAYOUT,
+        //     NOTE(LAYOUT,
         //                   "Overriding original allocation of %.2fx%.2f "
         //                   "with %.2fx%.2f (absolute origin %s)",
         //                   width, height,
         //                   override.x2, override.y2,
-        //                   (flags & CLUTTER_ABSOLUTE_ORIGIN_CHANGED)
+        //                   (flags & ABSOLUTE_ORIGIN_CHANGED)
         //                     ? "changed"
         //                     : "not changed");
 
         //     /* and store the overridden allocation */
-        //     clutter_actor_set_allocation(self, &override,
-        //                                   flags | CLUTTER_DELEGATE_LAYOUT);
+        //     actor_set_allocation(self, &override,
+        //                                   flags | DELEGATE_LAYOUT);
         //   }
 
         // XXX: Until Cogl becomes fully responsible for backend windows
-        //  * Clutter need to manually keep it informed of the current window
+        //  *  need to manually keep it informed of the current window
         //  * size. We do this after the allocation above so that the stage
         //  * window has a chance to update the window size based on the
         //  * allocation.
         //  */
-        // _clutter_stage_window_get_geometry(priv->stagewindow, &window_size);
+        // _stage_window_get_geometry(priv->stagewindow, &window_size);
 
-        // scale_factor = _clutter_stage_window_get_scale_factor(priv->stagewindow);
+        // scale_factor = _stage_window_get_scale_factor(priv->stagewindow);
 
         // window_size.width *= scale_factor;
         // window_size.height *= scale_factor;
 
-        // cogl_onscreen_clutter_backend_set_size(window_size.width,
+        // cogl_onscreen_backend_set_size(window_size.width,
         //                                         window_size.height);
 
         // reset the viewport if the allocation effectively changed */
-        // clutter_actor_get_allocation_box(self, &alloc);
-        // clutter_actor_box_get_size(&alloc, &new_width, &new_height);
+        // actor_get_allocation_box(self, &alloc);
+        // actor_box_get_size(&alloc, &new_width, &new_height);
 
-        // if CLUTTER_NEARBYINT (old_width) != CLUTTER_NEARBYINT (new_width) ||
-        //     CLUTTER_NEARBYINT (old_height) != CLUTTER_NEARBYINT (new_height) {
-        //     int real_width = CLUTTER_NEARBYINT(new_width);
-        //     int real_height = CLUTTER_NEARBYINT(new_height);
+        // if NEARBYINT (old_width) != NEARBYINT (new_width) ||
+        //     NEARBYINT (old_height) != NEARBYINT (new_height) {
+        //     int real_width = NEARBYINT(new_width);
+        //     int real_height = NEARBYINT(new_height);
 
-        //     _clutter_stage_set_viewport(CLUTTER_STAGE (self),
+        //     _stage_set_viewport(STAGE (self),
         //                                  0, 0,
         //                                  real_width,
         //                                  real_height);
@@ -345,7 +348,7 @@ impl Stage {
         //      * since it may bail-out early if something preemptively set the
         //      * viewport before the stage was really allocated its new size.
         //      */
-        //     queue_full_redraw(CLUTTER_STAGE (self));
+        //     queue_full_redraw(STAGE (self));
         // }
     }
 
@@ -370,6 +373,15 @@ impl Stage {
 }
 
 impl Object for Stage {}
+impl Is<Actor> for Stage {}
+
+impl AsRef<Actor> for Stage {
+    fn as_ref(&self) -> &Actor {
+        unimplemented!()
+        // self
+    }
+}
+
 impl Is<Stage> for Stage {}
 
 impl AsRef<Stage> for Stage {
@@ -761,28 +773,28 @@ pub trait StageExt: 'static {
 impl<O: Is<Stage>> StageExt for O {
     fn ensure_current(&self) {
         // unsafe {
-        //     ffi::clutter_stage_ensure_current(self.as_ref().to_glib_none().0);
+        //     ffi::stage_ensure_current(self.as_ref().to_glib_none().0);
         // }
         unimplemented!()
     }
 
     fn ensure_redraw(&self) {
         // unsafe {
-        //     ffi::clutter_stage_ensure_redraw(self.as_ref().to_glib_none().0);
+        //     ffi::stage_ensure_redraw(self.as_ref().to_glib_none().0);
         // }
         unimplemented!()
     }
 
     fn ensure_viewport(&self) {
         // unsafe {
-        //     ffi::clutter_stage_ensure_viewport(self.as_ref().to_glib_none().0);
+        //     ffi::stage_ensure_viewport(self.as_ref().to_glib_none().0);
         // }
         unimplemented!()
     }
 
     fn event(&self, event: &mut Event) -> bool {
         // unsafe {
-        //     from_glib(ffi::clutter_stage_event(
+        //     from_glib(ffi::stage_event(
         //         self.as_ref().to_glib_none().0,
         //         event.to_glib_none_mut().0,
         //     ))
@@ -792,7 +804,7 @@ impl<O: Is<Stage>> StageExt for O {
 
     fn get_accept_focus(&self) -> bool {
         // unsafe {
-        //     from_glib(ffi::clutter_stage_get_accept_focus(
+        //     from_glib(ffi::stage_get_accept_focus(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -801,7 +813,7 @@ impl<O: Is<Stage>> StageExt for O {
 
     fn get_actor_at_pos(&self, pick_mode: PickMode, x: i32, y: i32) -> Option<Actor> {
         // unsafe {
-        //     from_glib_none(ffi::clutter_stage_get_actor_at_pos(
+        //     from_glib_none(ffi::stage_get_actor_at_pos(
         //         self.as_ref().to_glib_none().0,
         //         pick_mode.to_glib(),
         //         x,
@@ -813,7 +825,7 @@ impl<O: Is<Stage>> StageExt for O {
 
     fn get_fullscreen(&self) -> bool {
         // unsafe {
-        //     from_glib(ffi::clutter_stage_get_fullscreen(
+        //     from_glib(ffi::stage_get_fullscreen(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -822,7 +834,7 @@ impl<O: Is<Stage>> StageExt for O {
 
     fn get_key_focus(&self) -> Option<Actor> {
         // unsafe {
-        //     from_glib_none(ffi::clutter_stage_get_key_focus(
+        //     from_glib_none(ffi::stage_get_key_focus(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -833,7 +845,7 @@ impl<O: Is<Stage>> StageExt for O {
         // unsafe {
         //     let mut width = mem::MaybeUninit::uninit();
         //     let mut height = mem::MaybeUninit::uninit();
-        //     ffi::clutter_stage_get_minimum_size(
+        //     ffi::stage_get_minimum_size(
         //         self.as_ref().to_glib_none().0,
         //         width.as_mut_ptr(),
         //         height.as_mut_ptr(),
@@ -847,7 +859,7 @@ impl<O: Is<Stage>> StageExt for O {
 
     fn get_motion_events_enabled(&self) -> bool {
         // unsafe {
-        //     from_glib(ffi::clutter_stage_get_motion_events_enabled(
+        //     from_glib(ffi::stage_get_motion_events_enabled(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -856,7 +868,7 @@ impl<O: Is<Stage>> StageExt for O {
 
     fn get_no_clear_hint(&self) -> bool {
         // unsafe {
-        //     from_glib(ffi::clutter_stage_get_no_clear_hint(
+        //     from_glib(ffi::stage_get_no_clear_hint(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -866,7 +878,7 @@ impl<O: Is<Stage>> StageExt for O {
     fn get_perspective(&self) -> Perspective {
         // unsafe {
         //     let mut perspective = Perspective::uninitialized();
-        //     ffi::clutter_stage_get_perspective(
+        //     ffi::stage_get_perspective(
         //         self.as_ref().to_glib_none().0,
         //         perspective.to_glib_none_mut().0,
         //     );
@@ -878,7 +890,7 @@ impl<O: Is<Stage>> StageExt for O {
     // fn get_redraw_clip_bounds(&self) -> cairo::RectangleInt {
     //     // unsafe {
     //     //     let mut clip = cairo::RectangleInt::uninitialized();
-    //     //     ffi::clutter_stage_get_redraw_clip_bounds(
+    //     //     ffi::stage_get_redraw_clip_bounds(
     //     //         self.as_ref().to_glib_none().0,
     //     //         clip.to_glib_none_mut().0,
     //     //     );
@@ -889,7 +901,7 @@ impl<O: Is<Stage>> StageExt for O {
 
     fn get_throttle_motion_events(&self) -> bool {
         // unsafe {
-        //     from_glib(ffi::clutter_stage_get_throttle_motion_events(
+        //     from_glib(ffi::stage_get_throttle_motion_events(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -897,13 +909,13 @@ impl<O: Is<Stage>> StageExt for O {
     }
 
     fn get_title(&self) -> Option<String> {
-        // unsafe { from_glib_none(ffi::clutter_stage_get_title(self.as_ref().to_glib_none().0)) }
+        // unsafe { from_glib_none(ffi::stage_get_title(self.as_ref().to_glib_none().0)) }
         unimplemented!()
     }
 
     fn get_use_alpha(&self) -> bool {
         // unsafe {
-        //     from_glib(ffi::clutter_stage_get_use_alpha(
+        //     from_glib(ffi::stage_get_use_alpha(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -912,7 +924,7 @@ impl<O: Is<Stage>> StageExt for O {
 
     fn get_resizable(&self) -> bool {
         // unsafe {
-        //     from_glib(ffi::clutter_stage_get_user_resizable(
+        //     from_glib(ffi::stage_get_user_resizable(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -921,14 +933,14 @@ impl<O: Is<Stage>> StageExt for O {
 
     fn hide_cursor(&self) {
         // unsafe {
-        //     ffi::clutter_stage_hide_cursor(self.as_ref().to_glib_none().0);
+        //     ffi::stage_hide_cursor(self.as_ref().to_glib_none().0);
         // }
         unimplemented!()
     }
 
     // fn read_pixels(&self, x: i32, y: i32, width: i32, height: i32) -> Vec<u8> {
     //     unsafe {
-    //         FromGlibPtrContainer::from_glib_full(ffi::clutter_stage_read_pixels(
+    //         FromGlibPtrContainer::from_glib_full(ffi::stage_read_pixels(
     //             self.as_ref().to_glib_none().0,
     //             x,
     //             y,
@@ -940,7 +952,7 @@ impl<O: Is<Stage>> StageExt for O {
 
     fn set_accept_focus(&self, accept_focus: bool) {
         // unsafe {
-        //     ffi::clutter_stage_set_accept_focus(
+        //     ffi::stage_set_accept_focus(
         //         self.as_ref().to_glib_none().0,
         //         accept_focus.to_glib(),
         //     );
@@ -950,14 +962,14 @@ impl<O: Is<Stage>> StageExt for O {
 
     fn set_fullscreen(&self, fullscreen: bool) {
         // unsafe {
-        //     ffi::clutter_stage_set_fullscreen(self.as_ref().to_glib_none().0, fullscreen.to_glib());
+        //     ffi::stage_set_fullscreen(self.as_ref().to_glib_none().0, fullscreen.to_glib());
         // }
         unimplemented!()
     }
 
     fn set_key_focus<P: Is<Actor>>(&self, actor: Option<&P>) {
         // unsafe {
-        //     ffi::clutter_stage_set_key_focus(
+        //     ffi::stage_set_key_focus(
         //         self.as_ref().to_glib_none().0,
         //         actor.map(|p| p.as_ref()).to_glib_none().0,
         //     );
@@ -967,14 +979,14 @@ impl<O: Is<Stage>> StageExt for O {
 
     fn set_minimum_size(&self, width: u32, height: u32) {
         // unsafe {
-        //     ffi::clutter_stage_set_minimum_size(self.as_ref().to_glib_none().0, width, height);
+        //     ffi::stage_set_minimum_size(self.as_ref().to_glib_none().0, width, height);
         // }
         unimplemented!()
     }
 
     fn set_motion_events_enabled(&self, enabled: bool) {
         // unsafe {
-        //     ffi::clutter_stage_set_motion_events_enabled(
+        //     ffi::stage_set_motion_events_enabled(
         //         self.as_ref().to_glib_none().0,
         //         enabled.to_glib(),
         //     );
@@ -983,7 +995,7 @@ impl<O: Is<Stage>> StageExt for O {
 
     fn set_no_clear_hint(&self, no_clear: bool) {
         // unsafe {
-        //     ffi::clutter_stage_set_no_clear_hint(
+        //     ffi::stage_set_no_clear_hint(
         //         self.as_ref().to_glib_none().0,
         //         no_clear.to_glib(),
         //     );
@@ -993,7 +1005,7 @@ impl<O: Is<Stage>> StageExt for O {
 
     fn set_perspective(&self, perspective: &mut Perspective) {
         // unsafe {
-        //     ffi::clutter_stage_set_perspective(
+        //     ffi::stage_set_perspective(
         //         self.as_ref().to_glib_none().0,
         //         perspective.to_glib_none_mut().0,
         //     );
@@ -1003,7 +1015,7 @@ impl<O: Is<Stage>> StageExt for O {
 
     fn set_throttle_motion_events(&self, throttle: bool) {
         // unsafe {
-        //     ffi::clutter_stage_set_throttle_motion_events(
+        //     ffi::stage_set_throttle_motion_events(
         //         self.as_ref().to_glib_none().0,
         //         throttle.to_glib(),
         //     );
@@ -1013,14 +1025,14 @@ impl<O: Is<Stage>> StageExt for O {
 
     fn set_title(&self, title: &str) {
         // unsafe {
-        //     ffi::clutter_stage_set_title(self.as_ref().to_glib_none().0, title.to_glib_none().0);
+        //     ffi::stage_set_title(self.as_ref().to_glib_none().0, title.to_glib_none().0);
         // }
         unimplemented!()
     }
 
     fn set_use_alpha(&self, use_alpha: bool) {
         // unsafe {
-        //     ffi::clutter_stage_set_use_alpha(self.as_ref().to_glib_none().0, use_alpha.to_glib());
+        //     ffi::stage_set_use_alpha(self.as_ref().to_glib_none().0, use_alpha.to_glib());
         // }
         unimplemented!()
     }
@@ -1029,16 +1041,16 @@ impl<O: Is<Stage>> StageExt for O {
         let stage = self.as_ref();
         let props = stage.props.borrow();
 
-        let frontend: &dx::core::FramebufferType = props.framebuffer.as_ref();
+        let frontend: &FramebufferType = props.framebuffer.as_ref();
         match frontend {
-            dx::core::FramebufferType::OnScreen(onscreen) => onscreen.set_resizable(resizable),
-            dx::core::FramebufferType::OffScreen(offscreen) => {}
+            FramebufferType::OnScreen(onscreen) => onscreen.set_resizable(resizable),
+            FramebufferType::OffScreen(offscreen) => {}
         }
     }
 
     fn show_cursor(&self) {
         // unsafe {
-        //     ffi::clutter_stage_show_cursor(self.as_ref().to_glib_none().0);
+        //     ffi::stage_show_cursor(self.as_ref().to_glib_none().0);
         // }
         unimplemented!()
     }

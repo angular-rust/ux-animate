@@ -1,5 +1,5 @@
 #![allow(clippy::too_many_arguments)]
-use primitives::CanvasContext;
+use primitives::prelude::CanvasContext;
 use std::f64::consts::PI;
 
 #[cfg(target_arch = "wasm32")]

@@ -1,11 +1,15 @@
-use crate::prelude::*;
-use crate::{Color};
-use super::{ScalingFilter};
 use std::fmt;
 
+use crate::prelude::*;
+
+use dx::platform::core::Texture;
+
+use crate::foundation::colorspace::Color;
+
+use super::ScalingFilter;
+
 // @extends PipelineNode, PaintNode
-pub struct TextureNode {
-}
+pub struct TextureNode {}
 
 impl TextureNode {
     /// Creates a new `PaintNode` that will paint the passed `texture`.
@@ -29,7 +33,7 @@ impl TextureNode {
     ///
     /// the newly created `PaintNode`.
     ///  Use `PaintNodeExt::unref` when done
-    pub fn new<P: Is<dx::core::Texture>>(
+    pub fn new<P: Is<dx::platform::core::Texture>>(
         texture: &P,
         color: Option<Color>,
         min_filter: ScalingFilter,
@@ -48,7 +52,7 @@ impl TextureNode {
         //     None => None,
         // };
         // unsafe {
-        //     PaintNode::from_glib_full(ffi::clutter_texture_node_new(
+        //     PaintNode::from_glib_full(ffi::texture_node_new(
         //         texture.as_ref().to_glib_none().0,
         //         color.to_glib_none().0,
         //         min_filter.to_glib(),

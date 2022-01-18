@@ -3,7 +3,6 @@ use super::{Actor, ChildMeta, HandlerId};
 use crate::prelude::*;
 use std::fmt;
 
-// SECTION:clutter-container
 // @short_description: An interface for container actors
 //
 // #Container is an interface implemented by #Actor, and
@@ -75,7 +74,7 @@ impl Container {
     //     property_name: &str,
     // ) -> Option<glib::ParamSpec> {
     //     unsafe {
-    //         from_glib_none(ffi::clutter_container_class_find_child_property(
+    //         from_glib_none(ffi::container_class_find_child_property(
     //             klass.to_glib_none_mut().0,
     //             property_name.to_glib_none().0,
     //         ))
@@ -96,7 +95,7 @@ impl Container {
     //     unsafe {
     //         let mut n_properties = mem::MaybeUninit::uninit();
     //         let ret = FromGlibContainer::from_glib_full_num(
-    //             ffi::clutter_container_class_list_child_properties(
+    //             ffi::container_class_list_child_properties(
     //                 klass.to_glib_none_mut().0,
     //                 n_properties.as_mut_ptr(),
     //             ),

@@ -1,8 +1,12 @@
-use super::{Actor, ActorBox};
-use crate::prelude::*;
-use std::{fmt, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
-// SECTION:clutter-paint-node
+use crate::prelude::*;
+
+use dx::foundation::colorspace::Color;
+use dx::platform::core::{Texture, Pipeline, Matrix, Framebuffer, Path, Primitive, BufferBit};
+
+use super::{Actor, ActorBox};
+
 // @Title: PaintNode
 // @Short_Description: Paint objects
 //
@@ -26,8 +30,8 @@ pub const PAINT_OP_INIT: PaintOperation = PaintOperation {
 pub enum PaintOpCode {
     Invalid,
     TexRect([f32; 8]),
-    Path(dx::core::Path),
-    Primitive(dx::core::Primitive),
+    Path(Path),
+    Primitive(Primitive),
 }
 
 pub struct PaintOperation {
@@ -45,15 +49,14 @@ pub struct LayerNode {
     pub parent_instance: PaintNode,
 
     // pub viewport: cairo::Rectangle,
-
-    pub projection: dx::core::Matrix,
+    pub projection: Matrix,
 
     pub fbo_width: f32,
     pub fbo_height: f32,
 
-    pub state: Option<dx::core::Pipeline>,
-    pub offscreen: Option<dx::core::Framebuffer>,
-    pub texture: Option<dx::Texture>,
+    pub state: Option<Pipeline>,
+    pub offscreen: Option<Framebuffer>,
+    pub texture: Option<Texture>,
 
     pub opacity: u8,
 }
@@ -61,29 +64,29 @@ pub struct LayerNode {
 pub struct RootNode {
     pub parent_instance: PaintNode,
 
-    pub framebuffer: Option<dx::core::Framebuffer>,
+    pub framebuffer: Option<Framebuffer>,
 
-    pub clear_flags: dx::core::BufferBit,
-    pub clear_color: dx::Color,
+    pub clear_flags: BufferBit,
+    pub clear_color: Color,
 }
 
 pub struct TransformNode {
     pub parent_instance: PaintNode,
 
-    pub modelview: dx::core::Matrix,
+    pub modelview: Matrix,
 }
 
 struct DummyNode {
     pub parent_instance: PaintNode,
 
     pub actor: Option<Actor>,
-    pub framebuffer: Option<dx::core::Framebuffer>,
+    pub framebuffer: Option<Framebuffer>,
 }
 
 pub struct PipelineNode {
     pub parent_instance: PaintNode,
 
-    pub pipeline: Option<dx::core::Pipeline>,
+    pub pipeline: Option<Pipeline>,
 }
 
 pub struct ColorNode {
@@ -98,7 +101,7 @@ pub struct TextNode {
     pub parent_instance: PaintNode,
 
     // pub layout: Option<pango::Layout>,
-    pub color: dx::Color,
+    pub color: dx::foundation::colorspace::Color,
 }
 
 #[derive(Default)]
@@ -122,7 +125,7 @@ struct PaintNodeProps {
 
 #[derive(Default)]
 pub struct PaintNode {
-    props: RefCell<PaintNodeProps>
+    props: RefCell<PaintNodeProps>,
 }
 
 impl Object for PaintNode {}
@@ -179,7 +182,7 @@ pub trait PaintNodeExt: 'static {
 impl<O: Is<PaintNode>> PaintNodeExt for O {
     fn add_child<P: Is<PaintNode>>(&self, child: &P) {
         // unsafe {
-        //     ffi::clutter_paint_node_add_child(
+        //     ffi::paint_node_add_child(
         //         self.as_ref().to_glib_none().0,
         //         child.as_ref().to_glib_none().0,
         //     );
@@ -189,7 +192,7 @@ impl<O: Is<PaintNode>> PaintNodeExt for O {
 
     fn add_rectangle(&self, rect: &ActorBox) {
         // unsafe {
-        //     ffi::clutter_paint_node_add_rectangle(
+        //     ffi::paint_node_add_rectangle(
         //         self.as_ref().to_glib_none().0,
         //         rect.to_glib_none().0,
         //     );
@@ -206,7 +209,7 @@ impl<O: Is<PaintNode>> PaintNodeExt for O {
         let operation = PAINT_OP_INIT;
 
         // unsafe {
-        //     ffi::clutter_paint_node_add_texture_rectangle(
+        //     ffi::paint_node_add_texture_rectangle(
         //         self.as_ref().to_glib_none().0,
         //         rect.to_glib_none().0,
         //         x1,

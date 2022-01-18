@@ -13,7 +13,7 @@ impl Vertex {
     /// the newly allocated `Vertex`.
     ///  Use `Vertex::free` to free its resources
     pub fn alloc() -> Vertex {
-        // unsafe { from_glib_full(ffi::clutter_vertex_alloc()) }
+        // unsafe { from_glib_full(ffi::vertex_alloc()) }
         unimplemented!()
     }
 
@@ -38,7 +38,7 @@ impl Vertex {
     /// the newly allocated `Vertex`.
     ///  Use `Vertex::free` to free the resources
     pub fn new(x: f32, y: f32, z: f32) -> Vertex {
-        // unsafe { from_glib_full(ffi::clutter_vertex_new(x, y, z)) }
+        // unsafe { from_glib_full(ffi::vertex_new(x, y, z)) }
         unimplemented!()
     }
 
@@ -51,7 +51,7 @@ impl Vertex {
     /// `true` if the passed `Vertex` are equal
     fn equal(&self, vertex_b: &Vertex) -> bool {
         // unsafe {
-        //     from_glib(ffi::clutter_vertex_equal(
+        //     from_glib(ffi::vertex_equal(
         //         self.to_glib_none().0,
         //         vertex_b.to_glib_none().0,
         //     ))
@@ -71,7 +71,7 @@ impl Vertex {
     ///
     /// the initialized `Vertex`
     pub fn init(&mut self, x: f32, y: f32, z: f32) -> Option<Vertex> {
-        // unsafe { from_glib_none(ffi::clutter_vertex_init(self.to_glib_none_mut().0, x, y, z)) }
+        // unsafe { from_glib_none(ffi::vertex_init(self.to_glib_none_mut().0, x, y, z)) }
         unimplemented!()
     }
 }

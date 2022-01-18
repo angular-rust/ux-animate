@@ -1,8 +1,12 @@
-use super::HandlerId;
-use crate::{Color, RgbaColor};
 use std::fmt;
 
-// SECTION:clutter-colorize-effect
+use dx::{
+    foundation::colorspace::{Color, RgbaColor},
+    platform::core::Pipeline,
+};
+
+use super::HandlerId;
+
 // @short_description: A colorization effect
 // @see_also: #Effect, #OffscreenEffect
 //
@@ -21,7 +25,7 @@ pub struct ColorizeEffect {
     tex_width: i32,
     tex_height: i32,
 
-    pipeline: Option<dx::core::Pipeline>,
+    pipeline: Option<Pipeline>,
 }
 
 impl ColorizeEffect {

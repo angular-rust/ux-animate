@@ -1,5 +1,8 @@
-use super::HandlerId;
 use std::fmt;
+
+use dx::platform::core::Pipeline;
+
+use super::HandlerId;
 
 // @short_description: Increase/decrease brightness and/or contrast of actor.
 // @see_also: #Effect, #OffscreenEffect
@@ -29,7 +32,7 @@ pub struct BrightnessContrastEffect {
     tex_width: i32,
     tex_height: i32,
 
-    pipeline: Option<dx::core::Pipeline>,
+    pipeline: Option<Pipeline>,
 }
 
 impl BrightnessContrastEffect {

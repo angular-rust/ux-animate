@@ -1,7 +1,13 @@
-use super::{HandlerId, TextBuffer};
-use crate::prelude::*;
-use crate::{Color, Rect};
 use std::fmt;
+
+use crate::prelude::*;
+
+use crate::{
+    foundation::{colorspace::Color, Rect},
+    Actor,
+};
+
+use super::{HandlerId, TextBuffer};
 
 // TODO: implements atk::ImplementorIface, Scriptable, Animatable, Container
 // @extends Actor,
@@ -16,7 +22,7 @@ impl Text {
     ///
     /// the newly created `Text` actor
     pub fn new() -> Text {
-        // unsafe { Actor::from_glib_none(ffi::clutter_text_new()).unsafe_cast() }
+        // unsafe { Actor::from_glib_none(ffi::text_new()).unsafe_cast() }
         unimplemented!()
     }
 
@@ -49,7 +55,7 @@ impl Text {
         // };
 
         // unsafe {
-        //     Actor::from_glib_none(ffi::clutter_text_new_full(
+        //     Actor::from_glib_none(ffi::text_new_full(
         //         font_name.to_glib_none().0,
         //         text.to_glib_none().0,
         //         color.to_glib_none().0,
@@ -61,7 +67,7 @@ impl Text {
 
     pub fn with_buffer<P: Is<TextBuffer>>(buffer: &P) -> Text {
         // unsafe {
-        //     Actor::from_glib_none(ffi::clutter_text_new_with_buffer(
+        //     Actor::from_glib_none(ffi::text_new_with_buffer(
         //         buffer.as_ref().to_glib_none().0,
         //     ))
         //     .unsafe_cast()
@@ -71,7 +77,7 @@ impl Text {
 
     pub fn with_text(font_name: Option<&str>, text: &str) -> Text {
         // unsafe {
-        //     Actor::from_glib_none(ffi::clutter_text_new_with_text(
+        //     Actor::from_glib_none(ffi::text_new_with_text(
         //         font_name.to_glib_none().0,
         //         text.to_glib_none().0,
         //     ))
@@ -82,8 +88,16 @@ impl Text {
 }
 
 impl Object for Text {}
+impl Is<Actor> for Text {}
+
+impl AsRef<Actor> for Text {
+    fn as_ref(&self) -> &Actor {
+        unimplemented!()
+        // self
+    }
+}
+
 impl Is<Text> for Text {}
-// impl Is<Actor> for Text {}
 
 impl AsRef<Text> for Text {
     fn as_ref(&self) -> &Text {
@@ -823,25 +837,25 @@ pub trait TextExt: 'static {
 
 impl<O: Is<Text>> TextExt for O {
     fn activate(&self) -> bool {
-        // unsafe { from_glib(ffi::clutter_text_activate(self.as_ref().to_glib_none().0)) }
+        // unsafe { from_glib(ffi::text_activate(self.as_ref().to_glib_none().0)) }
         unimplemented!()
     }
 
     fn coords_to_position(&self, x: f32, y: f32) -> i32 {
-        // unsafe { ffi::clutter_text_coords_to_position(self.as_ref().to_glib_none().0, x, y) }
+        // unsafe { ffi::text_coords_to_position(self.as_ref().to_glib_none().0, x, y) }
         unimplemented!()
     }
 
     fn delete_chars(&self, n_chars: u32) {
         // unsafe {
-        //     ffi::clutter_text_delete_chars(self.as_ref().to_glib_none().0, n_chars);
+        //     ffi::text_delete_chars(self.as_ref().to_glib_none().0, n_chars);
         // }
         unimplemented!()
     }
 
     fn delete_selection(&self) -> bool {
         // unsafe {
-        //     from_glib(ffi::clutter_text_delete_selection(
+        //     from_glib(ffi::text_delete_selection(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -850,14 +864,14 @@ impl<O: Is<Text>> TextExt for O {
 
     fn delete_text(&self, start_pos: isize, end_pos: isize) {
         // unsafe {
-        //     ffi::clutter_text_delete_text(self.as_ref().to_glib_none().0, start_pos, end_pos);
+        //     ffi::text_delete_text(self.as_ref().to_glib_none().0, start_pos, end_pos);
         // }
         unimplemented!()
     }
 
     fn get_activatable(&self) -> bool {
         // unsafe {
-        //     from_glib(ffi::clutter_text_get_activatable(
+        //     from_glib(ffi::text_get_activatable(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -866,7 +880,7 @@ impl<O: Is<Text>> TextExt for O {
 
     // fn get_attributes(&self) -> Option<pango::AttrList> {
     //     // unsafe {
-    //     //     from_glib_none(ffi::clutter_text_get_attributes(
+    //     //     from_glib_none(ffi::text_get_attributes(
     //     //         self.as_ref().to_glib_none().0,
     //     //     ))
     //     // }
@@ -874,13 +888,13 @@ impl<O: Is<Text>> TextExt for O {
     // }
 
     fn get_buffer(&self) -> Option<TextBuffer> {
-        // unsafe { from_glib_none(ffi::clutter_text_get_buffer(self.as_ref().to_glib_none().0)) }
+        // unsafe { from_glib_none(ffi::text_get_buffer(self.as_ref().to_glib_none().0)) }
         unimplemented!()
     }
 
     fn get_chars(&self, start_pos: isize, end_pos: isize) -> Option<String> {
         // unsafe {
-        //     from_glib_full(ffi::clutter_text_get_chars(
+        //     from_glib_full(ffi::text_get_chars(
         //         self.as_ref().to_glib_none().0,
         //         start_pos,
         //         end_pos,
@@ -892,7 +906,7 @@ impl<O: Is<Text>> TextExt for O {
     fn get_color(&self) -> Color {
         // unsafe {
         //     let mut color = Color::uninitialized();
-        //     ffi::clutter_text_get_color(self.as_ref().to_glib_none().0, color.to_glib_none_mut().0);
+        //     ffi::text_get_color(self.as_ref().to_glib_none().0, color.to_glib_none_mut().0);
         //     color
         // }
         unimplemented!()
@@ -901,7 +915,7 @@ impl<O: Is<Text>> TextExt for O {
     fn get_cursor_color(&self) -> Color {
         // unsafe {
         //     let mut color = Color::uninitialized();
-        //     ffi::clutter_text_get_cursor_color(
+        //     ffi::text_get_cursor_color(
         //         self.as_ref().to_glib_none().0,
         //         color.to_glib_none_mut().0,
         //     );
@@ -911,14 +925,14 @@ impl<O: Is<Text>> TextExt for O {
     }
 
     fn get_cursor_position(&self) -> i32 {
-        // unsafe { ffi::clutter_text_get_cursor_position(self.as_ref().to_glib_none().0) }
+        // unsafe { ffi::text_get_cursor_position(self.as_ref().to_glib_none().0) }
         unimplemented!()
     }
 
     fn get_cursor_rect(&self) -> Rect<f32> {
         // unsafe {
         //     let mut rect = Rect::uninitialized();
-        //     ffi::clutter_text_get_cursor_rect(
+        //     ffi::text_get_cursor_rect(
         //         self.as_ref().to_glib_none().0,
         //         rect.to_glib_none_mut().0,
         //     );
@@ -928,13 +942,13 @@ impl<O: Is<Text>> TextExt for O {
     }
 
     fn get_cursor_size(&self) -> u32 {
-        // unsafe { ffi::clutter_text_get_cursor_size(self.as_ref().to_glib_none().0) }
+        // unsafe { ffi::text_get_cursor_size(self.as_ref().to_glib_none().0) }
         unimplemented!()
     }
 
     fn get_cursor_visible(&self) -> bool {
         // unsafe {
-        //     from_glib(ffi::clutter_text_get_cursor_visible(
+        //     from_glib(ffi::text_get_cursor_visible(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -943,7 +957,7 @@ impl<O: Is<Text>> TextExt for O {
 
     fn get_editable(&self) -> bool {
         // unsafe {
-        //     from_glib(ffi::clutter_text_get_editable(
+        //     from_glib(ffi::text_get_editable(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -952,7 +966,7 @@ impl<O: Is<Text>> TextExt for O {
 
     // fn get_ellipsize(&self) -> pango::EllipsizeMode {
     //     // unsafe {
-    //     //     from_glib(ffi::clutter_text_get_ellipsize(
+    //     //     from_glib(ffi::text_get_ellipsize(
     //     //         self.as_ref().to_glib_none().0,
     //     //     ))
     //     // }
@@ -961,7 +975,7 @@ impl<O: Is<Text>> TextExt for O {
 
     // fn get_font_description(&self) -> Option<pango::FontDescription> {
     //     // unsafe {
-    //     //     from_glib_full(ffi::clutter_text_get_font_description(
+    //     //     from_glib_full(ffi::text_get_font_description(
     //     //         self.as_ref().to_glib_none().0,
     //     //     ))
     //     // }
@@ -970,7 +984,7 @@ impl<O: Is<Text>> TextExt for O {
 
     fn get_font_name(&self) -> Option<String> {
         // unsafe {
-        //     from_glib_none(ffi::clutter_text_get_font_name(
+        //     from_glib_none(ffi::text_get_font_name(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -979,7 +993,7 @@ impl<O: Is<Text>> TextExt for O {
 
     fn get_justify(&self) -> bool {
         // unsafe {
-        //     from_glib(ffi::clutter_text_get_justify(
+        //     from_glib(ffi::text_get_justify(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -987,7 +1001,7 @@ impl<O: Is<Text>> TextExt for O {
     }
 
     // fn get_layout(&self) -> Option<pango::Layout> {
-    //     // unsafe { from_glib_none(ffi::clutter_text_get_layout(self.as_ref().to_glib_none().0)) }
+    //     // unsafe { from_glib_none(ffi::text_get_layout(self.as_ref().to_glib_none().0)) }
     //     unimplemented!()
     // }
 
@@ -995,7 +1009,7 @@ impl<O: Is<Text>> TextExt for O {
         // unsafe {
         //     let mut x = mem::MaybeUninit::uninit();
         //     let mut y = mem::MaybeUninit::uninit();
-        //     ffi::clutter_text_get_layout_offsets(
+        //     ffi::text_get_layout_offsets(
         //         self.as_ref().to_glib_none().0,
         //         x.as_mut_ptr(),
         //         y.as_mut_ptr(),
@@ -1009,7 +1023,7 @@ impl<O: Is<Text>> TextExt for O {
 
     // fn get_line_alignment(&self) -> pango::Alignment {
     //     // unsafe {
-    //     //     from_glib(ffi::clutter_text_get_line_alignment(
+    //     //     from_glib(ffi::text_get_line_alignment(
     //     //         self.as_ref().to_glib_none().0,
     //     //     ))
     //     // }
@@ -1018,7 +1032,7 @@ impl<O: Is<Text>> TextExt for O {
 
     fn get_line_wrap(&self) -> bool {
         // unsafe {
-        //     from_glib(ffi::clutter_text_get_line_wrap(
+        //     from_glib(ffi::text_get_line_wrap(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -1027,7 +1041,7 @@ impl<O: Is<Text>> TextExt for O {
 
     // fn get_line_wrap_mode(&self) -> pango::WrapMode {
     //     // unsafe {
-    //     //     from_glib(ffi::clutter_text_get_line_wrap_mode(
+    //     //     from_glib(ffi::text_get_line_wrap_mode(
     //     //         self.as_ref().to_glib_none().0,
     //     //     ))
     //     // }
@@ -1035,13 +1049,13 @@ impl<O: Is<Text>> TextExt for O {
     // }
 
     fn get_max_length(&self) -> i32 {
-        // unsafe { ffi::clutter_text_get_max_length(self.as_ref().to_glib_none().0) }
+        // unsafe { ffi::text_get_max_length(self.as_ref().to_glib_none().0) }
         unimplemented!()
     }
 
     fn get_password_char(&self) -> char {
         // unsafe {
-        //     from_glib(ffi::clutter_text_get_password_char(
+        //     from_glib(ffi::text_get_password_char(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -1050,7 +1064,7 @@ impl<O: Is<Text>> TextExt for O {
 
     fn get_selectable(&self) -> bool {
         // unsafe {
-        //     from_glib(ffi::clutter_text_get_selectable(
+        //     from_glib(ffi::text_get_selectable(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -1060,7 +1074,7 @@ impl<O: Is<Text>> TextExt for O {
     fn get_selected_text_color(&self) -> Color {
         // unsafe {
         //     let mut color = Color::uninitialized();
-        //     ffi::clutter_text_get_selected_text_color(
+        //     ffi::text_get_selected_text_color(
         //         self.as_ref().to_glib_none().0,
         //         color.to_glib_none_mut().0,
         //     );
@@ -1071,7 +1085,7 @@ impl<O: Is<Text>> TextExt for O {
 
     fn get_selection(&self) -> Option<String> {
         // unsafe {
-        //     from_glib_full(ffi::clutter_text_get_selection(
+        //     from_glib_full(ffi::text_get_selection(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -1079,14 +1093,14 @@ impl<O: Is<Text>> TextExt for O {
     }
 
     fn get_selection_bound(&self) -> i32 {
-        // unsafe { ffi::clutter_text_get_selection_bound(self.as_ref().to_glib_none().0) }
+        // unsafe { ffi::text_get_selection_bound(self.as_ref().to_glib_none().0) }
         unimplemented!()
     }
 
     fn get_selection_color(&self) -> Color {
         // unsafe {
         //     let mut color = Color::uninitialized();
-        //     ffi::clutter_text_get_selection_color(
+        //     ffi::text_get_selection_color(
         //         self.as_ref().to_glib_none().0,
         //         color.to_glib_none_mut().0,
         //     );
@@ -1097,7 +1111,7 @@ impl<O: Is<Text>> TextExt for O {
 
     fn get_single_line_mode(&self) -> bool {
         // unsafe {
-        //     from_glib(ffi::clutter_text_get_single_line_mode(
+        //     from_glib(ffi::text_get_single_line_mode(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -1105,13 +1119,13 @@ impl<O: Is<Text>> TextExt for O {
     }
 
     fn get_text(&self) -> Option<String> {
-        // unsafe { from_glib_none(ffi::clutter_text_get_text(self.as_ref().to_glib_none().0)) }
+        // unsafe { from_glib_none(ffi::text_get_text(self.as_ref().to_glib_none().0)) }
         unimplemented!()
     }
 
     fn get_use_markup(&self) -> bool {
         // unsafe {
-        //     from_glib(ffi::clutter_text_get_use_markup(
+        //     from_glib(ffi::text_get_use_markup(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -1120,7 +1134,7 @@ impl<O: Is<Text>> TextExt for O {
 
     fn insert_text(&self, text: &str, position: isize) {
         // unsafe {
-        //     ffi::clutter_text_insert_text(
+        //     ffi::text_insert_text(
         //         self.as_ref().to_glib_none().0,
         //         text.to_glib_none().0,
         //         position,
@@ -1131,7 +1145,7 @@ impl<O: Is<Text>> TextExt for O {
 
     fn insert_unichar(&self, wc: char) {
         // unsafe {
-        //     ffi::clutter_text_insert_unichar(self.as_ref().to_glib_none().0, wc.to_glib());
+        //     ffi::text_insert_unichar(self.as_ref().to_glib_none().0, wc.to_glib());
         // }
         unimplemented!()
     }
@@ -1141,7 +1155,7 @@ impl<O: Is<Text>> TextExt for O {
         //     let mut x = mem::MaybeUninit::uninit();
         //     let mut y = mem::MaybeUninit::uninit();
         //     let mut line_height = mem::MaybeUninit::uninit();
-        //     let ret = from_glib(ffi::clutter_text_position_to_coords(
+        //     let ret = from_glib(ffi::text_position_to_coords(
         //         self.as_ref().to_glib_none().0,
         //         position,
         //         x.as_mut_ptr(),
@@ -1162,7 +1176,7 @@ impl<O: Is<Text>> TextExt for O {
 
     fn set_activatable(&self, activatable: bool) {
         // unsafe {
-        //     ffi::clutter_text_set_activatable(
+        //     ffi::text_set_activatable(
         //         self.as_ref().to_glib_none().0,
         //         activatable.to_glib(),
         //     );
@@ -1172,7 +1186,7 @@ impl<O: Is<Text>> TextExt for O {
 
     // fn set_attributes(&self, attrs: Option<&pango::AttrList>) {
     //     // unsafe {
-    //     //     ffi::clutter_text_set_attributes(
+    //     //     ffi::text_set_attributes(
     //     //         self.as_ref().to_glib_none().0,
     //     //         attrs.to_glib_none().0,
     //     //     );
@@ -1182,7 +1196,7 @@ impl<O: Is<Text>> TextExt for O {
 
     fn set_buffer<P: Is<TextBuffer>>(&self, buffer: &P) {
         // unsafe {
-        //     ffi::clutter_text_set_buffer(
+        //     ffi::text_set_buffer(
         //         self.as_ref().to_glib_none().0,
         //         buffer.as_ref().to_glib_none().0,
         //     );
@@ -1202,7 +1216,7 @@ impl<O: Is<Text>> TextExt for O {
         // };
 
         // unsafe {
-        //     ffi::clutter_text_set_color(self.as_ref().to_glib_none().0, color.to_glib_none().0);
+        //     ffi::text_set_color(self.as_ref().to_glib_none().0, color.to_glib_none().0);
         // }
         unimplemented!()
     }
@@ -1221,7 +1235,7 @@ impl<O: Is<Text>> TextExt for O {
         //     None => None,
         // };
         // unsafe {
-        //     ffi::clutter_text_set_cursor_color(
+        //     ffi::text_set_cursor_color(
         //         self.as_ref().to_glib_none().0,
         //         color.to_glib_none().0,
         //     );
@@ -1231,21 +1245,21 @@ impl<O: Is<Text>> TextExt for O {
 
     fn set_cursor_position(&self, position: i32) {
         // unsafe {
-        //     ffi::clutter_text_set_cursor_position(self.as_ref().to_glib_none().0, position);
+        //     ffi::text_set_cursor_position(self.as_ref().to_glib_none().0, position);
         // }
         unimplemented!()
     }
 
     fn set_cursor_size(&self, size: i32) {
         // unsafe {
-        //     ffi::clutter_text_set_cursor_size(self.as_ref().to_glib_none().0, size);
+        //     ffi::text_set_cursor_size(self.as_ref().to_glib_none().0, size);
         // }
         unimplemented!()
     }
 
     fn set_cursor_visible(&self, cursor_visible: bool) {
         // unsafe {
-        //     ffi::clutter_text_set_cursor_visible(
+        //     ffi::text_set_cursor_visible(
         //         self.as_ref().to_glib_none().0,
         //         cursor_visible.to_glib(),
         //     );
@@ -1255,21 +1269,21 @@ impl<O: Is<Text>> TextExt for O {
 
     fn set_editable(&self, editable: bool) {
         // unsafe {
-        //     ffi::clutter_text_set_editable(self.as_ref().to_glib_none().0, editable.to_glib());
+        //     ffi::text_set_editable(self.as_ref().to_glib_none().0, editable.to_glib());
         // }
         unimplemented!()
     }
 
     // fn set_ellipsize(&self, mode: pango::EllipsizeMode) {
     //     // unsafe {
-    //     //     ffi::clutter_text_set_ellipsize(self.as_ref().to_glib_none().0, mode.to_glib());
+    //     //     ffi::text_set_ellipsize(self.as_ref().to_glib_none().0, mode.to_glib());
     //     // }
     //     unimplemented!()
     // }
 
     // fn set_font_description(&self, font_desc: &mut pango::FontDescription) {
     //     // unsafe {
-    //     //     ffi::clutter_text_set_font_description(
+    //     //     ffi::text_set_font_description(
     //     //         self.as_ref().to_glib_none().0,
     //     //         font_desc.to_glib_none_mut().0,
     //     //     );
@@ -1279,7 +1293,7 @@ impl<O: Is<Text>> TextExt for O {
 
     fn set_font_name(&self, font_name: Option<&str>) {
         // unsafe {
-        //     ffi::clutter_text_set_font_name(
+        //     ffi::text_set_font_name(
         //         self.as_ref().to_glib_none().0,
         //         font_name.to_glib_none().0,
         //     );
@@ -1289,14 +1303,14 @@ impl<O: Is<Text>> TextExt for O {
 
     fn set_justify(&self, justify: bool) {
         // unsafe {
-        //     ffi::clutter_text_set_justify(self.as_ref().to_glib_none().0, justify.to_glib());
+        //     ffi::text_set_justify(self.as_ref().to_glib_none().0, justify.to_glib());
         // }
         unimplemented!()
     }
 
     // fn set_line_alignment(&self, alignment: pango::Alignment) {
     //     // unsafe {
-    //     //     ffi::clutter_text_set_line_alignment(
+    //     //     ffi::text_set_line_alignment(
     //     //         self.as_ref().to_glib_none().0,
     //     //         alignment.to_glib(),
     //     //     );
@@ -1306,14 +1320,14 @@ impl<O: Is<Text>> TextExt for O {
 
     fn set_line_wrap(&self, line_wrap: bool) {
         // unsafe {
-        //     ffi::clutter_text_set_line_wrap(self.as_ref().to_glib_none().0, line_wrap.to_glib());
+        //     ffi::text_set_line_wrap(self.as_ref().to_glib_none().0, line_wrap.to_glib());
         // }
         unimplemented!()
     }
 
     // fn set_line_wrap_mode(&self, wrap_mode: pango::WrapMode) {
     //     // unsafe {
-    //     //     ffi::clutter_text_set_line_wrap_mode(
+    //     //     ffi::text_set_line_wrap_mode(
     //     //         self.as_ref().to_glib_none().0,
     //     //         wrap_mode.to_glib(),
     //     //     );
@@ -1323,21 +1337,21 @@ impl<O: Is<Text>> TextExt for O {
 
     fn set_markup(&self, markup: Option<&str>) {
         // unsafe {
-        //     ffi::clutter_text_set_markup(self.as_ref().to_glib_none().0, markup.to_glib_none().0);
+        //     ffi::text_set_markup(self.as_ref().to_glib_none().0, markup.to_glib_none().0);
         // }
         unimplemented!()
     }
 
     fn set_max_length(&self, max: i32) {
         // unsafe {
-        //     ffi::clutter_text_set_max_length(self.as_ref().to_glib_none().0, max);
+        //     ffi::text_set_max_length(self.as_ref().to_glib_none().0, max);
         // }
         unimplemented!()
     }
 
     fn set_password_char(&self, wc: char) {
         // unsafe {
-        //     ffi::clutter_text_set_password_char(self.as_ref().to_glib_none().0, wc.to_glib());
+        //     ffi::text_set_password_char(self.as_ref().to_glib_none().0, wc.to_glib());
         // }
         unimplemented!()
     }
@@ -1349,7 +1363,7 @@ impl<O: Is<Text>> TextExt for O {
     //     cursor_pos: u32,
     // ) {
     //     // unsafe {
-    //     //     ffi::clutter_text_set_preedit_string(
+    //     //     ffi::text_set_preedit_string(
     //     //         self.as_ref().to_glib_none().0,
     //     //         preedit_str.to_glib_none().0,
     //     //         preedit_attrs.to_glib_none().0,
@@ -1361,7 +1375,7 @@ impl<O: Is<Text>> TextExt for O {
 
     fn set_selectable(&self, selectable: bool) {
         // unsafe {
-        //     ffi::clutter_text_set_selectable(self.as_ref().to_glib_none().0, selectable.to_glib());
+        //     ffi::text_set_selectable(self.as_ref().to_glib_none().0, selectable.to_glib());
         // }
         unimplemented!()
     }
@@ -1380,7 +1394,7 @@ impl<O: Is<Text>> TextExt for O {
         //     None => None,
         // };
         // unsafe {
-        //     ffi::clutter_text_set_selected_text_color(
+        //     ffi::text_set_selected_text_color(
         //         self.as_ref().to_glib_none().0,
         //         color.to_glib_none().0,
         //     );
@@ -1390,13 +1404,13 @@ impl<O: Is<Text>> TextExt for O {
 
     fn set_selection(&self, start_pos: isize, end_pos: isize) {
         // unsafe {
-        //     ffi::clutter_text_set_selection(self.as_ref().to_glib_none().0, start_pos, end_pos);
+        //     ffi::text_set_selection(self.as_ref().to_glib_none().0, start_pos, end_pos);
         // }
     }
 
     fn set_selection_bound(&self, selection_bound: i32) {
         // unsafe {
-        //     ffi::clutter_text_set_selection_bound(self.as_ref().to_glib_none().0, selection_bound);
+        //     ffi::text_set_selection_bound(self.as_ref().to_glib_none().0, selection_bound);
         // }
         unimplemented!()
     }
@@ -1415,7 +1429,7 @@ impl<O: Is<Text>> TextExt for O {
         //     None => None,
         // };
         // unsafe {
-        //     ffi::clutter_text_set_selection_color(
+        //     ffi::text_set_selection_color(
         //         self.as_ref().to_glib_none().0,
         //         color.to_glib_none().0,
         //     );
@@ -1425,7 +1439,7 @@ impl<O: Is<Text>> TextExt for O {
 
     fn set_single_line_mode(&self, single_line: bool) {
         // unsafe {
-        //     ffi::clutter_text_set_single_line_mode(
+        //     ffi::text_set_single_line_mode(
         //         self.as_ref().to_glib_none().0,
         //         single_line.to_glib(),
         //     );
@@ -1435,14 +1449,14 @@ impl<O: Is<Text>> TextExt for O {
 
     fn set_text(&self, text: Option<&str>) {
         // unsafe {
-        //     ffi::clutter_text_set_text(self.as_ref().to_glib_none().0, text.to_glib_none().0);
+        //     ffi::text_set_text(self.as_ref().to_glib_none().0, text.to_glib_none().0);
         // }
         unimplemented!()
     }
 
     fn set_use_markup(&self, setting: bool) {
         // unsafe {
-        //     ffi::clutter_text_set_use_markup(self.as_ref().to_glib_none().0, setting.to_glib());
+        //     ffi::text_set_use_markup(self.as_ref().to_glib_none().0, setting.to_glib());
         // }
         unimplemented!()
     }

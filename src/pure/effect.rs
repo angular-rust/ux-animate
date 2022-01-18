@@ -1,7 +1,6 @@
 use crate::prelude::*;
 use std::fmt;
 
-// SECTION:clutter-effect
 // @short_description: Base class for actor effects
 //
 // The #Effect class provides a default type and API for creating
@@ -20,7 +19,7 @@ use std::fmt;
 // #EffectClass.paint() method. The implementation of the function should look
 // something like this:
 //
-// |[
+// ```
 // void effect_paint (Effect *effect, EffectPaintFlags flags)
 // {
 //   // Set up initialisation of the paint such as binding a
@@ -30,20 +29,20 @@ use std::fmt;
 //   // ‘paint’ on the next effect or just paint the actor if this is
 //   // the last effect.
 //   Actor *actor =
-//     clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (effect));
+//     actor_meta_get_actor (ACTOR_META (effect));
 //
-//   clutter_actor_continue_paint (actor);
+//   actor_continue_paint (actor);
 //
 //   // perform any cleanup of state, such as popping the CoglOffscreen
 // }
-// ]|
+// ```
 //
-// The effect can optionally avoid calling clutter_actor_continue_paint() to skip any
+// The effect can optionally avoid calling actor_continue_paint() to skip any
 // further stages of the paint sequence. This is useful for example if the effect
 // contains a cached image of the actor. In that case it can optimise painting by
 // avoiding the actor paint and instead painting the cached image.
 //
-// The %CLUTTER_EFFECT_PAINT_ACTOR_DIRTY flag is useful in this case.  will set
+// The %EFFECT_PAINT_ACTOR_DIRTY flag is useful in this case.  will set
 // this flag when a redraw has been queued on the actor since it was last painted. The
 // effect can use this information to decide if the cached image is still valid.
 //
@@ -57,7 +56,7 @@ use std::fmt;
 // will paint the first material using dx_rectangle(), before continuing and then it
 // will paint paint the second material after.
 //
-//  |[
+//  ```
 //  typedef struct {
 //    Effect parent_instance;
 //
@@ -67,7 +66,7 @@ use std::fmt;
 //
 //  typedef struct _EffectClass MyEffectClass;
 //
-//  G_DEFINE_TYPE (MyEffect, my_effect, CLUTTER_TYPE_EFFECT);
+//  G_DEFINE_TYPE (MyEffect, my_effect, TYPE_EFFECT);
 //
 //  static void
 //  my_effect_set_actor (ActorMeta *meta,
@@ -110,14 +109,14 @@ use std::fmt;
 //    MyEffect *self = MY_EFFECT (effect);
 //    gfloat width, height;
 //
-//    clutter_actor_get_size (self->actor, &width, &height);
+//    actor_get_size (self->actor, &width, &height);
 //
 //    // Paint the first rectangle in the upper left quadrant
 //    dx_set_source (self->rect_1);
 //    dx_rectangle (0, 0, width / 2, height / 2);
 //
 //    // Continue to the rest of the paint sequence
-//    clutter_actor_continue_paint (self->actor);
+//    actor_continue_paint (self->actor);
 //
 //    // Paint the second rectangle in the lower right quadrant
 //    dx_set_source (self->rect_2);
@@ -127,13 +126,13 @@ use std::fmt;
 //  static void
 //  my_effect_class_init (MyEffectClass *klass)
 //  {
-//    ActorMetaClas *meta_class = CLUTTER_ACTOR_META_CLASS (klass);
+//    ActorMetaClas *meta_class = ACTOR_META_CLASS (klass);
 //
 //    meta_class->set_actor = my_effect_set_actor;
 //
 //    klass->paint = my_effect_paint;
 //  }
-// ]|
+// ```
 //
 // @extends ActorMeta
 #[derive(Debug, Clone)]
@@ -195,7 +194,7 @@ pub trait EffectExt: 'static {
 impl<O: Is<Effect>> EffectExt for O {
     fn queue_repaint(&self) {
         // unsafe {
-        //     ffi::clutter_effect_queue_repaint(self.as_ref().to_glib_none().0);
+        //     ffi::effect_queue_repaint(self.as_ref().to_glib_none().0);
         // }
         unimplemented!()
     }

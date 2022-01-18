@@ -1,8 +1,9 @@
-use crate::{Rect, Size};
 // use crate::{Canvas, Pattern};
 // use dx::Matrix; // not available in wasm
 // use crate::Image; // not available in wasm
-use primitives::CanvasContext;
+use primitives::prelude::CanvasContext;
+
+use crate::foundation::{Rect, Size};
 
 use super::{
     model::{layer::CompositionLayer, KeyPath},

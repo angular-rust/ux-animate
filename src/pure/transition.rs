@@ -1,12 +1,23 @@
 #![allow(unused_imports)]
-use super::{Animatable, HandlerId, Interval};
-use crate::prelude::*;
 use std::fmt;
+
+use crate::prelude::*;
+
+use super::{Animatable, HandlerId, Interval, Timeline};
 
 // TODO: @implements Scriptable
 // @extends Timeline
 #[derive(Debug, Clone)]
-pub struct Transition {}
+pub struct Transition {
+    // public
+
+    // private
+    interval: Interval,
+    animatable: Animatable,
+    remove_on_complete: bool,
+
+    parent_instance: Timeline,
+}
 
 impl Object for Transition {}
 impl Is<Transition> for Transition {}
@@ -127,7 +138,7 @@ pub trait TransitionExt: 'static {
 impl<O: Is<Transition>> TransitionExt for O {
     fn get_animatable(&self) -> Option<Animatable> {
         // unsafe {
-        //     from_glib_none(ffi::clutter_transition_get_animatable(
+        //     from_glib_none(ffi::transition_get_animatable(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -136,7 +147,7 @@ impl<O: Is<Transition>> TransitionExt for O {
 
     fn get_interval(&self) -> Option<Interval> {
         // unsafe {
-        //     from_glib_none(ffi::clutter_transition_get_interval(
+        //     from_glib_none(ffi::transition_get_interval(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -145,7 +156,7 @@ impl<O: Is<Transition>> TransitionExt for O {
 
     fn get_remove_on_complete(&self) -> bool {
         // unsafe {
-        //     from_glib(ffi::clutter_transition_get_remove_on_complete(
+        //     from_glib(ffi::transition_get_remove_on_complete(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -154,7 +165,7 @@ impl<O: Is<Transition>> TransitionExt for O {
 
     fn set_animatable<P: Is<Animatable>>(&self, animatable: Option<&P>) {
         // unsafe {
-        //     ffi::clutter_transition_set_animatable(
+        //     ffi::transition_set_animatable(
         //         self.as_ref().to_glib_none().0,
         //         animatable.map(|p| p.as_ref()).to_glib_none().0,
         //     );
@@ -163,12 +174,12 @@ impl<O: Is<Transition>> TransitionExt for O {
     }
 
     //fn set_from(&self, value_type: glib::types::Type, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) {
-    //    unsafe { TODO: call clutter_sys:clutter_transition_set_from() }
+    //    unsafe { TODO: call sys:transition_set_from() }
     //}
 
     // fn set_from_value(&self, value: &glib::Value) {
     //     // unsafe {
-    //     //     ffi::clutter_transition_set_from_value(
+    //     //     ffi::transition_set_from_value(
     //     //         self.as_ref().to_glib_none().0,
     //     //         value.to_glib_none().0,
     //     //     );
@@ -178,7 +189,7 @@ impl<O: Is<Transition>> TransitionExt for O {
 
     fn set_interval<P: Is<Interval>>(&self, interval: Option<&P>) {
         // unsafe {
-        //     ffi::clutter_transition_set_interval(
+        //     ffi::transition_set_interval(
         //         self.as_ref().to_glib_none().0,
         //         interval.map(|p| p.as_ref()).to_glib_none().0,
         //     );
@@ -188,7 +199,7 @@ impl<O: Is<Transition>> TransitionExt for O {
 
     fn set_remove_on_complete(&self, remove_complete: bool) {
         // unsafe {
-        //     ffi::clutter_transition_set_remove_on_complete(
+        //     ffi::transition_set_remove_on_complete(
         //         self.as_ref().to_glib_none().0,
         //         remove_complete.to_glib(),
         //     );
@@ -197,12 +208,12 @@ impl<O: Is<Transition>> TransitionExt for O {
     }
 
     //fn set_to(&self, value_type: glib::types::Type, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) {
-    //    unsafe { TODO: call clutter_sys:clutter_transition_set_to() }
+    //    unsafe { TODO: call sys:transition_set_to() }
     //}
 
     // fn set_to_value(&self, value: &glib::Value) {
     //     // unsafe {
-    //     //     ffi::clutter_transition_set_to_value(
+    //     //     ffi::transition_set_to_value(
     //     //         self.as_ref().to_glib_none().0,
     //     //         value.to_glib_none().0,
     //     //     );

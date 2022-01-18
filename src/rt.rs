@@ -67,7 +67,7 @@ pub unsafe fn set_initialized() {
 pub fn init() {
     assert_not_initialized!();
     unsafe {
-        // ffi::clutter_init(ptr::null_mut(), ptr::null_mut());
+        // ffi::init(ptr::null_mut(), ptr::null_mut());
         set_initialized();
     }
 }
@@ -75,7 +75,7 @@ pub fn init() {
 pub fn run() {
     assert_initialized_main_thread!();
     unsafe {
-        // ffi::clutter_main();
+        // ffi::main();
         set_initialized();
     }
 }
@@ -83,6 +83,6 @@ pub fn run() {
 pub fn quit() {
     assert_initialized_main_thread!();
     // unsafe {
-    //     ffi::clutter_main_quit();
+    //     ffi::main_quit();
     // }
 }

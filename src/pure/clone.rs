@@ -9,7 +9,7 @@ use std::fmt;
 //
 // #Clone can be used to efficiently clone any other actor.
 //
-// Unlike clutter_texture_new_from_actor(), #Clone does not require
+// Unlike texture_new_from_actor(), #Clone does not require
 // the presence of support for FBOs in the underlying GL or GLES
 // implementation.
 // TODO: implements atk::ImplementorIface, Scriptable

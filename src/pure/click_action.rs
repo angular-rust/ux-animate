@@ -2,7 +2,6 @@ use super::{Action, Actor, EventSequence, HandlerId, LongPressState, ModifierTyp
 use crate::prelude::*;
 use std::fmt;
 
-// SECTION:clutter-click-action
 // @Title: ClickAction
 // @Short_Description: Action for clickable actors
 //
@@ -13,16 +12,16 @@ use std::fmt;
 // #ClickAction::clicked signal.
 //
 // To use #ClickAction you just need to apply it to a #Actor
-// using clutter_actor_add_action() and connect to the
+// using actor_add_action() and connect to the
 // #ClickAction::clicked signal:
 //
-// |[
-//   Action *action = clutter_click_action_new ();
+// ```
+//   Action *action = click_action_new ();
 //
-//   clutter_actor_add_action (actor, action);
+//   actor_add_action (actor, action);
 //
 //   g_signal_connect (action, "clicked", G_CALLBACK (on_clicked), NULL);
-// ]|
+// ```
 //
 // #ClickAction also supports long press gestures: a long press is
 // activated if the pointer remains pressed within a certain threshold (as
@@ -34,7 +33,7 @@ use std::fmt;
 // you should connect to the #ClickAction::long-press signal and
 // handle the different states:
 //
-// |[
+// ```
 //   static gboolean
 //   on_long_press (ClickAction    *action,
 //                  Actor          *actor,
@@ -42,21 +41,21 @@ use std::fmt;
 //   {
 //     switch (state)
 //       {
-//       case CLUTTER_LONG_PRESS_QUERY:
+//       case LONG_PRESS_QUERY:
 //         /&ast; return TRUE if the actor should support long press
 //          &ast; gestures, and FALSE otherwise; this state will be
 //          &ast; emitted on button presses
 //          &ast;/
 //         return TRUE;
 //
-//       case CLUTTER_LONG_PRESS_ACTIVATE:
+//       case LONG_PRESS_ACTIVATE:
 //         /&ast; this state is emitted if the minimum duration has
 //          &ast; been reached without the gesture being cancelled.
 //          &ast; the return value is not used
 //          &ast;/
 //         return TRUE;
 //
-//       case CLUTTER_LONG_PRESS_CANCEL:
+//       case LONG_PRESS_CANCEL:
 //         /&ast; this state is emitted if the long press was cancelled;
 //          &ast; for instance, the pointer went outside the actor or the
 //          &ast; allowed threshold, or the button was released before
@@ -66,7 +65,7 @@ use std::fmt;
 //         return FALSE;
 //       }
 //   }
-// ]|
+// ```
 //
 // @extends Action, ActorMeta
 #[derive(Default, Debug, Clone)]

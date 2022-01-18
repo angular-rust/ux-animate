@@ -23,7 +23,7 @@ impl ShaderEffect {
     ///  Use `gobject::ObjectExt::unref` when done.
     pub fn new(shader_type: ShaderType) -> ShaderEffect {
         // unsafe {
-        //     Effect::from_glib_none(ffi::clutter_shader_effect_new(shader_type.to_glib()))
+        //     Effect::from_glib_none(ffi::shader_effect_new(shader_type.to_glib()))
         //         .unsafe_cast()
         // }
         unimplemented!()
@@ -85,16 +85,16 @@ pub trait ShaderEffectExt: 'static {
 
 impl<O: Is<ShaderEffect>> ShaderEffectExt for O {
     //fn get_program(&self) -> /*Unimplemented*/Option<dx::pure::Handle> {
-    //    unsafe { TODO: call clutter_sys:clutter_shader_effect_get_program() }
+    //    unsafe { TODO: call sys:shader_effect_get_program() }
     //}
 
     //fn get_shader(&self) -> /*Unimplemented*/Option<dx::pure::Handle> {
-    //    unsafe { TODO: call clutter_sys:clutter_shader_effect_get_shader() }
+    //    unsafe { TODO: call sys:shader_effect_get_shader() }
     //}
 
     fn set_shader_source(&self, source: &str) -> bool {
         // unsafe {
-        //     from_glib(ffi::clutter_shader_effect_set_shader_source(
+        //     from_glib(ffi::shader_effect_set_shader_source(
         //         self.as_ref().to_glib_none().0,
         //         source.to_glib_none().0,
         //     ))
@@ -103,12 +103,12 @@ impl<O: Is<ShaderEffect>> ShaderEffectExt for O {
     }
 
     //fn set_uniform(&self, name: &str, gtype: glib::types::Type, n_values: usize, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) {
-    //    unsafe { TODO: call clutter_sys:clutter_shader_effect_set_uniform() }
+    //    unsafe { TODO: call sys:shader_effect_set_uniform() }
     //}
 
     // fn set_uniform_value(&self, name: &str, value: &glib::Value) {
     //     // unsafe {
-    //     //     ffi::clutter_shader_effect_set_uniform_value(
+    //     //     ffi::shader_effect_set_uniform_value(
     //     //         self.as_ref().to_glib_none().0,
     //     //         name.to_glib_none().0,
     //     //         value.to_glib_none().0,

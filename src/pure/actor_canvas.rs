@@ -1,7 +1,12 @@
-use super::{Actor, Content, HandlerId};
+#![allow(unused_mut)]
+use std::fmt;
+
+use dx::platform::core::{Texture, Bitmap};
+
 use crate::prelude::*;
 // use crate::Canvas;
-use std::fmt;
+
+use super::{Actor, Content, HandlerId};
 
 // Canvas:
 //
@@ -18,22 +23,21 @@ use std::fmt;
 // In order to draw on a #Canvas, you should connect a handler to the
 // #Canvas::draw signal; the signal will receive a #cairo_t context
 // that can be used to draw. #Canvas will emit the #Canvas::draw
-// signal when invalidated using clutter_content_invalidate().
+// signal when invalidated using content_invalidate().
 //
-// See [canvas.c](https://git.gnome.org/browse/clutter/tree/examples/canvas.c?h=clutter-1.18)
+// See [canvas.c](https://git.gnome.org/browse/clutter/tree/examples/canvas.c?h=1.18)
 // for an example of how to use #Canvas.
 // @implements Content
 #[derive(Debug)]
 pub struct ActorCanvas {
     // cr: cairo::Context,
 
-    width: u32,
-    height: u32,
+    content: Content,
 
-    texture: dx::core::Texture,
+    texture: Texture,
     dirty: bool,
 
-    buffer: dx::core::Bitmap,
+    buffer: Bitmap,
 
     scale_factor: u32,
     scale_factor_set: bool,
@@ -60,6 +64,24 @@ impl ActorCanvas {
 }
 
 impl Object for ActorCanvas {}
+
+impl Is<Actor> for ActorCanvas {}
+
+impl AsRef<Actor> for ActorCanvas {
+    fn as_ref(&self) -> &Actor {
+        // &self.content
+        unimplemented!()
+    }
+}
+
+impl Is<Content> for ActorCanvas {}
+
+impl AsRef<Content> for ActorCanvas {
+    fn as_ref(&self) -> &Content {
+        &self.content
+    }
+}
+
 impl Is<ActorCanvas> for ActorCanvas {}
 
 impl AsRef<ActorCanvas> for ActorCanvas {
@@ -172,99 +194,98 @@ pub trait ActorCanvasExt: 'static {
     fn connect_property_width_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
-impl ContentExt for ActorCanvas {
-    fn get_preferred_size(&self) -> Option<(f32, f32)> {
-        unimplemented!()
-    }
-
-    fn invalidate(&self) {
-        unimplemented!()
-    }
-
-    fn connect_attached<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> HandlerId {
-        unimplemented!()
-    }
-
-    fn connect_detached<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> HandlerId {
-        unimplemented!()
-    }
-}
-
 impl<O: Is<ActorCanvas>> ActorCanvasExt for O {
     fn get_scale_factor(&self) -> i32 {
-        // let canvas = self.as_ref();
-        // if !canvas.scale_factor_set {
-        //     return -1;
-        // }
+        let actor_canvas = self.as_ref();
 
-        // canvas.scale_factor
-        unimplemented!()
+        if !actor_canvas.scale_factor_set {
+            return -1;
+        }
+
+        actor_canvas.scale_factor as i32
     }
 
     fn set_scale_factor(&self, scale: i32) {
-        // let mut canvas = self.as_ref();
-        // if scale < 0 {
-        //     if !canvas.scale_factor_set {
-        //         return
-        //     }
-        //     canvas.scale_factor_set = false;
-        //     canvas.scale_factor = scale;
-        // } else {
-        //     if canvas.scale_factor_set && canvas.scale_factor == scale {
-        //         return
-        //     }
-        //     canvas.scale_factor_set = true;
-        //     canvas.scale_factor = scale;
-        // }
-        // // invalidate // TODO;
+        let mut actor_canvas = self.as_ref();
+
+        if scale < 0 {
+            if !actor_canvas.scale_factor_set {
+                return
+            }
+            // actor_canvas.scale_factor_set = false;
+            // actor_canvas.scale_factor = scale as u32;
+        } else {
+            if actor_canvas.scale_factor_set && actor_canvas.scale_factor as i32 == scale {
+                return
+            }
+            // actor_canvas.scale_factor_set = true;
+            // actor_canvas.scale_factor = scale as u32;
+        }
+        // invalidate // TODO;
         unimplemented!()
     }
 
     fn set_content_size(&self, width: u32, height: u32) -> bool {
-        // let canvas = self.as_ref();
-        // let mut width_changed = false;
-        // let mut height_changed = false;
+        let actor_canvas = self.as_ref();
 
-        // if canvas.width != width {
-        //     canvas.width = width;
-        //     width_changed = true;
-        // }
+        let mut width_changed = false;
+        let mut height_changed = false;
 
-        // if canvas.height != height {
-        //     canvas.height = height;
-        //     height_changed = true;
-        // }
+        if actor_canvas.content.width != width {
+            // actor_canvas.content.width = width;
+            width_changed = true;
+        }
 
-        // if width_changed || height_changed {
-        //     // invalidate // TODO:
-        //     return true;
-        // }
+        if actor_canvas.content.height != height {
+            // actor_canvas.content.height = height;
+            height_changed = true;
+        }
+
+        if width_changed || height_changed {
+            // invalidate // TODO:
+            return true;
+        }
 
         // return false;
         unimplemented!()
     }
 
     fn get_property_height(&self) -> u32 {
-        let canvas = self.as_ref();
-        canvas.height
+        let actor_canvas = self.as_ref();
+
+        actor_canvas.content.height
     }
 
     fn set_property_height(&self, height: u32) {
-        unimplemented!()
+        let mut actor_canvas = self.as_ref();
+        
+        if actor_canvas.content.height != height {
+            // actor_canvas.content.height = height;
+            // invalidate // TODO:
+            unimplemented!()
+        }
     }
 
     fn get_property_scale_factor_set(&self) -> bool {
-        let canvas = self.as_ref();
-        canvas.scale_factor_set
+        let actor_canvas = self.as_ref();
+
+        actor_canvas.scale_factor_set
     }
 
     fn get_property_width(&self) -> u32 {
-        let canvas = self.as_ref();
-        canvas.width
+        let actor_canvas = self.as_ref();
+
+        actor_canvas.content.width
     }
 
     fn set_property_width(&self, width: u32) {
-        unimplemented!()
+        let mut actor_canvas = self.as_ref();
+        
+        if actor_canvas.content.width != width {
+            // actor_canvas.content.width = width;
+            // invalidate // TODO:
+            unimplemented!()
+        }
     }
 
     // fn connect_draw<F: Fn(&Self, &Canvas, u32, u32) -> bool + 'static>(

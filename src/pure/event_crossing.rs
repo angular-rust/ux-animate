@@ -12,7 +12,7 @@ use super::{Actor, EventFlags, EventType, InputDevice, ModifierType, Stage};
 // @y: event Y coordinate
 // @related: actor related to the crossing
 // @device: the device that originated the event. If you want the physical
-// device the event originated from, use clutter_event_get_source_device()
+// device the event originated from, use event_get_source_device()
 //
 // Event for the movement of the pointer across different actors
 //
@@ -30,11 +30,8 @@ pub struct CrossingEvent {
 }
 
 impl CrossingEvent {
-    pub fn get_position(&self) -> (f64, f64) {
-        // let x = self.as_ref().x;
-        // let y = self.as_ref().y;
-        // (x, y)
-        unimplemented!()
+    pub fn get_position(&self) -> (f32, f32) {
+        (self.x, self.y)
     }
 
     // pub fn get_subwindow(&self) -> Option<Window> {
@@ -54,7 +51,7 @@ impl CrossingEvent {
     }
 
     pub fn get_time(&self) -> u32 {
-        unimplemented!()
+        self.time
     }
 
     pub fn get_root(&self) -> (f64, f64) {

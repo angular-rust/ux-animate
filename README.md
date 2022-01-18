@@ -36,8 +36,6 @@
 
 ![Angular Rust structure](https://dudochkin-victor.github.io/assets/angular-rust/structure.svg)
 
-![Angular Rust structure](https://dudochkin-victor.github.io/assets/angular-rust/structure.svg)
-
 ## Features
 
 - [x] Implementation of graphic backend for cairo and web canvas from [UX Primitives](https://github.com/angular-rust/ux-primitives)

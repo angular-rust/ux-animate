@@ -17,7 +17,7 @@
 //     /// the newly created `Script` instance. Use
 //     ///  `gobject::ObjectExt::unref` when done.
 //     pub fn new() -> Script {
-//         unsafe { from_glib_full(ffi::clutter_script_new()) }
+//         unsafe { from_glib_full(ffi::script_new()) }
 //     }
 // }
 
@@ -180,7 +180,7 @@
 //     fn add_search_paths(&self, paths: &[&str]) {
 //         let n_paths = paths.len() as usize;
 //         unsafe {
-//             ffi::clutter_script_add_search_paths(
+//             ffi::script_add_search_paths(
 //                 self.as_ref().to_glib_none().0,
 //                 paths.to_glib_none().0,
 //                 n_paths,
@@ -189,22 +189,22 @@
 //     }
 
 //     //fn connect_signals(&self, user_data: /*Unimplemented*/Option<Fundamental: Pointer>) {
-//     //    unsafe { TODO: call clutter_sys:clutter_script_connect_signals() }
+//     //    unsafe { TODO: call sys:script_connect_signals() }
 //     //}
 
 //     //fn connect_signals_full(&self, func: /*Unimplemented*/FnMut(&Script, &glib::Object, &str, &str, &glib::Object, /*Ignored*/glib::ConnectFlags), user_data: /*Unimplemented*/Option<Fundamental: Pointer>) {
-//     //    unsafe { TODO: call clutter_sys:clutter_script_connect_signals_full() }
+//     //    unsafe { TODO: call sys:script_connect_signals_full() }
 //     //}
 
 //     fn ensure_objects(&self) {
 //         unsafe {
-//             ffi::clutter_script_ensure_objects(self.as_ref().to_glib_none().0);
+//             ffi::script_ensure_objects(self.as_ref().to_glib_none().0);
 //         }
 //     }
 
 //     fn get_object(&self, name: &str) -> Option<glib::Object> {
 //         unsafe {
-//             from_glib_none(ffi::clutter_script_get_object(
+//             from_glib_none(ffi::script_get_object(
 //                 self.as_ref().to_glib_none().0,
 //                 name.to_glib_none().0,
 //             ))
@@ -212,12 +212,12 @@
 //     }
 
 //     //fn get_objects(&self, first_name: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -> i32 {
-//     //    unsafe { TODO: call clutter_sys:clutter_script_get_objects() }
+//     //    unsafe { TODO: call sys:script_get_objects() }
 //     //}
 
 //     fn get_translation_domain(&self) -> Option<GString> {
 //         unsafe {
-//             from_glib_none(ffi::clutter_script_get_translation_domain(
+//             from_glib_none(ffi::script_get_translation_domain(
 //                 self.as_ref().to_glib_none().0,
 //             ))
 //         }
@@ -225,7 +225,7 @@
 
 //     fn get_type_from_name(&self, type_name: &str) -> glib::types::Type {
 //         unsafe {
-//             from_glib(ffi::clutter_script_get_type_from_name(
+//             from_glib(ffi::script_get_type_from_name(
 //                 self.as_ref().to_glib_none().0,
 //                 type_name.to_glib_none().0,
 //             ))
@@ -234,7 +234,7 @@
 
 //     fn list_objects(&self) -> Vec<glib::Object> {
 //         unsafe {
-//             FromGlibPtrContainer::from_glib_container(ffi::clutter_script_list_objects(
+//             FromGlibPtrContainer::from_glib_container(ffi::script_list_objects(
 //                 self.as_ref().to_glib_none().0,
 //             ))
 //         }
@@ -244,7 +244,7 @@
 //         let length = data.len() as isize;
 //         unsafe {
 //             let mut error = ptr::null_mut();
-//             let _ = ffi::clutter_script_load_from_data(
+//             let _ = ffi::script_load_from_data(
 //                 self.as_ref().to_glib_none().0,
 //                 data.to_glib_none().0,
 //                 length,
@@ -261,7 +261,7 @@
 //     fn load_from_file(&self, filename: &str) -> Result<(), glib::Error> {
 //         unsafe {
 //             let mut error = ptr::null_mut();
-//             let _ = ffi::clutter_script_load_from_file(
+//             let _ = ffi::script_load_from_file(
 //                 self.as_ref().to_glib_none().0,
 //                 filename.to_glib_none().0,
 //                 &mut error,
@@ -277,7 +277,7 @@
 //     fn load_from_resource(&self, resource_path: &str) -> Result<(), glib::Error> {
 //         unsafe {
 //             let mut error = ptr::null_mut();
-//             let _ = ffi::clutter_script_load_from_resource(
+//             let _ = ffi::script_load_from_resource(
 //                 self.as_ref().to_glib_none().0,
 //                 resource_path.to_glib_none().0,
 //                 &mut error,
@@ -292,7 +292,7 @@
 
 //     fn lookup_filename(&self, filename: &str) -> Option<GString> {
 //         unsafe {
-//             from_glib_full(ffi::clutter_script_lookup_filename(
+//             from_glib_full(ffi::script_lookup_filename(
 //                 self.as_ref().to_glib_none().0,
 //                 filename.to_glib_none().0,
 //             ))
@@ -301,7 +301,7 @@
 
 //     fn set_translation_domain(&self, domain: Option<&str>) {
 //         unsafe {
-//             ffi::clutter_script_set_translation_domain(
+//             ffi::script_set_translation_domain(
 //                 self.as_ref().to_glib_none().0,
 //                 domain.to_glib_none().0,
 //             );
@@ -310,7 +310,7 @@
 
 //     fn unmerge_objects(&self, merge_id: u32) {
 //         unsafe {
-//             ffi::clutter_script_unmerge_objects(self.as_ref().to_glib_none().0, merge_id);
+//             ffi::script_unmerge_objects(self.as_ref().to_glib_none().0, merge_id);
 //         }
 //     }
 

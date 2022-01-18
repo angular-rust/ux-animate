@@ -1,7 +1,9 @@
-use super::{HandlerId, OffscreenEffect};
 use std::fmt;
 
-// SECTION:clutter-desaturate-effect
+use dx::platform::core::Pipeline;
+
+use super::{HandlerId, OffscreenEffect};
+
 // @short_description: A desaturation effect
 // @see_also: #Effect, #OffscreenEffect
 //
@@ -22,7 +24,7 @@ pub struct DesaturateEffect {
     tex_width: i32,
     tex_height: i32,
 
-    pipeline: Option<dx::core::Pipeline>,
+    pipeline: Option<Pipeline>,
 }
 
 impl DesaturateEffect {

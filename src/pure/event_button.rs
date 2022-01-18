@@ -13,13 +13,13 @@ use super::{Actor, EventFlags, EventType, InputDevice, ModifierType, Stage};
 //   and radius
 // @axes: reserved for future use
 // @device: the device that originated the event. If you want the physical
-// device the event originated from, use clutter_event_get_source_device()
+// device the event originated from, use event_get_source_device()
 //
 // Button event.
 //
 // The event coordinates are relative to the stage that received the
 // event, and can be transformed into actor-relative coordinates by
-// using clutter_actor_transform_stage_point().
+// using actor_transform_stage_point().
 pub struct ButtonEvent {
     kind: EventType,
     time: u32,
@@ -37,29 +37,24 @@ pub struct ButtonEvent {
 }
 
 impl ButtonEvent {
-    pub fn get_position(&self) -> (f64, f64) {
-        // (self.ev.x, self.ev.y)
-        unimplemented!()
+    pub fn get_position(&self) -> (f32, f32) {
+        (self.x, self.y)
     }
 
     pub fn get_state(&self) -> ModifierType {
-        // self.ev.state
-        unimplemented!()
+        self.modifier_state
     }
 
     pub fn get_time(&self) -> u32 {
-        // self.ev.time
-        unimplemented!()
+        self.time
     }
 
     pub fn get_button(&self) -> u32 {
-        // self.ev.button
-        unimplemented!()
+        self.button
     }
 
-    pub fn get_device(&self) -> Option<InputDevice> {
-        // self.ev.device
-        unimplemented!()
+    pub fn get_device(&self) -> &Option<InputDevice> {
+        &self.device
     }
 
     pub fn get_axes(&self) -> Option<(f64, f64)> {

@@ -4,7 +4,6 @@ use super::{Actor, Container};
 use std::fmt;
 
 
-// SECTION:clutter-child-meta
 // @short_description: Wrapper for actors inside a container
 //
 // #ChildMeta is a wrapper object created by #Container
@@ -23,7 +22,7 @@ use std::fmt;
 // #ChildMeta and set the #ContainerIface child_meta_type
 // interface member to your subclass type, like:
 //
-// |[
+// ```
 // static void
 // my_container_iface_init (ContainerIface *iface)
 // {
@@ -31,16 +30,16 @@ use std::fmt;
 //
 //   container_iface->child_meta_type  = MY_TYPE_CHILD_META;
 // }
-// ]|
+// ```
 //
 // This will automatically create a #ChildMeta of type
 // `MY_TYPE_CHILD_META` for every actor that is added to the container.
 //
 // The child data for an actor can be retrieved using the
-// clutter_container_get_child_meta() function.
+// container_get_child_meta() function.
 // 
 // The properties of the data and your subclass can be manipulated with
-// clutter_container_child_set() and clutter_container_child_get() which
+// container_child_set() and container_child_get() which
 // act like g_object_set() and g_object_get().
 //
 // You can provide hooks for your own storage as well as control the

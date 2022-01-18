@@ -2,7 +2,6 @@ use super::{Backend, HandlerId, InputDevice, InputDeviceType};
 use crate::prelude::*;
 use std::fmt;
 
-// SECTION:clutter-device-manager
 // @short_description: Maintains the list of input devices
 //
 // #DeviceManager is a singleton object, owned by , which

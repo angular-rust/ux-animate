@@ -1,7 +1,10 @@
-use super::{Actor, DragAxis, EventSequence, HandlerId, InputDevice, ModifierType, Stage};
-use crate::prelude::*;
-use crate::Rect;
 use std::fmt;
+
+use crate::prelude::*;
+
+use crate::foundation::Rect;
+
+use super::{Actor, DragAxis, EventSequence, HandlerId, InputDevice, ModifierType, Stage};
 
 // @Title: DragAction
 // @Short_Description: Action enabling dragging on actors
@@ -13,10 +16,10 @@ use std::fmt;
 // a #Actor and setting it as reactive; for instance, the following
 // code:
 //
-// |[<!-- language="C" -->
-//   clutter_actor_add_action (actor, clutter_drag_action_new ());
-//   clutter_actor_set_reactive (actor, TRUE);
-// ]|
+// ```
+//   actor_add_action (actor, drag_action_new ());
+//   actor_set_reactive (actor, TRUE);
+// ```
 //
 // will automatically result in the actor moving to follow the pointer
 // whenever the pointer's button is pressed over the actor and moved
@@ -28,12 +31,12 @@ use std::fmt;
 // in the #DragAction::drag-motion signal to be emitted.
 //
 // It is also possible to set another #Actor as the dragged actor
-// by calling clutter_drag_action_set_drag_handle() from within a handle
+// by calling drag_action_set_drag_handle() from within a handle
 // of the #DragAction::drag-begin signal. The drag handle must be
 // parented and exist between the emission of #DragAction::drag-begin
 // and #DragAction::drag-end.
 //
-// The [drag-action example](https://git.gnome.org/browse/clutter/tree/examples/drag-action.c?h=clutter-1.18)
+// The [drag-action example](https://git.gnome.org/browse/clutter/tree/examples/drag-action.c?h=1.18)
 // allows dragging the rectangle around the stage using a #DragAction.
 // When pressing the `Shift` key the actor that is being dragged will be a
 // separate rectangle, and when the drag ends, the original rectangle will be

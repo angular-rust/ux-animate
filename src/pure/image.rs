@@ -15,7 +15,7 @@ impl Image {
     /// the newly created `Image` instance.
     ///  Use `gobject::ObjectExt::unref` when done.
     pub fn new() -> Option<Content> {
-        // unsafe { from_glib_full(ffi::clutter_image_new()) }
+        // unsafe { from_glib_full(ffi::image_new()) }
         unimplemented!()
     }
 }
@@ -93,7 +93,7 @@ impl ContentExt for Image {
 
 impl<O: Is<Image>> ImageExt for O {
     //fn set_area(&self, data: &[u8], pixel_format: dx::pure::PixelFormat, rect: &cairo::RectangleInt, row_stride: u32) -> Result<(), glib::Error> {
-    //    unsafe { TODO: call clutter_sys:clutter_image_set_area() }
+    //    unsafe { TODO: call sys:image_set_area() }
     //}
 
     // fn set_bytes(
@@ -106,7 +106,7 @@ impl<O: Is<Image>> ImageExt for O {
     // ) -> Result<(), glib::Error> {
     //     // unsafe {
     //     //     let mut error = ptr::null_mut();
-    //     //     let _ = ffi::clutter_image_set_bytes(
+    //     //     let _ = ffi::image_set_bytes(
     //     //         self.as_ref().to_glib_none().0,
     //     //         data.to_glib_none().0,
     //     //         pixel_format.to_glib(),
@@ -125,7 +125,7 @@ impl<O: Is<Image>> ImageExt for O {
     // }
 
     //fn set_data(&self, data: &[u8], pixel_format: dx::pure::PixelFormat, width: u32, height: u32, row_stride: u32) -> Result<(), glib::Error> {
-    //    unsafe { TODO: call clutter_sys:clutter_image_set_data() }
+    //    unsafe { TODO: call sys:image_set_data() }
     //}
 }
 

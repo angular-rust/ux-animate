@@ -14,17 +14,17 @@ use super::{Actor, EventFlags, EventSequence, EventType, InputDevice, ModifierTy
 //   buttons. See #ModifierType
 // @axes: reserved
 // @device: the device that originated the event. If you want the physical
-// device the event originated from, use clutter_event_get_source_device()
+// device the event originated from, use event_get_source_device()
 //
 // Used for touch events.
 //
-// The @type field will be one of %CLUTTER_TOUCH_BEGIN, %CLUTTER_TOUCH_END,
-// %CLUTTER_TOUCH_UPDATE, or %CLUTTER_TOUCH_CANCEL.
+// The @type field will be one of %TOUCH_BEGIN, %TOUCH_END,
+// %TOUCH_UPDATE, or %TOUCH_CANCEL.
 //
 // Touch events are grouped into sequences; each touch sequence will begin
-// with a %CLUTTER_TOUCH_BEGIN event, progress with %CLUTTER_TOUCH_UPDATE
-// events, and end either with a %CLUTTER_TOUCH_END event or with a
-// %CLUTTER_TOUCH_CANCEL event.
+// with a %TOUCH_BEGIN event, progress with %TOUCH_UPDATE
+// events, and end either with a %TOUCH_END event or with a
+// %TOUCH_CANCEL event.
 //
 // With multi-touch capable devices there can be multiple event sequence
 // running at the same time.
@@ -46,20 +46,15 @@ pub struct TouchEvent {
 
 impl TouchEvent {
     pub fn get_time(&self) -> u32 {
-        // self.as_ref().time
-        unimplemented!()
+        self.time
     }
 
-    pub fn get_position(&self) -> (f64, f64) {
-        // let x = self.as_ref().x;
-        // let y = self.as_ref().y;
-        // (x, y)
-        unimplemented!()
+    pub fn get_position(&self) -> (f32, f32) {
+        (self.x, self.y)
     }
 
     pub fn get_state(&self) -> ModifierType {
-        // from_glib(self.as_ref().state)
-        unimplemented!()
+        self.modifier_state
     }
 
     pub fn is_emulating_pointer(&self) -> bool {
@@ -67,9 +62,8 @@ impl TouchEvent {
         unimplemented!()
     }
 
-    pub fn get_device(&self) -> Option<InputDevice> {
-        // unsafe { from_glib_none(self.as_ref().device) }
-        unimplemented!()
+    pub fn get_device(&self) -> &Option<InputDevice> {
+        &self.device
     }
 
     pub fn get_axes(&self) -> Option<(f64, f64)> {

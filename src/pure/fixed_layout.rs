@@ -12,7 +12,7 @@ impl FixedLayout {
     ///
     /// the newly created `FixedLayout`
     pub fn new() -> FixedLayout {
-        // unsafe { LayoutManager::from_glib_none(ffi::clutter_fixed_layout_new()).unsafe_cast() }
+        // unsafe { LayoutManager::from_glib_none(ffi::fixed_layout_new()).unsafe_cast() }
         unimplemented!()
     }
 }

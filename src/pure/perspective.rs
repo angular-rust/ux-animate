@@ -8,7 +8,7 @@
 //   plane (always positive)
 //
 // Stage perspective definition. #Perspective is only used by
-// the fixed point version of clutter_stage_set_perspective().
+// the fixed point version of stage_set_perspective().
 //
 #[derive(Default, Debug, Clone)]
 pub struct Perspective {

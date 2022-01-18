@@ -13,7 +13,7 @@ impl GridLayout {
     ///
     /// the new `GridLayout`
     pub fn new() -> GridLayout {
-        // unsafe { LayoutManager::from_glib_none(ffi::clutter_grid_layout_new()).unsafe_cast() }
+        // unsafe { LayoutManager::from_glib_none(ffi::grid_layout_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -203,7 +203,7 @@ pub trait GridLayoutExt: 'static {
 impl<O: Is<GridLayout>> GridLayoutExt for O {
     fn attach<P: Is<Actor>>(&self, child: &P, left: i32, top: i32, width: i32, height: i32) {
         // unsafe {
-        //     ffi::clutter_grid_layout_attach(
+        //     ffi::grid_layout_attach(
         //         self.as_ref().to_glib_none().0,
         //         child.as_ref().to_glib_none().0,
         //         left,
@@ -224,7 +224,7 @@ impl<O: Is<GridLayout>> GridLayoutExt for O {
         height: i32,
     ) {
         // unsafe {
-        //     ffi::clutter_grid_layout_attach_next_to(
+        //     ffi::grid_layout_attach_next_to(
         //         self.as_ref().to_glib_none().0,
         //         child.as_ref().to_glib_none().0,
         //         sibling.map(|p| p.as_ref()).to_glib_none().0,
@@ -238,7 +238,7 @@ impl<O: Is<GridLayout>> GridLayoutExt for O {
 
     fn get_child_at(&self, left: i32, top: i32) -> Option<Actor> {
         // unsafe {
-        //     from_glib_none(ffi::clutter_grid_layout_get_child_at(
+        //     from_glib_none(ffi::grid_layout_get_child_at(
         //         self.as_ref().to_glib_none().0,
         //         left,
         //         top,
@@ -249,7 +249,7 @@ impl<O: Is<GridLayout>> GridLayoutExt for O {
 
     fn get_column_homogeneous(&self) -> bool {
         // unsafe {
-        //     from_glib(ffi::clutter_grid_layout_get_column_homogeneous(
+        //     from_glib(ffi::grid_layout_get_column_homogeneous(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -257,13 +257,13 @@ impl<O: Is<GridLayout>> GridLayoutExt for O {
     }
 
     fn get_column_spacing(&self) -> u32 {
-        // unsafe { ffi::clutter_grid_layout_get_column_spacing(self.as_ref().to_glib_none().0) }
+        // unsafe { ffi::grid_layout_get_column_spacing(self.as_ref().to_glib_none().0) }
         unimplemented!()
     }
 
     fn get_orientation(&self) -> Orientation {
         // unsafe {
-        //     from_glib(ffi::clutter_grid_layout_get_orientation(
+        //     from_glib(ffi::grid_layout_get_orientation(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -272,7 +272,7 @@ impl<O: Is<GridLayout>> GridLayoutExt for O {
 
     fn get_row_homogeneous(&self) -> bool {
         // unsafe {
-        //     from_glib(ffi::clutter_grid_layout_get_row_homogeneous(
+        //     from_glib(ffi::grid_layout_get_row_homogeneous(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -280,20 +280,20 @@ impl<O: Is<GridLayout>> GridLayoutExt for O {
     }
 
     fn get_row_spacing(&self) -> u32 {
-        // unsafe { ffi::clutter_grid_layout_get_row_spacing(self.as_ref().to_glib_none().0) }
+        // unsafe { ffi::grid_layout_get_row_spacing(self.as_ref().to_glib_none().0) }
         unimplemented!()
     }
 
     fn insert_column(&self, position: i32) {
         // unsafe {
-        //     ffi::clutter_grid_layout_insert_column(self.as_ref().to_glib_none().0, position);
+        //     ffi::grid_layout_insert_column(self.as_ref().to_glib_none().0, position);
         // }
         unimplemented!()
     }
 
     fn insert_next_to<P: Is<Actor>>(&self, sibling: &P, side: GridPosition) {
         // unsafe {
-        //     ffi::clutter_grid_layout_insert_next_to(
+        //     ffi::grid_layout_insert_next_to(
         //         self.as_ref().to_glib_none().0,
         //         sibling.as_ref().to_glib_none().0,
         //         side.to_glib(),
@@ -304,14 +304,14 @@ impl<O: Is<GridLayout>> GridLayoutExt for O {
 
     fn insert_row(&self, position: i32) {
         // unsafe {
-        //     ffi::clutter_grid_layout_insert_row(self.as_ref().to_glib_none().0, position);
+        //     ffi::grid_layout_insert_row(self.as_ref().to_glib_none().0, position);
         // }
         unimplemented!()
     }
 
     fn set_column_homogeneous(&self, homogeneous: bool) {
         // unsafe {
-        //     ffi::clutter_grid_layout_set_column_homogeneous(
+        //     ffi::grid_layout_set_column_homogeneous(
         //         self.as_ref().to_glib_none().0,
         //         homogeneous.to_glib(),
         //     );
@@ -321,14 +321,14 @@ impl<O: Is<GridLayout>> GridLayoutExt for O {
 
     fn set_column_spacing(&self, spacing: u32) {
         // unsafe {
-        //     ffi::clutter_grid_layout_set_column_spacing(self.as_ref().to_glib_none().0, spacing);
+        //     ffi::grid_layout_set_column_spacing(self.as_ref().to_glib_none().0, spacing);
         // }
         unimplemented!()
     }
 
     fn set_orientation(&self, orientation: Orientation) {
         // unsafe {
-        //     ffi::clutter_grid_layout_set_orientation(
+        //     ffi::grid_layout_set_orientation(
         //         self.as_ref().to_glib_none().0,
         //         orientation.to_glib(),
         //     );
@@ -338,7 +338,7 @@ impl<O: Is<GridLayout>> GridLayoutExt for O {
 
     fn set_row_homogeneous(&self, homogeneous: bool) {
         // unsafe {
-        //     ffi::clutter_grid_layout_set_row_homogeneous(
+        //     ffi::grid_layout_set_row_homogeneous(
         //         self.as_ref().to_glib_none().0,
         //         homogeneous.to_glib(),
         //     );
@@ -348,7 +348,7 @@ impl<O: Is<GridLayout>> GridLayoutExt for O {
 
     fn set_row_spacing(&self, spacing: u32) {
         // unsafe {
-        //     ffi::clutter_grid_layout_set_row_spacing(self.as_ref().to_glib_none().0, spacing);
+        //     ffi::grid_layout_set_row_spacing(self.as_ref().to_glib_none().0, spacing);
         // }
         unimplemented!()
     }

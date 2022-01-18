@@ -210,7 +210,7 @@ impl<O: Is<LayoutManager>> LayoutManagerExt for O {
         flags: AllocationFlags,
     ) {
         // unsafe {
-        //     ffi::clutter_layout_manager_allocate(
+        //     ffi::layout_manager_allocate(
         //         self.as_ref().to_glib_none().0,
         //         container.as_ref().to_glib_none().0,
         //         allocation.to_glib_none().0,
@@ -221,7 +221,7 @@ impl<O: Is<LayoutManager>> LayoutManagerExt for O {
     }
 
     //fn child_get<P: Is<Container>, Q: Is<Actor>>(&self, container: &P, actor: &Q, first_property: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) {
-    //    unsafe { TODO: call clutter_sys:clutter_layout_manager_child_get() }
+    //    unsafe { TODO: call sys:layout_manager_child_get() }
     //}
 
     // fn child_get_property<P: Is<Container>, Q: Is<Actor>>(
@@ -232,7 +232,7 @@ impl<O: Is<LayoutManager>> LayoutManagerExt for O {
     //     value: &mut glib::Value,
     // ) {
     //     // unsafe {
-    //     //     ffi::clutter_layout_manager_child_get_property(
+    //     //     ffi::layout_manager_child_get_property(
     //     //         self.as_ref().to_glib_none().0,
     //     //         container.as_ref().to_glib_none().0,
     //     //         actor.as_ref().to_glib_none().0,
@@ -244,7 +244,7 @@ impl<O: Is<LayoutManager>> LayoutManagerExt for O {
     // }
 
     //fn child_set<P: Is<Container>, Q: Is<Actor>>(&self, container: &P, actor: &Q, first_property: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) {
-    //    unsafe { TODO: call clutter_sys:clutter_layout_manager_child_set() }
+    //    unsafe { TODO: call sys:layout_manager_child_set() }
     //}
 
     // fn child_set_property<P: Is<Container>, Q: Is<Actor>>(
@@ -255,7 +255,7 @@ impl<O: Is<LayoutManager>> LayoutManagerExt for O {
     //     value: &glib::Value,
     // ) {
     //     // unsafe {
-    //     //     ffi::clutter_layout_manager_child_set_property(
+    //     //     ffi::layout_manager_child_set_property(
     //     //         self.as_ref().to_glib_none().0,
     //     //         container.as_ref().to_glib_none().0,
     //     //         actor.as_ref().to_glib_none().0,
@@ -268,7 +268,7 @@ impl<O: Is<LayoutManager>> LayoutManagerExt for O {
 
     // fn find_child_property(&self, name: &str) -> Option<glib::ParamSpec> {
     //     // unsafe {
-    //     //     from_glib_none(ffi::clutter_layout_manager_find_child_property(
+    //     //     from_glib_none(ffi::layout_manager_find_child_property(
     //     //         self.as_ref().to_glib_none().0,
     //     //         name.to_glib_none().0,
     //     //     ))
@@ -282,7 +282,7 @@ impl<O: Is<LayoutManager>> LayoutManagerExt for O {
         actor: &Q,
     ) -> Option<LayoutMeta> {
         // unsafe {
-        //     from_glib_none(ffi::clutter_layout_manager_get_child_meta(
+        //     from_glib_none(ffi::layout_manager_get_child_meta(
         //         self.as_ref().to_glib_none().0,
         //         container.as_ref().to_glib_none().0,
         //         actor.as_ref().to_glib_none().0,
@@ -295,7 +295,7 @@ impl<O: Is<LayoutManager>> LayoutManagerExt for O {
         // unsafe {
         //     let mut min_height_p = mem::MaybeUninit::uninit();
         //     let mut nat_height_p = mem::MaybeUninit::uninit();
-        //     ffi::clutter_layout_manager_get_preferred_height(
+        //     ffi::layout_manager_get_preferred_height(
         //         self.as_ref().to_glib_none().0,
         //         container.as_ref().to_glib_none().0,
         //         for_width,
@@ -313,7 +313,7 @@ impl<O: Is<LayoutManager>> LayoutManagerExt for O {
         // unsafe {
         //     let mut min_width_p = mem::MaybeUninit::uninit();
         //     let mut nat_width_p = mem::MaybeUninit::uninit();
-        //     ffi::clutter_layout_manager_get_preferred_width(
+        //     ffi::layout_manager_get_preferred_width(
         //         self.as_ref().to_glib_none().0,
         //         container.as_ref().to_glib_none().0,
         //         for_height,
@@ -329,7 +329,7 @@ impl<O: Is<LayoutManager>> LayoutManagerExt for O {
 
     fn layout_changed(&self) {
         // unsafe {
-        //     ffi::clutter_layout_manager_layout_changed(self.as_ref().to_glib_none().0);
+        //     ffi::layout_manager_layout_changed(self.as_ref().to_glib_none().0);
         // }
         unimplemented!()
     }
@@ -338,7 +338,7 @@ impl<O: Is<LayoutManager>> LayoutManagerExt for O {
     //     // unsafe {
     //     //     let mut n_pspecs = mem::MaybeUninit::uninit();
     //     //     let ret = FromGlibContainer::from_glib_full_num(
-    //     //         ffi::clutter_layout_manager_list_child_properties(
+    //     //         ffi::layout_manager_list_child_properties(
     //     //             self.as_ref().to_glib_none().0,
     //     //             n_pspecs.as_mut_ptr(),
     //     //         ),
@@ -351,7 +351,7 @@ impl<O: Is<LayoutManager>> LayoutManagerExt for O {
 
     fn set_container<P: Is<Container>>(&self, container: Option<&P>) {
         // unsafe {
-        //     ffi::clutter_layout_manager_set_container(
+        //     ffi::layout_manager_set_container(
         //         self.as_ref().to_glib_none().0,
         //         container.map(|p| p.as_ref()).to_glib_none().0,
         //     );

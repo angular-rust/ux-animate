@@ -18,7 +18,7 @@ impl PathConstraint {
     /// the newly created `PathConstraint`
     pub fn new<P: Is<Path>>(path: Option<&P>, offset: f32) -> PathConstraint {
         // unsafe {
-        //     Constraint::from_glib_none(ffi::clutter_path_constraint_new(
+        //     Constraint::from_glib_none(ffi::path_constraint_new(
         //         path.map(|p| p.as_ref()).to_glib_none().0,
         //         offset,
         //     ))
@@ -33,7 +33,7 @@ impl PathConstraint {
     ///
     /// the offset
     pub fn get_offset(&self) -> f32 {
-        // unsafe { ffi::clutter_path_constraint_get_offset(self.to_glib_none().0) }
+        // unsafe { ffi::path_constraint_get_offset(self.to_glib_none().0) }
         unimplemented!()
     }
 
@@ -45,7 +45,7 @@ impl PathConstraint {
     ///  `PathConstraint`, or `None`. The returned `Path` is owned
     ///  by the constraint and it should not be unreferenced
     pub fn get_path(&self) -> Option<Path> {
-        // unsafe { from_glib_none(ffi::clutter_path_constraint_get_path(self.to_glib_none().0)) }
+        // unsafe { from_glib_none(ffi::path_constraint_get_path(self.to_glib_none().0)) }
         unimplemented!()
     }
 
@@ -54,7 +54,7 @@ impl PathConstraint {
     /// the offset along the path
     pub fn set_offset(&self, offset: f32) {
         // unsafe {
-        //     ffi::clutter_path_constraint_set_offset(self.to_glib_none().0, offset);
+        //     ffi::path_constraint_set_offset(self.to_glib_none().0, offset);
         // }
         unimplemented!()
     }
@@ -67,7 +67,7 @@ impl PathConstraint {
     /// a `Path`
     pub fn set_path<P: Is<Path>>(&self, path: Option<&P>) {
         // unsafe {
-        //     ffi::clutter_path_constraint_set_path(
+        //     ffi::path_constraint_set_path(
         //         self.to_glib_none().0,
         //         path.map(|p| p.as_ref()).to_glib_none().0,
         //     );

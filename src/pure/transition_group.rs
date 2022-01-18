@@ -16,7 +16,7 @@ impl TransitionGroup {
     ///  `gobject::ObjectExt::unref` when done to deallocate the resources it
     ///  uses
     pub fn new() -> TransitionGroup {
-        // unsafe { Transition::from_glib_full(ffi::clutter_transition_group_new()).unsafe_cast() }
+        // unsafe { Transition::from_glib_full(ffi::transition_group_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -62,7 +62,7 @@ pub trait TransitionGroupExt: 'static {
 impl<O: Is<TransitionGroup>> TransitionGroupExt for O {
     fn add_transition<P: Is<Transition>>(&self, transition: &P) {
         // unsafe {
-        //     ffi::clutter_transition_group_add_transition(
+        //     ffi::transition_group_add_transition(
         //         self.as_ref().to_glib_none().0,
         //         transition.as_ref().to_glib_none().0,
         //     );
@@ -72,14 +72,14 @@ impl<O: Is<TransitionGroup>> TransitionGroupExt for O {
 
     fn remove_all(&self) {
         // unsafe {
-        //     ffi::clutter_transition_group_remove_all(self.as_ref().to_glib_none().0);
+        //     ffi::transition_group_remove_all(self.as_ref().to_glib_none().0);
         // }
         unimplemented!()
     }
 
     fn remove_transition<P: Is<Transition>>(&self, transition: &P) {
         // unsafe {
-        //     ffi::clutter_transition_group_remove_transition(
+        //     ffi::transition_group_remove_transition(
         //         self.as_ref().to_glib_none().0,
         //         transition.as_ref().to_glib_none().0,
         //     );

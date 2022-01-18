@@ -3,7 +3,7 @@ pub struct Matrix {}
 
 impl Matrix {
     //pub fn init_from_array(&mut self, values: /*Unimplemented*/FixedArray TypeId { ns_id: 0, id: 20 }; 16) -> Option<Matrix> {
-    //    unsafe { TODO: call clutter_sys:clutter_matrix_init_from_array() }
+    //    unsafe { TODO: call sys:matrix_init_from_array() }
     //}
 
     /// Initializes the `Matrix` `self` with the contents of the
@@ -16,7 +16,7 @@ impl Matrix {
     /// the initialized `Matrix`
     pub fn init_from_matrix(&mut self, b: &Matrix) -> Option<Matrix> {
         // unsafe {
-        //     from_glib_none(ffi::clutter_matrix_init_from_matrix(
+        //     from_glib_none(ffi::matrix_init_from_matrix(
         //         self.to_glib_none_mut().0,
         //         b.to_glib_none().0,
         //     ))
@@ -38,7 +38,7 @@ impl Matrix {
     ///
     /// the initialized `Matrix`
     pub fn init_identity(&mut self) -> Option<Matrix> {
-        // unsafe { from_glib_none(ffi::clutter_matrix_init_identity(self.to_glib_none_mut().0)) }
+        // unsafe { from_glib_none(ffi::matrix_init_identity(self.to_glib_none_mut().0)) }
         unimplemented!()
     }
 
@@ -48,7 +48,7 @@ impl Matrix {
     ///
     /// the newly allocated `Matrix`
     pub fn alloc() -> Option<Matrix> {
-        // unsafe { from_glib_full(ffi::clutter_matrix_alloc()) }
+        // unsafe { from_glib_full(ffi::matrix_alloc()) }
         unimplemented!()
     }
 }

@@ -1,9 +1,9 @@
 // use dx::Matrix; // not available in wasm
 use crate::{
+    foundation::{Rect, Size},
     lottie::{
         animation::keyframe::BaseKeyframeAnimation, model::KeyPath, value::LottieValueCallback,
     },
-    Rect, Size,
 };
 
 // use crate::Canvas;

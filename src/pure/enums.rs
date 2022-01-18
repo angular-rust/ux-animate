@@ -627,7 +627,7 @@ impl fmt::Display for ImageError {
     }
 }
 
-/// Error conditions returned by `clutter_init` and `clutter_init_with_args`.
+/// Error conditions returned by `init` and `init_with_args`.
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 pub enum InitError {
     /// Initialisation successful
@@ -1356,11 +1356,11 @@ impl fmt::Display for StaticColor {
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 pub enum StepMode {
     /// The change in the value of a
-    ///  `CLUTTER_STEP` progress mode should occur at the start of
+    ///  `STEP` progress mode should occur at the start of
     ///  the transition
     Start,
     /// The change in the value of a
-    ///  `CLUTTER_STEP` progress mode should occur at the end of
+    ///  `STEP` progress mode should occur at the end of
     ///  the transition
     End,
 }
@@ -1388,7 +1388,7 @@ impl fmt::Display for StepMode {
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 pub enum TextDirection {
     /// Use the default setting, as returned
-    ///  by `clutter_get_default_text_direction`
+    ///  by `get_default_text_direction`
     Default,
     /// Use left-to-right text direction
     Ltr,
@@ -1425,8 +1425,8 @@ pub enum TextureError {
     ///  found
     NoYuv,
     /// The requested format for
-    /// clutter_texture_set_from_rgb_data or
-    /// clutter_texture_set_from_yuv_data is unsupported.
+    /// texture_set_from_rgb_data or
+    /// texture_set_from_yuv_data is unsupported.
     BadFormat,
 }
 

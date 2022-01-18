@@ -54,7 +54,7 @@ pub use pure::*;
 #[cfg(not(target_arch = "wasm32"))]
 pub use self::rt::{init, quit, run, set_initialized};
 
-pub use primitives::colorspace::{Color, RgbColor, RgbaColor};
+// pub use primitives::foundation::colorspace::{Color, RgbColor, RgbaColor};
 pub use primitives::*;
 
 #[cfg(test)]

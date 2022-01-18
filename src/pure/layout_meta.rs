@@ -32,7 +32,7 @@ pub trait LayoutMetaExt: 'static {
 impl<O: Is<LayoutMeta>> LayoutMetaExt for O {
     fn get_manager(&self) -> Option<LayoutManager> {
         // unsafe {
-        //     from_glib_none(ffi::clutter_layout_meta_get_manager(
+        //     from_glib_none(ffi::layout_meta_get_manager(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }

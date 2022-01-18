@@ -15,13 +15,13 @@ impl Path {
     ///
     /// the newly created `Path`
     pub fn new() -> Path {
-        // unsafe { from_glib_none(ffi::clutter_path_new()) }
+        // unsafe { from_glib_none(ffi::path_new()) }
         unimplemented!()
     }
 
     pub fn with_description(desc: &str) -> Path {
         // unsafe {
-        //     from_glib_none(ffi::clutter_path_new_with_description(
+        //     from_glib_none(ffi::path_new_with_description(
         //         desc.to_glib_none().0,
         //     ))
         // }
@@ -268,7 +268,7 @@ pub trait PathExt: 'static {
 impl<O: Is<Path>> PathExt for O {
     // fn add_cairo_path(&self, cpath: &cairo::Path) {
     //     unsafe {
-    //         ffi::clutter_path_add_cairo_path(
+    //         ffi::path_add_cairo_path(
     //             self.as_ref().to_glib_none().0,
     //             cpath.to_glib_none().0,
     //         );
@@ -277,14 +277,14 @@ impl<O: Is<Path>> PathExt for O {
 
     fn add_close(&self) {
         // unsafe {
-        //     ffi::clutter_path_add_close(self.as_ref().to_glib_none().0);
+        //     ffi::path_add_close(self.as_ref().to_glib_none().0);
         // }
         unimplemented!()
     }
 
     fn add_curve_to(&self, x1: i32, y1: i32, x2: i32, y2: i32, x_3: i32, y_3: i32) {
         // unsafe {
-        //     ffi::clutter_path_add_curve_to(
+        //     ffi::path_add_curve_to(
         //         self.as_ref().to_glib_none().0,
         //         x1,
         //         y1,
@@ -299,28 +299,28 @@ impl<O: Is<Path>> PathExt for O {
 
     fn add_line_to(&self, x: i32, y: i32) {
         // unsafe {
-        //     ffi::clutter_path_add_line_to(self.as_ref().to_glib_none().0, x, y);
+        //     ffi::path_add_line_to(self.as_ref().to_glib_none().0, x, y);
         // }
         unimplemented!()
     }
 
     fn add_move_to(&self, x: i32, y: i32) {
         // unsafe {
-        //     ffi::clutter_path_add_move_to(self.as_ref().to_glib_none().0, x, y);
+        //     ffi::path_add_move_to(self.as_ref().to_glib_none().0, x, y);
         // }
         unimplemented!()
     }
 
     fn add_node(&self, node: &PathNode) {
         // unsafe {
-        //     ffi::clutter_path_add_node(self.as_ref().to_glib_none().0, node.to_glib_none().0);
+        //     ffi::path_add_node(self.as_ref().to_glib_none().0, node.to_glib_none().0);
         // }
         unimplemented!()
     }
 
     fn add_rel_curve_to(&self, x1: i32, y1: i32, x2: i32, y2: i32, x_3: i32, y_3: i32) {
         // unsafe {
-        //     ffi::clutter_path_add_rel_curve_to(
+        //     ffi::path_add_rel_curve_to(
         //         self.as_ref().to_glib_none().0,
         //         x1,
         //         y1,
@@ -335,20 +335,20 @@ impl<O: Is<Path>> PathExt for O {
 
     fn add_rel_line_to(&self, x: i32, y: i32) {
         // unsafe {
-        //     ffi::clutter_path_add_rel_line_to(self.as_ref().to_glib_none().0, x, y);
+        //     ffi::path_add_rel_line_to(self.as_ref().to_glib_none().0, x, y);
         // }
         unimplemented!()
     }
 
     fn add_rel_move_to(&self, x: i32, y: i32) {
         // unsafe {
-        //     ffi::clutter_path_add_rel_move_to(self.as_ref().to_glib_none().0, x, y);
+        //     ffi::path_add_rel_move_to(self.as_ref().to_glib_none().0, x, y);
         // }
     }
 
     fn add_string(&self, str: &str) -> bool {
         // unsafe {
-        //     from_glib(ffi::clutter_path_add_string(
+        //     from_glib(ffi::path_add_string(
         //         self.as_ref().to_glib_none().0,
         //         str.to_glib_none().0,
         //     ))
@@ -358,7 +358,7 @@ impl<O: Is<Path>> PathExt for O {
 
     fn clear(&self) {
         // unsafe {
-        //     ffi::clutter_path_clear(self.as_ref().to_glib_none().0);
+        //     ffi::path_clear(self.as_ref().to_glib_none().0);
         // }
     }
 
@@ -375,7 +375,7 @@ impl<O: Is<Path>> PathExt for O {
         // let callback = Some(callback_func::<P> as _);
         // let super_callback0: &P = &callback_data;
         // unsafe {
-        //     ffi::clutter_path_foreach(
+        //     ffi::path_foreach(
         //         self.as_ref().to_glib_none().0,
         //         callback,
         //         super_callback0 as *const _ as usize as *mut _,
@@ -386,7 +386,7 @@ impl<O: Is<Path>> PathExt for O {
 
     fn get_description(&self) -> Option<String> {
         // unsafe {
-        //     from_glib_full(ffi::clutter_path_get_description(
+        //     from_glib_full(ffi::path_get_description(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -394,19 +394,19 @@ impl<O: Is<Path>> PathExt for O {
     }
 
     fn get_length(&self) -> u32 {
-        // unsafe { ffi::clutter_path_get_length(self.as_ref().to_glib_none().0) }
+        // unsafe { ffi::path_get_length(self.as_ref().to_glib_none().0) }
         unimplemented!()
     }
 
     fn get_n_nodes(&self) -> u32 {
-        // unsafe { ffi::clutter_path_get_n_nodes(self.as_ref().to_glib_none().0) }
+        // unsafe { ffi::path_get_n_nodes(self.as_ref().to_glib_none().0) }
         unimplemented!()
     }
 
     fn get_node(&self, index_: u32) -> PathNode {
         // unsafe {
         //     let mut node = PathNode::uninitialized();
-        //     ffi::clutter_path_get_node(
+        //     ffi::path_get_node(
         //         self.as_ref().to_glib_none().0,
         //         index_,
         //         node.to_glib_none_mut().0,
@@ -418,7 +418,7 @@ impl<O: Is<Path>> PathExt for O {
 
     fn get_nodes(&self) -> Vec<PathNode> {
         // unsafe {
-        //     FromGlibPtrContainer::from_glib_container(ffi::clutter_path_get_nodes(
+        //     FromGlibPtrContainer::from_glib_container(ffi::path_get_nodes(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -428,7 +428,7 @@ impl<O: Is<Path>> PathExt for O {
     fn get_position(&self, progress: f64) -> (u32, Knot) {
         // unsafe {
         //     let mut position = Knot::uninitialized();
-        //     let ret = ffi::clutter_path_get_position(
+        //     let ret = ffi::path_get_position(
         //         self.as_ref().to_glib_none().0,
         //         progress,
         //         position.to_glib_none_mut().0,
@@ -440,7 +440,7 @@ impl<O: Is<Path>> PathExt for O {
 
     fn insert_node(&self, index_: i32, node: &PathNode) {
         // unsafe {
-        //     ffi::clutter_path_insert_node(
+        //     ffi::path_insert_node(
         //         self.as_ref().to_glib_none().0,
         //         index_,
         //         node.to_glib_none().0,
@@ -451,14 +451,14 @@ impl<O: Is<Path>> PathExt for O {
 
     fn remove_node(&self, index_: u32) {
         // unsafe {
-        //     ffi::clutter_path_remove_node(self.as_ref().to_glib_none().0, index_);
+        //     ffi::path_remove_node(self.as_ref().to_glib_none().0, index_);
         // }
         unimplemented!()
     }
 
     fn replace_node(&self, index_: u32, node: &PathNode) {
         // unsafe {
-        //     ffi::clutter_path_replace_node(
+        //     ffi::path_replace_node(
         //         self.as_ref().to_glib_none().0,
         //         index_,
         //         node.to_glib_none().0,
@@ -469,7 +469,7 @@ impl<O: Is<Path>> PathExt for O {
 
     fn set_description(&self, str: &str) -> bool {
         // unsafe {
-        //     from_glib(ffi::clutter_path_set_description(
+        //     from_glib(ffi::path_set_description(
         //         self.as_ref().to_glib_none().0,
         //         str.to_glib_none().0,
         //     ))
@@ -479,7 +479,7 @@ impl<O: Is<Path>> PathExt for O {
 
     // fn to_cairo_path(&self, cr: &mut cairo::Context) {
     //     unsafe {
-    //         ffi::clutter_path_to_cairo_path(
+    //         ffi::path_to_cairo_path(
     //             self.as_ref().to_glib_none().0,
     //             cr.to_glib_none_mut().0,
     //         );

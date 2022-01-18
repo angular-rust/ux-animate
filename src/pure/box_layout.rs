@@ -18,7 +18,7 @@ use std::fmt;
 //  get the same size, ignoring expand settings and the preferred sizes
 //
 // It is possible to control the spacing between children of a
-// #BoxLayout by using clutter_box_layout_set_spacing().
+// #BoxLayout by using box_layout_set_spacing().
 // @extends LayoutManager,
 #[derive(Default, Debug, Clone)]
 pub struct BoxLayout {

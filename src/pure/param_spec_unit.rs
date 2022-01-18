@@ -4,7 +4,7 @@
 //     pub struct ParamSpecUnit(Object<ffi::ParamSpecUnit, ParamSpecUnitClass>) @extends glib::ParamSpec;
 
 //     match fn {
-//         get_type => || ffi::clutter_param_units_get_type(),
+//         get_type => || ffi::param_units_get_type(),
 //     }
 // }
 

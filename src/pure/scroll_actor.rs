@@ -1,7 +1,10 @@
-use super::{HandlerId, ScrollMode};
-use crate::prelude::*;
-use crate::{Point, Rect};
 use std::fmt;
+
+use crate::prelude::*;
+
+use crate::foundation::{Point, Rect};
+
+use super::{HandlerId, ScrollMode};
 
 // TODO: implements atk::ImplementorIface, Scriptable, @implements Animatable, Container
 // @extends Actor
@@ -16,7 +19,7 @@ impl ScrollActor {
     /// The newly created `ScrollActor`
     ///  instance.
     pub fn new() -> ScrollActor {
-        // unsafe { Actor::from_glib_none(ffi::clutter_scroll_actor_new()).unsafe_cast() }
+        // unsafe { Actor::from_glib_none(ffi::scroll_actor_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -70,7 +73,7 @@ pub trait ScrollActorExt: 'static {
 impl<O: Is<ScrollActor>> ScrollActorExt for O {
     fn get_scroll_mode(&self) -> ScrollMode {
         // unsafe {
-        //     from_glib(ffi::clutter_scroll_actor_get_scroll_mode(
+        //     from_glib(ffi::scroll_actor_get_scroll_mode(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -79,7 +82,7 @@ impl<O: Is<ScrollActor>> ScrollActorExt for O {
 
     fn scroll_to_point(&self, point: &Point<f32>) {
         // unsafe {
-        //     ffi::clutter_scroll_actor_scroll_to_point(
+        //     ffi::scroll_actor_scroll_to_point(
         //         self.as_ref().to_glib_none().0,
         //         point.to_glib_none().0,
         //     );
@@ -89,7 +92,7 @@ impl<O: Is<ScrollActor>> ScrollActorExt for O {
 
     fn scroll_to_rect(&self, rect: &Rect<f32>) {
         // unsafe {
-        //     ffi::clutter_scroll_actor_scroll_to_rect(
+        //     ffi::scroll_actor_scroll_to_rect(
         //         self.as_ref().to_glib_none().0,
         //         rect.to_glib_none().0,
         //     );
@@ -99,7 +102,7 @@ impl<O: Is<ScrollActor>> ScrollActorExt for O {
 
     fn set_scroll_mode(&self, mode: ScrollMode) {
         // unsafe {
-        //     ffi::clutter_scroll_actor_set_scroll_mode(
+        //     ffi::scroll_actor_set_scroll_mode(
         //         self.as_ref().to_glib_none().0,
         //         mode.to_glib(),
         //     );

@@ -1,8 +1,11 @@
-use super::HandlerId;
-use crate::prelude::*;
 use std::fmt;
 
-// SECTION:clutter-deform-effect
+use dx::platform::core::{AttributeBuffer, Pipeline, Primitive};
+
+use crate::prelude::*;
+
+use super::HandlerId;
+
 // @Title: DeformEffect
 // @Short_Description: A base class for effects deforming the geometry
 //   of an actor
@@ -27,14 +30,14 @@ use std::fmt;
 // deformation algorithm.
 // @extends OffscreenEffect, Effect, ActorMeta,
 pub struct DeformEffect {
-    back_pipeline: Option<dx::core::Pipeline>,
+    back_pipeline: Option<Pipeline>,
 
     x_tiles: i32,
     y_tiles: i32,
 
-    buffer: Option<dx::core::AttributeBuffer>,
-    primitive: Option<dx::core::Primitive>,
-    lines_primitive: Option<dx::core::Primitive>,
+    buffer: Option<AttributeBuffer>,
+    primitive: Option<Primitive>,
+    lines_primitive: Option<Primitive>,
     n_vertices: i32,
     allocation_id: u64,
 

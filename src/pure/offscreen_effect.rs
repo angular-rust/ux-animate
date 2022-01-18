@@ -1,6 +1,8 @@
-use crate::prelude::*;
-use crate::Rect;
 use std::fmt;
+
+use crate::prelude::*;
+
+use crate::foundation::Rect;
 
 // @extends Effect, ActorMeta,
 #[derive(Debug, Clone)]
@@ -61,12 +63,12 @@ pub trait OffscreenEffectExt: 'static {
 
 impl<O: Is<OffscreenEffect>> OffscreenEffectExt for O {
     //fn create_texture(&self, width: f32, height: f32) -> /*Unimplemented*/Option<dx::pure::Handle> {
-    //    unsafe { TODO: call clutter_sys:clutter_offscreen_effect_create_texture() }
+    //    unsafe { TODO: call sys:offscreen_effect_create_texture() }
     //}
 
     // fn get_target(&self) -> Option<dx::pure::Material> {
     //     unsafe {
-    //         from_glib_none(ffi::clutter_offscreen_effect_get_target(
+    //         from_glib_none(ffi::offscreen_effect_get_target(
     //             self.as_ref().to_glib_none().0,
     //         ))
     //     }
@@ -75,7 +77,7 @@ impl<O: Is<OffscreenEffect>> OffscreenEffectExt for O {
     fn get_target_rect(&self) -> Option<Rect<f64>> {
         // unsafe {
         //     let mut rect = Rect::uninitialized();
-        //     let ret = from_glib(ffi::clutter_offscreen_effect_get_target_rect(
+        //     let ret = from_glib(ffi::offscreen_effect_get_target_rect(
         //         self.as_ref().to_glib_none().0,
         //         rect.to_glib_none_mut().0,
         //     ));
@@ -89,12 +91,12 @@ impl<O: Is<OffscreenEffect>> OffscreenEffectExt for O {
     }
 
     //fn get_texture(&self) -> /*Unimplemented*/Option<dx::pure::Handle> {
-    //    unsafe { TODO: call clutter_sys:clutter_offscreen_effect_get_texture() }
+    //    unsafe { TODO: call sys:offscreen_effect_get_texture() }
     //}
 
     fn paint_target(&self) {
         // unsafe {
-        //     ffi::clutter_offscreen_effect_paint_target(self.as_ref().to_glib_none().0);
+        //     ffi::offscreen_effect_paint_target(self.as_ref().to_glib_none().0);
         // }
         unimplemented!()
     }

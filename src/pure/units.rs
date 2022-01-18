@@ -11,7 +11,7 @@ impl Units {
     ///
     /// a unit type
     pub fn get_unit_type(&self) -> UnitType {
-        // unsafe { from_glib(ffi::clutter_units_get_unit_type(self.to_glib_none().0)) }
+        // unsafe { from_glib(ffi::units_get_unit_type(self.to_glib_none().0)) }
         unimplemented!()
     }
 
@@ -21,7 +21,7 @@ impl Units {
     ///
     /// the value stored inside a `Units`
     pub fn get_unit_value(&self) -> f32 {
-        // unsafe { ffi::clutter_units_get_unit_value(self.to_glib_none().0) }
+        // unsafe { ffi::units_get_unit_value(self.to_glib_none().0) }
         unimplemented!()
     }
 
@@ -31,7 +31,7 @@ impl Units {
     ///
     /// the value in pixels
     pub fn in_pixels(&mut self) -> f32 {
-        // unsafe { ffi::clutter_units_to_pixels(self.to_glib_none_mut().0) }
+        // unsafe { ffi::units_to_pixels(self.to_glib_none_mut().0) }
         unimplemented!()
     }
 
@@ -49,7 +49,7 @@ impl Units {
     // /// a newly allocated string containing the encoded
     // ///  `Units` value. Use `g_free` to free the string
     // fn to_string(&self) -> String {
-    //     // unsafe { from_glib_full(ffi::clutter_units_to_string(self.to_glib_none().0)) }
+    //     // unsafe { from_glib_full(ffi::units_to_string(self.to_glib_none().0)) }
     //     unimplemented!()
     // }
 
@@ -61,7 +61,7 @@ impl Units {
     pub fn from_cm(cm: f32) -> Units {
         // unsafe {
         //     let mut units = Units::uninitialized();
-        //     ffi::clutter_units_from_cm(units.to_glib_none_mut().0, cm);
+        //     ffi::units_from_cm(units.to_glib_none_mut().0, cm);
         //     units
         // }
         unimplemented!()
@@ -76,7 +76,7 @@ impl Units {
     pub fn from_em(em: f32) -> Units {
         // unsafe {
         //     let mut units = Units::uninitialized();
-        //     ffi::clutter_units_from_em(units.to_glib_none_mut().0, em);
+        //     ffi::units_from_em(units.to_glib_none_mut().0, em);
         //     units
         // }
         unimplemented!()
@@ -92,7 +92,7 @@ impl Units {
     pub fn from_em_for_font(font_name: Option<&str>, em: f32) -> Units {
         // unsafe {
         //     let mut units = Units::uninitialized();
-        //     ffi::clutter_units_from_em_for_font(
+        //     ffi::units_from_em_for_font(
         //         units.to_glib_none_mut().0,
         //         font_name.to_glib_none().0,
         //         em,
@@ -110,7 +110,7 @@ impl Units {
     pub fn from_mm(mm: f32) -> Units {
         // unsafe {
         //     let mut units = Units::uninitialized();
-        //     ffi::clutter_units_from_mm(units.to_glib_none_mut().0, mm);
+        //     ffi::units_from_mm(units.to_glib_none_mut().0, mm);
         //     units
         // }
         unimplemented!()
@@ -124,7 +124,7 @@ impl Units {
     pub fn from_pixels(px: i32) -> Units {
         // unsafe {
         //     let mut units = Units::uninitialized();
-        //     ffi::clutter_units_from_pixels(units.to_glib_none_mut().0, px);
+        //     ffi::units_from_pixels(units.to_glib_none_mut().0, px);
         //     units
         // }
         unimplemented!()
@@ -138,7 +138,7 @@ impl Units {
     pub fn from_pt(pt: f32) -> Units {
         // unsafe {
         //     let mut units = Units::uninitialized();
-        //     ffi::clutter_units_from_pt(units.to_glib_none_mut().0, pt);
+        //     ffi::units_from_pt(units.to_glib_none_mut().0, pt);
         //     units
         // }
         unimplemented!()
@@ -192,7 +192,7 @@ impl Units {
     pub fn from_string(str: &str) -> Option<Units> {
         // unsafe {
         //     let mut units = Units::uninitialized();
-        //     let ret = from_glib(ffi::clutter_units_from_string(
+        //     let ret = from_glib(ffi::units_from_string(
         //         units.to_glib_none_mut().0,
         //         str.to_glib_none().0,
         //     ));

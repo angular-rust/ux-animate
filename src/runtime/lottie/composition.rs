@@ -1,6 +1,7 @@
-use crate::Rect;
 use bytes::Bytes;
 use std::{collections::HashMap, fmt, time::Duration};
+
+use crate::foundation::Rect;
 
 use super::{
     model::{layer::Layer, Font, FontCharacter, Marker},

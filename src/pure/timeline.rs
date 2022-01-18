@@ -1,7 +1,10 @@
-use super::{AnimationMode, HandlerId, StepMode, TimelineDirection};
+use std::{borrow::BorrowMut, cell::RefCell, collections::HashMap, fmt};
+
 use crate::prelude::*;
-use crate::Point;
-use std::{fmt, cell::RefCell};
+
+use crate::foundation::Point;
+
+use super::{AnimationMode, HandlerId, StepMode, TimelineDirection};
 
 #[derive(Default, Debug, Clone)]
 struct TimelineProps {
@@ -14,15 +17,15 @@ struct TimelineProps {
     delay: u32,
 
     // The current amount of elapsed time
-    elapsed_time: i64,
+    elapsed_time: u32,
 
     // The elapsed time since the last frame was fired
-    msecs_delta: i64,
+    msecs_delta: u32,
 
-    // GHashTable *markers_by_name;
+    markers_by_name: HashMap<String, TimelineMarker>,
 
     // Time we last advanced the elapsed time and showed a frame
-    last_frame_time: i64,
+    last_frame_time: u32,
 
     // How many times the timeline should repeat
     repeat_count: i32,
@@ -40,8 +43,8 @@ struct TimelineProps {
     step_mode: StepMode,
 
     // cubic-bezier() parameters
-    // ClutterPoint cb_1;
-    // ClutterPoint cb_2;
+    cb_1: Point<f32>,
+    cb_2: Point<f32>,
     is_playing: bool,
 
     // If we've just started playing and haven't yet gotten
@@ -50,77 +53,103 @@ struct TimelineProps {
     auto_reverse: bool,
 }
 
-pub struct TimelineMarker {
-    name: Option<String>,
-    // GQuark quark;
-
-    // union {
-    //   guint msecs;
-    //   gdouble progress;
-    // } data;
-    is_relative: bool,
+#[derive(Debug, Clone, Copy)]
+pub enum MarkerValue {
+    Msecs(u32),
+    Progress(f64),
 }
-// SECTION:clutter-timeline
+
+#[derive(Debug, Clone)]
+pub struct TimelineMarker {
+    name: String,
+    data: MarkerValue,
+}
+
+impl TimelineMarker {
+    pub fn new_time(name: String, msecs: u32) -> Self {
+        Self {
+            name,
+            data: MarkerValue::Msecs(msecs),
+        }
+    }
+
+    pub fn new_progress(name: String, progress: f64) -> Self {
+        let progress = progress.clamp(0.0, 1.0);
+
+        Self {
+            name,
+            data: MarkerValue::Progress(progress),
+        }
+    }
+
+    pub fn is_relative(&self) -> bool {
+        match self.data {
+            MarkerValue::Progress(_) => true,
+            _ => false,
+        }
+    }
+}
+
 // @short_description: A class for time-based events
-// @see_also: #ClutterAnimation, #ClutterAnimator, #ClutterState
+// @see_also: #Animation, #Animator, #State
 //
-// #ClutterTimeline is a base class for managing time-based event that cause
-// Clutter to redraw a stage, such as animations.
+// #Timeline is a base class for managing time-based event that cause
+//  to redraw a stage, such as animations.
 //
-// Each #ClutterTimeline instance has a duration: once a timeline has been
-// started, using clutter_timeline_start(), it will emit a signal that can
+// Each #Timeline instance has a duration: once a timeline has been
+// started, using timeline_start(), it will emit a signal that can
 // be used to update the state of the actors.
 //
-// It is important to note that #ClutterTimeline is not a generic API for
+// It is important to note that #Timeline is not a generic API for
 // calling closures after an interval; each Timeline is tied into the master
 // clock used to drive the frame cycle. If you need to schedule a closure
-// after an interval, see clutter_threads_add_timeout() instead.
+// after an interval, see threads_add_timeout() instead.
 //
-// Users of #ClutterTimeline should connect to the #ClutterTimeline::new-frame
+// Users of #Timeline should connect to the #Timeline::new-frame
 // signal, which is emitted each time a timeline is advanced during the maste
-// clock iteration. The #ClutterTimeline::new-frame signal provides the time
+// clock iteration. The #Timeline::new-frame signal provides the time
 // elapsed since the beginning of the timeline, in milliseconds. A normalized
-// progress value can be obtained by calling clutter_timeline_get_progress().
-// By using clutter_timeline_get_delta() it is possible to obtain the wallclock
-// time elapsed since the last emission of the #ClutterTimeline::new-frame
+// progress value can be obtained by calling timeline_get_progress().
+// By using timeline_get_delta() it is possible to obtain the wallclock
+// time elapsed since the last emission of the #Timeline::new-frame
 // signal.
 //
-// Initial state can be set up by using the #ClutterTimeline::started signal,
-// while final state can be set up by using the #ClutterTimeline::stopped
-// signal. The #ClutterTimeline guarantees the emission of at least a single
-// #ClutterTimeline::new-frame signal, as well as the emission of the
-// #ClutterTimeline::completed signal every time the #ClutterTimeline reaches
-// its #ClutterTimeline:duration.
+// Initial state can be set up by using the #Timeline::started signal,
+// while final state can be set up by using the #Timeline::stopped
+// signal. The #Timeline guarantees the emission of at least a single
+// #Timeline::new-frame signal, as well as the emission of the
+// #Timeline::completed signal every time the #Timeline reaches
+// its #Timeline:duration.
 //
 // It is possible to connect to specific points in the timeline progress by
-// adding markers using clutter_timeline_add_marker_at_time() and connecting
-// to the #ClutterTimeline::marker-reached signal.
+// adding markers using timeline_add_marker_at_time() and connecting
+// to the #Timeline::marker-reached signal.
 //
 // Timelines can be made to loop once they reach the end of their duration, by
-// using clutter_timeline_set_repeat_count(); a looping timeline will still
-// emit the #ClutterTimeline::completed signal once it reaches the end of its
+// using timeline_set_repeat_count(); a looping timeline will still
+// emit the #Timeline::completed signal once it reaches the end of its
 // duration at each repeat. If you want to be notified of the end of the last
-// repeat, use the #ClutterTimeline::stopped signal.
+// repeat, use the #Timeline::stopped signal.
 //
-// Timelines have a #ClutterTimeline:direction: the default direction is
-// %CLUTTER_TIMELINE_FORWARD, and goes from 0 to the duration; it is possible
-// to change the direction to %CLUTTER_TIMELINE_BACKWARD, and have the timeline
+// Timelines have a #Timeline:direction: the default direction is
+// %TIMELINE_FORWARD, and goes from 0 to the duration; it is possible
+// to change the direction to %TIMELINE_BACKWARD, and have the timeline
 // go from the duration to 0. The direction can be automatically reversed
-// when reaching completion by using the #ClutterTimeline:auto-reverse property.
+// when reaching completion by using the #Timeline:auto-reverse property.
 //
-// Timelines are used in the Clutter animation framework by classes like
-// #ClutterAnimation, #ClutterAnimator, and #ClutterState.
+// Timelines are used in the  animation framework by classes like
+// #Animation, #Animator, and #State.
 //
-// ## Defining Timelines in ClutterScript
+// ## Defining Timelines in Script
 //
-// A #ClutterTimeline can be described in #ClutterScript like any
+// A #Timeline can be described in #Script like any
 // other object. Additionally, it is possible to define markers directly
 // inside the JSON definition by using the `markers` JSON object member,
 // such as:
 //
-// |[
+// ```
 // {
-//  "type" : "ClutterTimeline",
+//  "type" : "Timeline",
 //  "duration" : 1000,
 //  "markers" : [
 //    { "name" : "quarter", "time" : 250 },
@@ -128,11 +157,11 @@ pub struct TimelineMarker {
 //    { "name" : "three-quarters", "time" : 750 }
 //  ]
 // }
-// ]|
+// ```
 // TODO: @implements Scriptable
 #[derive(Default, Debug, Clone)]
 pub struct Timeline {
-    props: RefCell<TimelineProps>
+    props: RefCell<TimelineProps>,
 }
 
 impl Timeline {
@@ -144,7 +173,7 @@ impl Timeline {
     ///
     /// the newly created `Timeline` instance. Use
     ///  `gobject::ObjectExt::unref` when done using it
-    pub fn new(msecs: u32) -> Timeline {
+    pub fn new(msecs: u32) -> Self {
         Default::default()
     }
 }
@@ -605,58 +634,60 @@ pub trait TimelineExt: 'static {
 
 impl<O: Is<Timeline>> TimelineExt for O {
     fn add_marker(&self, marker_name: &str, progress: f64) {
-        // unsafe {
-        //     ffi::clutter_timeline_add_marker(
-        //         self.as_ref().to_glib_none().0,
-        //         marker_name.to_glib_none().0,
-        //         progress,
-        //     );
-        // }
-        unimplemented!()
+        let marker = TimelineMarker::new_progress(marker_name.into(), progress);
+        let timeline = self.as_ref();
+        let mut props = timeline.props.borrow_mut();
+
+        props.markers_by_name.insert(marker_name.into(), marker);
     }
 
     fn add_marker_at_time(&self, marker_name: &str, msecs: u32) {
-        // unsafe {
-        //     ffi::clutter_timeline_add_marker_at_time(
-        //         self.as_ref().to_glib_none().0,
-        //         marker_name.to_glib_none().0,
-        //         msecs,
-        //     );
-        // }
-        unimplemented!()
+        // TODO: assert msecs > timeline duration
+        let marker = TimelineMarker::new_time(marker_name.into(), msecs);
+        let timeline = self.as_ref();
+        let mut props = timeline.props.borrow_mut();
+
+        props.markers_by_name.insert(marker_name.into(), marker);
     }
 
     fn advance(&self, msecs: u32) {
-        // unsafe {
-        //     ffi::clutter_timeline_advance(self.as_ref().to_glib_none().0, msecs);
-        // }
-        unimplemented!()
+        let timeline = self.as_ref();
+        let mut props = timeline.props.borrow_mut();
+
+        props.elapsed_time = msecs.clamp(0, props.duration);
     }
 
     fn advance_to_marker(&self, marker_name: &str) {
-        // unsafe {
-        //     ffi::clutter_timeline_advance_to_marker(
-        //         self.as_ref().to_glib_none().0,
-        //         marker_name.to_glib_none().0,
-        //     );
-        // }
-        unimplemented!()
+        let marker_name = marker_name.to_string();
+
+        let timeline = self.as_ref();
+        let props = timeline.props.borrow();
+
+        if let Some(marker) = props.markers_by_name.get(&marker_name) {
+            let msecs = match marker.data {
+                MarkerValue::Progress(progress) => {
+                    // is relative
+                    (progress * props.duration as f64).trunc() as u32
+                }
+                MarkerValue::Msecs(msecs) => msecs,
+            };
+
+            self.advance(msecs)
+        }
     }
 
     fn get_auto_reverse(&self) -> bool {
-        // unsafe {
-        //     from_glib(ffi::clutter_timeline_get_auto_reverse(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let timeline = self.as_ref();
+        let props = timeline.props.borrow();
+
+        props.auto_reverse
     }
 
     fn get_cubic_bezier_progress(&self) -> Option<(Point<f32>, Point<f32>)> {
         // unsafe {
         //     let mut c_1 = Point::uninitialized();
         //     let mut c_2 = Point::uninitialized();
-        //     let ret = from_glib(ffi::clutter_timeline_get_cubic_bezier_progress(
+        //     let ret = from_glib(ffi::timeline_get_cubic_bezier_progress(
         //         self.as_ref().to_glib_none().0,
         //         c_1.to_glib_none_mut().0,
         //         c_2.to_glib_none_mut().0,
@@ -671,68 +702,89 @@ impl<O: Is<Timeline>> TimelineExt for O {
     }
 
     fn get_current_repeat(&self) -> i32 {
-        // unsafe { ffi::clutter_timeline_get_current_repeat(self.as_ref().to_glib_none().0) }
-        unimplemented!()
+        let timeline = self.as_ref();
+        let props = timeline.props.borrow();
+
+        props.current_repeat
     }
 
     fn get_delay(&self) -> u32 {
-        // unsafe { ffi::clutter_timeline_get_delay(self.as_ref().to_glib_none().0) }
-        unimplemented!()
+        let timeline = self.as_ref();
+        let props = timeline.props.borrow();
+
+        props.delay
     }
 
     fn get_delta(&self) -> u32 {
-        // unsafe { ffi::clutter_timeline_get_delta(self.as_ref().to_glib_none().0) }
-        unimplemented!()
+        if self.is_playing() {
+            let timeline = self.as_ref();
+            let props = timeline.props.borrow();
+
+            return props.msecs_delta;
+        }
+
+        0
     }
 
     fn get_direction(&self) -> TimelineDirection {
-        // unsafe {
-        //     from_glib(ffi::clutter_timeline_get_direction(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let timeline = self.as_ref();
+        let props = timeline.props.borrow();
+
+        props.direction
     }
 
     fn get_duration(&self) -> u32 {
-        // unsafe { ffi::clutter_timeline_get_duration(self.as_ref().to_glib_none().0) }
-        unimplemented!()
+        let timeline = self.as_ref();
+        let props = timeline.props.borrow();
+
+        props.duration
     }
 
     fn get_duration_hint(&self) -> i64 {
-        // unsafe { ffi::clutter_timeline_get_duration_hint(self.as_ref().to_glib_none().0) }
-        unimplemented!()
+        let timeline = self.as_ref();
+        let props = timeline.props.borrow();
+
+        if props.repeat_count == 0 {
+            props.duration as i64
+        } else if props.repeat_count < 0 {
+            i64::MAX
+        } else {
+            props.repeat_count as i64 * props.duration as i64
+        }
     }
 
     fn get_elapsed_time(&self) -> u32 {
-        // unsafe { ffi::clutter_timeline_get_elapsed_time(self.as_ref().to_glib_none().0) }
-        unimplemented!()
+        let timeline = self.as_ref();
+        let props = timeline.props.borrow();
+
+        props.elapsed_time
     }
 
     fn get_progress(&self) -> f64 {
-        // unsafe { ffi::clutter_timeline_get_progress(self.as_ref().to_glib_none().0) }
+        // TODO: here functional with Easing functions
+        // unsafe { ffi::timeline_get_progress(self.as_ref().to_glib_none().0) }
         unimplemented!()
     }
 
     fn get_progress_mode(&self) -> AnimationMode {
-        // unsafe {
-        //     from_glib(ffi::clutter_timeline_get_progress_mode(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let timeline = self.as_ref();
+        let props = timeline.props.borrow();
+
+        props.progress_mode
     }
 
     fn get_repeat_count(&self) -> i32 {
-        // unsafe { ffi::clutter_timeline_get_repeat_count(self.as_ref().to_glib_none().0) }
-        unimplemented!()
+        let timeline = self.as_ref();
+        let props = timeline.props.borrow();
+
+        props.repeat_count
     }
 
     fn get_step_progress(&self) -> Option<(i32, StepMode)> {
         // unsafe {
         //     let mut n_steps = mem::MaybeUninit::uninit();
         //     let mut step_mode = mem::MaybeUninit::uninit();
-        //     let ret = from_glib(ffi::clutter_timeline_get_step_progress(
+        //     let ret = from_glib(ffi::timeline_get_step_progress(
         //         self.as_ref().to_glib_none().0,
         //         n_steps.as_mut_ptr(),
         //         step_mode.as_mut_ptr(),
@@ -749,106 +801,146 @@ impl<O: Is<Timeline>> TimelineExt for O {
     }
 
     fn has_marker(&self, marker_name: &str) -> bool {
-        // unsafe {
-        //     from_glib(ffi::clutter_timeline_has_marker(
-        //         self.as_ref().to_glib_none().0,
-        //         marker_name.to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let timeline = self.as_ref();
+        let props = timeline.props.borrow();
+
+        let marker_name = marker_name.to_string();
+        props.markers_by_name.contains_key(&marker_name)
     }
 
     fn is_playing(&self) -> bool {
-        // unsafe {
-        //     from_glib(ffi::clutter_timeline_is_playing(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let timeline = self.as_ref();
+        let props = timeline.props.borrow();
+
+        props.is_playing
     }
 
     fn list_markers(&self, msecs: i32) -> Vec<String> {
-        // unsafe {
-        //     let mut n_markers = mem::MaybeUninit::uninit();
-        //     let ret = FromGlibContainer::from_glib_full_num(
-        //         ffi::clutter_timeline_list_markers(
-        //             self.as_ref().to_glib_none().0,
-        //             msecs,
-        //             n_markers.as_mut_ptr(),
-        //         ),
-        //         n_markers.assume_init() as usize,
-        //     );
-        //     ret
-        // }
-        unimplemented!()
+        let timeline = self.as_ref();
+        let props = timeline.props.borrow();
+
+        if msecs < 0 {
+            props
+                .markers_by_name
+                .keys()
+                .cloned()
+                .collect::<Vec<String>>()
+        } else {
+            props
+                .markers_by_name
+                .iter()
+                .filter(|(_, marker)| {
+                    let marker_msecs = match marker.data {
+                        MarkerValue::Progress(progress) => {
+                            (progress * props.duration as f64).trunc() as u32
+                        }
+                        MarkerValue::Msecs(msecs) => msecs,
+                    };
+                    marker_msecs == msecs as u32
+                })
+                .map(|(key, _)| key.clone())
+                .collect::<Vec<String>>()
+        }
     }
 
     fn pause(&self) {
-        // unsafe {
-        //     ffi::clutter_timeline_pause(self.as_ref().to_glib_none().0);
-        // }
-        unimplemented!()
+        let timeline = self.as_ref();
+        let mut props = timeline.props.borrow_mut();
+
+        if props.delay_id == 0 && !props.is_playing {
+            return;
+        }
+
+        props.delay_id = 0;
+        props.msecs_delta = 0;
+
+        // set_is_playing false
+        let is_paying = false;
+        {
+            if props.is_playing == is_paying {
+                return;
+            } else {
+                props.is_playing = is_paying;
+            }
+
+            // let master_clock = MasterClock::get_default();
+
+            // if props.is_playing {
+            //     props.waiting_first_tick = true;
+            //     props.current_repeat = 0;
+            //     master_clock.add_timeline(self);
+            // } else {
+            //     master_clock.remove_timeline(self);
+            // }
+            unimplemented!()
+        }
     }
 
     fn remove_marker(&self, marker_name: &str) {
-        // unsafe {
-        //     ffi::clutter_timeline_remove_marker(
-        //         self.as_ref().to_glib_none().0,
-        //         marker_name.to_glib_none().0,
-        //     );
-        // }
-        unimplemented!()
+        let timeline = self.as_ref();
+        let mut props = timeline.props.borrow_mut();
+
+        props.markers_by_name.remove(&marker_name.to_string());
     }
 
     fn rewind(&self) {
-        // unsafe {
-        //     ffi::clutter_timeline_rewind(self.as_ref().to_glib_none().0);
-        // }
+        let timeline = self.as_ref();
+        let props = timeline.props.borrow();
+
+        if props.direction == TimelineDirection::Forward {
+            timeline.advance(0);
+        } else {
+            timeline.advance(props.duration);
+        }
     }
 
     fn set_auto_reverse(&self, reverse: bool) {
-        // unsafe {
-        //     ffi::clutter_timeline_set_auto_reverse(
-        //         self.as_ref().to_glib_none().0,
-        //         reverse.to_glib(),
-        //     );
-        // }
-        unimplemented!()
+        let timeline = self.as_ref();
+        let mut props = timeline.props.borrow_mut();
+
+        props.auto_reverse = reverse;
     }
 
     fn set_cubic_bezier_progress(&self, c_1: &Point<f32>, c_2: &Point<f32>) {
-        // unsafe {
-        //     ffi::clutter_timeline_set_cubic_bezier_progress(
-        //         self.as_ref().to_glib_none().0,
-        //         c_1.to_glib_none().0,
-        //         c_2.to_glib_none().0,
-        //     );
-        // }
-        unimplemented!()
+        let timeline = self.as_ref();
+        let mut props = timeline.props.borrow_mut();
+
+        props.cb_1 = *c_1;
+        props.cb_2 = *c_2;
+
+        // ensure range on X coordinate
+
+        props.cb_1.x = props.cb_1.x.clamp(0.0, 1.0);
+        props.cb_2.x = props.cb_2.x.clamp(0.0, 1.0);
+
+        self.set_progress_mode(AnimationMode::CubicBezier);
     }
 
     fn set_delay(&self, msecs: u32) {
-        // unsafe {
-        //     ffi::clutter_timeline_set_delay(self.as_ref().to_glib_none().0, msecs);
-        // }
-        unimplemented!()
+        let timeline = self.as_ref();
+        let mut props = timeline.props.borrow_mut();
+
+        props.delay = msecs;
     }
 
     fn set_direction(&self, direction: TimelineDirection) {
-        // unsafe {
-        //     ffi::clutter_timeline_set_direction(
-        //         self.as_ref().to_glib_none().0,
-        //         direction.to_glib(),
-        //     );
-        // }
-        unimplemented!()
+        let timeline = self.as_ref();
+        let mut props = timeline.props.borrow_mut();
+
+        if props.direction != direction {
+            props.direction = direction;
+
+            if props.elapsed_time == 0 {
+                props.elapsed_time = props.duration;
+            }
+        }
     }
 
     fn set_duration(&self, msecs: u32) {
-        // unsafe {
-        //     ffi::clutter_timeline_set_duration(self.as_ref().to_glib_none().0, msecs);
-        // }
-        unimplemented!()
+        let timeline = self.as_ref();
+        let mut props = timeline.props.borrow_mut();
+
+        props.duration = msecs;
     }
 
     fn set_progress_func(&self, func: Option<Box<dyn Fn(&Timeline, f64, f64) -> f64 + 'static>>) {
@@ -883,7 +975,7 @@ impl<O: Is<Timeline>> TimelineExt for O {
         // let super_callback0: Box<Option<Box<dyn Fn(&Timeline, f64, f64) -> f64 + 'static>>> =
         //     func_data;
         // unsafe {
-        //     ffi::clutter_timeline_set_progress_func(
+        //     ffi::timeline_set_progress_func(
         //         self.as_ref().to_glib_none().0,
         //         func,
         //         Box::into_raw(super_callback0) as *mut _,
@@ -896,43 +988,108 @@ impl<O: Is<Timeline>> TimelineExt for O {
     fn set_progress_mode(&self, mode: AnimationMode) {
         let timeline = self.as_ref();
         let mut props = timeline.props.borrow_mut();
+
         props.progress_mode = mode;
     }
 
     fn set_repeat_count(&self, count: i32) {
-        // unsafe {
-        //     ffi::clutter_timeline_set_repeat_count(self.as_ref().to_glib_none().0, count);
-        // }
-        unimplemented!()
+        let timeline = self.as_ref();
+        let mut props = timeline.props.borrow_mut();
+
+        if count < 0 {
+            return;
+        }
+
+        props.repeat_count = count;
     }
 
     fn set_step_progress(&self, n_steps: i32, step_mode: StepMode) {
-        // unsafe {
-        //     ffi::clutter_timeline_set_step_progress(
-        //         self.as_ref().to_glib_none().0,
-        //         n_steps,
-        //         step_mode.to_glib(),
-        //     );
-        // }
-        unimplemented!()
+        let timeline = self.as_ref();
+        let mut props = timeline.props.borrow_mut();
+
+        if props.progress_mode == AnimationMode::Steps
+            && props.n_steps == n_steps
+            && props.step_mode == step_mode
+        {
+            return;
+        }
+
+        props.n_steps = n_steps;
+        props.step_mode = step_mode;
+        self.set_progress_mode(AnimationMode::Steps);
     }
 
     fn skip(&self, msecs: u32) {
-        // unsafe {
-        //     ffi::clutter_timeline_skip(self.as_ref().to_glib_none().0, msecs);
-        // }
+        let timeline = self.as_ref();
+        let mut props = timeline.props.borrow_mut();
+
+        if props.direction == TimelineDirection::Forward {
+            props.elapsed_time += msecs;
+
+            if props.elapsed_time > props.duration {
+                props.elapsed_time = 1;
+            }
+        } else {
+            // Backward
+            props.elapsed_time -= msecs;
+
+            if props.elapsed_time < 1 {
+                props.elapsed_time = props.duration - 1;
+            }
+        }
+
+        props.msecs_delta = 0;
     }
 
     fn start(&self) {
-        // unsafe {
-        //     ffi::clutter_timeline_start(self.as_ref().to_glib_none().0);
-        // }
+        let timeline = self.as_ref();
+        let mut props = timeline.props.borrow_mut();
+
+        if props.delay_id != 0 || props.is_playing {
+            return;
+        }
+
+        if props.duration == 0 {
+            return;
+        }
+
+        if props.delay != 0 {
+            // props.delay_id = Threads::add_timeout(props.delay, delay_timeout_func, timeline)
+            unimplemented!()
+        } else {
+            props.msecs_delta = 0;
+            // set_is_playing true
+
+            let is_paying = true;
+            {
+                if props.is_playing == is_paying {
+                    return;
+                } else {
+                    props.is_playing = is_paying;
+                }
+
+                // let master_clock = MasterClock::get_default();
+
+                // if props.is_playing {
+                //     props.waiting_first_tick = true;
+                //     props.current_repeat = 0;
+                //     master_clock.add_timeline(self);
+                // } else {
+                //     master_clock.remove_timeline(self);
+                // }
+                unimplemented!()
+            }
+        }
     }
 
     fn stop(&self) {
-        // unsafe {
-        //     ffi::clutter_timeline_stop(self.as_ref().to_glib_none().0);
-        // }
+        // let timeline = self.as_ref();
+        // let mut props = timeline.props.borrow_mut();
+
+        // let was_playing = props.is_playing; // neded for emit, but we dont
+
+        self.pause();
+        self.rewind();
     }
 
     fn connect_completed<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {

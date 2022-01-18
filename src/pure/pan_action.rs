@@ -29,21 +29,20 @@ impl Default for PinState {
     }
 }
 
-// SECTION:clutter-pan-action
-// @Title: ClutterPanAction
+// @Title: PanAction
 // @Short_Description: Action for pan gestures
 //
-// #ClutterPanAction is a sub-class of #ClutterGestureAction that implements
+// #PanAction is a sub-class of #GestureAction that implements
 // the logic for recognizing pan gestures.
 //
-// The simplest usage of #ClutterPanAction consists in adding it to
-// a #ClutterActor with a child and setting it as reactive; for instance,
+// The simplest usage of #PanAction consists in adding it to
+// a #Actor with a child and setting it as reactive; for instance,
 // the following code:
 //
-// |[
-//   clutter_actor_add_action (actor, clutter_pan_action_new ());
-//   clutter_actor_set_reactive (actor, TRUE);
-// ]|
+// ```
+//   actor_add_action (actor, pan_action_new ());
+//   actor_set_reactive (actor, TRUE);
+// ```
 //
 // will automatically result in the actor children to be moved
 // when dragging.
@@ -230,7 +229,7 @@ pub trait PanActionExt: 'static {
 
 impl<O: Is<PanAction>> PanActionExt for O {
     fn get_acceleration_factor(&self) -> f64 {
-        // unsafe { ffi::clutter_pan_action_get_acceleration_factor(self.as_ref().to_glib_none().0) }
+        // unsafe { ffi::pan_action_get_acceleration_factor(self.as_ref().to_glib_none().0) }
         unimplemented!()
     }
 
@@ -238,7 +237,7 @@ impl<O: Is<PanAction>> PanActionExt for O {
         // unsafe {
         //     let mut delta_x = mem::MaybeUninit::uninit();
         //     let mut delta_y = mem::MaybeUninit::uninit();
-        //     let ret = ffi::clutter_pan_action_get_constrained_motion_delta(
+        //     let ret = ffi::pan_action_get_constrained_motion_delta(
         //         self.as_ref().to_glib_none().0,
         //         point,
         //         delta_x.as_mut_ptr(),
@@ -252,13 +251,13 @@ impl<O: Is<PanAction>> PanActionExt for O {
     }
 
     fn get_deceleration(&self) -> f64 {
-        // unsafe { ffi::clutter_pan_action_get_deceleration(self.as_ref().to_glib_none().0) }
+        // unsafe { ffi::pan_action_get_deceleration(self.as_ref().to_glib_none().0) }
         unimplemented!()
     }
 
     fn get_interpolate(&self) -> bool {
         // unsafe {
-        //     from_glib(ffi::clutter_pan_action_get_interpolate(
+        //     from_glib(ffi::pan_action_get_interpolate(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -269,7 +268,7 @@ impl<O: Is<PanAction>> PanActionExt for O {
         // unsafe {
         //     let mut interpolated_x = mem::MaybeUninit::uninit();
         //     let mut interpolated_y = mem::MaybeUninit::uninit();
-        //     ffi::clutter_pan_action_get_interpolated_coords(
+        //     ffi::pan_action_get_interpolated_coords(
         //         self.as_ref().to_glib_none().0,
         //         interpolated_x.as_mut_ptr(),
         //         interpolated_y.as_mut_ptr(),
@@ -285,7 +284,7 @@ impl<O: Is<PanAction>> PanActionExt for O {
         // unsafe {
         //     let mut delta_x = mem::MaybeUninit::uninit();
         //     let mut delta_y = mem::MaybeUninit::uninit();
-        //     let ret = ffi::clutter_pan_action_get_interpolated_delta(
+        //     let ret = ffi::pan_action_get_interpolated_delta(
         //         self.as_ref().to_glib_none().0,
         //         delta_x.as_mut_ptr(),
         //         delta_y.as_mut_ptr(),
@@ -299,7 +298,7 @@ impl<O: Is<PanAction>> PanActionExt for O {
 
     fn get_pan_axis(&self) -> PanAxis {
         // unsafe {
-        //     from_glib(ffi::clutter_pan_action_get_pan_axis(
+        //     from_glib(ffi::pan_action_get_pan_axis(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -308,21 +307,21 @@ impl<O: Is<PanAction>> PanActionExt for O {
 
     fn set_acceleration_factor(&self, factor: f64) {
         // unsafe {
-        //     ffi::clutter_pan_action_set_acceleration_factor(self.as_ref().to_glib_none().0, factor);
+        //     ffi::pan_action_set_acceleration_factor(self.as_ref().to_glib_none().0, factor);
         // }
         unimplemented!()
     }
 
     fn set_deceleration(&self, rate: f64) {
         // unsafe {
-        //     ffi::clutter_pan_action_set_deceleration(self.as_ref().to_glib_none().0, rate);
+        //     ffi::pan_action_set_deceleration(self.as_ref().to_glib_none().0, rate);
         // }
         unimplemented!()
     }
 
     fn set_interpolate(&self, should_interpolate: bool) {
         // unsafe {
-        //     ffi::clutter_pan_action_set_interpolate(
+        //     ffi::pan_action_set_interpolate(
         //         self.as_ref().to_glib_none().0,
         //         should_interpolate.to_glib(),
         //     );
@@ -332,7 +331,7 @@ impl<O: Is<PanAction>> PanActionExt for O {
 
     fn set_pan_axis(&self, axis: PanAxis) {
         // unsafe {
-        //     ffi::clutter_pan_action_set_pan_axis(self.as_ref().to_glib_none().0, axis.to_glib());
+        //     ffi::pan_action_set_pan_axis(self.as_ref().to_glib_none().0, axis.to_glib());
         // }
         unimplemented!()
     }

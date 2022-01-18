@@ -3,16 +3,15 @@ use crate::prelude::*;
 use std::fmt;
 
 // typedef struct _DropTarget {
-//     ClutterActor *stage;
+//     Actor *stage;
 
 //     gulong capture_id;
 
 //     GHashTable *actions;
 
-//     ClutterDropAction *last_action;
+//     DropAction *last_action;
 //   } DropTarget;
 
-// SECTION:clutter-drop-action
 // @Title: DropAction
 // @short_description: An action for drop targets
 //
@@ -25,12 +24,12 @@ use std::fmt;
 // #DropAction::drop signal and handling the drop from there,
 // for instance:
 //
-// |[<!-- language="C" -->
-//   Action *action = clutter_drop_action ();
+// ```
+//   Action *action = drop_action ();
 //
 //   g_signal_connect (action, "drop", G_CALLBACK (on_drop), NULL);
-//   clutter_actor_add_action (an_actor, action);
-// ]|
+//   actor_add_action (an_actor, action);
+// ```
 //
 // The #DropAction::can-drop can be used to control whether the
 // #DropAction::drop signal is going to be emitted; returning %FALSE
@@ -41,7 +40,7 @@ use std::fmt;
 // It's important to note that #DropAction will only work with
 // actors dragged using #DragAction.
 //
-// See [drop-action.c](https://git.gnome.org/browse/clutter/tree/examples/drop-action.c?h=clutter-1.18)
+// See [drop-action.c](https://git.gnome.org/browse/clutter/tree/examples/drop-action.c?h=1.18)
 // for an example of how to use #DropAction.
 // @extends Action, ActorMeta
 #[derive(Default, Debug, Clone)]

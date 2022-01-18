@@ -1,5 +1,6 @@
-use crate::{Color};
 use std::fmt;
+
+use crate::foundation::colorspace::Color;
 
 // @extends PipelineNode, PaintNode
 pub struct ColorNode {

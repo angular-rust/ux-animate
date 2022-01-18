@@ -20,7 +20,7 @@ impl KeyframeTransition {
     ///  done to free its resources.
     pub fn new(property_name: &str) -> KeyframeTransition {
         // unsafe {
-        //     Transition::from_glib_full(ffi::clutter_keyframe_transition_new(
+        //     Transition::from_glib_full(ffi::keyframe_transition_new(
         //         property_name.to_glib_none().0,
         //     ))
         //     .unsafe_cast()
@@ -115,7 +115,7 @@ pub trait KeyframeTransitionExt: 'static {
 impl<O: Is<KeyframeTransition>> KeyframeTransitionExt for O {
     fn clear(&self) {
         // unsafe {
-        //     ffi::clutter_keyframe_transition_clear(self.as_ref().to_glib_none().0);
+        //     ffi::keyframe_transition_clear(self.as_ref().to_glib_none().0);
         // }
         unimplemented!()
     }
@@ -125,7 +125,7 @@ impl<O: Is<KeyframeTransition>> KeyframeTransitionExt for O {
     //     //     let mut key = mem::MaybeUninit::uninit();
     //     //     let mut mode = mem::MaybeUninit::uninit();
     //     //     let mut value = glib::Value::uninitialized();
-    //     //     ffi::clutter_keyframe_transition_get_key_frame(
+    //     //     ffi::keyframe_transition_get_key_frame(
     //     //         self.as_ref().to_glib_none().0,
     //     //         index_,
     //     //         key.as_mut_ptr(),
@@ -140,17 +140,17 @@ impl<O: Is<KeyframeTransition>> KeyframeTransitionExt for O {
     // }
 
     fn get_n_key_frames(&self) -> u32 {
-        // unsafe { ffi::clutter_keyframe_transition_get_n_key_frames(self.as_ref().to_glib_none().0) }
+        // unsafe { ffi::keyframe_transition_get_n_key_frames(self.as_ref().to_glib_none().0) }
         unimplemented!()
     }
 
     //fn set(&self, gtype: glib::types::Type, n_key_frames: u32, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) {
-    //    unsafe { TODO: call clutter_sys:clutter_keyframe_transition_set() }
+    //    unsafe { TODO: call sys:keyframe_transition_set() }
     //}
 
     // fn set_key_frame(&self, index_: u32, key: f64, mode: AnimationMode, value: &glib::Value) {
     //     // unsafe {
-    //     //     ffi::clutter_keyframe_transition_set_key_frame(
+    //     //     ffi::keyframe_transition_set_key_frame(
     //     //         self.as_ref().to_glib_none().0,
     //     //         index_,
     //     //         key,
@@ -164,7 +164,7 @@ impl<O: Is<KeyframeTransition>> KeyframeTransitionExt for O {
     fn set_key_frames(&self, key_frames: &[f64]) {
         // let n_key_frames = key_frames.len() as u32;
         // unsafe {
-        //     ffi::clutter_keyframe_transition_set_key_frames(
+        //     ffi::keyframe_transition_set_key_frames(
         //         self.as_ref().to_glib_none().0,
         //         n_key_frames,
         //         key_frames.to_glib_none().0,
@@ -174,13 +174,13 @@ impl<O: Is<KeyframeTransition>> KeyframeTransitionExt for O {
     }
 
     //fn set_modes(&self, modes: /*Unimplemented*/&CArray TypeId { ns_id: 1, id: 28 }) {
-    //    unsafe { TODO: call clutter_sys:clutter_keyframe_transition_set_modes() }
+    //    unsafe { TODO: call sys:keyframe_transition_set_modes() }
     //}
 
     // fn set_values(&self, values: &[&glib::Value]) {
     //     // let n_values = values.len() as u32;
     //     // unsafe {
-    //     //     ffi::clutter_keyframe_transition_set_values(
+    //     //     ffi::keyframe_transition_set_values(
     //     //         self.as_ref().to_glib_none().0,
     //     //         n_values,
     //     //         values.to_glib_none().0,

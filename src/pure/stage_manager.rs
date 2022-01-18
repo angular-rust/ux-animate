@@ -13,7 +13,7 @@ impl StageManager {
     /// the default stage manager instance. The returned
     ///  object is owned by internals and you should not reference or unreference it.
     pub fn get_default() -> Option<StageManager> {
-        // unsafe { from_glib_none(ffi::clutter_stage_manager_get_default()) }
+        // unsafe { from_glib_none(ffi::stage_manager_get_default()) }
         unimplemented!()
     }
 }
@@ -78,7 +78,7 @@ pub trait StageManagerExt: 'static {
 impl<O: Is<StageManager>> StageManagerExt for O {
     fn get_default_stage(&self) -> Option<Stage> {
         // unsafe {
-        //     from_glib_none(ffi::clutter_stage_manager_get_default_stage(
+        //     from_glib_none(ffi::stage_manager_get_default_stage(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -87,7 +87,7 @@ impl<O: Is<StageManager>> StageManagerExt for O {
 
     fn list_stages(&self) -> Vec<Stage> {
         // unsafe {
-        //     FromGlibPtrContainer::from_glib_container(ffi::clutter_stage_manager_list_stages(
+        //     FromGlibPtrContainer::from_glib_container(ffi::stage_manager_list_stages(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -96,7 +96,7 @@ impl<O: Is<StageManager>> StageManagerExt for O {
 
     fn peek_stages(&self) -> Vec<Stage> {
         // unsafe {
-        //     FromGlibPtrContainer::from_glib_none(ffi::clutter_stage_manager_peek_stages(
+        //     FromGlibPtrContainer::from_glib_none(ffi::stage_manager_peek_stages(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }

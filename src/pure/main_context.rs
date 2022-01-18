@@ -1,12 +1,14 @@
 #![allow(unused_imports)]
-use super::{Actor, Backend, Event, FeatureFlags, PickMode, Settings, StageManager, TextDirection};
 use once_cell::sync::{Lazy, OnceCell};
 use std::{
     cell::RefCell,
     sync::{Arc, Mutex},
 };
 
-// SECTION:clutter-main
+use dx::platform::core::FeatureFlags as DxFeatureFlags;
+
+use super::{Actor, Backend, Event, FeatureFlags, PickMode, Settings, StageManager, TextDirection};
+
 // @short_description: Various 'global'  functions.
 //
 // Functions to retrieve various global  resources and other utility
@@ -16,19 +18,19 @@ use std::{
 //
 //  is *thread-aware*: all operations performed by  are assumed
 // to be under the Big  Lock, which is created when the threading is
-// initialized through clutter_init(), and entered when calling user-related
+// initialized through init(), and entered when calling user-related
 // code during event handling and actor drawing.
 //
 // The only safe and portable way to use the  API in a multi-threaded
 // environment is to only access the  API from a thread that did called
-// clutter_init() and clutter_main().
+// init() and main().
 //
 // The common pattern for using threads with  is to use worker threads
 // to perform blocking operations and then install idle or timeout sources with
 // the result when the thread finishes, and update the UI from those callbacks.
 //
 // For a working example of how to use a worker thread to update the UI, see
-// [threads.c](https://git.gnome.org/browse/clutter/tree/examples/threads.c?h=clutter-1.18)
+// [threads.c](https://git.gnome.org/browse/clutter/tree/examples/threads.c?h=1.18)
 
 #[derive(Default)]
 pub struct MainContextProps {
@@ -44,7 +46,7 @@ pub struct MainContextProps {
     // the main event queue
     // events_queue: Option<GQueue>,
 
-    // the event filters added via clutter_event_add_filter. these are
+    // the event filters added via event_add_filter. these are
     // ordered from least recently added to most recently added
     event_filters: Option<Vec<bool>>,
 
@@ -94,7 +96,7 @@ unsafe impl Send for MainContextProps {}
 
 // MainContext:
 //
-// The shared state of 
+// The shared state of
 pub struct MainContext {
     props: Arc<Mutex<MainContextProps>>,
 }
@@ -110,7 +112,7 @@ impl MainContext {
         }
     }
 
-    // replacement for clutter_context_get_default
+    // replacement for context_get_default
     pub fn global() -> &'static Self {
         static CONTEXT_INSTANCE: OnceCell<MainContext> = OnceCell::new();
         CONTEXT_INSTANCE.get_or_init(Self::new)
@@ -140,7 +142,7 @@ fn base_init() {
         Ok(mut initialized) => {
             *initialized = true;
 
-            // bindtextdomain (GETTEXT_PACKAGE, CLUTTER_LOCALEDIR);
+            // bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
             // bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 
             // initialise GLib type system
@@ -156,15 +158,15 @@ fn base_init() {
 }
 
 fn get_text_direction() -> TextDirection {
-    // TextDirection dir = CLUTTER_TEXT_DIRECTION_LTR;
+    // TextDirection dir = TEXT_DIRECTION_LTR;
     // const gchar *direction;
 
-    // direction = g_getenv ("CLUTTER_TEXT_DIRECTION");
+    // direction = g_getenv ("TEXT_DIRECTION");
     // if direction && *direction != '\0' {
     //     if strcmp(direction, "rtl") == 0 {
-    //       dir = CLUTTER_TEXT_DIRECTION_RTL;
+    //       dir = TEXT_DIRECTION_RTL;
     //     } else if strcmp(direction, "ltr") == 0 {
-    //       dir = CLUTTER_TEXT_DIRECTION_LTR;
+    //       dir = TEXT_DIRECTION_LTR;
     //     }
     // } else {
     //     /* Translators: Leave this UNTRANSLATED if your language is
@@ -177,16 +179,16 @@ fn get_text_direction() -> TextDirection {
     //     char *e = _("default:LTR");
 
     //     if strcmp (e, "default:RTL") == 0 {
-    //       dir = CLUTTER_TEXT_DIRECTION_RTL;
+    //       dir = TEXT_DIRECTION_RTL;
     //     } else if (strcmp (e, "default:LTR") == 0 {
-    //       dir = CLUTTER_TEXT_DIRECTION_LTR;
+    //       dir = TEXT_DIRECTION_LTR;
     //     } else {
     //       g_warning ("Whoever translated default:LTR did so wrongly.");
     //     }
     // }
 
-    // CLUTTER_NOTE(MISC, "Text direction: %s",
-    //               dir == CLUTTER_TEXT_DIRECTION_RTL ? "rtl" : "ltr");
+    // NOTE(MISC, "Text direction: %s",
+    //               dir == TEXT_DIRECTION_RTL ? "rtl" : "ltr");
 
     // return dir;
     unimplemented!()
@@ -197,7 +199,6 @@ pub struct Features {
     features_set: bool,
 }
 
-// SECTION:clutter-feature
 // @short_description: Run-time detection of  features
 //
 // Parts of  depend on the underlying platform, including the
@@ -211,10 +212,10 @@ pub struct Features {
 fn feature_init(backend: &Option<Backend>) -> bool {
     // MainContext *context;
 
-    // CLUTTER_NOTE (MISC, "checking features");
+    // NOTE (MISC, "checking features");
 
     // if !__features {
-    //     CLUTTER_NOTE (MISC, "allocating features data");
+    //     NOTE (MISC, "allocating features data");
     //     __features = g_new0 (Features, 1);
     //     __features->features_set = FALSE; /* don't rely on zero-ing */
     // }
@@ -223,7 +224,7 @@ fn feature_init(backend: &Option<Backend>) -> bool {
     //     return true;
     // }
 
-    // context = _clutter_context_get_default ();
+    // context = _context_get_default ();
 
     // makes sure we have a GL context; if we have, this is a no-op
     match backend {
@@ -235,40 +236,40 @@ fn feature_init(backend: &Option<Backend>) -> bool {
         None => {}
     }
 
-    // __features->flags = (clutter_features_from_cogl (dx_get_features ())
-    //                     | _clutter_backend_get_features (context->backend));
+    // __features->flags = (features_from_cogl (dx_get_features ())
+    //                     | _backend_get_features (context->backend));
 
     // __features->features_set = TRUE;
 
-    // CLUTTER_NOTE (MISC, "features checked");
+    // NOTE (MISC, "features checked");
 
     true
 }
 
-fn features_from_cogl(dx_flags: dx::core::FeatureFlags) -> FeatureFlags {
-    let mut clutter_flags: FeatureFlags = FeatureFlags::NONE;
+fn features_from_cogl(dx_flags: DxFeatureFlags) -> FeatureFlags {
+    let mut flags: FeatureFlags = FeatureFlags::NONE;
 
-    if (dx_flags & dx::core::FeatureFlags::TEXTURE_NPOT).bits() != 0 {
-        clutter_flags |= FeatureFlags::TEXTURE_NPOT;
+    if (dx_flags & DxFeatureFlags::TEXTURE_NPOT).bits() != 0 {
+        flags |= FeatureFlags::TEXTURE_NPOT;
     }
 
-    if (dx_flags & dx::core::FeatureFlags::TEXTURE_YUV).bits() != 0 {
-        clutter_flags |= FeatureFlags::TEXTURE_YUV;
+    if (dx_flags & DxFeatureFlags::TEXTURE_YUV).bits() != 0 {
+        flags |= FeatureFlags::TEXTURE_YUV;
     }
 
-    if (dx_flags & dx::core::FeatureFlags::TEXTURE_READ_PIXELS).bits() != 0 {
-        clutter_flags |= FeatureFlags::TEXTURE_READ_PIXELS;
+    if (dx_flags & DxFeatureFlags::TEXTURE_READ_PIXELS).bits() != 0 {
+        flags |= FeatureFlags::TEXTURE_READ_PIXELS;
     }
 
-    if (dx_flags & dx::core::FeatureFlags::SHADERS_GLSL).bits() != 0 {
-        clutter_flags |= FeatureFlags::SHADERS_GLSL;
+    if (dx_flags & DxFeatureFlags::SHADERS_GLSL).bits() != 0 {
+        flags |= FeatureFlags::SHADERS_GLSL;
     }
 
-    if (dx_flags & dx::core::FeatureFlags::OFFSCREEN).bits() != 0 {
-        clutter_flags |= FeatureFlags::OFFSCREEN;
+    if (dx_flags & DxFeatureFlags::OFFSCREEN).bits() != 0 {
+        flags |= FeatureFlags::OFFSCREEN;
     }
 
-    clutter_flags
+    flags
 }
 
 fn init_real(props: &mut MainContextProps) -> InitError {
@@ -281,31 +282,31 @@ fn init_real(props: &mut MainContextProps) -> InitError {
         // if error {
         //     // g_set_error(error, InitError,
         //     //     InitError::ErrorInternal,
-        //     //     r#"When using clutter_get_option_group_without_init()
-        //     //     "you must parse options before calling clutter_init()"#);
+        //     //     r#"When using get_option_group_without_init()
+        //     //     "you must parse options before calling init()"#);
         // } else {
-        //     // g_critical(r#"When using clutter_get_option_group_without_init()
-        //     //     "you must parse options before calling clutter_init()"#);
+        //     // g_critical(r#"When using get_option_group_without_init()
+        //     //     "you must parse options before calling init()"#);
         // }
         // return InitError::Internal;
     }
 
     // // Call backend post parse hooks.
-    // if !_clutter_backend_post_parse(backend, error) {
+    // if !_backend_post_parse(backend, error) {
     //     return InitError::Backend;
     // }
 
     // // If we are displaying the regions that would get redrawn with clipped
     // // redraws enabled we actually have to disable the clipped redrawing
     // // because otherwise we end up with nasty trails of rectangles everywhere.
-    // if clutter_paint_debug_flags & CLUTTER_DEBUG_REDRAWS {
-    //     clutter_paint_debug_flags |= CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS;
+    // if paint_debug_flags & DEBUG_REDRAWS {
+    //     paint_debug_flags |= DEBUG_DISABLE_CLIPPED_REDRAWS;
     // }
 
     // // The same is true when drawing the outlines of paint volumes...
-    // if clutter_paint_debug_flags & CLUTTER_DEBUG_PAINT_VOLUMES {
-    //     clutter_paint_debug_flags |=
-    //         CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS | CLUTTER_DEBUG_DISABLE_CULLING;
+    // if paint_debug_flags & DEBUG_PAINT_VOLUMES {
+    //     paint_debug_flags |=
+    //         DEBUG_DISABLE_CLIPPED_REDRAWS | DEBUG_DISABLE_CULLING;
     // }
 
     // this will take care of initializing Cogl's state and
@@ -314,7 +315,7 @@ fn init_real(props: &mut MainContextProps) -> InitError {
         return InitError::Backend;
     }
 
-    // clutter_text_direction = get_text_direction();
+    // text_direction = get_text_direction();
 
     // Initiate event collection
     match backend {
@@ -324,18 +325,18 @@ fn init_real(props: &mut MainContextProps) -> InitError {
         None => {}
     }
 
-    // clutter_is_initialized = true;
+    // is_initialized = true;
     props.is_initialized = true;
 
     // // Initialize a11y */
-    // if clutter_enable_accessibility {
+    // if enable_accessibility {
     //     cally_accessibility_init();
     // }
 
     InitError::Sucess
 }
 
-// clutter_init:
+// init:
 // @argc: (inout): The number of arguments in @argv
 // @argv: (array length=argc) (inout) (allow-none): A pointer to an array
 //   of arguments.
@@ -347,10 +348,10 @@ fn init_real(props: &mut MainContextProps) -> InitError {
 // It is safe to call this function multiple times.
 //
 // This function will not abort in case of errors during
-// initialization; clutter_init() will print out the error message on
+// initialization; init() will print out the error message on
 // stderr, and will return an error code. It is up to the application
 // code to handle this case. If you need to display the error message
-// yourself, you can use clutter_init_with_args(), which takes a #GError
+// yourself, you can use init_with_args(), which takes a #GError
 // pointer.
 //
 // If this function fails, and returns an error code, any subsequent
@@ -419,13 +420,13 @@ pub enum CullResult {
 }
 
 // InitError:
-// @CLUTTER_INIT_SUCCESS: Initialisation successful
-// @CLUTTER_INIT_ERROR_UNKNOWN: Unknown error
-// @CLUTTER_INIT_ERROR_THREADS: Thread initialisation failed
-// @CLUTTER_INIT_ERROR_BACKEND: Backend initialisation failed
-// @CLUTTER_INIT_ERROR_INTERNAL: Internal error
+// @INIT_SUCCESS: Initialisation successful
+// @INIT_ERROR_UNKNOWN: Unknown error
+// @INIT_ERROR_THREADS: Thread initialisation failed
+// @INIT_ERROR_BACKEND: Backend initialisation failed
+// @INIT_ERROR_INTERNAL: Internal error
 //
-// Error conditions returned by clutter_init() and clutter_init_with_args().
+// Error conditions returned by init() and init_with_args().
 //
 pub enum InitError {
     Sucess = 1,

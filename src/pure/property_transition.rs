@@ -18,7 +18,7 @@ impl PropertyTransition {
     ///  Use `gobject::ObjectExt::unref` when done
     pub fn new(property_name: Option<&str>) -> PropertyTransition {
         // unsafe {
-        //     Transition::from_glib_full(ffi::clutter_property_transition_new(
+        //     Transition::from_glib_full(ffi::property_transition_new(
         //         property_name.to_glib_none().0,
         //     ))
         //     .unsafe_cast()
@@ -63,7 +63,7 @@ pub trait PropertyTransitionExt: 'static {
 impl<O: Is<PropertyTransition>> PropertyTransitionExt for O {
     fn get_property_name(&self) -> Option<String> {
         // unsafe {
-        //     from_glib_none(ffi::clutter_property_transition_get_property_name(
+        //     from_glib_none(ffi::property_transition_get_property_name(
         //         self.as_ref().to_glib_none().0,
         //     ))
         // }
@@ -72,7 +72,7 @@ impl<O: Is<PropertyTransition>> PropertyTransitionExt for O {
 
     fn set_property_name(&self, property_name: Option<&str>) {
         // unsafe {
-        //     ffi::clutter_property_transition_set_property_name(
+        //     ffi::property_transition_set_property_name(
         //         self.as_ref().to_glib_none().0,
         //         property_name.to_glib_none().0,
         //     );

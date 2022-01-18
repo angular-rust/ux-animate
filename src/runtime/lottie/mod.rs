@@ -4,6 +4,7 @@
 #![allow(clippy::new_without_default)]
 
 use crate::prelude::*;
+use ruex::foundation::patterns::builder::Builder;
 use bytes::Bytes;
 use ruex::prelude::*;
 use std::{cell::RefCell, fs::File, rc::Rc};

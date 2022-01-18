@@ -1,4 +1,4 @@
-// ClutterKnot:
+// Knot:
 // @x: X coordinate of the knot
 // @y: Y coordinate of the knot
 //
@@ -21,7 +21,7 @@ impl Knot {
     /// `true` if the knots point to the same location.
     fn equal(&self, knot_b: &Knot) -> bool {
         // unsafe {
-        //     from_glib(ffi::clutter_knot_equal(
+        //     from_glib(ffi::knot_equal(
         //         self.to_glib_none().0,
         //         knot_b.to_glib_none().0,
         //     ))

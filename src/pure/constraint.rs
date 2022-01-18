@@ -1,7 +1,6 @@
 use crate::prelude::*;
 use std::fmt;
 
-// SECTION:clutter-constraint
 // @Title: Constraint
 // @Short_Description: Abstract class for constraints on position or size
 // @See_Also: #Action
@@ -29,7 +28,7 @@ use std::fmt;
 // #BoxLayout and #TableLayout lay out their children.
 //
 // Constraints are attached to a #Actor, and are available
-// for inspection using clutter_actor_get_constraints().
+// for inspection using actor_get_constraints().
 //
 //  provides different implementation of the #Constraint
 // abstract class, for instance:
@@ -45,7 +44,7 @@ use std::fmt;
 //  horizontal or vertical edges then it can also expand to fit the empty
 //  space.
 //
-// The [constraints example](https://git.gnome.org/browse/clutter/tree/examples/constraints.c?h=clutter-1.18)
+// The [constraints example](https://git.gnome.org/browse/clutter/tree/examples/constraints.c?h=1.18)
 // uses various types of #Constraints to lay out three actors on a
 // resizable stage. Only the central actor has an explicit size, and no
 // actor has an explicit position.
@@ -101,9 +100,9 @@ use std::fmt;
 //
 // If a #Constraint is parametrized - i.e. if it contains
 // properties that affect the way the constraint is implemented - it should
-// call clutter_actor_queue_relayout() on the actor to which it is attached
+// call actor_queue_relayout() on the actor to which it is attached
 // to whenever any parameter is changed. The actor to which it is attached
-// can be recovered at any point using clutter_actor_meta_get_actor().
+// can be recovered at any point using actor_meta_get_actor().
 // @extends ActorMeta,
 #[derive(Debug, Clone)]
 pub struct Constraint {

@@ -21,7 +21,7 @@ impl InputDevice {
     /// a `InputDevice`, or `None`
     pub fn get_associated_device(&self) -> Option<InputDevice> {
         // unsafe {
-        //     from_glib_none(ffi::clutter_input_device_get_associated_device(
+        //     from_glib_none(ffi::input_device_get_associated_device(
         //         self.to_glib_none().0,
         //     ))
         // }
@@ -37,7 +37,7 @@ impl InputDevice {
     /// the axis type
     pub fn get_axis(&self, index_: u32) -> InputAxis {
         // unsafe {
-        //     from_glib(ffi::clutter_input_device_get_axis(
+        //     from_glib(ffi::input_device_get_axis(
         //         self.to_glib_none().0,
         //         index_,
         //     ))
@@ -46,7 +46,7 @@ impl InputDevice {
     }
 
     //pub fn get_axis_value(&self, axes: &[f64], axis: InputAxis) -> Option<f64> {
-    //    unsafe { TODO: call clutter_sys:clutter_input_device_get_axis_value() }
+    //    unsafe { TODO: call sys:input_device_get_axis_value() }
     //}
 
     // /// Retrieves the latest coordinates of a pointer or touch point of
@@ -255,7 +255,7 @@ impl InputDevice {
     // /// `true` if the conversion succeeded, `false` otherwise.
     // pub fn keycode_to_evdev(&self, hardware_keycode: u32, evdev_keycode: u32) -> bool {
     //     unsafe {
-    //         from_glib(ffi::clutter_input_device_keycode_to_evdev(
+    //         from_glib(ffi::input_device_keycode_to_evdev(
     //             self.to_glib_none().0,
     //             hardware_keycode,
     //             evdev_keycode,
@@ -273,7 +273,7 @@ impl InputDevice {
     /// a `Actor`, or `None`
     pub fn sequence_get_grabbed_actor(&self, sequence: &mut EventSequence) -> Option<Actor> {
         // unsafe {
-        //     from_glib_none(ffi::clutter_input_device_sequence_get_grabbed_actor(
+        //     from_glib_none(ffi::input_device_sequence_get_grabbed_actor(
         //         self.to_glib_none().0,
         //         sequence.to_glib_none_mut().0,
         //     ))
@@ -297,7 +297,7 @@ impl InputDevice {
     /// a `Actor`
     pub fn sequence_grab<P: Is<Actor>>(&self, sequence: &mut EventSequence, actor: &P) {
         // unsafe {
-        //     ffi::clutter_input_device_sequence_grab(
+        //     ffi::input_device_sequence_grab(
         //         self.to_glib_none().0,
         //         sequence.to_glib_none_mut().0,
         //         actor.as_ref().to_glib_none().0,
@@ -312,7 +312,7 @@ impl InputDevice {
     /// a `EventSequence`
     pub fn sequence_ungrab(&self, sequence: &mut EventSequence) {
         // unsafe {
-        //     ffi::clutter_input_device_sequence_ungrab(
+        //     ffi::input_device_sequence_ungrab(
         //         self.to_glib_none().0,
         //         sequence.to_glib_none_mut().0,
         //     );
@@ -329,7 +329,7 @@ impl InputDevice {
     /// `true` to enable the `self`
     pub fn set_enabled(&self, enabled: bool) {
         // unsafe {
-        //     ffi::clutter_input_device_set_enabled(self.to_glib_none().0, enabled.to_glib());
+        //     ffi::input_device_set_enabled(self.to_glib_none().0, enabled.to_glib());
         // }
         unimplemented!()
     }
@@ -346,7 +346,7 @@ impl InputDevice {
     /// a bitmask of modifiers
     pub fn set_key(&self, index_: u32, keyval: u32, modifiers: ModifierType) {
         // unsafe {
-        //     ffi::clutter_input_device_set_key(
+        //     ffi::input_device_set_key(
         //         self.to_glib_none().0,
         //         index_,
         //         keyval,
@@ -359,7 +359,7 @@ impl InputDevice {
     /// Releases the grab on the `self`, if one is in place.
     pub fn ungrab(&self) {
         // unsafe {
-        //     ffi::clutter_input_device_ungrab(self.to_glib_none().0);
+        //     ffi::input_device_ungrab(self.to_glib_none().0);
         // }
         unimplemented!()
     }
@@ -367,7 +367,7 @@ impl InputDevice {
     /// Forcibly updates the state of the `self` using a `Event`
     ///
     /// This function should never be used by applications: it is meant
-    /// for integration with embedding toolkits, like clutter-gtk
+    /// for integration with embedding toolkits, like gtk
     ///
     /// Embedding toolkits that disable the event collection inside
     /// need to use this function to update the state of input devices depending
@@ -424,7 +424,7 @@ impl InputDevice {
     ///  using the stage of the event
     pub fn update_from_event(&self, event: &mut Event, update_stage: bool) {
         // unsafe {
-        //     ffi::clutter_input_device_update_from_event(
+        //     ffi::input_device_update_from_event(
         //         self.to_glib_none().0,
         //         event.to_glib_none_mut().0,
         //         update_stage.to_glib(),

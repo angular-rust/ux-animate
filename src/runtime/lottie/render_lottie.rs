@@ -1,4 +1,4 @@
-use primitives::Size;
+use primitives::foundation::Size;
 
 use super::{FrameRate, LottieComposition, LottieDelegates};
 

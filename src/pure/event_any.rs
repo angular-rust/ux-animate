@@ -18,7 +18,7 @@ pub struct AnyEvent {
 
 impl AnyEvent {
     pub fn get_time(&self) -> u32 {
-        unimplemented!()
+        self.time
     }
 
     pub fn get_state(&self) -> ModifierType {

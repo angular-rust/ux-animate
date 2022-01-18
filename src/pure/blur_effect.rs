@@ -1,5 +1,8 @@
-use super::Actor;
 use std::fmt;
+
+use dx::platform::core::Pipeline;
+
+use super::Actor;
 
 // @short_description: A blur effect
 // @see_also: #Effect, #OffscreenEffect
@@ -21,7 +24,7 @@ pub struct BlurEffect {
     tex_width: u32,
     tex_height: u32,
 
-    pipeline: Option<dx::core::Pipeline>,
+    pipeline: Option<Pipeline>,
 }
 
 impl BlurEffect {

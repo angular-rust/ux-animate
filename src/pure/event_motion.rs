@@ -11,7 +11,7 @@ use super::{Actor, EventFlags, EventType, InputDevice, ModifierType, Stage};
 // @modifier_state: button modifiers
 // @axes: reserved for future use
 // @device: the device that originated the event. If you want the physical
-// device the event originated from, use clutter_event_get_source_device()
+// device the event originated from, use event_get_source_device()
 //
 // Event for the pointer motion
 pub struct MotionEvent {
@@ -29,21 +29,16 @@ pub struct MotionEvent {
 }
 
 impl MotionEvent {
-    pub fn get_position(&self) -> (f64, f64) {
-        // let x = self.as_ref().x;
-        // let y = self.as_ref().y;
-        // (x, y)
-        unimplemented!()
+    pub fn get_position(&self) -> (f32, f32) {
+        (self.x, self.y)
     }
 
     pub fn get_state(&self) -> ModifierType {
-        // from_glib(self.as_ref().state)
-        unimplemented!()
+        self.modifier_state
     }
 
     pub fn get_time(&self) -> u32 {
-        // self.as_ref().time
-        unimplemented!()
+        self.time
     }
 
     pub fn request_motions(&self) {
@@ -51,9 +46,8 @@ impl MotionEvent {
         unimplemented!()
     }
 
-    pub fn get_device(&self) -> Option<InputDevice> {
-        // unsafe { from_glib_none(self.as_ref().device) }
-        unimplemented!()
+    pub fn get_device(&self) -> &Option<InputDevice> {
+        &self.device
     }
 
     pub fn get_axes(&self) -> Option<(f64, f64)> {
